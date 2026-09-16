@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+    <html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <script src="jqu.js"></script>
+
+    </head>
+    <body>
+        <div>
+            <div id="out_box">
+                <div id="in_box"> 더블클릭</div>
+            </div>
+
+            <script>
+                $(document).ready(function() {
+
+                $('#out_box').css({
+                    width : 500,
+                    height : 500,
+                    backgroundColor : 'gold',
+                });
+
+                
+                $('#in_box').css({
+                    width: '100%',
+                    height: '100%',
+                    textAlign : 'center',
+                    font : '50px / 300px ""',
+                    color : 'white',
+                    display : 'none',
+                    userSelect : 'none', //클릭했을때 파랑으로 컨텐츠가 선택되지 않는 태그
+                });
+
+                $('#out_box').click(function () {
+                    $(this).animate({
+                        width: 300,
+                        height: 300,
+                        marginLeft: 500,
+                    }, 700, function () {
+                        $('#in_box').css ({
+                            display: 'block',
+                        });
+                    });
+                });
+                $('#in_box').dblclick(function () {
+                    $(this).css({
+                        backgroundColor: 'tomato',
+                        color: 'green',
+                    });
+                });
+            });
+
+
+
+
+
+
+        
+            
+
+            </script>
+        </div>
+    </body>
+</html>
+
+<!-- 
+
+
+
+
+
+
+-->

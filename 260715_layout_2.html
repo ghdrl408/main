@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <style>
+            
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            #wrap {
+                width: 1200px;
+                height: 1300px;
+                background-color: rgb(197, 197, 197);
+                margin: 0 auto;
+                text-align: center;
+                color: white;
+                
+                
+            }
+
+            header {
+                width: 1200px;
+                height: 200px;
+                background-color: azure;
+                float: left;
+            }
+
+       
+            .logo-boxes {
+                margin: 50px 0;
+                line-height: 100px;
+                width: 110px;
+                height: 50%;
+                background-color: darkcyan;
+                float: left;
+                font-size: 30px;
+            }
+
+            .logo-boxes:nth-child(2) {
+                background-color: rgb(163, 163, 163);
+                float: left;
+            }
+
+            .menu {
+                width: 220px;
+                height: 100%;
+                background-color: rgb(105, 105, 105);
+                line-height: 200px;
+                font-size: 30px;
+                float:left;
+                border-right: 1px solid white;
+
+            }
+
+            .join {
+                width: 100px;
+                height: 100px;
+                background-color: rgb(139, 139, 139);
+                float: right;
+                line-height: 100px;
+            }
+
+            .join:nth-child(1) {
+                background-color: azure;
+            }
+
+
+           
+
+            #main1 {
+                width: 500px;
+                height: 800px;
+                background-color: rgb(165, 165, 192);
+                float: left;
+            }
+
+            #main2 {
+                width: 400px;
+                height: 800px;
+                background-color: rgb(136, 136, 180);
+                float: right;
+            }
+
+            #sub1 {
+                width: 400px;
+                height: 500px;
+                background-color: bisque;
+                float: right;
+                position: relative;
+
+                
+            }
+
+            #sub2 {width: 400px;
+                height: 250px;
+                background-color: rgb(219, 182, 34);
+                float: right;
+                position: absolute;
+                top: 50%;
+                right: 50%;
+                margin-top: -105px;
+                margin-right: -400px;
+                                float: right;
+
+
+
+            }
+
+            #m-box {
+                width: 1000px;
+                height: 800px;
+                background-color: transparent;
+                float: left;
+                margin: 100px 0;
+            }
+
+
+            aside {
+                width: 170px;
+                height: 100%;
+                background-color: rgb(102, 102, 102);
+                float: right;
+            }
+
+            .side {
+                width: 170px;
+                height: 200px;
+                line-height: 200px;
+                font-size: 40px;
+                border-bottom: 1px solid white;
+            }
+
+
+        </style>
+    </head>
+    <body>
+        
+        <div id="wrap">
+            <header>
+                
+                    <div  class="logo-boxes">LOGO</div>
+                    <div  class="logo-boxes">site</div>
+                
+                
+                    <nav class="menu">menu1</nav>
+                    <nav class="menu">menu2</nav>
+                    <nav class="menu">menu3</nav>
+                    <nav class="menu">menu4</nav>
+                
+
+                
+                    <nav class="join">로그인</nav>  
+                    <nav class="join">회원가입</nav>
+                
+                            
+            </header>
+ 
+            <section>
+                <div id="m-box">
+                    <div id="main1"></div>
+                    <div id="main2">
+                        <div id="sub1">
+                            <div>1</div>
+                            <div>2</div>
+                            <div>3</div>
+                            <div>4</div>
+                        </div>
+                        <div id="sub2"></div>
+                    </div>
+                </div>
+                <aside>
+                        <div class="side">1</div>
+                        <div class="side">2</div>
+                        <div class="side">3</div>
+                        <div class="side">4</div>
+                        <div class="side">5</div>
+                </aside>
+                
+                
+            </section>
+            
+            <footer></footer>
+ 
+        </div>
+    </body>
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <script src="jqu.js"></script>
+
+        <style>
+            *{
+                padding: 0;
+                margin: 0;
+            }
+
+            #wrap {
+                width: 300vw;
+                height: 300vh;
+                position: fixed;
+                top: -100vh;
+                left: -100vw;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+
+            }
+
+            #middle_wrap {
+                width: 300vw;
+                height: 100vh;
+                display: flex;
+                align-items: center;
+
+            }
+
+            .btn {
+                width: 10vw;
+                height: 10vh;
+                background-color: lightcoral;
+                color: white;
+                cursor: pointer;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            section {
+                width: 100vw;
+                height: 100vh;
+                display: flex;
+
+            }
+
+            .center {
+                justify-content: center;
+            }
+
+            .middle {
+                align-items: center;
+            }
+
+            .bottom {
+                align-items: flex-end;
+            }
+
+            .top {
+                align-items: flex-start;
+            }
+
+            .left {
+                justify-content: flex-start;
+            }
+
+            .right {
+                justify-content: flex-end;
+            }
+
+            .center_wrap {
+                flex-direction: column;
+                align-items: center;
+                justify-content: space-between;
+            }
+            .mid_btn_wrap {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+            }
+        </style>
+    </head>
+    <body>
+        
+        <div id="wrap">
+            <section id="top_wrap center bottom">
+                <div class="btn" id="top_center">아래로</div>
+            </section>
+
+            <div id="middle_wrap">
+                <section class="left_wrap middle right">
+                    <div class="btn" id="senter_top">오른쪽으로</div>
+                </section>
+                <section class="center_wrap">
+                    <div class="btn" id="center_top">위로</div>
+                    <div class="mid_btn_wrap middle">
+                        <div class="btn" id="center_left">왼쪽으로</div>
+                        <div class="btn" id="center_right">오른쪽으로</div>
+                    </div>
+                    <div class="btn" id="center_bottom">아래로</div>
+                </section>
+                <section class="right_wrap middle left">
+                    <div class="btn" id="right_center">왼쪽으로</div>
+                </section>
+            </div>
+
+            <section class="bottom_wrap center top">
+                <div class="btn" id="bottom_center">위로</div>
+            </section>
+        </div>
+
+        <script>
+
+            $(document).ready(function() {
+                let ww = $(window).width();
+                let wh = $(window).height();
+                let bg = ['skyblue', 'tomato', 'lightpink', 'gold', 'green'];
+
+                $('section').css ({
+                    backgroundColor :function(i) {
+                        return bg [i];
+                        }
+                    });
+
+                $('#center_top').click(function () {
+                    $('#wrap').animate ({
+                        top: 0,
+                    });
+                });
+
+
+                $('#top_center').click(function () {
+                    $('#wrap').animate({
+                        top: -wh,
+                    });
+                });
+
+                $('#center_right').click(function () {
+                    $('#wrap').animate({
+                        top: -ww*2,
+                    });
+                });
+
+                $('#right_center').click(function () {
+                    $('#wrap').animate({
+                        top: -ww,
+                    });
+                });
+
+                $('#center_bottom').click(function () {
+                    $('#wrap').animate({
+                        top: -wh * 2,
+                    });
+                });
+
+                $('#bottom_center').click(function () {
+                    $('#wrap').animate({
+                        top: -wh,
+                    });
+                });
+
+                $('#center_left').click(function () {
+                    $('#wrap').animate({
+                        left: 0,
+                    });
+                });
+
+                $('#left_center').click(function () {
+                    $('#wrap').animate({
+                        left: -ww,
+                    });
+                });
+
+            });
+
+        </script>
+
+    </body>
+</html>

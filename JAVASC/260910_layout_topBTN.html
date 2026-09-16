@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>layout</title>
+        <script src="jqu.js"></script>
+        <style>
+            *{
+                padding: 0;
+                margin: 0;
+            }
+
+            #wrap {
+                width: 100%;
+                height: 100%;
+            }
+
+            header, section, footer {
+                position: relative;
+            }
+
+            header {
+                width: 100%;
+                height: 100px;
+                background-color: cornflowerblue;
+                font: 50px / 100px '';
+                text-align: center;
+            }
+
+            section {
+                width: 100%;
+                height: 800px;
+                background-color: lightcoral;
+                font: 50px / 800px '';
+                text-align: center;
+                margin-bottom: 100px;
+
+            }
+
+            footer {
+                width: 100%;
+                height: 200px;
+                background-color: lightslategray;
+                font: 50px / 200px '';
+                text-align: center;
+
+            }
+
+            #btn {
+                width: 100px;
+                height: 100px;
+                background-color: gold;
+                text-align: center;
+                font: 900 30px / 100px '';
+                position: fixed;
+                right: 100px;
+                bottom: 100px;
+                cursor: pointer;
+                opacity: 0;
+                transition: 0.5s;
+            }
+
+
+
+        </style>
+    </head>
+    <body>
+        
+
+        <div id="wrap">
+            <header>헤더</header>
+            <section >섹션1</section>
+            <section >섹션2</section>
+            <footer>푸터</footer>
+            <div id="btn">TOP</div>
+        </div>
+
+
+
+        <script>
+            $(document).ready(function () {
+
+                $(window).scroll(function () {
+                    let sct = $(window).scrollTop();
+
+                    if(sct > 100) {
+                        $('#btn').css ({
+                            opacity: 1,
+                        });
+                    } else {
+                        $('#btn').css ({
+                            opacity:0,
+                        });
+                    }
+                });
+
+                //스크롤 내렸을때 탑버튼 생기게 만들기
+
+                $('#btn').click(function () {
+                    $('html,body').animate({
+                        scrollTop: 0,
+                    }, 500);
+                });
+
+                //탑버튼 눌렀을때 상단으로 이동
+
+
+
+
+
+
+            }); //end
+
+
+
+
+        </script>
+    </body>
+</html>

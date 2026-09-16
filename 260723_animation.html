@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>animation</title>
+        <style>
+            *{
+                padding: 0;
+                margin: 0;
+            }
+
+            #box {
+                width: 300px;
+                height: 300px;
+                background-color: teal;
+                animation: boxMove 1s infinite alternate;
+                animation-play-state: paused;
+
+            }
+
+            #box:hover {
+                animation-play-state: running;
+            }
+
+
+
+            @keyframes boxMove {
+                0% {
+                    margin: 0;
+                }
+
+                100% {
+                    margin: 100px 100px;
+                }
+            }
+
+        </style>
+
+
+
+
+
+
+
+
+    </head>
+    <body>
+        <div id="box"></div>
+    </body>
+</html>
+
+
+
+<!-- 
+    <animation>
+    1) animation-name : 애니메이션 이름
+
+    2) animation-duration : 애니메이션 지속시간
+
+    3) animation-iteration-count : 애니메이션 반복횟수
+        - 숫자 : 숫자만큼 애니메이션 반복 (단위없음)
+        - infinite : 애니메이션 무한반복
+
+    4) animation-delay : 애니메이션 지연시간
+
+    5) animation-diration : 애니메이션 진행방향
+        - normal : 기본값 -> 도착지점에 도달하면 사라졌다가 다시 시작점에서 출발(from~to)
+        - alternate : 일반적으로 많이 사용하는 움직임 -> 첫 지점에서 도착지점 다시 돌아가면서 왔다갔다 함(from~to~from)
+        - revers : normal의 반대 -> 도착지점에서 출발(to~from)
+        - alternate-revers : alternate의 반대 -> 끝점에서 출발 (to~from~to)
+
+    6) animation-timing-function : 가속도 형태
+        - linear
+        - ease
+        - ease-in
+        - ease-out
+        - ease-in-out
+
+    7) animation-play-state : 움직이는지 정지되는지 선택
+        - running : 움직임
+        - paused : 정지
+
+    8) animation-fill-mode : 마지막 모션으로 정지    
+        - none : 기본값 -> 원래 요소의 스타일로 돌아감
+        - forwords : 마지막 키프레임(to or 100%) 스타일로 유지
+        - backwards : 처음 키프레임(from or 0%)  스타일로 시작 -> 애니메이션이 끝나면 원래 스타일로 복귀
+        - both : 처음 키프레임(from or 0%) 스타일로 시작 -> 애니메이션이 끝나면 마지막 키프레임 (to or 100%)로 스타일 유지
+    
+    9) animation(축약형) : 이름 지속시간 가속도 딜레이시간 반복횟수 방향 마지막모션(fill-mode)
+        **지속시간과 딜레이시간 순서 유의 -> 다른 속성은 순서 상관 없음
+
+    @keyframes 애니메이션이름 {
+        from(시작값 = 0%) {
+            속성
+        }
+
+        2%
+
+        10%
+
+        23%
+
+        50%
+
+        to(끝값 = 100%) {
+            속성
+        }
+    
+    }
+
+
+
+
+
+
+
+
+
+
+
+-->

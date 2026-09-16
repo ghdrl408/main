@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <script src="jqu_2ver.js"></script>
+        <script src="jqu_tran.js"></script>
+
+        <style>
+          *{
+            padding: 0;
+            margin: 0;
+          }
+
+
+
+
+
+        </style>
+    </head>
+    <body>
+
+        <div id="box">
+            <h1>Click!</h1>
+        </div>
+
+
+
+
+        
+
+
+
+
+
+        <script>
+            $(document).ready(function () {
+
+            
+                let bg = ['gold', 'tomato'];
+                let i = 0;
+
+                //resize 
+                function layout () {
+                    $('#box').css ({
+                        width: $(window).width(),
+                        height: $(window).height(),
+                        backgroundColor: 'gold',
+                        textAlign: 'center',
+                        font: '900 100px /'+ $(window).height() + 'px ""'
+
+                    });
+                }
+
+                layout();
+
+                function trans() {
+                    $('#box').transition ({
+                        rotateX: '360deg',
+                    },500, function() {
+                        $(this).transition ({
+                            opacity: 0,
+                        },500, function () {
+                            $(this).transition ({
+                                opacity: 1,
+                                backgroundColor: bg[i],
+                            },500, function () {
+                                $(this).transition({
+                                    rotateX: 0,
+                                }, 0);
+                            });
+                        });
+                    });
+                }
+
+                $('#box').click(function () {
+                    if(i === 0) {
+                        trans();
+                        i++;
+                    } else if (i === 1) {
+                        trans();
+                        i--;
+                    }
+                });
+
+                $(window).resize(function () {
+                    layout();
+                });
+
+
+
+
+
+
+            });//end
+
+
+        </script>
+        
+    </body>
+</html>
+

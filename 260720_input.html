@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+    <html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>선택자</title>
+        <style>
+            /* h1 + h2 {
+                color: brown;
+            }
+            h1 ~ h3 {
+                border: 1px solid black;
+                color: darkblue;
+            } */
+
+            textarea { 
+                resize: none;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- <h1>기준 선택자</h1>
+        <h2>인접 형제선택자</h2>
+        <h3>일반 형제선택자</h3>
+        <h3>일반 형제선택자</h3>
+        <h3>일반 형제선택자</h3> 
+        <h4>일반 형제선택자(2)</h4>  -->
+    <form action="/서버주소">
+        <input type="text"> 
+        <!-- 짧은 텍스트 -->
+        <input type="password">
+        <!-- 작성 내용이 노출되지 않는 비밀번호 입력 방식 -->
+        <input type="email">
+        <!-- 이메일 형식 -->
+        <input type="tel">
+        <!-- 전화번호 -->
+
+        <input type="checkbox">
+        <!-- 선택을 할수있는 버튼 ex) 배달앱 : 추가사항(필수x) / 메뉴를 여러개 선택할때 => 체크 해지 가능 -->
+        <input type="radio">
+        <!-- 선택을 할수있는 버튼 ex) 배달앱 : 필수 선택 항목 / 메뉴 하나만 선택할때  => 한 번 체크가 되면 해지할수 없음 (name 속성이 들어가야함)
+        -radio 사용시 label 항상 같이 와야함
+        -radio 사용시 id 주고 label for =" 인풋의 아이디 " 적어서 엮어줘야됨
+        -radio 사용시 name 줘서 그 항목을 하나로 묶어줘야함. 그래야 radio 버튼이 한개만 눌림
+        -->
+        
+        <p>수업 만족도 조사</p>
+        <input type="radio" id="btn1" name="bnt">
+        <label for="btn1">만족</label>
+        <input type="radio" id="btn2" name="bnt">
+        <label for="btn2">보통</label>
+        <input type="radio" id="btn3" name="bnt">
+        <label for="btn3">불만족</label>
+        <!--  -->
+        
+        <input type="date">
+        <!-- 날짜 -->
+        <input type="time">
+        <!-- 시간 -->
+        <input type="number" min="0" max="100" step="10">
+        <!-- 수량 표현. step :ㅇ씩오름 -->
+        <input type="range" min="1" max="100" value="5">
+        <!-- 범위 value :ㅇ씩오름-->
+
+
+        <input type="search" placeholder="여기에 적어주세요">
+        <!-- 텍스트 입력시 글자 사라짐 -->
+        <input type="search" value="여기에 적어주세요">
+        <!-- 클릭해도 글자가 남아있음 -->
+        <input type="button" value="검색">
+
+
+        <textarea name="" id="" rows="5" cols="30"></textarea> <input type="submit">
+        <!--name : 데이터를 전송할때 어느 항목의 답인지 알려주는 이름표
+            id : 선택해서 어떤 스타일 속성을 줄지
+            
+            cols : 입력창의 가로넓이 결정 (글자 수 기준 너비)
+            rows : 입력창의 세로높이 결정 (몇 줄 크기로 보여줄것인가)
+                    ex) rows="5" cols="30 -> 세로5줄 가로 약 30글자 크기의 입력창
+            --> 
+    "></form>
+           <!-- <required : 필수로 적어야하는 항목에 꼭 넣어주기  -->
+
+
+
+    </body>
+</html>
+
+
+<!-- 
+    <선택자>
+    1) 인접 형제 선택자
+    - 선택자 + 선택자
+    => 기준이 되는 태그 바로 밑에(다음에) 나오는 형제 태그 선택시 사용
+    => 기준이 되는 태그를 선택하고, + 바로 밑에 나오는 태그를 선택해서 바로 밑에 있는 태그에 스타일 적용
+
+    2) 일반 형제 선택자
+    - 선택자 ~ 선택자
+    => 기준이 되는 태그의 형제이며 그냥 밑에 있는 형제 태그 선택시 사용
+    => 기준이 되는 태그를 선택하고, ~ 그냥 밑에 나오는 태그를 선택해서 밑에 있는 태그에 스타일 적용
+    (* <a~c> a부터c 까지 태그 <-이거 아님! c만 스타일 적용됨 )
+
+
+
+    <input 태그>
+    - 사용자가 아이디, 비밀번호 등을 입력하게 해주는 태그
+    - 속성
+        -type : 입력 방식
+
+    <form 태그>
+    => 사용자 입력 공간
+    => 입력 양식 그룹화
+    => 속성 : 
+        - method : 데이터를 어떤 방식으로 서버에 전송할지 설정
+            - get : 데이터를 전송할때 url주소 뒤에 붙여 보냄 => 주소창에 다 보임 => 보안이 필요없는 내용 보낼때
+            - post : 데이터를 내부적으로 숨겨서 전송 => 보안이 필요한 로그인, 회원가입, 글쓰기 등의 내용들 보낼때
+        - action : 사용자가 데이터를 입력하고 제출/ 로그인 / 전송 버튼 눌렀을 때, 이 데이터를 어디로 보낼지 (서버의 주소)
+
+
+
+
+
+
+
+
+
+
+
+
+-->

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+    <html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <script src="jqu.js"></script>
+        <style>
+
+
+
+/* 질문 >  css를 스크립트인지 스타일인지 어디에 넣어야하는지 어떻게 구분해야하나요 */
+
+            *{
+                padding: 0;
+                margin: 0;
+            }
+
+            ul,li {
+                list-style: none;
+            }
+
+            
+            header {
+                width: 100%;
+                height: 100px;
+                position: fixed;
+                top: 0;
+                left: 0;
+                background-color: rgba(173, 216, 230, 0.273);
+            }
+
+            .menu {
+                width: 25%;
+                height: 100%;
+                text-align: center;
+                font: 600 30px/ 100px '';
+                float: left;
+                cursor: pointer;
+            }
+
+            .active { 
+            background-color: rgb(72, 72, 72);
+            color: white;
+        }
+
+        #top_btn {
+            width: 80px;
+            height: 80px;
+            background-color: gold;
+            text-align: center;
+            font: 800 20px / 80px '';
+            position: fixed;
+            right: 100px;
+            bottom:100px;
+            transition: 0.3s;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+
+
+
+
+        </style>
+
+    </head>
+    <body>
+        
+        <div id="wrap">
+            <header>
+                <div class="menu active">1</div>
+                <div class="menu">2</div>
+                <div class="menu">3</div>
+                <div class="menu">4</div>
+
+
+                </ul>
+            </header>
+            <section>
+                <div class="con">컨텐츠1</div>
+                <div class="con">컨텐츠2</div>
+                <div class="con">컨텐츠3</div>
+                <div class="con">컨텐츠4</div>
+
+            </section>
+
+            <div id="top_btn">TOP</div>
+        </div>
+
+
+
+
+        <script>
+    $(document).ready(function () {
+
+        
+
+            
+            let bg = ['tomato', 'skyblue', 'lightgreen', 'lightpink'];
+            
+            let ww = $(window).width();
+            let wh = $(window).height(); 
+
+            
+            $('#wrap').css({
+                width: ww,
+                height: wh * 4,
+            })
+                
+            $('.con').css({
+                width: ww,
+                height: wh,
+                textAlign: 'center',
+                font: `800 100px / ${wh}px ''`,
+                backgroundColor: function (i) {
+                    return bg[i];
+                }
+            
+            });
+
+            $('#menu_wrap').css({
+                width: ww,
+                height: 100,
+            });
+
+            $('.menu').css ({
+                fontSize: '30px',
+            })
+            
+            $('.menu').click(function () { //메뉴 클래스의 갯수가 2개이상이라 배열로 사용 가능
+
+            let i = $(this).index();
+
+            $('html, body').animate({
+                scrollTop: wh * i,
+            });
+
+            $('.menu').click(function(){
+
+            let i = $(this).index();
+
+            $('.menu').removeClass('active');
+                $(this).addClass('active');
+            });
+        });
+        
+
+        //버튼
+        $(window).scroll(function () {
+            let sct = $(window).scrollTop();
+
+            if(sct > 100) {
+                $('#top_btn').css({
+                    opacity: 1,
+                });
+            } else {
+                $('#top_btn').css({
+                    opacity: 0,
+                });
+            }
+        })
+
+        $('#top_btn').click(function () {
+            $('html,body').animate ({
+                scrollTop:0,
+            })
+        })
+        
+
+        
+
+        $(window).scroll(function () {
+            let sct = $(window).scrollTop();
+
+            if(sct >= 0 && sct < wh) {
+                $('.menu').removeClass('active');
+                $('.menu').eq(0).addClass('active');
+            } else if(sct >= wh && sct < wh * 2) {
+                $('.menu').removeClass('active');
+                $('.menu').eq(1).addClass('active');
+            } else if(sct >= wh * 2 && sct < wh * 3) {
+                $('.menu').removeClass('active');
+                $('.menu').eq(2).addClass('active');
+            } else if(sct >= wh * 3) {
+                $('.menu').removeClass('active');
+                $('.menu').eq(3).addClass('active');
+            }
+        });
+
+
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+    });//end
+
+
+
+
+        </script>
+    </body>
+</html>

@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <script src="jqu.js"></script>
+        <style>
+
+            *{
+                padding: 0;
+                margin: 0;
+            }
+
+            ul,li {
+                list-style: none;
+            }
+
+
+            
+            /* img {
+                display: block;
+                border: 0;
+            }
+
+            #box {
+                width: 500px;
+                height: 500px;
+                margin: 0 auto;
+                border: 10px solid black;
+            }
+
+            #box img {
+                width: 500px;
+                height: 500px;
+            } */
+
+         /* 1초 간격으로 자동 변경되는 이미지/ 5초 뒤 변경 중지 (끝)*/
+
+        /* #con_wrap {
+            width: 1000px;
+            height: 200px;
+            border: 10px solid black;
+            margin: 100px auto;
+        }
+
+        #con_wrap li {
+            width: 200px;
+            height: 200px;
+            float: left;
+            text-align: center;
+            font: 900 60px / 200px '';
+        } */
+
+        /* ------------------컬러 자동이동/ 호버시 멈춤 (끝) */
+
+
+        #wrap {
+            width: 300px;
+            height: 200px;
+            margin: 100px auto;
+            border: 10px solid black;
+            position: relative;
+        }
+
+        #img_wrap {
+            width: 1500px;
+            height: 100%;
+            position: absolute;
+            left: -300px
+        }
+
+        .img {
+            width: 300px;
+            height: 200px;
+            float: left;
+            font: 900 60px / 200px '';
+            color: white;
+            text-align: center;
+        }
+
+        .arrow {
+            width: 40px;
+            height: 40px;
+            background-color: rgb(113, 113, 113);
+            color: white;
+            position: absolute;
+            top: 50%;
+            margin-top: -20px;
+            text-align: center;
+            font: 900 20px / 40px '';
+            user-select: none;
+            cursor: pointer;
+
+        }
+
+        #left {
+            left: 0;
+        }
+
+        #right {
+            right: 0;
+        }
+
+        /* 무한 이미지 다음 버튼 박스 (끝)*/
+
+
+        </style>
+
+    </head>
+    <body>
+
+        <!-- <div id="box">
+            <img src="/JAVASC/img/cat_1.jpg" alt="고양이">
+        </div> -->
+        <!-- 1초 간격으로 자동 변경되는 이미지/ 5초 뒤 변경 중지 (끝)-->
+
+<!-- 
+
+            컨테이너 클릭시
+                1번박스 폰트사이즈30px /폰트컬러 노랑
+                2번 4번 박스 span찾아 선택: 폰트사이즈 80px /폰트컬러 빨강
+                3번박스 a 찾아 선택: 폰트사이즈 60px / 폰트컬러 흰색
+                5번박스 : 폰트사이즈 30px / 폰트컬러 흰색-->
+
+        
+<!--
+        <ul id="con_wrap">
+            <li>1</li>
+            <li><span>2</span></li>
+            <li>
+                <a href="#">3</a></li>
+            <li><span>4</span></li>
+            <li class="five">5</li>
+        </ul> -->
+
+<!-- ------------------컬러 자동이동/ 호버시 멈춤 (끝)-->
+
+
+        <div id="wrap">
+            <ul id="img_wrap">
+                <li class="img">5</li>
+                <li class="img">1</li>
+                <li class="img">2</li>
+                <li class="img">3</li>
+                <li class="img">4</li>
+            </ul>
+
+            <div class="arrow" id="left">&lt;</div>
+            <div class="arrow" id="right">&gt;</div>
+
+        </div>
+
+                <!--  무한 이미지 다음 버튼 박스 (끝)-->
+
+
+
+
+
+
+
+        <script>
+
+            $(document).ready(function (){
+
+                // let i = 0;
+
+                // $('#box').click(function () {
+
+                //     if(i === 0) {
+                //         $('#box img').attr ({
+                //             src : '/JAVASC/img/cat_2.jpg',
+                //         });
+                //         i++
+                //     } else if (i === 1) {
+                //         $('img', this).attr ({
+                //             src: '/JAVASC/img/cat_1.jpg',
+                //         });
+                //         i = 0;
+                //     }
+                // });
+
+
+                // let si = setInterval (function () {
+                //     $('#box').trigger('click');
+                // }, 1000);
+
+                // setTimeout(function () {
+                //     clearInterval(si);
+                // },5000);
+                // //-------------------1초 간격으로 자동 변경되는 이미지/ 5초 뒤 변경 중지 (끝)
+
+
+
+
+
+
+                // let bg = ['skyblue', 'violet', 'gold', 'tomato', 'green'];
+                
+                // $('#con_wrap li').css ({
+                //     backgroundColor : function(i) {
+                //         return bg[i];
+                //     }
+                // });
+
+
+                // $('#con_wrap').click(function () {
+                //     $('li').first().css ({
+                //         fontSize : '30px',
+                //         color : 'gold',
+                //     });
+
+                //     $(this).find('span').css({
+                //         fontSize: '80px',
+                //         color: 'red',
+                //     });
+
+                //     $(this).find('a').css({
+                //         fontSize: '60px',
+                //         color: 'white',
+                //     });
+
+                //     $('li').last().css({
+                //         fontSize: '30px',
+                //         color: 'white',
+                //     });
+
+                //     //or
+
+                //     // $(this).find('.five').css({
+                //     //     fontSize: '30px',
+                //     //     color: 'white',
+                //     // });
+                // });
+
+                // //첫번째 자식이 맨 뒤로 1초 간격으로 계속 이동
+                // let moving = setInterval(function () {
+                //     $('#con_wrap li').eq(0).appendTo('#con_wrap');
+                // },1000);
+
+                // //마우스 호버 시 정지, 마우스 호버 아닐 때 움직임
+                // $('#con_wrap').hover(function () {
+                //     clearInterval(moving);
+                // }, function () {
+                //     moving = setInterval(function () {
+                //         $('#con_wrap li').eq(0).appendTo('#con_wrap');
+                //     }, 1000);
+                // });
+
+                // //-------------------컬러 자동이동/ 호버시 멈춤 (끝)
+
+
+
+
+                
+
+                let bg = ['red', 'green', 'pink', 'violet', 'teal'];
+                let wrap_width = $('.img').width();
+
+                $('.img').css ({
+                    backgroundColor : function(i) {
+                        return bg [i];
+                    } 
+                });
+
+                $('#right').click(function () {
+                    $('#img_wrap').animate({
+                        left : -wrap_width * 2,
+                    },1000, function () {
+                        $('#img_wrap').css ({
+                            left : -300,
+                        }).find('.img').first().appendTo('#img_wrap'); //첫번째 자식이 맨 뒤로 이동
+                    });
+                });
+
+                $('#left').click(function () {
+                    $('#img_wrap').animate({
+                        left: 0,
+                    }, 1000, function () {
+                        $('#img_wrap').css({
+                            left: -wrap_width,
+                        }).find('.img').last().prependTo('#img_wrap'); //마지막 자식이 맨 앞으로 이동
+                    });
+                });
+
+                // 무한 이미지 다음 버튼 박스
+
+
+
+
+
+
+
+
+
+
+
+            });
+
+
+
+
+
+        </script>
+        
+    </body>
+</html>
+
+<!-- 
+
+    <nth-child(n)>
+    => .eq(index) => index 는 0부터 시작
+        eq는 명령어
+
+        ver.1 첫번째 자식 선택
+    $('#box:first-child').css ({
+        backgroundColor : 'tomato',    
+    });
+
+        ver.2
+    $('#box').first().css ({
+        backgroundColor : 'tomato',
+    });
+
+
+        ver.3
+        $('#box').eq(0).css ({           //eq 배열 안의 (0)(i인덱스)첫번째 자식
+            backgroundColor : 'tomato',
+        });
+
+    ex) <div id="parents">
+            <div class="child">1</div>
+            <div class="child">2</div>
+            <div class="child">3</div>
+            <div class="child">4</div>
+            <div class="child">5</div>
+            <div class="child">6</div>
+            <div class="child">7</div>
+        </div>
+        
+        let child = ['div', 'div','div','div','div', ...];
+
+
+
+            ver.1 마지막 자식 선택
+            $('#box:last-child').css ({
+            backgroundColor : 'tomato',
+            });
+            
+            ver.2
+            $('#box').last().css ({
+            backgroundColor : 'tomato',
+            });
+            
+            
+            ver.3
+            $('#box').eq(4).css ({         //eq 배열 안의 (4)(i인덱스)마지막(다섯번째) 자식
+            backgroundColor : 'tomato',
+            });
+
+
+        <이동명령>
+
+        선택자1 = 자식, 선택자2 = 부모 
+        => appendTo, prependTo 태그에만. 
+
+
+        1)
+        $('선택자1').appendTo('선택자2');
+        => 선택자1을 선택자2 안에서 뒤쪽으로 이동시켜라
+    ex) $('#con_wrap li').first().appendTo('#con_wrap');    
+
+        2)
+        $('선택자1').prependTo('선택자2');
+        => 선택자1을 선택자2 안에서 앞쪽으로 이동시켜라
+    ex) $('#con_wrap li').last().prependTo('#con_wrap');
+
+        3)
+        $('선택자1').insertBefore('선택자2');
+        => 선택자1이 선택자2 바로 앞쪽 이동
+
+        $('선택자1').insertAfter('선택자2');
+        => 선택자1이 선택자2 바로 뒤쪽 이동
+
+
+
+        [ insertBefore, insertAfter에서 선택자2번 중요 ] -> 이 태그는 형제, 부모자식 관계 상관X
+        
+    ex) <ul id="con_wrap">
+            <li>1</li>
+            <li id="two">2</li>
+            <li class="five">5</li>
+        </ul>
+        
+        => 만약 선택자 1, 2의 관계가 형제관계인 경우
+        
+        $('#con_wrap').last().insertBefore('#two')
+
+        ->
+
+        <ul id="con_wrap">
+            <li>1</li>
+            <li class="five">5</li>
+            <li id="two">2</li>
+        </ul>
+
+        => 만약 선택자 1, 2의 관계가 부모 자식인 경우
+
+        $('#con_wrap').last().insertBefore('#con_wrap');
+
+        <li class="five">5</li>
+        <ul id="con_wrap">
+            <li>1</li>            
+            <li id="two">2</li>
+        </ul>
+
+
+
+
+
+
+
+
+
+    <find>
+    => .find()
+    => 부모 안쪽에 원하는 자식선택자를 찾아서 선택
+
+    $('#cin_wrap').find('a').css ({
+        color : 'white',
+    });
+
+    
+-->

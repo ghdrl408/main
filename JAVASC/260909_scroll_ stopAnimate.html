@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+    <html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>scroll</title>
+        <script src="jqu.js"></script>
+        <style>
+            *{
+                padding: 0;
+                margin: 0;
+            }
+
+            body {
+                height: 2000px;
+                /* scroll 내릴 길이가 생겨야 하니까 높이 크게 조정 */
+            }
+
+            div {
+                width: 100%;
+                font-size: 40px;
+                text-align: center;
+
+            }
+
+            #btn {
+                height: 100px;
+                background-color: gold;
+                cursor: pointer;
+            }
+
+            #box1 {
+                height: 500px;
+                background-color: aquamarine;
+            }
+
+            #box2 {
+                height: 300px;
+                background-color: yellow;
+            }
+
+
+
+        </style>
+    </head>
+    <body>
+        
+        <div id="btn">click</div>
+
+        <div id="box1">스크롤 높이값 확인</div>
+        <div id="box2">그냥 박스</div>
+
+
+
+
+        <script>
+
+            $(document).ready(function (){
+
+
+                $('#btn').click(function () {
+                    $('html, body').animate({
+                        scrollTop: 600,
+                    })
+                });
+
+
+                
+
+                // console.log(sct);
+
+                $(window).scroll(function() {
+                    let sct = $(window).scrollTop();
+
+                    if(sct > 0) {
+                        $('#box2').css ({
+                            backgroundColor: 'tomato',
+                        }).stop().animate({
+                            width: '50%',
+                        }, 500);
+                    } else {
+                        $('#box2').css({
+                            backgroundColor: 'yellow',
+                        }).stop().animate({
+                            width: '100%',
+                        },500);
+                    }
+                });
+
+                //stop().animation() => animate에서 인식하는 이벤트 중 하나의 이벤트가 끝나기 전에 다음 움직임이 들어가지 않음
+                
+
+
+
+
+
+
+
+            });//end
+
+
+
+
+
+        </script>
+    </body>
+</html>
+
+    <!-- 
+
+        <scroll>
+        => 초기 위치값으로 최상단이 0
+
+        => scrollTop 값을 이용해서 위치를 변경하려면 선택자를 html, body 로 선택
+        
+    ex) $('html, body').animate({
+        scrollTop: 600,
+        })
+
+        $(window).scroll(function () {
+            /cord . . .
+        }); 
+
+    -->

@@ -1,0 +1,194 @@
+    @media all and (max-width: 759px) {
+        
+        #btn {
+            display: none;
+        }
+        
+        header {
+            width: 100%;
+            height: 100px;
+            background-color: lightslategrey;
+            float: left;
+        }
+
+        #in_header {
+            margin: 0 auto;
+            width: 100%;
+            height: 100%;
+            background-color: lightgrey;
+            position: relative;
+            float: left;
+        }
+
+        #logo {
+            width: 160px;
+            height: 50px;
+            background-color: gray;
+            font: 30px / 50px '';
+            color: white;
+            text-align: center;
+            margin: 0 auto;
+
+        }
+
+        #labal {
+            float: right;
+        }
+
+        #btn_box {
+            width: 50px;
+            height: 50px;
+            background-color: grey;
+            color: white;
+            line-height: 50px;
+            text-align: center;
+            font-size: 30px;
+            position: absolute;
+            top: 25px;
+            right: 0;
+            cursor: pointer;
+            
+        }
+
+        .ham {
+            width: 30px;
+            height: 3px;
+            background-color: black;
+            margin: 10px;
+            transition: 0.5s;
+            
+        }
+
+        #btn:checked~#label #t_line {
+            transform: translateY(13px) rotate(45deg);
+
+        }
+
+        #btn:checked~#label #m_line {
+            opacity: 0;
+        }
+
+        #btn:checked~#label #b_line {
+            transform: translateY(-13px) rotate(-45deg);
+
+        }
+
+        #mob_menu_wrap {
+            width: 100%;
+            height: 0;
+            float: left;
+            position: absolute;
+            top: 100px;
+            overflow: hidden;
+            transition: 0.5s;
+            z-index: 10;
+        }
+
+        #mob_menu_wrap li {
+            width: 100%;
+            height: 45px;
+            font:20px / 45px '';
+            background-color: rgb(61, 61, 61);
+            text-align: center;
+            border: 2px solid white;
+            box-sizing: border-box;
+        }
+
+        #btn:checked~#mob_menu_wrap {
+            height: 225px;
+            
+        }
+
+        #menu_wrap {
+            height: 100px;
+            margin: 15px 20px;
+            margin: 25px 0;
+            display: none;
+
+        }
+
+        #menu_wrap li {
+            width: 152px;
+            height: 100%;
+            background-color: gray;
+            text-align: center;
+            float: left;
+            font: 20px / 50px '';
+        }
+
+        /* header end */
+
+        #sec1 {
+            width: 100%;
+            height: 300px;
+            background-color: gray;
+            margin: 30px auto;
+        }
+
+        #sec1_box {
+            width: 760px;
+            height: 100%;
+            margin: 0 auto;
+        }
+
+        /* sec1 end */
+
+        #sec2 {
+            width: 100%;
+            height: 1035px;
+            background-color: lightgray;
+            margin-bottom: 30px;
+        }
+
+        #container {
+            width: 100%;
+            height: 100%;
+            margin: 0 auto;
+        }
+
+        #long_box {
+            width: 100%;
+            height: 330px;
+        }
+
+        .long {
+            width: 100%;
+            height: 100px;
+            background-color: gray;
+            margin-bottom: 15px;
+        }
+
+        .long:last-child {
+            margin-right: 0;
+        }
+
+        #small_box {
+            width: 100%;
+            height: 100px;
+            margin-top: 30px;
+        }
+
+        .small {
+            width: 100%;
+            height: 100px;
+            background-color: gray;
+            margin-bottom: 15px;
+            float: left;
+        }
+
+        .small:last-child {
+            margin-bottom: 0;
+        }
+
+    
+
+        /* sec2 end */
+
+        footer {
+            width: 100%;
+            height: 80px;
+            background-color: black;
+        }
+
+        /* footer end */
+    }

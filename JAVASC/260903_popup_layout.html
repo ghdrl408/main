@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>test</title>
+        <script src="jqu.js"></script>
+        <script src="jqu_ui.js"></script>
+
+        <style>
+
+            *{
+                padding: 0;
+                margin: 0;
+            }
+
+            a {
+                text-decoration: none;
+            }
+            #wrap {
+                width: 800px;
+                height: 100%;
+                border: 10px solid black;
+                margin: 50px auto;
+                position: relative;
+                top: 0;
+                left: 0;
+            }
+
+
+            header {
+                width: 100%;
+                height: 100px;
+                background-color: aquamarine;
+                margin: 0 auto;
+            }
+
+            #logo {
+                width: 200px;
+                height: 100%;
+                background-color: lightpink;
+                font: 700 50px / 100px ''; 
+                text-align: center;
+                margin: 0 auto;
+            }
+
+            /* header 끝 */
+
+            section {
+                width: 100%;
+                height: 100%;
+            }
+
+            #con1 {
+                width: 100%;
+                height: 300px;
+                background-color: lightskyblue;
+            }
+
+            #con2 {
+                width: 100%;
+                height: 50px;
+                background-color: lightblue;
+                font: 20px / 50px '';
+                text-align: center;
+                cursor: pointer;
+                user-select: none;
+            }
+
+
+            #con2_text {
+                display: none;
+                width: 100%;
+                height: 100px;
+                background-color: lightblue;
+            }
+
+            /* sec 끝*/
+
+            footer {
+                width: 100%;
+                height: 100px;
+                background-color: lightslategray;
+            }
+
+            /* footer 끝 */
+
+            #pop_wrap {
+                width: 400px;
+                height: 300px;
+                border: 10px solid black;
+                position: absolute;
+                top: 50%;
+                margin-top: -150px;
+                left: 50%;
+                margin-left: -200px;
+
+            }
+            
+            #pop_tittle {
+                width: 100%;
+                height: 100px;
+                background-color: rgb(218, 110, 32);
+                font: 900 30px / 100px '';
+                text-align: center;
+            }
+
+            #pop_text {
+                width: 100%;
+                height: 200px;
+                background-color: lightsalmon;
+                
+            }
+
+            #pop_text p {
+                padding: 20px;
+            }
+
+            #pop_btn {
+                width: 100px;
+                height: 30px;
+                background-color: aliceblue;
+                border: 1px solid black;
+                position: absolute;
+                bottom: 20px;
+                left: 50%;
+                margin-left: -50px;
+                text-align: center;
+                font: 20px / 30px '';
+                cursor: pointer;
+                user-select: none;
+            }
+
+
+
+
+
+
+        </style>
+    </head>
+    <body>
+
+        <div id="wrap">
+            <header>
+                <div id="logo"> <a href="#">LOGO</a></div>
+            </header>
+
+            <section>
+                <div id="con1"></div>
+                <div id="con2" class="hidden_con">더보기 </div>
+                <div id="con2_text">
+                    <p>Lorem Ipsum is dummy text commonly used in graphic design, publishing, and web development to fill spaces in layouts
+                    before the final content is available.</p>
+                </div>
+            </section>
+            
+            <footer></footer>
+            
+            <div id="pop_wrap" class="p_wrap">
+                <div id="pop_tittle">NOTICE</div>
+                <div id="pop_text">
+                    <p>
+                        Lorem Ipsum is dummy text commonly used in graphic design, publishing, and web development to fill spaces in layouts
+                before the final content is available.
+                    </p></div>
+                <div id="pop_btn"> Close X</div>
+
+            </div>
+        </div>
+
+
+
+
+
+
+        <script>
+
+            $(document).ready(function () {
+
+                $('#pop_btn').click(function () {
+                    $('#pop_wrap').fadeOut(500);
+                });
+
+                let i = 0; //click 횟수
+
+                $('#con2').click(function () {
+                    if(i === 1) {
+                        $('#con2_text').slideToggle(500);
+                    } else if (i === 0) {
+                        $('#con2_text').slideToggle(500);
+
+                    }
+                });
+
+
+
+
+
+
+
+
+
+
+
+            });
+
+        </script>
+        
+    </body>
+</html>

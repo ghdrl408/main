@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>hover, overflow</title>
+        <STyle>
+            * {
+                padding: 0;
+                margin: 0;
+            }
+
+         
+
+            #box {
+                width: 300px;
+                height: 300px;
+                color: white;
+                background-color: blue;
+                text-align: center;
+                font: 30px / 300px '';
+            }
+
+            #box:hover {
+                background-color: blueviolet;
+            }
+
+            #box:active {
+                color: rgb(214, 0, 0);
+            } 
+
+
+            {
+                margin: 0;
+                padding: 0;
+            }
+
+            /* #box1 {
+                width: 400px;
+                height: 400px;
+                border: 10px solid black;
+                overflow: scroll;
+
+            }
+
+            #box1 img {
+                /* width: 680px; */
+                
+
+            /* #box1:hover img{
+                width: 550px;
+                }  */
+
+                #box22 {
+                    width: 400px;
+                    margin: 0 auto;
+                    
+                }
+
+                #img-box {
+                    width: 100%;
+                    height: 400px;
+                    border-radius: 50%;
+                    overflow: hidden;      
+                                  
+                }
+
+
+                #img-box img {
+                    width: 100%;
+                    height: 100%;
+                }
+
+                
+                #img-box:hover img{
+                    width: 110%;
+                    height: 110%;
+                    
+                }
+
+                #bot{
+                    margin: 0 auto;
+                    width: 400px;
+                    height: 100px;
+                    border: 5px solid saddlebrown;
+                    font: 900 30px / 90px '';
+                    text-align: center;
+                    box-sizing: border-box;
+                    margin: 50px 0px 50px 0px;
+                }
+
+                #bot a{
+                    color:saddlebrown ;
+                }
+
+                #bot:hover {
+                    background-color: saddlebrown;
+                }
+
+                #bot:hover a {
+                    color: rgb(255, 255, 255);
+                } 
+
+              
+
+                a {
+                    text-decoration: none;
+                    color: rgb(0, 0, 0);
+                }
+
+                #wrap {
+                    width: 90%;
+                    /* 부모(body)의 브라우저 너비의 90% */
+                    height: 250px;
+                    margin: 0 auto;
+                    border: 10px solid black;
+                }
+
+                #a{
+                    width: 300px;
+                    height: 150px;
+                    float: left;
+                    background-color: coral;
+                }
+
+                #b {
+                    width: calc(100% - 300px) ;
+                    /* 부모(wrap)의 너비가 100% */
+                    height: 150px;
+                    background-color: darkgoldenrod;
+                    float: left;
+                }
+        </STyle>
+    </head>
+
+    <body>
+        <!-- <div id="box">☆</div> -->
+<!-- 
+        <div id="box1">
+            <img src="./cap0.jpg" alt="카피바라 옆모습">
+        </div> -->
+ 
+        <div id="box22">
+            <div id="img-box">
+                <img src="./raccoon.jpg" alt="라쿤">
+            </div>
+
+            <div id="bot">
+                <a href="#">VIEW +</a>
+            </div>
+         </div>
+
+            <div id="wrap">
+                <div id="a">box1</div>
+                <div id="b">box2</div>
+            </div>
+
+        
+       
+    </body>
+
+</html>
+
+
+
+<!-- 
+
+    <hover>
+        이벤트
+        -> 사용자가 어떠한 행동을 했을때 원래와는 다른 결과물로 표현됨
+        
+        ex) div:hover { background-color: gold;}
+
+        :hover
+        -> 마우스를 올렸을때 실행
+        -> 객체 위에 마우스를 올렸을때 스타일을 다르게 지정
+        -> 다양한 스타일 지정 가능
+
+        객체 원래의 속성 + hover 했을때 속성
+        
+        :active
+        -> 마우스 클릭시 실행
+        -> 객체 위에 마우스를 클릭하는 동안 스타일을 다르게 지정
+
+
+
+    <overflow>
+
+        overflow : visible;
+        -> 기본값, 자식요소가 잘리지 않고 부모요소 밖으로 보임
+
+        overflow : hiddne;
+        -> 부모요소 바깥으로 나온 자식요소를 숨김
+
+        overflow : scroll;
+        -> 부모요소 바깥으로 나온 자식요소가 잘리지만 스크롤바가 추가되어 나머지 영역을 확인할 수 있음
+
+        overflow : auto;
+        -> 부모요소 바깥으로 나온 자식요소가 잘리게 되는 경우 스크롤바가 추가됨
+
+        overflow-x, overflow-y : 속성값은 같음
+        -> 가로(x축), 세로(y축) 스크롤바를 제어
+        -> 제어를 할 때 어느 한쪽만 속성을 주게 되면 다른 한 쪽이 auto 속성을 가지기 때문에
+        하나만 사용하고싶으면 나머지꺼 hidden 속성 달기
+        -> x축, y축 둘 다 속성값이 동일하게 들어갈 경우는 overflow로 작성하기
+
+
+    <절대단위, 상대단위>
+        -절대단위 (px) : cm, mm
+        -상대단위 (%) : 부모의 width, height랑 동일한 값을 내가 가지고 오고싶다! 하면 사용
+
+        ex) width : calc(100% - 300px);
+        calc()
+         -> 수치 연산 속성
+         -> 연산 속성을
+
+-->

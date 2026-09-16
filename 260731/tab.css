@@ -1,0 +1,123 @@
+    @media all and (min-width: 760px) and (max-width: 959px) {
+        header {
+            width: 100%;
+            height: 150px;
+            background-color: lightslategrey;
+        }
+
+        #in_header {
+            margin: 0 auto;
+            width: 760px;
+            height: 100%;
+            background-color: lightgrey;
+        }
+
+        #logo {
+            width: 160px;
+            height: 50px;
+            background-color: gray;
+            font: 30px / 50px '';
+            color: white;
+            text-align: center;
+            margin: 0 auto;
+
+        }
+
+        #menu_wrap {
+            height: 50px;
+            margin: 15px 20px;
+            margin: 25px 0;
+
+        }
+
+        #menu_wrap li {
+            width: 152px;
+            height: 100%;
+            background-color: gray;
+            text-align: center;
+            float: left;
+            font: 20px / 50px '';
+        }
+
+        #mob {
+            display: none;
+        }
+
+        /* header end */
+
+        #sec1 {
+            width: 100%;
+            height: 300px;
+            background-color: gray;
+            margin: 30px auto;
+        }
+
+        #sec1_box {
+            width: 760px;
+            height: 100%;
+            margin: 0 auto;
+        }
+
+        /* sec1 end */
+
+        #sec2 {
+            width: 100%;
+            height: 575px;
+            background-color: lightgray;
+            margin-bottom: 30px;
+        }
+
+        #container {
+            width: 760px;
+            height: 100%;
+            margin: 0 auto;
+        }
+
+        #long_box {
+            width: 100%;
+            height: 330px;
+        }
+
+        .long {
+            width: 760px;
+            height: 100px;
+            background-color: gray;
+            margin-bottom: 15px;
+        }
+
+        .long:last-child {
+            margin-right: 0;
+        }
+
+        #small_box {
+            width: 760px;
+            height: 100px;
+            margin-top: 30px;
+        }
+
+        .small {
+            width: 243px;
+            height: 100px;
+            background-color: gray;
+            margin: 15px 15px 0 0;
+            float: left;
+        }
+
+        .small:nth-child(3), .small:nth-child(6) {
+            margin-right: 0;
+        }
+
+        .small:nth-child(1),.small:nth-child(2),.small:nth-child(3) {
+            margin-top: 0;
+        }
+
+        /* sec2 end */
+
+        footer {
+            width: 100%;
+            height: 80px;
+            background-color: black;
+        }
+
+        /* footer end */
+    }

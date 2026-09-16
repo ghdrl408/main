@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>jS자바스크립트</title>
+        <script></script> 
+        <!-- 외부 js파일 -->
+    </head>
+    <body>
+        
+
+
+
+
+
+
+
+
+
+        <!-- <script src="/index.js"></script>
+        내가작성한 스크립트 코드 위치: 바디 끝에 -->
+
+
+        <script>
+            //내부 스크립트 - 한 줄 주석
+            /* 여러줄 주석*/ 
+
+            //let myName = 'my name is ';
+            //let name = 'Daesik';
+            // console.log(name);  // <-콘솔창(개발자도구)에 로그(기록)을 볼때
+        
+            //name = '기주';
+            // console.log(myName + name);
+            
+
+            /* 다양한 방법
+                let myName = 'My name is';
+                name = 'My name is Daesik';
+                console.log('My name is ' name);
+                */
+
+
+            //document. write(myName + name) //document- 본문
+
+            // let name = prompt('이름을 입력하세요.'); //prompt : 팝업으로 뜨는 적는 란
+            // document.write('환영합니다, ' + name + ' 님 !')
+
+            // let name = prompt('이름을 입력하세요.');
+            // // let welcome = alert('환영합니다, ' + name + ' 님 !'); //alert : 팝업 알림? 프롬포트
+            // let welcome = alert(`환영합니다, ${name} 님 !`)
+            //`` 백틱backtick => +안쓰고 축약형처럼 좌자자자작쓸때 ~> 변수 넣을땐 : ${} 이거
+
+            // let txt = prompt('간장 말고');
+            // let food = alert(`${txt} 찌개`);
+
+            // let score = 20;
+            // document.write(`내 점수는 ${score} 점이다 !`)
+
+            // let up = '떴다 ';
+            // let pl = '비행기 ';
+            // let fly = '날아라 ';
+            // let high = '높이 ';
+            // let our = '우리 ';
+            
+            // // // document. write(`떴다 떴다 ${name} 날아라 날아라 `)
+            
+            // // // document.write(`높이 높이 날아라 우리 ${name}`)
+
+            // document. write(up + up + pl + fly + fly + '<br>' + high + high + fly + our + pl);
+
+
+            // let txt0 = '배고파요 ';
+
+            // let txt1 = '송송 '; 
+
+            // let txt2 = '순두부찌개 먹어라 ';
+
+            // document.write (`저녁뭐먹지 ${txt2}`);s
+
+
+            let name = prompt('이름을 입력하세요');
+            
+
+            document.write (name);
+            console.log (name);
+
+
+
+
+
+
+        </script>
+
+    </body>
+    </html>
+
+    <!-- 
+        내부, 외부 둘 다 적을수있음
+
+        중간에 태그 넣으려면 태그는 문자열이기 때문에 '<  >' 따옴표 넣어줘야한다 스크립트에 태그사용가능!
+
+        <자바스크립트 (JS)>
+        프로그래밍 ? program + ing => 프로그램을 만드는 행위
+        웹 프로그래밍 ? 웹과 관련된 프로그램을 만드는 행위 -> 웹 브라우저와 관련된 프로그램을 작성하는 것
+        웹사이트 작동 과정 : 서버 컴퓨터 vs 사용자 컴퓨터
+        => 사용자의 요청을 처리하고 데이터를 관리 (Back-end) vs 서버에서 받아 온 정보를 웹브라우저에 보여줄때 어떻게 보여줄지를 프로그래밍 (Front-end)
+        => 풀스택 (Full-stack)
+
+        C언어, JAVA(언어) 를 바탕
+        객체지향언어 (EX. 버튼을 클릭하면 해당 페이지를 보여주는 명령)
+        HTML 문서에 웹페이지의 동적인 효과
+        => 서버를 만들거나 웹에서 작동하는 프로그램을 만드는 여러가지 일을 하는 유연한 언어 (코드는 무조건 엄격하게 작성해야 함)
+        
+        <JS - Data Types>
+        6개의 원시 타입, 1개의 객체 타입
+
+        1) 원시타입(Primitive Type)
+            - Number(숫자) : 1, 2, 3 ...
+            - String(문자열) : '순두부찌개', 'small', ... (따옴표 적어줘야함 => 컴퓨터가 숫자와 구분을 못함)
+                -> '1'(문자열)
+            - Boolean(불리언) : true, false
+            - undefined : 변수는 존재함, 어떠한 값으로 할당이 되지 않은 상태
+            - null (널): 변수도 존재하고  null 이라는 값으로 할당이 된 상태 -> 이전의 값을 더이상 참조하지 않겠다는 의미 (개발자가 의도적으로 설정한 값)
+            - Symbol : 유일무이한 값을 생성할때 사용, 다른 원시타입과는 다르게 symbol 함수를 호출해서 사용 (사용 빈도는 낮은 편)
+
+        2) 객체타입 (Objective Type)
+            - 함수 (Function) : 어떤 일(동작)을 처리할때 사용
+            - 배열 (Array) : 여러개의 값(타입)을 순서대로 나열해서 모아놓은 목록
+            - 객체 (Object) : 어떤 대상 하나에 대한 여러 정보를 묶어서 보관할 때 사용
+
+        <문법>
+            - 대소문자 구별함 (color =/= COLOR)
+            - 들여쓰기 -> 가독성을 위해 들여쓰기 필요
+            - 메모를 위해 주석사용 !
+            - ; (세미콜론)으로 문장 구분
+                => ; 붙이지 않아도 실행이 되지만 줄바꿈 하지 않고 계속 작성할 시 컴퓨터는 오류 발생! 이를 방지하기 위해 ; 붙이기
+                ex) let fruit = 'apple';
+                    let fluit1 = 'melon';
+
+                    background-color: black;
+                    color: white;
+        
+        <변수(Variable) vs 상수(Constant)>
+            - 변수 : 다양한 데이터를 이름을 지정해서 쉽고 반복적으로 사용할수 있도록 담는 그릇
+            - 상수 : 다양한 데이터를 이름을 지정해서 쉽고 반복적으로 사용할수 있도록 담는 그릇
+
+            - 둘의 차이점 ? 변수는 데이터(값)를 재할당 할수있음 / 상수는 데이터(값)를 재할당 불가능
+
+            - 변수 작성법
+                1) 언더스코어(언더바 _ ) 넣어서 구분하는 snake_case => 파이썬에서 주로 사용
+                2) 모든 단어를 대소문자로 시작해서 구분하는 PascalCase => C# 같은 마이크로소프트 계열의 언어에서 사용
+                3) 두번째 단어부터 대문자로 시작해 구분하는 camelCase => 대부분의 언어 사용
+                4) 문자와 숫자, $, _ 만 사용함
+                5) 첫 글자가 숫자가 될 수 없음
+                6) 예약어 사용X
+                    => arguments, break, case, continue, do, else, if, null, default, true, false, this, reture, super, try, typeof, void, while, with...
+
+            - 변수, 상수 선언 키워드
+
+            1) 변수 선언 : let
+            2) 상수 선언 : const
+
+            - 변수(상수) 선언했다, 값을 할당 => 보통은 선언과 할당이 동시에 이뤄짐
+            ex) let name = 'Daesik Jung';
+                -----선언했다/ ----------할당했다/
+        
+    
+    
+    
+    
+    
+    
+    
+    -->

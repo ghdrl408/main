@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+    <html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <script src="jqu.js"></script>
+        <style>
+            *{
+                padding: 0;
+                margin: 0;
+            }
+
+            
+        </style>
+    </head>
+    <body>
+
+
+    <!-- <div id="box"></div> -->
+    <!-- 1번박스 -->
+
+    <!-- <div class="box" id="box1">1</div>
+    <div class="box" id="box2">2</div>
+    <div class="box" id="box3">3</div> -->
+    <!-- 2번박스 -->
+
+    <!-- <div id="box">text</div> -->
+    <!-- 3번박스 -->
+
+        <!-- <div id="out_box">
+            <div id="in_box"></div>
+        </div> -->
+    <!-- 4번박스문제 -->
+
+    <div id="wrap">
+        <div class="frame">
+            <div class="con"></div>
+        </div>
+        <div class="frame">
+            <div class="con"></div>
+        </div>
+        <div class="frame">
+            <div class="con"></div>
+        </div>
+        <div class="frame">
+            <div class="con"></div>
+        </div>
+    </div>
+
+
+
+
+    <script>
+        $(document).ready(function() {
+
+            // $('#box').css ({
+            //     width : 300,
+            //     height : 300,
+            //     backgroundColor : 'blue',
+
+            // });        
+        
+            // //배경색 변경하는 함수
+            // function changeColor(color) {
+            //     $('#box').css('background-color', color);
+            // }
+        
+
+            // //박스의 현재 배경색 확인 후 변경
+            // if($('#box').css('background-color') === 'rgb(0, 0, 255)') {
+            //     changeColor('red');
+            //     return;
+            // }
+
+            //---------------------------------------------------------------------------------1번박스 끝
+
+            // let bg = ['tomato','blue','gold'];
+
+            // $('.box').css ({
+            //     width : 200, 
+            //     height : 200,
+            //     textAlign : 'center',
+            //     lineHeight : '200px',
+            //     backgroundColor: function(i) {
+            //         return bg [i]; //배열의 순서대로 배경색을 box클래스를 가진 요소들한테 배경색 주는 결과를 반환
+            //     }
+
+            // });
+
+            // $('#box1').css({
+            //     backgroundColor : 'red',
+            // });
+
+            // $('#box2').css({
+            //     backgroundColor: 'blue',
+            // });
+
+            // $('#box3').css({
+            //     backgroundColor: 'gold',
+            // });
+            //---------------------------------------------------------------------------------2번박스 끝
+
+            // let ww = $(window).width();
+            // let wh = $(window).height();
+
+            // $('#box').css ({
+            //     width: ww,
+            //     height : wh,
+            //     backgroundColor : 'lightblue',
+            //     textAlign : 'center',
+            //     lineHeight : wh + 'px',
+            // });
+
+            // //브라우저 크기에 따라 박스의 배경색이 바뀌는 함수
+            // function adjustBoxColor () {
+            //     //화면이 600px 미만일 때 배경색이 노란색
+            //     if($(window).width() < 600) {
+            //         $('#box').css({
+            //             backgroundColor: 'gold',
+            //             fontSize : '30px',
+            //         });
+            //     } else { //화면이 600px 이상일 때 배경색이 노란색
+            //         $('#box').css({
+            //             backgroundColor: 'blue',
+            //             fontSize: '80px',
+            //         });
+            //     }
+            // }
+            //     //함수실행하려면 호출
+            // adjustBoxColor();
+
+            //---------------------------------------------------------------------------------3번박스 끝
+
+            //문제)
+            // => 브라우저 가로값, 세로값 변수저장
+            // 브라우저 전체 배경색 파랑
+            // 파란박스 안에 노란박스 가로 1200 높이 브라우저높이값
+            // 노란박스 중앙정렬
+            
+            // let ww = $(window).width();
+            // let wh = $(window).height();
+
+            // $('#out_box').css ({
+            //     width : ww,
+            //     height : wh,
+            //     backgroundColor : 'royalBlue',
+            // });
+
+            // $('#in_box').css({
+            //     width: 1200,
+            //     height: wh,
+            //     backgroundColor: 'gold',
+            //     margin : '0 auto',
+            // });
+            
+            //---------------------------------------------------------------------------------4번박스 문제 끝
+
+        //    문제)
+        //    전체 랩으로 감싸주고 부모 프레임 네개 생성
+        //    각 프레임 안에 콘 자식 하나씩 추가
+
+        //    CSS
+        //    부모 프레임에 위치값 상대값 지정
+        //    자식 콘에 위치값 절대값 위 오른쪽 50% 지정
+
+        //    script
+        //    윈도우 가로 세로값 변수로 받아오기
+        //    색상 배열로 변수 지정 (빨 초 파 노)
+        //    랩 가로 윈도우값 세로 윈도우 높이 네배 지정
+        //    부모 가로 세로크기 윈도우값 지정
+        //    배경색 인덱스 값으로 순서대로 지정
+        //    콘 가로 세로크기 80% 비율값(0.8) 지정, 배경색회색 가운데정렬
+
+        let bg = ['red' , 'green', 'blue', 'gold'];
+
+        let ww = $(window).width();
+        let wh = $(window).height();
+
+        $('#wrap').css({
+            width: ww,
+            height: wh*4,
+        });
+
+        $('.frame').css ({
+            position : 'relative',
+            width : ww,
+            height : wh,
+            backgroundColor: function(i) {
+                return bg [i];
+            }
+        });
+
+        $('.con').css({
+            width: '80%',
+            height: '80%',
+            backgroundColor: 'gray',
+            position: 'absolute',
+            top: '50%',
+            left: '50%',  
+            marginTop : -(wh * 0.8) / 2,
+            marginLeft: -(ww * 0.8) / 2,
+
+        });
+
+
+
+
+
+            
+
+            
+
+            
+
+        });
+    </script>
+
+
+    </body>
+</html>
+
+<!-- 
+    [다중속성을 입력하지 않을때]
+    ${'선택자'}.css('속성',속성값) 
+
+    [한 라인에 따옴표 겹쳐지면] 작은따옴표 => 큰따옴표로 바꿔 적기
+
+-->
+
+<!-- 
+    <return>
+    return a + b
+    return 값; 이 있으면 그 값의 결과를 반환
+
+    함수 내부에 return 이 있으면 함수는 종료되고 더이상 실행되지 않음
+    => 여러 조건 중 원하는 조건 만족시 함수를 종료시키고 나머지 조건을 실행하지 않을때 사용
+    return;
+
+    <선택자>
+    - 부모요소 선택자
+    $('선택자').parent().명령();
+
+    - 자식요소 선택자
+    $('선택자').children().명령();
+
+    - 전후요소 선택자 (앞뒤)
+    $('선택자').prev().명령();
+    $('선택자').next().명령();
+
+    - 종속선택자
+    ex ) h2 class = subtitle
+
+    h2.subtitle => h2 태그 중에 subtitle 이라는 클래스 값을 가진 애들 다 선택
+
+    $('요소#아이디명').명령();
+    $('요소.클래스명').명령();
+
+    <선택자>
+    따옴표를 붙이지 않아도 되는 선택자 => document, window, this
+    => 컴퓨터에 지정된 기존 선택자라 따옴표 필요없음
+
+    window : 웹 브라우저에 대한 선택자
+
+-->

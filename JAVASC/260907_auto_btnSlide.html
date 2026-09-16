@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <script src="jqu.js"></script>
+        <script src="jqu_ui.js"></script>
+        <style>
+            * {
+                padding: 0;
+                margin: 0;
+            }
+
+        
+
+       
+
+        
+
+
+        </style>
+
+
+    </head>
+    <body>
+
+        <div id="wrap">
+            <div id="img_wrap">
+                <img src="/JAVASC/img/cat_1.jpg" alt="고양이1">
+                <img src="/JAVASC/img/cat_2.jpg" alt="고양이2">
+                <img src="/JAVASC/img/cat_3.jpg" alt="고양이3">
+            </div>
+            <div class="arrow" id="left">&lt;</div>
+            <div class="arrow" id="right">&gt;</div>
+
+        </div>
+
+
+
+
+        <script>
+
+            $(document).ready(function () {
+                let ww = $(window).width();
+                let wrapW = ww * 0.8;
+                let wrapH = ww * 0.5;
+                let arrW = ww * 0.1;
+                let arrH = ww * 0.1;
+
+                function layout() {
+                    let wrapW = ww * 0.8;
+                    let wrapH = ww * 0.5;
+                    let arrW = ww * 0.1;
+                    let arrH = ww * 0.1;
+
+                    
+                    $('#wrap').css ({
+                        width : wrapW,
+                        height : wrapH,
+                        margin : '50px auto',
+                        position : 'relative',
+                        border: '20px solid black',
+                        overflow : 'hidden',
+                    });
+
+                    $('#img_wrap').css({
+                        width: ww * 2.4,
+                        height: wrapH,
+                        position: 'absolute',
+                        top : 0,
+                        left : 0,
+                        
+                    });
+
+                    $('#img_wrap img').css({
+                        width: wrapW,
+                        height: wrapH,
+                        float :'left',
+                    });
+
+                    $('.arrow').css({
+                        width: arrW,
+                        height: arrH,
+                        backgroundColor : 'white',
+                        position:'absolute',
+                        top : '50%',
+                        marginTop : -(arrH / 2),
+                        font :`900 50px / ${arrH}px ''`,
+                        color : 'black',
+                        cursor : 'pointer',
+                        textAlign: 'center',
+
+                    });
+
+                    $('#left').css({
+                        left: 0,
+                    });
+
+                    $('#right').css({
+                        right: 0,
+                    });
+
+                };
+
+                layout();
+
+                $(window).resize(function () {
+                    ww = $(window).width();
+                    layout();
+
+                });
+
+            
+                let i = 0;
+                $('#right').click (function () {
+                    i++;
+                    if(i > 2) {
+                        i = 0;
+                    }
+
+                    $('#img_wrap').animate({
+                        left: - wrapW*i,
+                    });
+                });
+
+                setInterval(function () {
+                    $('#right').trigger('click');
+                },2000);
+
+                
+
+                
+                
+
+
+
+
+
+
+
+
+
+
+
+
+
+            });//end
+
+
+
+
+
+
+
+
+        </script>
+        
+    </body>
+</html>

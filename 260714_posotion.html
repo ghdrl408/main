@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>posotion</title>
+        <style>
+
+
+            * {
+                margin: 0;
+                padding: 0;
+            }
+
+            body {
+                height: 3000px;
+
+            }
+
+            .box {
+                width: 300px;
+                height: 300px;
+                text-align: center;
+                font: 50px / 300px '';
+            }
+
+            #box1 {
+                background-color: rgb(4, 131, 53);
+                position: absolute;
+                top: 150px;
+                left: 10px;
+                z-index: +10
+            }
+            
+            #box2 {
+                background-color: rgb(126, 124, 253);
+                position: fixed;
+                bottom: 50px;
+                right: 50px;
+            } 
+
+            #box3 {
+                background-color: rgb(255, 0, 128);
+                position: absolute;
+                bottom: 50px;
+                right: 150px;
+            }
+
+
+            #out-box {
+                width: 700px;
+                height: 500px;
+                background-color: rgb(172, 172, 218);
+                margin: 0 auto;
+                position: relative;
+            }
+
+            #in-box {
+                width: 250px;
+                height: 250px;
+                background-color: rgb(255, 51, 0);
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                margin-top: -125px;
+                margin-left: -125px;
+            }
+
+
+        </style>
+    </head>
+    <body>
+        <div class="box" id="box1">box1</div>
+        <div class="box" id="box2">box2</div>
+        <div class="box" id="box3">box3</div>
+
+        <div id="out-box">
+            <div id="in-box"></div>
+        </div>
+    </body>
+
+
+</html>
+
+
+
+<!-- 
+    <position>
+    -> 좌표값으로 위치를 설정하기 위한 속성
+    -> x축, y축 -> top, bottom, left, right
+    -> z축 : 앞뒤 순서
+        -> z-index : 단위 없음, -9999 ~ +9999 , 반드시 position 속성 사용할 때 지정 가능
+    
+   * 1) position : absolute -> 브라우저(부모)의 왼쪽 상단점을 0,0 으로 기준 -> 절대값 위치 (보통 자식에 absolute)
+   * 2) position : relative -> 자기 자신의 왼쪽 상단점을 0,0 으로 기준 -> 상대값 위치 (보통 부모에 relative)
+   * 3) position : fixed -> 모니터의 왼쪽 상단점을 0,0 으로 기준 -> 모니터의 항상 그 위치에서 보여지는 위치값 -> 퀵메뉴 효과
+    4) position : sticky -> 일정 x축, y축에 도달하면 거기에 계속 고정
+    5) position : static -> 기본값(초기값) -> 요소가 문서의 흐름에 따라 배치
+
+
+    <position 으로 중앙정렬>
+    left 기준 -> left: 50%
+    margin-left : -(객체의 가로값 절반 입력)
+    margin-top : -(객체의 세로값 절반 입력)
+        ex)
+        width: 1000px;
+        height: 500px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -250px;
+        margin-left: -500px;
+
+     *자식박스를 중앙정렬시 부모에 포지션 적용 필요
+
+
+    -->

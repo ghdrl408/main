@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>trandition js</title>
+        <script src="jqu_2ver.js"></script>
+        <!-- jquery transition 사용시 제이쿼리 버전은 1~2ver 사용할것 -->
+        <script src="jqu_tran.js"></script>
+        <style>
+            *{
+            padding: 0;
+            margin: 0;
+            }
+
+            /* .box{
+                width: 300px;
+                height: 300px;
+                border: 10px solid black;
+                margin: 100px auto;
+                background-color: lightblue;
+            }
+
+            #css_box {
+                transition: 1s;
+            }
+
+            #css_box:hover {
+                transform: rotateY(360deg);
+            } */
+
+            /* ---------------------------트랜지션 기초 끝------- */
+
+
+            #btn_wrap {
+                width: 200px;
+                height: 100px;
+                margin: 300px auto;
+                background-color: dimgray;
+                border-radius: 50px;
+                position: relative;
+
+            }
+
+            #btn {
+                width: 80px;
+                height: 80px;
+                border-radius: 50%;
+                background-color: gray;
+                position: absolute;
+                left: 10px;
+                top: 10px;
+                cursor: pointer;
+
+            }
+/* -----------------------------------다크모드 토글 끝 */
+
+
+    
+            
+
+        </style>
+    </head>
+    <body>
+        
+        <!-- <div class="box" id="css_box"></div>
+        <div class="box" id="jq_box"></div> -->
+
+        <!-- ---------------------------------트랜지션 기초 끝 -->
+
+        <div id="btn_wrap">
+            <div id="btn"></div>
+        </div>
+
+        
+
+
+
+
+
+
+        <script>
+
+            $(document).ready(function () {
+            //     $('#jq_box').click(function () {
+            //         $('#jq_box').transition({
+            //             width: 100,
+            //             translate: '100px, 100px',
+            //             delay: 1000,
+            //         }, function () {
+            //             $(this).transition ({
+            //                 backgroundColor: 'teal',
+            //                 opasity: 0.5,
+            //                 rotateY: '360deg',
+            //             }, function () {
+            //                 $(this).transition ({
+            //                     backgroundColor: 'tomato',
+            //                     opasity: 1,
+            //                     translate: '100px, 500px',
+            //                 },1000,function() {
+                                
+            //                 });
+            //             });
+            //         });
+
+            //     });
+
+        //---------------------------------트랜지션 기초 끝 
+
+        let bg = ['white', 'dimgray'];
+        let btnColor = ['dimgray', 'lightgray'];
+
+        let i = 0;
+        
+        let ww = $(window).width();
+        let wh = $(window).height();
+
+        function toggle() {
+            $('body').transition ({
+                backgroundColor: bg[i],
+            },500);
+
+            $('#btn_wrap').transition({
+                backgroundColor: btnColor[i],
+            },500);
+            
+            $('#btn').transition({
+                x : 100 * i,
+
+                //or
+                // translate: [100 * i],
+                
+                //jq: tranlateX or tranlateY 는 그냥 x, y 로만 적어야 함
+            },500);
+        }
+
+        $('#btn_wrap').click (function () {
+            if (i === 0) {
+                i++;
+                toggle();
+            }else if (i === 1) {
+                i--;
+                toggle();
+
+            }
+        });
+
+        //--------------------------------- 다크모드 토글 끝
+
+                
+
+
+
+            });//end
+
+
+
+
+        </script>
+    </body>
+</html>
+
+<!-- 
+
+    <jquery transition>
+    $('선택자').transition ({
+        trandrate : 'x px, y px'
+        scaleX
+        scaleY
+        rotate
+        rotateX
+        rotateY
+        skewX
+        skewY
+        delay
+        opasity
+        backgroundColor
+
+    }, 시간, 가속도, 콜백함수);
+    
+    vs animate? => transform 속성 적용 불가
+
+
+-->

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>반복문</title>
+    </head>
+    <body>
+
+    
+        <script>
+
+            //for문
+
+            // console.log(1);
+            // console.log(2);
+            // console.log(3);
+            // console.log(4);
+            // =>
+
+            // for(let i = 0; i < 5; i++ ) {
+            //     console.log (i);
+            // }
+
+            //문제 ) 1~100까지의 숫자를 웹문서에 출력
+            //1~100
+            // for(let num = 1; num < 101; num++) {
+            //     document.write (num + '<br>') ;
+            // }
+            // //100~1
+            // for (let num = 100; num >= 1; num--) {
+            //         document.write(num + '<br>');
+            //     }
+
+            //문제) 1~100 숫자 중에서 짝수만 웹 출력
+
+            // for(let i = 1; i <= 100; i++) {
+            //     if(i % 2 === 0) {
+            //         document.write (`${i} <br>`);
+            //     }
+                
+
+            // // or
+
+            // for (let i = 1; i <= 50; i++) {
+            //     document.write(`${i*2}  <br>`);
+            // }
+
+            // // or
+
+            // x += y => x = x + y 
+            // for(let i = 2; i <= 100; i+=2) {
+            //     document.write(`${i} <br>`)
+            // }
+            
+            /*
+                부모 i 를 1~5이상 까지 1씩 증가 출력
+                자식 j 를 6~8이하 까지 1씩 증가 출력
+                중첩 for문의 경우 부모가 코드가 종료가 되어야 반복문 끝남
+            */
+
+// 한개도몰륵렛어요
+
+        // for(let i = 1; i <= 5; i++) {
+        //     document.write(`<h1> ${i} </h1>`);
+
+        //     for(let j = 6; j <= 8; j++) {
+        //         document.write(`${j} <br/>`);
+
+
+        //     }
+        // }
+
+
+        //문제) 구구단 만들기
+        //웹 문서에 2단~9단 출력
+        //최종 출력)
+        //  <2단>
+        //  2X1=2
+        //  2X2=4
+        //  ...
+        //  <9단>
+        //  9X1=9
+
+        // for(let i = 2; i <= 9; i++ ) {
+        //     document.write(`<h2> <${i}단> </h2> `)
+        //     for(let j = 1; j <= 9; j++)
+        //         document.write(` ${i} X ${j} = ${i*j} <br>`);
+        // }
+//엥어케힘
+
+
+    //문제) 숫자를 입력받아 1부터 입력받은 숫자까지의 합을 웹문서에 출력하기
+
+    // let num1 = Number(prompt('숫자를 입력하세요.'));
+    // let sum = 0;
+
+    // for(let i = 1; i <= num1; i++) {
+    //     sum += i;
+    // } 
+    
+    // document.write(`1부터 ${num1}까지의 합:${sum}`);
+    
+
+        // 문제) 입력받은 숫자에 해당하는 구구단 출력
+            //  => 입력받은 숫자가 홀수이면 1~10까지 홀수 번째 숫자만 곱하기
+            //  => 입력받은 숫자가 짝수이면 1~10까지 짝수 번째 숫자만 곱하기
+
+            //  5 받으면
+
+            //  5 단입니다
+            //  5X1=5
+            //  5X3=15
+            //  ...
+
+            
+
+            // let num = Number(prompt(`숫자입력`));
+            
+            // if (num % 2 === 0) {
+            //      for(let i = 2; i = 9; i + 2) {
+            //         document.write (`${num} X ${i} = ${num*i} <br/>`);
+            //     }
+            // }
+
+
+            // let inputnumber = Number(prompt(`구구단 숫자를 입력하세요.`));
+
+            // document.write(`${inputnumber}단 입니다. </br?>`)
+
+            // if(inputnumber % 2 ===0) {
+            //     for(let a = 2; a <= 10; a += 2) {
+            //         document.write (`${inputnumber} X ${a} = ${inputnumber*a} <br/>`)
+            //     }
+            // } else {
+            //     for(let a = 1; a <= 10; a += 2) {
+            //         document.write(`${inputnumber} X ${a} = ${inputnumber * a} <br/>`)
+            //     }
+            // }
+
+            // let i = Number(prompt(`숫자 입력`));
+
+            // if(i % 2 === 0) {
+            //     for(let j = 2; j <= 10; j += 2); {
+            //         document.write(`${i}X${j}=${i*j} <br>`)
+            //     }
+            // }
+
+            
+
+
+
+        </script>
+        
+    </body>
+</html>
+
+
+    <!-- // <반복문>
+    // for, while
+
+    // 1)
+    // for(초기값; 반복문 조건; 코드 실행 후 작업) {
+    //     반복적으로 처리할 코드; 보건이 true 일 경우 반복적으로 실행
+    // }
+
+    // 초기값 : 기준을 잡을 변수를 선언;
+    // 반복문 조건 : 언제까지 for문을 실행시킬건지;
+    // 코드를 실행 후 작업 : 증감연산자; for문이 한번씩 실행될때마다 어떤 행동을 취할건지;
+
+    // <중첩 for문>
+    // => 부모 for문이 한 번 출력될 때 자식 for문이 한 사이클 실행
+    // => 부모가 0~ 4까지 1씩 증가
+    // => 자식 1~ 5까지 1씩 증가 
+
+    // for(let i = 0; i < 5; i++) {
+    //     for(let j = 1; j < 6; j++) {
+    //         console.log(i * j);
+    //     }
+    // } -->

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <style>
+
+            *{
+                padding: 0;
+                margin: 0;
+            }
+
+            .box {
+                width: 300px;
+                height: 300px;
+                background-color: coral;
+                position: absolute;
+                top: 0;
+                tran
+                left: 0;
+                animation: boxmove 4s infinite ;
+                transition: 0.5s;
+            }
+
+            .box:nth-child(2){
+                background-color: brown;
+            }
+            .box:nth-child(3){
+                background-color: blueviolet;
+            }
+
+
+
+            @keyframes boxmove{
+                0% {
+                    margin: 0;
+                    opacity: 0;
+
+                }
+
+                25% {
+                    margin: 300px 300px;
+                    opacity: 0.5;
+                    border-radius: 25%
+                }
+
+                50% {
+                    margin: 0px 600px;
+                    opacity: 1;
+                    border-radius: 50%
+                }
+
+                75% {
+                    margin: 300px 300px;
+                    opacity: 0.5;
+                    border-radius: 25%
+                }
+                
+                100% {
+                    margin:0;
+                    opacity: 0;
+                }
+            }
+
+            #box2 {
+                animation-delay: 0.5s
+            }
+
+            #box3 {
+                animation-delay: 1s
+            }
+        </style>
+    </head>
+    <body>
+        <div class="box" id="box1"></div>
+        <div class="box" id="box2"></div>
+        <div class="box" id="box3"></div>
+    </body>
+</html>

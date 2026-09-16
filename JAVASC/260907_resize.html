@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <script src="jqu.js"></script>
+        <script src="jqu_ui.js"></script>
+        <style>
+            *{
+                padding: 0;
+                margin: 0;
+            }
+            
+
+
+
+        </style>
+    </head>
+    <body>
+
+        <div id="box"></div>
+
+
+
+
+
+
+
+
+
+        <script>
+
+            $(document).ready(function () {
+
+                // let ww = $(window).width();
+
+                // $('#box').css({
+                //     width : 0.65*ww,
+                //     height : 500,
+                //     backgroundColor : 'pink',
+                // });
+
+                // $(window).resize(function () {
+                //     ww = $(window).width();
+
+                //     $('#box').css ({
+                //         width :0.65*ww,
+                //     });
+                // });
+                // -----------------------------------------기초 끝
+
+                // function resizeLayout() {
+                //     //이거를 함수로 담아서 중복되는 코드를 아래 resize 코드에 넣어주기
+                //     let ww = $(window).width();
+                //     if (ww >= 1200) {
+                //         $('#box').css({
+                //             width: 1200,
+                //             height: 500,
+                //             backgroundColor: 'lightgreen',
+                //             margin: '50px auto',
+                //         });
+                //     } else if (ww >= 960 && ww < 1200) {
+                //         $('#box').css({
+                //             width: 960,
+                //             height: 800,
+                //             backgroundColor: 'lightblue',
+                //             margin: '50px auto',
+                //         });
+                //     } else if (ww >= 760 && ww < 960) {
+                //         $('#box').css({
+                //             width: 760,
+                //             height: 200,
+                //             backgroundColor: 'teal',
+                //             margin: '50px auto',
+                //         });
+                //     } else if (ww < 760) {
+                //         $('#box').css({
+                //             width: ww * 0.1,
+                //             height: 100,
+                //             backgroundColor: 'tomato',
+                //             margin: '50px auto',
+                //         });
+
+                //     };
+                // }
+                
+                // resizeLayout()
+
+                // $(window).resize(function () {
+                //     ww = $(window).width();
+                //     // if(ww >= 1200) {
+                //     //     $('#box').css ({
+                //     //         width :1200,
+                //     //         height : 500,
+                //     //         backgroundColor : 'lightgreen',
+                //     //         margin : '50px auto',
+                //     //     });
+                //     // } else if (ww >=960 && ww <1200) {
+                //     //         $('#box').css({
+                //     //         width: 960,
+                //     //         height: 800,
+                //     //         backgroundColor: 'lightblue',
+                //     //         margin: '50px auto',
+                //     //     });
+                //     // } else if (ww >= 760 && ww < 960) {
+                //     //     $('#box').css({
+                //     //         width: 760,
+                //     //         height: 200,
+                //     //         backgroundColor: 'teal',
+                //     //         margin: '50px auto',
+                //     //     });
+                //     // } else if (ww < 760) {
+                //     //     $('#box').css({
+                //     //         width: ww*0.1,
+                //     //         height: 100,
+                //     //         backgroundColor: 'tomato',
+                //     //         margin: '50px auto',
+                //     //     });
+                //     //           => 위와 중복되는 코드니까 함수호출로 줄여버림
+
+                //     // };
+
+                //     resizeLayout();
+                // });
+
+                //----------------------------(함수사용) 크기별 배경색,박스크기 변경 끝
+
+
+                // let ww = $(window).width();
+                // let wh = $(window).height();
+
+
+                // $('#box').css({
+                //     width: 0.50 * ww,
+                //     height: 0.50 * wh,
+                //     backgroundColor: 'skyblue',
+                //     margin: '0 auto',
+                // });
+
+                // $(window).resize(function () {
+                //     ww = $(window).width();
+                //     wh = $(window).height();
+
+
+                //     $('#box').css({
+                //         width: 0.50 * ww,
+                //         height: 0.50 * wh,
+                //         backgroundColor: 'skyblue',
+                //         margin: '0px auto',
+                //     });
+                // });
+
+                
+
+                //아래가 풀이
+
+
+            
+                function layout() {
+                    let ww = $(window).width();
+                    let wh = $(window).height();
+
+                    let boxW = ww * 0.5;
+                    let boxH = wh * 0.5;
+
+                    $('#box').css ({
+                        width: boxW,
+                        height: boxH,
+                        backgroundColor: 'skyblue',
+                        position : 'absolute',
+                        top : '50%',
+                        left: '50%',
+                        marginTop: -(boxH / 2),
+                        marginLeft: -(boxW / 2),
+                    });
+                }
+
+                    layout(); //함수실행 (함수선언의 밖에 실행해야함**)
+
+                    $(window).resize (function () {
+                        let ww = $(window).width();
+                        let wh = $(window).height();
+
+                        let boxW = ww * 0.5;
+                        let boxH = wh * 0.5;
+
+                        layout(); //(리사이즈의 안에 실행해야함 **)
+                    })
+
+                    //-------------------------------- 박스 항상 가운데정렬. 박스 크기 윈도우 가로세로 값 50%
+
+
+
+
+
+            }); //end
+
+
+
+
+
+        </script>
+        
+    </body>
+</html>
+
+<!-- 
+
+    <resize>
+    => 브라우저 크기값이 변경이 될 때 사이즈를 재수정해서 로딩 (반응형과 비슷)
+    => 리사이즈 실행문에서 재수정 될 사이즈들은 리사이즈 밖에도 코드가 적혀있어야 함. **
+    => $('선택자').resize(function () {
+        //cord ..
+    });
+
+
+
+
+-->

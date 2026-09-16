@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <script src="/JAVASC/jqu.js"></script>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+            }
+
+            a {
+                text-decoration: none;
+                color: black;
+            }
+
+            ul, li {
+                list-style: none;
+            }
+
+            header,section,footer {
+                box-sizing: border-box;
+            }
+
+
+            #wrap {
+                width: 1000px;
+                height: 650px;
+                background-color: lightgray;
+            }
+
+            header {
+                width: 200px;
+                height: 100%;
+                background-color: white;
+                float: left;
+            }
+
+            #logo {
+                width: 100%;
+                height: 100px;
+                background-color: rgb(230, 230, 230);
+            }
+
+            #menu_wrap {
+                width: 100%;
+                height: 100%;
+                
+            }
+
+            .top_menu {
+                text-align: center;
+                font: 20px / 70px '';
+                border-bottom: 3px solid black;
+                transition: 0.5s;
+                position: relative;
+            }
+
+            .sub_menu {
+                height: 0;
+                display: none;
+                
+            }
+
+            .top_menu:hover {
+                
+            }
+
+            /* 헤더 css 끝 */
+
+
+
+
+
+            #sec1_img_wrap {
+                width: 100%;
+                height: 350px;
+                background-color: wheat;
+                /* position: relative; */
+
+            }
+
+            /* 섹션1 css끝 */
+
+
+            #sec2{
+                width: 100%;
+                height: 200px;
+                background-color: aquamarine;
+            }
+
+            #c1 {
+                width: 400px;
+                height: 100%;
+                background-color: chartreuse;
+                float: left;
+            }
+
+
+
+            #c2 {
+                width: 200px;
+                height: 100%;
+                background-color: rgb(109, 171, 105);
+                float: left;
+
+
+            }
+
+            #c3 {
+                width: 200px;
+                height: 100%;
+                background-color: rgb(231, 253, 209);
+                float: left;
+
+
+            }
+            
+
+
+
+
+
+
+
+        </style>
+    </head>
+    <body>
+        <div id="wrap">
+            <header>
+                <div id="logo">
+                    <a href="#"><img src="/" alt="대표로고"></a>
+                </div>
+                
+                <div id="menu_wrap">
+                    
+                    <ul class="top_menu">
+                        <a href="#">축제소개
+                            <li class="sub_menu"><a href="#">초대의 글</a></li>
+                            <li class="sub_menu"><a href="#">축제개요</a></li>
+                            <li class="sub_menu"><a href="#">축제연혁</a></li>
+                            <li class="sub_menu"><a href="#">오시는길</a></li>
+                        </a>
+                    </ul>
+                    <ul class="top_menu">
+                        <a href="#">행사안내
+                            <li class="sub_menu"><a href="#">셔틀버스안내</a></li>
+                            <li class="sub_menu"><a href="#">행사안내</a></li>
+                            <li class="sub_menu"><a href="#">행사일정</a></li>
+                            <li class="sub_menu"><a href="#">소공연장</a></li>
+                        </a>
+                    </ul>
+                    <ul class="top_menu">
+                        <a href="#">홍보마당
+                            <li class="sub_menu"><a href="#">축제소식</a></li>
+                            <li class="sub_menu"><a href="#">보도자료</a></li>
+                            <li class="sub_menu"><a href="#">음식레시피</a></li>
+                        </a>
+                    </ul>
+                    <ul class="top_menu">
+                        <a href="#">참여마당
+                            <li class="sub_menu"><a href="#">참가후기</a></li>
+                            <li class="sub_menu"><a href="#">연꽃갤러리</a></li>
+                            <li class="sub_menu"><a href="#">포토갤러리</a></li>
+                        </a>
+                    </ul>
+                </div>
+            </header>
+            <!-- 헤더 끝 -->
+
+
+            <section>
+                <div id="sec1_img_wrap">
+                    <a href="#"><img src="/" alt="슬라이드_이미지1"></a>
+                    <a href="#"><img src="/" alt="슬라이드_이미지2"></a>
+                    <a href="#"><img src="/" alt="슬라이드_이미지3"></a>
+                </div>
+            </section>
+            <!-- 섹션1 끝 -->
+
+
+            <section id="sec2">
+                <div id="c1">
+                    <div id="c1_top"><a href="#">공지사항</a></div>
+
+                    <div id="c1_wrap_1">
+                        <p><a href="#">우천으로 인한 공연 취소 및 연기 안내</a> </p>
+                        <p><a href="#">강풍으로 인한 공연 취소 및 연기 안내</a></p>
+                        <p><a href="#">제 20회 "연꽃음악회" 안내</a></p>
+                        <p><a href="#">제 20회 체험프로그램 공모 선정결과 공고</a></p>
+                        <p><a href="#">제 20회 부여 가을연꽃축제 주제 공모</a></p>
+                    </div>
+                    <div id="c1_wrap_2">
+                        <p>2020-07-13</p>
+                        <p>2020-07-09</p>
+                        <p>2020-06-28</p>
+                        <p>2020-04-15</p>
+                        <p>2019-12-20</p>
+                    </div>
+
+                </div>
+                <!-- c1 끝 -->
+                
+                <div id="c2">
+                    <div id="c2_top"><a href="#">갤러리</a></div>
+                    
+                    <div id="c2_wrap">
+                        <img src="/" alt="이미지1">
+                        <img src="/" alt="이미지2">
+                        <img src="/" alt="이미지3">
+                    </div>
+                    
+                </div>
+                <!-- c2끝  -->
+
+                <div id="c3">
+                    <a href="#">
+                        <img src="/" alt="이미지4">
+                        <div id="c3_top">행사일정 바로가기 &rsaquo; &rsaquo;</div>
+                    </a>
+                </div>
+                <!-- c3끝  -->
+
+            </section>
+            <!-- 섹션2 끝 -->
+
+
+            <footer>
+                <div id="cop"><p>주소 : 충청남도 부여군 부여읍 주변로 88, 부여동회관(1층) <br>
+                Copyright 2026 부여 가을연꽃축제. All right Reserved. <br>
+                E-mail : patiname@naver.com </p></div>
+                <div>
+                    <div id="sns">
+                        <img src="/" alt="sns1">
+                        <img src="/" alt="sns2">
+                        <img src="/" alt="sns3">
+                    </div>
+                    <div id="family">패밀리 사이트</div>
+
+                </div>
+            </footer>
+            <!-- 푸터 끝 -->
+            
+            <div id="popup">
+                <h1>타이틀</h1>
+                <p>내용ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</p>
+                <div id="x-btn">닫기</div>
+            </div>
+        </div>
+    </body>
+</html>

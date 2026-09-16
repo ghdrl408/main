@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>em, rem</title>
+        <style>
+        
+        #parents {
+                font-size: 16px;
+                width: 300px;
+                height: 300px;
+                background-color: lightblue;
+            }
+
+            #child {
+                font-size: 0.7em;
+                /* 16px * 0.7 = 11.2px */
+            }
+            html {
+                font-size: 20px;
+            }
+
+            h1 {
+                font-size: 2rem;
+                /* 20px = 1rem => 20*2 = 40px */
+            }
+
+            
+
+        </style>
+    </head>
+    <body>
+        <h1>김중의 김은 잘생김</h1>
+
+        <div id="parents">
+            <div id="child">곱창김</div>
+        </div>
+    </body>
+</html>
+
+<!-- 
+
+
+    <em, rem>
+    - 상대 단위
+    - 폰트 크기
+    - 여백, 레이아웃 조절 할 때에도 사용
+
+    1) em 
+    => element(요소, 태그) 의 줄임말
+    => 부모 요소의 font-size -> 1em
+    ex) 부모 요소의 font-size: 30px -> 1em
+    => 패딩
+
+    2) rem 
+    => root element의 줄임말, html = root 
+    => html의 font-size -> 1rem
+    => 브라우저가 자동으로 가지고 있는 font-size = 16px => 16px = 1rem
+    => 기본 폰트 크기, 마진, 섹션 간의 간격
+
+
+    보통 레이아웃, 요소, 너비, 높이 -> px, %, vw, vh  뷰포트가 머임
+-->

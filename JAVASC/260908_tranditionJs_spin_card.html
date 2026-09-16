@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>trandition js</title>
+        <script src="jqu_2ver.js"></script>
+        <!-- jquery transition 사용시 제이쿼리 버전은 1~2ver 사용할것 -->
+        <script src="jqu_tran.js"></script>
+        <style>
+            *{
+            padding: 0;
+            margin: 0;
+            }
+
+
+
+            #wrap {
+                width: 400px;
+                height: 600px;
+                margin: 200px auto;
+                position: relative;
+                cursor: pointer;
+            }
+
+            .box {
+                width: 100%;
+                height: 100%;
+                font: 700 100px / 600px '';
+                text-align: center;
+                border: 10px solid black;
+                position: absolute;
+                top: 0;
+                left: 0;
+                user-select: none;
+                box-sizing: border-box;
+            }
+
+            #back {
+                background-color: lightcoral;
+                opacity: 0;
+            }
+
+
+            #front {
+                background-color: lightgreen;
+            }
+
+            /* 카드회전 */
+            
+
+        </style>
+    </head>
+    <body>
+        
+        
+
+        <div id="wrap">
+            <div class="box" id="front">앞</div>
+            <div class="box" id="back">뒤</div>
+        </div>
+
+
+
+
+
+
+        <script>
+
+            $(document).ready(function () {
+            
+
+                let i = 0;
+
+                $('#wrap').click(function () {
+                    if(i === 0) {
+                        $('#front').transition({
+                            rotateY: 180,
+                            opacity: 0,
+                        },500);
+
+                        $('#back').transition({
+                            rotateY: 0,
+                            opacity: 1,
+                        },500);
+
+                        i++;
+                    
+                    } else if (i === 1) {
+                        $('#front').transition({
+                            rotateY: 0,
+                            opacity: 1,
+                        }, 500);
+
+                        $('#back').transition({
+                            rotateY: 180,
+                            opacity: 0,
+                        }, 500);
+
+                        i=0;
+                        
+
+                    }
+                });
+                //카드뒤집기
+
+
+
+
+
+            });//end
+
+
+
+
+        </script>
+    </body>
+</html>
+
+<!-- 
+
+    <jquery transition>
+    $('선택자').transition ({
+        trandrate : 'x px, y px'
+        scaleX
+        scaleY
+        rotate
+        rotateX
+        rotateY
+        skewX
+        skewY
+        delay
+        opasity
+        backgroundColor
+
+    }, 시간, 가속도, 콜백함수);
+    
+    vs animate? => transform 속성 적용 불가
+
+
+-->

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <style>
+
+    *{
+        padding: 0;
+        margin: 0;
+    }
+
+    #wrap {
+        width: 100%;
+        height: 100%;
+    }
+
+    section {
+        width: 1200px;
+        height: 1000px;
+        position: relative;
+
+
+    }
+    #sec_md {
+        background-color: gold;
+        float: left;
+
+    }
+
+    #sec_top {
+        background-color: green;
+    }
+
+    #sec_bt {
+        background-color: blue;
+    }
+
+    #sec_right {
+        background-color: tomato;
+        float: left;
+
+    }
+
+    #sec_left {
+        background-color: violet;
+        float: left;
+    }
+
+    .btn{
+        width: 10%;
+        height: 10%;
+        background-color: lightslategray;
+        text-align: center;
+        color: aliceblue;
+        font: 900 20px / 100px '';
+        cursor: pointer;
+
+    }
+
+    .btn_up {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        margin-left: -60px;
+    }
+
+    .btn_down {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left:-60px;
+        margin-top: -100px;
+
+    }
+
+    .btn_left {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        margin-top: -100px;
+
+    }
+
+    .btn_right {
+        position: absolute;
+        top: 50%;
+        left: 100%;
+        margin-left:-120px;
+        margin-top: -100px;
+
+
+    }
+
+
+        </style>
+    </head>
+    <body>
+
+        <div id="wrap">
+            <section id="sec_top">
+                <div class="btn btn_down">아래로</div>
+            </section>
+
+            <section id="sec_md">
+                <div class="btn btn_up">위로</div>
+                <div class="btn btn_down">아래로</div>
+                <div class="btn btn_left">왼쪽으로</div>
+                <div class="btn btn_right">오른쪽으로</div>
+            </section>
+            
+            <section id="sec_bt">
+                <div class="btn btn_up">위로</div>
+            </section>
+
+            <section id="sec_right">
+                <div class="btn btn_left">왼쪽으로</div>
+            </section>
+
+            <section id="sec_left">
+                <div class="btn btn_right">오른쪽으로</div>
+            </section>
+            
+        </div>
+        
+    </body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <style>
+           *{
+            padding: 0;
+            margin: 0;
+            }
+
+            #wrap {
+            width: 1000px;
+            height: 200px;
+            border: 5px solid black;
+            margin: 200px auto;
+            position: relative;
+            }
+
+            .box {
+            width: 200px;
+            height: 200px;
+            background-color: lightslategray;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition-timing-function: linear;
+            }
+
+            .box:first-child {
+            background-color: rgb(255, 183, 74);
+            text-align: center;
+            font: 50px / 200px '';
+            }
+            .box:nth-child(2) {
+            background-color: brown;
+            }
+            .box:nth-child(3) {
+            background-color: rgb(184, 37, 169);
+            }.box:nth-child(4) {
+            background-color: rgb(32, 232, 52);
+            }.box:nth-child(5) {
+            background-color: rgb(49, 61, 225);
+            }
+            
+            #wrap:hover .box:nth-child(2){
+            left: 200px;
+            transition: 0.5s 0.6s;
+            }
+            #wrap:hover .box:nth-child(3){
+            left: 400px;
+            transition: 0.5s 0.4s;
+            }
+            #wrap:hover .box:nth-child(4){
+            left: 600px;
+            transition: 0.5s 0.2s ;
+            }
+            #wrap:hover .box:nth-child(5){
+            left: 800px;
+            transition: 0.5s;
+            }
+
+
+
+
+
+        </style>
+    </head>
+    <body>
+        <div id="wrap">
+            <div class="box">뿅</div>
+            <div class="box mov" ></div>
+            <div class="box mov" ></div>
+            <div class="box mov" ></div>
+            <div class="box mov" ></div>
+
+        </div>
+    </body>
+</html>

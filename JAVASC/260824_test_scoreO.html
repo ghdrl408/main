@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <script src="jqu.js"></script>
+    </head>
+    <body>
+        <!-- <div class="o"></div>
+        <div class="o"></div>
+        <div class="o"></div>
+        <div class="o"></div>
+        <div class="o"></div>
+
+        <script>
+            
+        let score = Number(prompt('(1~5) 점수를 입력해주세요.'));
+
+        $(document).ready(function(){
+            $('.o').css ({
+                width: '100',
+                height: '100',
+                backgrounColor: 'gray',
+                borderRadius: '50%',
+                float: 'left',
+                marginRight: '10px'
+            })
+
+        let o_color = $('.o').backgrounColor();
+
+        for (let i = 0; i <= score; 1++) {
+            lf( i = score) {
+                $('.o').css({
+                    o_color: 'gold'
+                })
+            }
+        }
+
+
+
+
+
+        
+    })
+
+        </script> -->
+
+        <div class="score s1"></div>
+        <div class="score s2"></div>
+        <div class="score s3"></div>
+        <div class="score s4"></div>
+        <div class="score s5"></div>
+
+        <script>
+            //스코어 표시 예제
+                $(document).ready(function () {
+                    $('.score').css({
+                        width: 100,
+                        height: 100,
+                        borderRadius: '50%',
+                        backgroundColor: 'grey',
+                        margin: 10,
+                        float: 'left',
+                    });
+
+                    let scoreInput = Number(prompt('(1~5) 점수를 숫자로 입력하세요'));
+
+                    for (let i = 1; i <= scoreInput; i++) {
+                        $('.s' + i).css({
+                            backgroundColor: 'gold',
+                        });
+                    }
+                });
+            
+
+                        
+                       
+        //문제 ) div박스 2개 생성 (부모 안에 자식)
+        //부모 박스 크기 400 400 노랑 왼쪽정렬
+        //자식 박스 크기 300 300 검정 중앙정렬
+        
+        
+        // <div id="big_box">
+        //     <div id="small_box">자식</div>
+        // </div>
+        
+        // <script>
+        //     $(document).ready(function () {
+        //         $('#big_box').css ({
+        //             width : 400,
+        //             height : 400,
+        //             backgroundColor : 'gold',
+        //             float : 'left',
+
+        //         });
+        //         $('#small_box').css ({
+        //             width: 300,
+        //             height : 300,
+        //             backgroundColor : 'black',
+        //             margin : '50px auto',
+        //             color : 'white',
+        //             textAlign : 'center',
+        //             font : 'bold 50px / 300px ""',
+
+
+        //         });
+        //     });
+
+                        
+
+
+        </script>
+
+    </body>
+</html>
