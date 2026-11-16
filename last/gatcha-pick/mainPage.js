@@ -135,8 +135,6 @@ function expandScrollingMachine() {
   if (!source) return;
 
   const clone = source.machine.cloneNode(true);
-  const shell = clone.querySelector(".machine-art");
-  if (shell) shell.src = "2st_img/프로필/3st_img/머신 (레버X).svg";
   clone.classList.add("draw-machine-clone");
 
   const border = Number.parseFloat(getComputedStyle(drawStage).borderLeftWidth) || 0;
@@ -149,8 +147,8 @@ function expandScrollingMachine() {
 
   requestAnimationFrame(() => {
     clone.classList.add("is-zooming");
-    const targetWidth = drawStage.clientWidth * 0.62;
-    const targetHeight = targetWidth * (1010 / 658);
+    const targetHeight = drawStage.clientHeight * 0.9;
+    const targetWidth = targetHeight * (659 / 1010);
     clone.style.left = `${(drawStage.clientWidth - targetWidth) / 2}px`;
     clone.style.top = `${(drawStage.clientHeight - targetHeight) / 2}px`;
     clone.style.width = `${targetWidth}px`;
@@ -170,6 +168,8 @@ function expandScrollingMachine() {
 drawStage?.querySelector(".gesture-orbit")?.addEventListener("animationend", event => {
   if (event.animationName !== "gesture-orbit-spin") return;
   drawStage.classList.remove("is-guide-active");
+  const shell = drawMachineSlot?.querySelector(".machine-art");
+  if (shell) shell.src = "2st_img/프로필/3st_img/머신 (레버X).svg";
   drawStage.classList.add("is-lever-ready");
   if (leverControl) leverControl.disabled = false;
 });
