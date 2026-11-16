@@ -1153,7 +1153,7 @@
         display: block;
         flex: none;
         width: 100%;
-        height: calc(31.7vw + 102px);
+        height: calc(332px + 16.4vw);
         box-sizing: border-box;
         padding: 0;
     }
@@ -1161,9 +1161,9 @@
         position: absolute;
         top: 77px;
         left: clamp(92px, 13.4vw, 140px);
-        width: 65vw;
+        width: calc(408px + 30vw);
         margin: 0;
-        transform: scale(0.72);
+        transform: scale(0.82);
         transform-origin: left top;
     }
     .page-about #projects_sec #keycap_wrap {
@@ -1180,15 +1180,6 @@
         transform: none;
     }
     .page-about #projects_sec #tv_small_txt { right: -23px; }
-}
-
-@media (min-width: 768px) and (max-width: 800px) {
-    .page-about #projects_sec #pro_2 {
-        height: calc(46.1vw + 109px);
-    }
-    .page-about #projects_sec #tv_stage {
-        transform: scale(1.05);
-    }
 }
 
 /* Mobile and tablet memo interiors follow the supplied page layouts. */
