@@ -147,10 +147,10 @@ function expandScrollingMachine() {
 
   requestAnimationFrame(() => {
     clone.classList.add("is-zooming");
-    const targetHeight = drawStage.clientHeight * 0.9;
-    const targetWidth = targetHeight * (659 / 1010);
+    const targetWidth = drawStage.clientWidth * 0.62;
+    const targetHeight = targetWidth * (1010 / 659);
     clone.style.left = `${(drawStage.clientWidth - targetWidth) / 2}px`;
-    clone.style.top = `${(drawStage.clientHeight - targetHeight) / 2}px`;
+    clone.style.top = `${drawStage.clientHeight * 0.98 - targetHeight}px`;
     clone.style.width = `${targetWidth}px`;
     clone.style.height = `${targetHeight}px`;
   });
