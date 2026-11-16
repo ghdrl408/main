@@ -914,12 +914,12 @@
         display: block;
         flex: none;
         width: 100%;
-        height: calc(clamp(64px, 9vw, 92px) + min(51.11vw, 340.7px) + 83px);
+        height: calc(69px + min(51.11vw, 340.7px) + 83px);
         padding: 0;
     }
     .page-about #projects_sec #tv_stage {
         position: absolute;
-        top: clamp(64px, 9vw, 92px);
+        top: 69px;
         left: 50%;
         width: min(84vw, 560px);
         margin: 0;
@@ -1039,7 +1039,7 @@
 
 @media (max-width: 767px) {
     .page-about #projects_sec #pro_2 {
-        height: calc(clamp(64px, 9vw, 92px) + min(51.11vw, 340.7px) + 83px);
+        height: calc(69px + min(51.11vw, 340.7px) + 83px);
     }
     .page-about #projects_sec #project-note {
         width: min(calc(100vw - 24px), 360px);
@@ -1153,13 +1153,13 @@
         display: block;
         flex: none;
         width: 100%;
-        height: calc(45vw + 48px);
+        height: calc(31.7vw + 102px);
         box-sizing: border-box;
         padding: 0;
     }
     .page-about #projects_sec #tv_stage {
         position: absolute;
-        top: 13.4vw;
+        top: 77px;
         left: clamp(92px, 13.4vw, 140px);
         width: 65vw;
         margin: 0;
