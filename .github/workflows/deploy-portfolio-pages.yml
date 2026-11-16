@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - 'portfolio/**'
+      - 'last/gatcha-pick/**'
+      - 'last/Font/**'
       - '.github/workflows/deploy-portfolio-pages.yml'
   workflow_dispatch:
 
@@ -33,6 +35,9 @@ jobs:
         run: |
           mkdir -p _site/portfolio
           rsync -a --exclude='test.html' --exclude='내일_작업메모.md' portfolio/ _site/portfolio/
+          mkdir -p _site/gatcha-pick _site/Font
+          rsync -a --exclude='*.md' --exclude='*.mp4' --exclude='*참고*' last/gatcha-pick/ _site/gatcha-pick/
+          rsync -a last/Font/ _site/Font/
           cat > _site/index.html <<'EOF'
           <!doctype html>
           <html lang="ko">

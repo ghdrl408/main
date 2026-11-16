@@ -1,0 +1,202 @@
+@font-face {
+  font-family: "GalmuriMono11Local";
+  src: url("../Font/GalmuriMono11.ttf") format("truetype");
+  font-display: swap;
+}
+
+:root {
+  color-scheme: light;
+  background: #fff;
+  font-family: "GalmuriMono11Local", monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a, button { cursor: pointer; }
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: #fff;
+}
+
+.start-screen {
+  display: grid;
+  width: 100%;
+  min-height: 100%;
+  min-height: 100dvh;
+  place-items: center;
+  overflow: hidden;
+  background: #fff;
+}
+
+.design-canvas {
+  position: relative;
+  box-sizing: content-box;
+  width: min(calc(100vw - 16px), calc(140.6131dvh - 22.5px));
+  aspect-ratio: 6000 / 4267;
+  flex: none;
+  overflow: hidden;
+  background: #bfbfbf;
+  border: 2px solid #000;
+  container-type: inline-size;
+}
+
+.screen-frame {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  image-rendering: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.header-ball-mask {
+  position: absolute;
+  z-index: 1;
+  top: 3.05%;
+  left: 93.475%;
+  width: 2.8%;
+  height: 3.8%;
+  background: #d9d9d9;
+}
+
+.header-pink-ball {
+  position: absolute;
+  z-index: 2;
+  top: 2.82%;
+  left: 93.35%;
+  display: block;
+  width: 3.05%;
+  height: auto;
+  image-rendering: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.art-mask {
+  position: absolute;
+  top: 42.8%;
+  left: 43.5%;
+  width: 13%;
+  height: 16.1%;
+  background: #bfbfbf;
+}
+
+.sequence-art {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.sequence-art img {
+  position: absolute;
+  display: block;
+  height: auto;
+  image-rendering: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.sequence-art .closed-ball {
+  top: 47.9%;
+  left: 46.7%;
+  width: 6.1%;
+}
+
+.sequence-art .open-ball {
+  top: 49.5%;
+  left: 44.35%;
+  width: 11.2%;
+}
+
+.sequence-art .folded-paper {
+  top: 47.6%;
+  left: 48.5%;
+  width: 2.6%;
+}
+
+.sequence-art .open-paper {
+  top: 43.7%;
+  left: 46.2%;
+  width: 7.5%;
+}
+
+.design-canvas.is-start .loading-label {
+  display: none;
+}
+
+.design-canvas.is-start .art-mask {
+  display: block;
+  top: 42.8%;
+  left: 41%;
+  width: 18%;
+  height: 25%;
+}
+
+.loading-label {
+  position: absolute;
+  top: 58.8%;
+  left: 41%;
+  display: flex;
+  width: 18%;
+  height: 5%;
+  align-items: center;
+  justify-content: flex-start;
+  overflow: hidden;
+  padding-left: 5.1%;
+  background: #bfbfbf;
+  color: #090909;
+  font-family: "GalmuriMono11Local", monospace;
+  font-size: 1.56cqw;
+  line-height: 1;
+  text-align: left;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.start-button {
+  position: absolute;
+  top: 57.1%;
+  left: 50%;
+  width: 14%;
+  aspect-ratio: 211 / 90;
+  margin: 0;
+  padding: 0;
+  transform: translateX(-50%);
+  border: 0;
+  background: transparent;
+  line-height: 0;
+}
+
+.start-button[hidden] {
+  display: none;
+}
+
+.start-button img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.screen-reader-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

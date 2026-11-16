@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#bfbfbf">
+  <title>GACHA-PICK</title>
+  <link rel="preload" as="image" href="2st_img/머신화면.png">
+  <link rel="preload" as="image" href="2st_img/머신.svg" type="image/svg+xml">
+  <link rel="preload" as="image" href="1st_img/헤더 클릭 보라공.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="mainPage.css">
+  <script src="mainPage.js" defer></script>
+</head>
+<body>
+  <main class="main-screen" aria-label="가챠픽 선택 화면">
+    <div class="design-canvas" id="design-canvas">
+      <img class="reference-layout" src="2st_img/머신화면.png" alt="" draggable="false">
+      <a class="home-logo-link" href="index.html" aria-label="GACHA-PICK 시작 화면"></a>
+      <button class="header-ball-toggle" type="button" aria-label="프로필 열기" aria-pressed="false" aria-expanded="false">
+        <img class="header-ball-icon" src="1st_img/헤더 분홍 공.svg" alt="" draggable="false">
+      </button>
+
+      <aside class="profile-panel" id="profile-panel" aria-label="프로필" aria-hidden="true" inert>
+        <div class="profile-card">
+          <img class="profile-avatar" src="2st_img/프로필/프사.svg" alt="프로필 사진">
+          <div class="profile-info">
+            <strong><span class="name-part">김김</span><span class="name-suffix"> 님</span></strong>
+            <strong class="pick-count">30 번 째 뽑았어요!</strong>
+          </div>
+        </div>
+        <button class="profile-edit image-state-button" type="button" aria-label="프로필 수정">
+          <img class="state-idle" src="2st_img/프로필/프로필수정버튼.svg" alt="">
+          <img class="state-hover" src="2st_img/프로필/프로필수정버튼 호버.svg" alt="">
+          <img class="state-pressed" src="2st_img/프로필/프로필수정버튼 클릭.svg" alt="">
+        </button>
+        <div class="keyword-card">
+          <div class="keyword-cloud-track" aria-label="선호 키워드">
+            <div class="keyword-cloud-set">
+              <img class="keyword-cloud cloud-cute" src="2st_img/프로필/구름1.svg" alt="귀여운">
+              <img class="keyword-cloud cloud-retro" src="2st_img/프로필/구름3.png" alt="레트로">
+              <img class="keyword-cloud cloud-mood" src="2st_img/프로필/구름2.svg" alt="분위기 좋은">
+              <img class="keyword-cloud cloud-date" src="2st_img/프로필/구름4.svg" alt="데이트">
+            </div>
+            <div class="keyword-cloud-set" aria-hidden="true">
+              <img class="keyword-cloud cloud-cute" src="2st_img/프로필/구름1.svg" alt="">
+              <img class="keyword-cloud cloud-retro" src="2st_img/프로필/구름3.png" alt="">
+              <img class="keyword-cloud cloud-mood" src="2st_img/프로필/구름2.svg" alt="">
+              <img class="keyword-cloud cloud-date" src="2st_img/프로필/구름4.svg" alt="">
+            </div>
+          </div>
+        </div>
+        <button class="keyword-edit image-state-button" type="button" aria-label="키워드 수정">
+          <img class="state-idle" src="2st_img/프로필/키워드수정버튼.svg" alt="">
+          <img class="state-hover" src="2st_img/프로필/키워드수정버튼 호버.svg" alt="">
+          <img class="state-pressed" src="2st_img/프로필/키워드수정버튼 클릭.svg" alt="">
+        </button>
+      </aside>
+
+      <button class="reference-button button-place" type="button" data-choice="place" aria-label="어디갈까?" aria-pressed="false">
+        <img src="2st_img/어디갈까 버튼.svg" alt="어디갈까?" draggable="false">
+      </button>
+      <button class="reference-button button-food" type="button" data-choice="food" aria-label="뭐먹을까?" aria-pressed="false">
+        <img src="2st_img/뭐먹을까 버튼.svg" alt="뭐먹을까?" draggable="false">
+      </button>
+
+      <section class="draw-stage" id="draw-stage" aria-label="가챠 머신 레버 돌리기" aria-hidden="true" inert>
+        <div class="draw-machine-slot" id="draw-machine-slot" aria-hidden="true"></div>
+        <button class="lever-control" type="button" aria-label="레버를 클릭한 채 원을 그리며 돌리세요">
+          <img class="lever-art" src="2st_img/프로필/3st_img/레버.svg" alt="" draggable="false">
+        </button>
+        <div class="lever-gesture" aria-hidden="true">
+          <img class="gesture-arrow" src="2st_img/프로필/3st_img/회전화살표.svg" alt="" draggable="false">
+          <div class="cursor-orbit">
+            <img class="gesture-cursor" src="2st_img/프로필/3st_img/회전커서.svg" alt="" draggable="false">
+          </div>
+        </div>
+      </section>
+
+      <div class="machine-track-viewport" aria-hidden="true">
+        <div class="machine-track" id="machine-track"></div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
