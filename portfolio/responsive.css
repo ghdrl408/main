@@ -1153,7 +1153,7 @@
         display: block;
         flex: none;
         width: 100%;
-        height: calc(332px + 16.4vw);
+        height: calc(260px + 23.44vw);
         box-sizing: border-box;
         padding: 0;
     }
@@ -1161,7 +1161,7 @@
         position: absolute;
         top: 77px;
         left: clamp(92px, 13.4vw, 140px);
-        width: calc(408px + 30vw);
+        width: calc(195px + 50.8vw);
         margin: 0;
         transform: scale(0.82);
         transform-origin: left top;
@@ -1175,8 +1175,8 @@
         right: auto;
         left: auto;
         align-self: flex-start;
-        width: min(54vw, 553px);
-        margin: 28px 0 24px 26vw;
+        width: min(calc(341px + 20.7vw), 553px);
+        margin: 28px 0 24px calc(-262px + 51.56vw);
         transform: none;
     }
     .page-about #projects_sec #tv_small_txt { right: -23px; }
