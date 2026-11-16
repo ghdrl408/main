@@ -1176,10 +1176,19 @@
         left: auto;
         align-self: flex-start;
         width: min(54vw, 553px);
-        margin: 8px 0 24px 26vw;
+        margin: 28px 0 24px 26vw;
         transform: none;
     }
     .page-about #projects_sec #tv_small_txt { right: -23px; }
+}
+
+@media (min-width: 768px) and (max-width: 800px) {
+    .page-about #projects_sec #pro_2 {
+        height: calc(46.1vw + 109px);
+    }
+    .page-about #projects_sec #tv_stage {
+        transform: scale(1.05);
+    }
 }
 
 /* Mobile and tablet memo interiors follow the supplied page layouts. */
@@ -1421,5 +1430,21 @@
     }
     .page-about #projects_sec #project-note .note-page-two-heading strong {
         font-size: 6.5cqw;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .page-about #projects_sec #project-note .note-card-copy {
+        font-size: calc(clamp(9px, 2.5cqw, 14px) - 2px);
+    }
+    .page-about #projects_sec #project-note .note-card-two .note-card-copy {
+        left: 0;
+        width: 100%;
+        align-items: center;
+        text-align: center;
+        transform: none;
+    }
+    .page-about #projects_sec #project-note .note-card-two .note-card-copy span {
+        text-align: center;
     }
 }
