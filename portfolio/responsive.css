@@ -1448,3 +1448,22 @@
         text-align: center;
     }
 }
+
+@media (min-width: 768px) and (max-width: 1600px) {
+    .page-about #contact-section {
+        --copy-unit: clamp(40px, 3.75vw, 60px);
+    }
+    .page-about #contact-section #con {
+        gap: 16px;
+        padding-inline: clamp(12px, 1.6vw, 32px);
+    }
+    .page-about #contact-section #left_txt {
+        font-size: clamp(64px, 7.5vw, 112px);
+    }
+    .page-about #contact-section #right_txt {
+        font-size: clamp(20px, 2vw, 30px);
+    }
+    .page-about #contact-section #line {
+        flex-basis: clamp(24px, 8vw, 180px);
+    }
+}
