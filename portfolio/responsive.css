@@ -1160,7 +1160,7 @@
     .page-about #projects_sec #tv_stage {
         position: absolute;
         top: 77px;
-        left: 103px;
+        left: calc(50% - 298.5px);
         width: 585px;
         margin: 0;
         transform: scale(0.82);
@@ -1176,7 +1176,7 @@
         left: auto;
         align-self: flex-start;
         width: 500px;
-        margin: 28px 0 24px 134px;
+        margin: 28px 0 24px calc(50% - 268px);
         transform: none;
     }
     .page-about #projects_sec #tv_small_txt { right: -23px; }
@@ -1457,4 +1457,51 @@
     .page-about #contact-section #line {
         flex-basis: clamp(24px, 8vw, 180px);
     }
+}
+
+/* Keep the tablet composition at its minimum-width scale and center it as one group. */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .page-about #projects_sec #tv_stage #tv_small_txt {
+        font-size: 8.4px;
+    }
+    .page-about #projects_sec #tv_stage.is-transitioning #tv_small_txt,
+    .page-about #projects_sec #tv_stage.is-details-visible #tv_small_txt {
+        font-size: 14px;
+    }
+}
+
+/* Center each memo's copy block inside its colored card, with left aligned lines. */
+.page-about #projects_sec #project-note .note-card-one .note-card-copy {
+    left: 0;
+    right: 0;
+    width: max-content;
+    max-width: 90%;
+    margin-inline: auto;
+    padding: 0;
+    text-align: left;
+    white-space: normal;
+}
+.page-about #projects_sec #project-note.is-details-visible .note-card-one .note-card-copy {
+    animation: noteContentRiseCenteredLeft 560ms ease-out both;
+}
+.page-about #projects_sec #project-note .note-card-two .note-card-copy {
+    left: 0;
+    right: 0;
+    width: max-content;
+    max-width: 90%;
+    margin-inline: auto;
+    align-items: flex-start;
+    text-align: left;
+    white-space: normal;
+    transform: none;
+}
+.page-about #projects_sec #project-note .note-card-two .note-card-copy > span {
+    text-align: left;
+}
+.page-about #projects_sec #project-note.is-details-visible .note-card-two .note-card-copy {
+    animation: noteContentRise 560ms ease-out both;
+}
+@keyframes noteContentRiseCenteredLeft {
+    from { opacity: 0; transform: translateY(calc(-50% + 18px)); }
+    to { opacity: 1; transform: translateY(-50%); }
 }
