@@ -1505,3 +1505,18 @@
     from { opacity: 0; transform: translateY(calc(-50% + 18px)); }
     to { opacity: 1; transform: translateY(-50%); }
 }
+
+/* Vertically center the API copy inside the second color card on laptop and desktop. */
+@media (min-width: 1025px) {
+    .page-about #projects_sec #project-note .note-card-two .note-card-copy {
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    .page-about #projects_sec #project-note.is-details-visible .note-card-two .note-card-copy {
+        animation: noteContentRiseCenteredInCard 560ms ease-out both;
+    }
+}
+@keyframes noteContentRiseCenteredInCard {
+    from { opacity: 0; transform: translateY(calc(-50% + 18px)); }
+    to { opacity: 1; transform: translateY(-50%); }
+}
