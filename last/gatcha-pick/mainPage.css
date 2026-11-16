@@ -250,7 +250,7 @@ body {
 .gesture-arrow {
   top: 0;
   left: 8%;
-  width: 84%;
+  width: 42%;
 }
 
 .gesture-orbit {
@@ -263,7 +263,7 @@ body {
 .gesture-cursor {
   top: 59%;
   left: -8%;
-  width: 59%;
+  width: 42%;
   transform: translateY(-50%) rotate(0deg);
   transform-origin: 50% 50%;
 }
