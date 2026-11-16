@@ -2564,6 +2564,7 @@
             const mobileProjectNext = document.querySelector('.mobile-project-next');
             const mobileProjectChannels = [...document.querySelectorAll('.mobile-project-channel')];
             let tvMode = 'idle';
+            let noteDescriptionLayoutText = '';
             const setMobileProjectChannel = (channel) => {
                 mobileProjectChannels.forEach((button) => {
                     button.classList.toggle('is-active', button.dataset.channel === channel);
@@ -2747,6 +2748,17 @@
                 }
             };
 
+            const getNoteDescriptionText = () => matchMedia('(min-width: 1025px)').matches
+                ? '부산 근교의 아름다운 자연경관을 즐길 수 있는\n오토바이 라이딩 코스 추천 웹사이트'
+                : '부산 근교의 아름다운 자연경관을 즐길 수 있는 오토바이 라이딩 코스 추천 웹사이트';
+
+            const updateNoteDescription = () => {
+                const text = getNoteDescriptionText();
+                if (text === noteDescriptionLayoutText) return;
+                noteDescriptionLayoutText = text;
+                setTvStaggeredText(noteDescription, text, 0, 12);
+            };
+
             const loadProjectNoteTurnMotion = async (direction) => {
                 const pathKey = `${projectNoteWideLayout.matches ? 'wide' : 'compact'}${direction === 'next' ? 'Next' : 'Prev'}`;
                 const path = projectNoteTurnMotionPaths[pathKey];
@@ -2885,6 +2897,7 @@
                 }
                 setTvPlainText(tvTitle, 'RIDING BUSAN');
                 setTvPlainText(noteDescription, '');
+                noteDescriptionLayoutText = '';
                 tvNo.textContent = 'CH 00';
                 setMobileProjectChannel('00');
                 setTvPlainText(tvSmallTxt, 'Press arrow keys');
@@ -2931,8 +2944,7 @@
                     tvRidingVideo.classList.add('is-revealing');
                     tvStage.classList.remove('is-transitioning');
                     setTvStaggeredText(tvTitle, 'RIDING BUSAN', 0, 19);
-                    const noteDescriptionText = '부산 근교의 아름다운 자연경관을 즐길 수 있는 오토바이 라이딩 코스 추천 웹사이트';
-                    setTvStaggeredText(noteDescription, noteDescriptionText, 0, 12);
+                    updateNoteDescription();
                     setTvStaggeredText(tvSmallTxt, '어디로든 떠나고 싶은 순간, 당신의 다음 길을 찾아보세요.', 0, 12);
                     tvStage.classList.add('is-riding-ready');
                     projectNote.classList.remove('is-transitioning');
@@ -3943,6 +3955,8 @@
                     currentSection = 3;
                     event.preventDefault();
                     if (contactWFlipAnimating && event.deltaY < 0) return;
+                    if (event.deltaY < 0 && contactScrollTarget > 0 &&
+                        !contactRotatedW.classList.contains('is-flipped')) return;
                     if (!contactReady) return;
                     if (event.deltaY > 0) {
                         moveContactPanel(event.deltaY);
@@ -4235,6 +4249,9 @@
             window.addEventListener('touchcancel', () => { aboutTouch = null; }, { passive: true });
 
             window.addEventListener('resize', () => {
+                if (tvMode === 'riding' && projectNote.classList.contains('is-details-visible')) {
+                    updateNoteDescription();
+                }
                 const previousAboutTop = aboutSectionTop;
                 const previousProjectsTop = projectsSectionTop;
                 const previousContactTop = contactSectionTop;
