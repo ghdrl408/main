@@ -180,8 +180,8 @@ body {
 .lever-control {
   position: absolute;
   z-index: 2;
-  top: 64%;
-  left: 9%;
+  top: 41.5%;
+  left: 25%;
   width: 28%;
   aspect-ratio: 1;
   margin: 0;
@@ -190,6 +190,16 @@ body {
   background: transparent;
   touch-action: none;
   cursor: grab;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 180ms ease;
+}
+
+.draw-stage.is-lever-ready .lever-control {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
 }
 
 .lever-control:active { cursor: grabbing; }
@@ -205,22 +215,27 @@ body {
 .lever-gesture {
   position: absolute;
   z-index: 3;
-  top: 62%;
-  left: 8%;
+  top: 40%;
+  left: 23.5%;
   width: 30%;
   aspect-ratio: 1;
   pointer-events: none;
   transform-origin: 50% 50%;
+  opacity: 0;
+  visibility: hidden;
 }
 
-.draw-stage.is-active .gesture-orbit {
-  animation: gesture-orbit-spin 2.4s linear 2 forwards;
-  animation-delay: 650ms;
+.draw-stage.is-guide-active .lever-gesture {
+  opacity: 1;
+  visibility: visible;
 }
 
-.draw-stage.is-active .gesture-cursor {
-  animation: gesture-cursor-counterspin 2.4s linear 2 forwards;
-  animation-delay: 650ms;
+.draw-stage.is-guide-active .gesture-orbit {
+  animation: gesture-orbit-spin 1.6s linear 1 forwards;
+}
+
+.draw-stage.is-guide-active .gesture-cursor {
+  animation: gesture-cursor-counterspin 1.6s linear 1 forwards;
 }
 
 .gesture-arrow,
@@ -273,6 +288,8 @@ body {
 @keyframes gesture-cursor-counterspin {
   to { transform: translateY(-50%) rotate(-360deg); }
 }
+
+.draw-stage:not(.is-lever-ready) .lever-control { cursor: default; }
 
 .machine-track-viewport {
   position: absolute;

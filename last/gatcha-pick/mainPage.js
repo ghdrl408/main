@@ -149,13 +149,30 @@ function expandScrollingMachine() {
 
   requestAnimationFrame(() => {
     clone.classList.add("is-zooming");
-    clone.style.left = `${drawStage.clientWidth * 0.04}px`;
-    clone.style.top = `${-drawStage.clientHeight * 0.2}px`;
     const targetWidth = drawStage.clientWidth * 0.62;
+    const targetHeight = targetWidth * (1010 / 658);
+    clone.style.left = `${(drawStage.clientWidth - targetWidth) / 2}px`;
+    clone.style.top = `${(drawStage.clientHeight - targetHeight) / 2}px`;
     clone.style.width = `${targetWidth}px`;
-    clone.style.height = `${targetWidth * (1010 / 658)}px`;
+    clone.style.height = `${targetHeight}px`;
   });
+
+  const startLeverGuide = () => {
+    if (!drawStage.isConnected || !drawStage.classList.contains("is-active")) return;
+    drawStage.classList.add("is-guide-active");
+  };
+  clone.addEventListener("transitionend", event => {
+    if (event.propertyName === "height") startLeverGuide();
+  }, { once: true });
+  window.setTimeout(startLeverGuide, 950);
 }
+
+drawStage?.querySelector(".gesture-orbit")?.addEventListener("animationend", event => {
+  if (event.animationName !== "gesture-orbit-spin") return;
+  drawStage.classList.remove("is-guide-active");
+  drawStage.classList.add("is-lever-ready");
+  if (leverControl) leverControl.disabled = false;
+});
 
 function getPointerAngle(event, element) {
   const bounds = element.getBoundingClientRect();
@@ -163,6 +180,7 @@ function getPointerAngle(event, element) {
 }
 
 leverControl?.addEventListener("pointerdown", event => {
+  if (!drawStage?.classList.contains("is-lever-ready")) return;
   if (event.button !== 0 && event.pointerType === "mouse") return;
   event.preventDefault();
   leverDragStart = { pointerAngle: getPointerAngle(event, leverControl), leverRotation };
@@ -170,7 +188,7 @@ leverControl?.addEventListener("pointerdown", event => {
 });
 
 leverControl?.addEventListener("pointermove", event => {
-  if (!leverDragStart) return;
+  if (!drawStage?.classList.contains("is-lever-ready") || !leverDragStart) return;
   const pointerAngle = getPointerAngle(event, leverControl);
   let delta = pointerAngle - leverDragStart.pointerAngle;
   if (delta > 180) delta -= 360;
@@ -288,6 +306,7 @@ for (const button of choiceButtons) {
     choiceStage = "draw";
     expandScrollingMachine();
     canvas.classList.add("is-draw-ready");
+    if (leverControl) leverControl.disabled = true;
     drawStage?.classList.add("is-active");
     drawStage?.setAttribute("aria-hidden", "false");
     if (drawStage) drawStage.inert = false;
