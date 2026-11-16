@@ -1,0 +1,1409 @@
+﻿/* Shared navigation and touch input. Desktop artwork remains in each page. */
+.page-about { --about-date-column: 9.2em; }
+@media (max-width: 767px) {
+    header { height: 64px; box-sizing: border-box; }
+    header img { width: 76px; margin: 0 12px; }
+    #control_wrap { display: flex; align-items: center; gap: 2px; margin-right: 8px; }
+    #control_wrap > a { display: flex; align-items: center; min-height: 44px; }
+    #control_wrap li,
+    #control_wrap a:not(:first-child) li {
+        float: none;
+        margin: 0;
+        font-size: 12px;
+        line-height: 1;
+    }
+    .about-pill, .menu-pill { height: 32px; padding: 0 9px; white-space: nowrap; }
+    .page-about header { background: rgba(0, 0, 0, 0.85); }
+    .page-about.projects-active header { background: rgba(255, 255, 255, 0.9); }
+    body.page-about.projects-active #control_wrap a:first-child:hover .about-pill,
+    body.page-about.projects-active #control_wrap a:first-child:focus .about-pill {
+        background-color: transparent;
+        color: black;
+    }
+    body.page-about.about-active #control_wrap a:not(:first-child):hover .menu-pill,
+    body.page-about.about-active #control_wrap a:not(:first-child):focus .menu-pill {
+        background-color: transparent;
+        color: white;
+    }
+    .page-contact header { background: rgba(255, 255, 255, 0.9); }
+}
+
+@media (max-width: 359px) {
+    header img { width: 66px; margin: 0 10px; }
+    #control_wrap li, #control_wrap a:not(:first-child) li { font-size: 11px; }
+    .about-pill, .menu-pill { padding-inline: 7px; }
+}
+
+@media (hover: none), (pointer: coarse) {
+    html, body, body * { cursor: auto !important; }
+    #custom-cursor { display: none; }
+    a, button, #turn { -webkit-tap-highlight-color: transparent; }
+}
+
+/* Main: keep the marquee and three rings, with legible touch labels. */
+@media (max-width: 1500px) {
+    .page-home { --circle-size: clamp(74px, 13vw, 187.5px); --circle-border: clamp(4px, 0.78vw, 11.25px); --circle-gap: clamp(12px, 4vw, 60px); }
+    .page-home #wrap { height: auto; min-height: 100svh; }
+    .page-home section {
+        box-sizing: border-box;
+        height: auto;
+        min-height: 100svh;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        gap: 32px;
+        padding-block: 24px 32px;
+    }
+    .page-home h1 { font-size: clamp(44px, 8.5vw, 132.5px); padding-right: 40px; }
+    .page-home .marquee { margin: 0; }
+    .page-home #con_wrap { order: 1; margin-top: 0; gap: var(--circle-gap); }
+    .page-home .con { width: var(--circle-size); height: var(--circle-size); border-width: var(--circle-border); }
+    .page-home #con_wrap > a:first-child { transform: translateX(calc(var(--circle-size) + var(--circle-border) * 2 + var(--circle-gap))); }
+    .page-home #con_wrap > a:nth-child(2) { transform: translateX(calc(var(--circle-size) + var(--circle-border) * 2 + var(--circle-gap))); }
+    .page-home #con_wrap > a:nth-child(3) { transform: translateX(calc(-1 * (var(--circle-size) + var(--circle-border) * 2 + var(--circle-gap)))); }
+    .page-home #con_wrap.intro-moving > a:first-child,
+    .page-home #con_wrap.intro-moving > a:nth-child(3),
+    .page-home #con_wrap.intro-center-moving > a:first-child,
+    .page-home #con_wrap.intro-center-moving > a:nth-child(2),
+    .page-home #con_wrap.intro-center-moving > a:nth-child(3),
+    .page-home #con_wrap.intro-ready > a:nth-child(2) { transform: translateX(0); }
+    .page-home .con > div { font-size: clamp(17px, 2.2vw, 30px); }
+    .page-home #con_txt_left, .page-home #con_txt_right { left: 0; right: 0; }
+    .page-home #con_txt_left::after, .page-home #con_txt_right::after { display: none; }
+    .page-home #tel_wrap { position: relative; bottom: auto; left: auto; order: 2; display: flex; flex-wrap: wrap; gap: 16px 28px; padding-inline: 24px; }
+    .page-home .tel { float: none; margin: 0; font: 400 clamp(14px, 1.6vw, 22.5px) / 1.5 'Noto Sans', sans-serif; }
+}
+
+@media (max-width: 767px) {
+    .page-home { --circle-size: clamp(72px, 22vw, 150px); --circle-gap: clamp(10px, 3vw, 24px); }
+    .page-home section { min-height: 100svh; }
+    .page-home #con_wrap.intro-ready .con > div { opacity: 1; color: black; }
+}
+
+@media (hover: none), (pointer: coarse) {
+    .page-home #con_wrap.intro-ready .con > div { opacity: 1; color: black; }
+    .page-home #con_txt_left, .page-home #con_txt_right { left: 0; right: 0; }
+    .page-home #con_txt_left::after, .page-home #con_txt_right::after { display: none; }
+}
+
+@media (max-width: 1500px), (hover: none), (pointer: coarse) {
+    .page-home #con_wrap.intro-ready .con:hover > div { color: white; }
+}
+
+/* About: viewport-sized sections and independently scrollable small cards. */
+.page-about #wrap { height: auto; }
+.page-about .about-section { min-height: 100vh; min-height: 100dvh; }
+.page-about #back-to-top {
+    right: 15px;
+    bottom: 15px;
+    width: clamp(64px, 4.2vw, 80px);
+    height: clamp(64px, 4.2vw, 80px);
+}
+.page-about #back-to-top img { width: 100%; height: 100%; }
+
+@media (max-width: 1500px) {
+    .page-about {
+        --about-card-height: 640px;
+        --about-card-top: 160px;
+        --astronaut-margin: clamp(18px, 3vw, 48px);
+        --astronaut-gap: clamp(12px, 2vw, 28px);
+        --astronaut-image-width: min(
+            calc(var(--about-card-height) * 1.45),
+            calc((var(--about-card-width) - 170px) * 4.1667)
+        );
+        --astronaut-art-width: calc(var(--astronaut-image-width) * 0.24);
+        --astronaut-reserve: calc(var(--astronaut-art-width) + var(--astronaut-margin) + var(--astronaut-gap));
+    }
+    .page-about .page-section { height: max(360px, 100svh); }
+    .page-about .about-section {
+        height: max(100svh, calc(var(--about-card-top) + var(--about-card-height) + 80px));
+    }
+    .page-about section video { top: 0; height: 100%; object-fit: cover; clip-path: none; }
+    .page-about #sec_txt { left: 24px; top: 120px; }
+    .page-about #fst_txt { font-size: 120px; line-height: 0.9; white-space: nowrap; }
+    .page-about #keep_txt { left: clamp(12px, 4vw, 60px); }
+    .page-about #line_txt span:not(:last-of-type) { margin-right: clamp(16px, 6vw, 100px); }
+    .page-about #sec_txt.about-mode { top: clamp(72px, calc(var(--about-card-top) - 70px), 110px); }
+    .page-about #about-viewport { --about-card-width: calc(100vw - 64px); top: var(--about-card-top); z-index: 3; width: var(--about-card-width); height: var(--about-card-height); }
+    .page-about #about-astronaut { z-index: 4; }
+    .page-about .about-card { height: var(--about-card-height); padding: 32px; overflow: hidden; }
+    .page-about #about { box-sizing: border-box; height: var(--about-card-height); padding: 32px; overflow: hidden; }
+    .page-about .about-info-layout {
+        width: calc(100% - var(--astronaut-reserve));
+        height: 100%;
+        box-sizing: border-box;
+        align-content: space-between;
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas: "profile" "experience" "education";
+        row-gap: clamp(12px, 1.5vw, 24px);
+    }
+    .page-about .about-content,
+    .page-about .experience-content,
+    .page-about .license-content,
+    .page-about .education-content { position: relative; inset: auto; width: 100%; }
+    .page-about .about-title { font-size: clamp(24px, 2.8vw, 28px); margin-bottom: 18px; }
+    .page-about .skill-content .about-title { font-size: 42px; }
+    .page-about .about-info-layout .about-title { font-size: 42px; margin-bottom: 28px; }
+    .page-about .about-info-layout .about-content > .about-title { margin-bottom: 16px; }
+    .page-about .about-info-layout .experience-content > .about-title,
+    .page-about .about-info-layout .license-content > .about-title,
+    .page-about .about-info-layout .education-content > .about-title { margin-bottom: clamp(16px, 1.3vw, 20px); }
+    .page-about .about-title.education-title { margin-top: 20px; }
+    .page-about .about-row { gap: 12px; min-height: 32px; margin: clamp(8px, 1.2vw, 12px) 0; font-size: 21.6px; line-height: 1.2; }
+    .page-about .about-content > .about-row { font-size: 21.6px; }
+    .page-about .experience-content .experience-row,
+    .page-about .license-content .license-row,
+    .page-about .education-content .education-row { margin-left: clamp(8px, 1.2vw, 18px); }
+    .page-about .experience-content .experience-row { margin-bottom: clamp(14px, 2.1vw, 21px); }
+    .page-about .experience-row .about-row-content { gap: 8px; line-height: 1.2; }
+    .page-about .about-row-content { min-width: 0; overflow-wrap: anywhere; }
+    .page-about .about-row.education-row { font-size: 21.6px; white-space: nowrap; overflow: visible; }
+    .page-about .about-row.education-row .about-row-content { min-width: max-content; white-space: nowrap; overflow-wrap: normal; }
+    .page-about .about-row.education-row { min-height: 0; }
+    .page-about .about-row .about-icon { flex-basis: 32px; width: 32px; height: 32px; }
+    .page-about .about-row .about-icon svg { width: 28px; height: 28px; }
+    .page-about .skill-content { left: 0; }
+    .page-about #about-astronaut { height: var(--about-card-height); }
+    .page-about #about-astronaut img {
+        left: auto;
+        right: calc(var(--astronaut-margin) - var(--astronaut-image-width) * 0.3827);
+        bottom: -15px;
+        width: var(--astronaut-image-width);
+    }
+    .page-about #about-pagination { top: calc(var(--about-card-top) + var(--about-card-height) + 12px); }
+    .page-about #about-pagination button { position: relative; }
+    .page-about #about-pagination button::after { content: ''; position: absolute; inset: -14px -4px; }
+}
+
+@media (min-width: 768px) and (max-width: 1500px) {
+    .page-about .about-info-layout {
+        grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr);
+        grid-template-areas: "profile experience" "education education";
+        column-gap: clamp(12px, 1.5vw, 24px);
+        row-gap: clamp(18px, 2vw, 32px);
+    }
+    .page-about .education-content { padding-top: 22px; }
+}
+
+/* Keep the space between each date and its description consistent. */
+.page-about .education-row .about-row-content {
+    display: grid;
+    grid-template-columns: max-content max-content;
+    align-items: baseline;
+    column-gap: 8px;
+}
+.page-about .experience-row .about-row-content > b,
+.page-about .education-row .about-row-content > b {
+    justify-self: start;
+    text-align: left;
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .page-about { --about-card-top: clamp(160px, calc(90px + 9.36vw), 186px); }
+    .page-about #sec_txt.about-mode { top: clamp(45px, calc(var(--about-card-top) - 115px), 71px); }
+    .page-about #fst_txt { font-size: 76px; line-height: 1.1; white-space: nowrap; }
+    .page-about #sec_txt.about-mode #fst_txt {
+        font-size: 120px;
+        transform: scale(0.45);
+        transform-origin: left top;
+    }
+    .page-about #about { padding: 62px 32px 32px; }
+    .page-about .about-info-layout {
+        width: calc(100% - clamp(190px, 29vw, 260px));
+        height: auto;
+        margin-left: clamp(190px, 29vw, 260px);
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas: "profile" "experience" "education";
+        column-gap: clamp(10px, 1.5vw, 16px);
+        row-gap: clamp(37px, 4.4vw, 40px);
+        align-content: start;
+    }
+    .page-about .about-info-layout .about-title { font-size: clamp(28px, 3.3vw, 30px); margin-bottom: clamp(10px, 1.5vw, 15px); }
+    .page-about .skill-content .about-title { font-size: clamp(28px, 3.3vw, 30px); }
+    .page-about .about-info-layout .about-content > .about-title { margin-bottom: clamp(8px, 1.2vw, 12px); }
+    .page-about .about-info-layout .experience-content > .about-title,
+    .page-about .about-info-layout .license-content > .about-title,
+    .page-about .about-info-layout .education-content > .about-title { margin-bottom: clamp(10px, 1.5vw, 15px); }
+    .page-about .about-row { min-height: 28px; margin: 6px 0; gap: clamp(7px, 1vw, 10px); font-size: calc(clamp(13px, 1.5vw, 15.4px) * 1.2); line-height: 1.2; }
+    .page-about .about-content > .about-row { font-size: calc(clamp(13px, 1.5vw, 15.4px) * 1.2); }
+    .page-about .experience-content .experience-row,
+    .page-about .license-content .license-row,
+    .page-about .education-content .education-row { margin-left: 16px; }
+    .page-about .experience-content .experience-row { min-height: 26px; margin-top: 4px; margin-bottom: 0; }
+    .page-about .experience-row .about-row-content {
+        display: grid;
+        grid-template-columns: var(--about-date-column) max-content;
+        align-items: baseline;
+        gap: 0 8px;
+        line-height: 1.2;
+    }
+    .page-about .experience-row .experience-detail { flex-wrap: nowrap; }
+    .page-about .about-row.education-row { font-size: calc(clamp(13px, 1.5vw, 15.4px) * 1.2); white-space: nowrap; }
+    .page-about .about-row .about-icon { flex-basis: clamp(24px, 2.8vw, 28px); width: clamp(24px, 2.8vw, 28px); height: clamp(24px, 2.8vw, 28px); }
+    .page-about .about-row .about-icon svg { width: clamp(22px, 2.5vw, 26px); height: clamp(22px, 2.5vw, 26px); }
+    .page-about .education-content { padding-top: 0; margin-top: 11px; }
+    .page-about .about-title.education-title { margin-top: 0; }
+    .page-about #about-astronaut img { bottom: 13px; transform: scaleX(1.08); transform-origin: left center; }
+    .page-about .skill-content > .about-title {
+        position: absolute;
+        top: clamp(30px, 4.2vw, 38px);
+        left: clamp(190px, 26.2vw, 240px);
+        transform: none;
+    }
+    .page-about .skill-content .skill-license {
+        right: 32px;
+        left: clamp(190px, 26.2vw, 240px);
+    }
+    .page-about .skill-content .skill-license .license-row { margin-left: 32px; }
+}
+
+@media (min-width: 1025px) and (max-width: 1500px) {
+    .page-about .about-info-layout {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    }
+    .page-about .about-info-layout .about-title,
+    .page-about .skill-content .about-title { font-size: 38px; }
+    .page-about .about-info-layout .about-content > .about-row { font-size: 21.6px; }
+    .page-about #back-to-top {
+        right: 15px;
+        bottom: 15px;
+        width: clamp(60px, 5vw, 76px);
+        height: clamp(60px, 5vw, 76px);
+    }
+    .page-about #back-to-top img { width: 100%; height: 100%; }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .page-about #back-to-top {
+        top: auto;
+        right: 15px;
+        bottom: 15px;
+        width: clamp(56px, 7vw, 72px);
+        height: clamp(56px, 7vw, 72px);
+    }
+    .page-about #back-to-top img { width: 100%; height: 100%; }
+}
+
+@media (max-width: 767px) {
+    .page-about {
+        --about-mobile-body-size: calc(clamp(10px, 3.2vw, 12.5px) + 3px);
+        --about-mobile-body-line: calc(var(--about-mobile-body-size) * 1.2 + 2px);
+        --about-card-top: 132px;
+        --about-card-height: 640px;
+    }
+    .page-about .page-section { height: max(360px, 100svh); }
+    .page-about #sec_txt { left: 16px; top: 140px; }
+    .page-about #fst_txt { font-size: 29px; line-height: 1.2; white-space: nowrap; }
+    .page-about #keep_txt { left: 12px; }
+    .page-about #sec_txt.about-mode { top: 82px; }
+    .page-about #sec_txt.about-mode #fst_txt { transform: scale(0.78); }
+    .page-about #about-viewport { --about-card-width: calc(100vw - 48px); }
+    .page-about .about-card { padding: 38px 40px; border-radius: 20px; }
+    .page-about #about { padding: 38px 40px; }
+    .page-about .about-title { font-size: 24px; margin-bottom: 16px; }
+    .page-about .about-info-layout .about-title { font-size: 36px; margin-bottom: 24px; }
+    .page-about .about-info-layout .about-content > .about-title { margin-bottom: 10px; }
+    .page-about .about-info-layout .experience-content > .about-title,
+    .page-about .about-info-layout .license-content > .about-title,
+    .page-about .about-info-layout .education-content > .about-title { margin-bottom: 12px; }
+    .page-about .about-info-layout { align-content: space-between; row-gap: 0; }
+    .page-about .education-content { padding-top: 0; }
+    .page-about .about-info-layout .education-content { width: calc(100% + var(--astronaut-reserve)); }
+    .page-about .about-info-layout .experience-content { width: calc(100% + var(--astronaut-reserve)); }
+    .page-about .about-info-layout .experience-content { position: relative; top: -10px; }
+    .page-about .about-info-layout .education-content { position: relative; top: -17px; }
+    .page-about .about-title.education-title { margin-top: 6px; }
+    .page-about .about-title { font-size: 24px; }
+    .page-about .skill-content .about-title { font-size: 36px; margin-inline: auto; text-align: center; }
+    .page-about .skill-content > .about-title { transform: translateY(50%); }
+    .page-about .skill-content .skill-license > .about-title {
+        margin-inline: auto;
+        text-align: center;
+        transform: none;
+    }
+    .page-about .skill-content .skill-license .license-row { font-size: 21px; }
+    .page-about .about-info-layout .about-title { font-size: 32px; margin-bottom: 12px; }
+    .page-about .about-info-layout .about-content > .about-title { margin-bottom: 10px; }
+    .page-about .about-info-layout .experience-content > .about-title,
+    .page-about .about-info-layout .license-content > .about-title,
+    .page-about .about-info-layout .education-content > .about-title { margin-bottom: 10px; }
+    .page-about .about-row { font-size: var(--about-mobile-body-size); gap: 8px; line-height: var(--about-mobile-body-line); margin: 1px 0; }
+    .page-about .about-content > .about-row + .about-row { margin-top: 6px; }
+    .page-about .experience-content .experience-row,
+    .page-about .education-content .education-row,
+    .page-about .education-content .education-row .about-row-content { line-height: var(--about-mobile-body-line); }
+    .page-about .experience-row .about-row-content,
+    .page-about .experience-row .experience-detail,
+    .page-about .experience-row .experience-description { line-height: var(--about-mobile-body-line); }
+    .page-about .experience-row .about-row-content { gap: 0; }
+    .page-about .experience-row .about-row-content { grid-template-columns: minmax(0, 1fr); }
+    .page-about .experience-row .about-row-content > b,
+    .page-about .education-row .about-row-content > b { justify-self: start; text-align: left; }
+    .page-about .experience-row .experience-detail {
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: baseline;
+        column-gap: 0.45em;
+        white-space: nowrap;
+        font-size: inherit;
+    }
+    .page-about .experience-row .experience-detail > * { white-space: nowrap; }
+    .page-about .about-content > .about-row { font-size: var(--about-mobile-body-size); line-height: var(--about-mobile-body-line); }
+    .page-about .about-content > .about-row .about-row-content { white-space: nowrap; }
+    .page-about .about-content > .about-row .about-icon {
+        flex-basis: var(--about-mobile-body-size);
+        width: var(--about-mobile-body-size);
+        height: var(--about-mobile-body-size);
+    }
+    .page-about .about-content > .about-row .about-icon svg {
+        width: var(--about-mobile-body-size);
+        height: var(--about-mobile-body-size);
+    }
+    .page-about .about-row { min-height: 0; }
+    .page-about .experience-content .experience-row,
+    .page-about .license-content .license-row,
+    .page-about .education-content .education-row { margin-left: 14px; }
+    .page-about .experience-content .experience-row { margin-bottom: 6px; }
+    .page-about .experience-content .experience-row + .experience-row { margin-top: 4px; }
+    .page-about .education-content .education-row + .education-row { margin-top: 6px; }
+    .page-about .about-row.education-row { font-size: var(--about-mobile-body-size); white-space: nowrap; overflow: visible; line-height: var(--about-mobile-body-line); }
+    .page-about .about-row.education-row { align-items: flex-start; white-space: nowrap; }
+    .page-about .about-row.education-row .about-row-content {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        row-gap: 0;
+        min-width: max-content;
+        white-space: nowrap;
+        overflow-wrap: normal;
+    }
+    .page-about .about-row.education-row .about-row-content b,
+    .page-about .about-row.education-row .education-description { display: block; }
+    .page-about .about-row.education-row .about-row-content b { white-space: nowrap; }
+    .page-about #about-astronaut { border-radius: 20px; }
+    .page-about #about-astronaut img { bottom: 30px; }
+    /* Keep the fixed control in the black space below the card and astronaut. */
+    .page-about #back-to-top {
+        top: auto;
+        right: 15px;
+        bottom: 15px;
+        width: 56px;
+        height: 56px;
+    }
+    .page-about #back-to-top img { width: 56px; height: 56px; }
+    .page-about #about-scroll-hint { filter: invert(1); }
+}
+
+@media (max-width: 400px) {
+    .page-about #about { overflow-y: auto; }
+    .page-about .about-row.education-row { align-items: flex-start; white-space: nowrap; }
+    .page-about .about-row.education-row .about-row-content {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        row-gap: 0;
+        flex: 1 1 0;
+        min-width: max-content;
+        max-width: none;
+        white-space: nowrap;
+        overflow-wrap: normal;
+    }
+    .page-about .about-row.education-row .about-row-content b,
+    .page-about .about-row.education-row .education-description {
+        display: block;
+    }
+    .page-about .about-row.education-row .about-row-content b {
+        white-space: nowrap;
+    }
+}
+
+/* The skill card fits its icons in available space without internal scrolling. */
+.page-about .skill-card { overflow: hidden; }
+.page-about .skill-content .skill-license {
+    position: absolute;
+    inset: auto 88px 24px 0;
+    grid-area: auto;
+    width: auto;
+}
+.page-about .skill-content .skill-license > .about-title {
+    margin: 0 0 12px;
+    text-align: left;
+}
+.page-about .skill-content .skill-license .license-row {
+    min-height: 32px;
+    margin: 0 0 0 16px;
+}
+.page-about .skill-content .skill-scroll-hint {
+    right: 0;
+    left: auto;
+    transform: none;
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .page-about .skill-content .skill-license {
+        bottom: clamp(58px, 6.3vw, 65px);
+        right: 32px;
+        left: clamp(190px, 26.2vw, 240px);
+    }
+    .page-about .skill-content .skill-license .license-row {
+        font-size: calc(clamp(13px, 1.5vw, 15.4px) * 1.2);
+        margin-left: 32px;
+    }
+}
+
+@media (max-width: 767px) {
+    .page-about .skill-content .skill-license {
+        inset-inline: 0;
+        bottom: 56px;
+        width: auto;
+    }
+    .page-about .skill-content .skill-license > .about-title {
+        margin-inline: auto;
+        margin-bottom: 20.8px;
+        text-align: center;
+        transform: none;
+    }
+    .page-about .skill-content .skill-license .license-row {
+        justify-content: center;
+        margin-inline: 0;
+        text-align: center;
+        font-size: var(--about-mobile-body-size);
+        line-height: var(--about-mobile-body-line);
+    }
+    .page-about .skill-content .skill-license .license-row .about-row-content {
+        width: 100%;
+        text-align: center;
+        translate: 0;
+        font-size: var(--about-mobile-body-size);
+        line-height: var(--about-mobile-body-line);
+    }
+    .page-about .skill-grid .skill-item img {
+        transform: scale(0.85);
+        transform-origin: center;
+    }
+    .page-about .skill-content > .about-title,
+    .page-about .skill-content .skill-grid,
+    .page-about .skill-content .skill-license {
+        translate: 0 var(--mobile-skill-lift, 0px);
+    }
+}
+
+@media (min-width: 1501px) {
+    .page-about #about {
+        box-sizing: border-box;
+        height: var(--about-card-height, 640px);
+        padding: 120px 72px 32px;
+    }
+    .page-about .about-info-layout {
+        width: min(1000px, 65%);
+        margin-left: clamp(280px, 24.5%, 375px);
+        grid-template-columns: minmax(0, 0.35fr) minmax(0, 0.65fr);
+        grid-template-areas: "profile experience" "profile education";
+        column-gap: clamp(28px, 2vw, 38px);
+        row-gap: clamp(28px, 2vw, 38px);
+        align-content: start;
+    }
+    .page-about .about-info-layout .about-content > .about-row {
+        min-height: 38px;
+        margin-block: 0;
+        line-height: 1.2;
+    }
+    .page-about .about-info-layout .about-content > .about-row .about-icon {
+        flex-basis: 38px;
+        width: 38px;
+        height: 38px;
+    }
+    .page-about .education-content { padding-top: 0; }
+    .page-about .education-content .education-row {
+        min-height: 26px;
+        margin-block: 0 12px;
+        line-height: 1.2;
+    }
+    .page-about #about-astronaut img {
+        left: calc(var(--about-card-width) * -0.131);
+        width: 880px;
+        bottom: -26px;
+    }
+    .page-about .experience-content .experience-row {
+        margin-bottom: 12px;
+    }
+    .page-about .experience-row .about-row-content {
+        display: grid;
+        grid-template-columns: var(--about-date-column) max-content;
+        align-items: baseline;
+        gap: 0 8px;
+    }
+    .page-about .experience-row .experience-detail {
+        flex-wrap: nowrap;
+    }
+    .page-about .skill-content > .about-title {
+        position: absolute;
+        top: 28px;
+        left: 25%;
+        transform: none;
+    }
+    .page-about .skill-content .skill-license {
+        right: 88px;
+        left: 25%;
+    }
+    .page-about .skill-content .skill-license .license-row {
+        margin-left: 80px;
+    }
+}
+
+@media (min-width: 1025px) and (max-width: 1500px) {
+    .page-about { --about-card-top: clamp(186px, calc(90px + 9.36vw), 231px); }
+    .page-about #sec_txt.about-mode { top: clamp(46px, calc(var(--about-card-top) - 140px), 91px); }
+    .page-about #fst_txt { font-size: 100px; line-height: 1.1; white-space: nowrap; }
+    .page-about #sec_txt.about-mode #fst_txt { font-size: 120px; }
+    .page-about #about { padding: 62px 32px 32px; }
+    .page-about .about-info-layout {
+        --about-info-offset: calc(var(--about-card-width) * 0.35 - 32px);
+        width: calc(100% - var(--about-info-offset));
+        height: auto;
+        margin-left: var(--about-info-offset);
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas: "profile" "experience" "education";
+        row-gap: 81px;
+        align-content: start;
+    }
+    .page-about .about-info-layout .about-title,
+    .page-about .skill-content .about-title { font-size: 38px; }
+    .page-about .about-info-layout .about-content > .about-row {
+        font-size: calc(clamp(13px, 1.5vw, 15.4px) * 1.2);
+        line-height: 1.2;
+    }
+    .page-about .experience-content .experience-row {
+        min-height: 28px;
+        margin: 2px 0 0 24px;
+    }
+    .page-about .experience-row .about-row-content {
+        display: grid;
+        grid-template-columns: var(--about-date-column) max-content;
+        align-items: baseline;
+        gap: 0 8px;
+        line-height: 1.2;
+    }
+    .page-about .experience-row .experience-detail { flex-wrap: nowrap; }
+    .page-about .education-content { padding-top: 0; margin-top: 0; }
+    .page-about .education-content .education-row { margin-left: 24px; }
+    .page-about .about-row.education-row { font-size: calc(clamp(13px, 1.5vw, 15.4px) * 1.2); }
+    .page-about .about-info-layout .about-row {
+        font-size: calc(clamp(13px, 1.5vw, 15.4px) * 1.2);
+        line-height: 1.2;
+        min-height: 0;
+        margin-block: 8px;
+    }
+    .page-about .skill-content .skill-license .license-row {
+        font-size: calc(clamp(13px, 1.5vw, 15.4px) * 1.2);
+        line-height: 1.2;
+        min-height: 0;
+        margin-block: 8px;
+    }
+    .page-about #about-astronaut img {
+        bottom: 13px;
+        transform: scaleX(1.08);
+        transform-origin: left center;
+    }
+    .page-about .skill-content > .about-title {
+        position: absolute;
+        top: 38px;
+        left: calc(var(--about-card-width) * 0.32 - 32px);
+        transform: none;
+    }
+    .page-about .skill-content .skill-license {
+        right: 32px;
+        bottom: clamp(58px, 6.3vw, 65px);
+        left: calc(var(--about-card-width) * 0.32 - 32px);
+    }
+    .page-about .skill-content .skill-license .license-row { margin-left: calc(var(--about-card-width) * 0.04); }
+}
+
+/* Keep the intermediate card content on fixed vertical tracks while its width changes. */
+@media (min-width: 768px) and (max-width: 1500px) {
+    .page-about { --about-card-top: 180px; --about-card-height: 640px; }
+    .page-about #sec_txt.about-mode { top: 77px; }
+    .page-about #sec_txt.about-mode #fst_txt {
+        font-size: 120px;
+        transform: scale(0.45);
+        transform-origin: left top;
+    }
+    .page-about .about-info-layout {
+        display: block;
+        height: 100%;
+        row-gap: 0;
+        align-content: start;
+    }
+    .page-about .about-info-layout .about-content,
+    .page-about .about-info-layout .experience-content,
+    .page-about .about-info-layout .education-content {
+        position: absolute;
+        inset: auto;
+        left: 0;
+        width: 100%;
+    }
+    .page-about .about-info-layout .about-content { top: 0; }
+    .page-about .about-info-layout .experience-content { top: 167px; }
+    .page-about .about-info-layout .education-content { top: 367px; }
+    .page-about .about-info-layout .about-title { font-size: 32px; margin-bottom: 12px; }
+    .page-about .about-info-layout .about-content > .about-title { margin-bottom: 10px; }
+    .page-about .about-info-layout .experience-content > .about-title,
+    .page-about .about-info-layout .education-content > .about-title { margin-bottom: 12px; }
+    .page-about .about-info-layout .education-content > .about-title { margin-top: 0; }
+    .page-about .education-content { margin-top: 0; padding-top: 0; }
+    .page-about .about-info-layout .about-row {
+        min-height: 28px;
+        margin-block: 4px;
+        font-size: 16px;
+        line-height: 1.2;
+        white-space: nowrap;
+    }
+    .page-about .about-info-layout .about-content > .about-row { font-size: 16px; }
+    .page-about .about-info-layout .experience-content .experience-row {
+        min-height: 28px;
+        margin-block: 4px;
+    }
+    .page-about .experience-row .about-row-content,
+    .page-about .education-row .about-row-content { white-space: nowrap; }
+    .page-about .about-row .about-icon { flex-basis: 28px; width: 28px; height: 28px; }
+    .page-about .about-row .about-icon svg { width: 26px; height: 26px; }
+}
+
+@media (min-width: 768px) and (max-width: 800px) {
+    .page-about .about-info-layout {
+        width: calc(100% - 192px);
+        margin-left: 192px;
+    }
+}
+
+@media (min-width: 1300px) and (max-width: 1500px) {
+    .page-about .about-info-layout {
+        display: grid;
+        width: min(1000px, 65%);
+        height: auto;
+        margin-left: clamp(280px, 24.5%, 375px);
+        grid-template-columns: minmax(0, 0.35fr) minmax(0, 0.65fr);
+        grid-template-areas: "profile experience" "profile education";
+        column-gap: clamp(28px, 2vw, 38px);
+        row-gap: 81px;
+        align-content: start;
+    }
+    .page-about .about-info-layout .about-content,
+    .page-about .about-info-layout .experience-content,
+    .page-about .about-info-layout .education-content {
+        position: relative;
+        inset: auto;
+        left: auto;
+        top: auto;
+        width: 100%;
+    }
+}
+
+@media (min-width: 1025px) and (max-width: 1299px) {
+    .page-about .about-info-layout { row-gap: 81px; }
+    .page-about .about-info-layout .experience-content { top: 224px; }
+    .page-about .about-info-layout .education-content { top: 424px; }
+}
+
+/* Keep the laptop layout aligned with the wide-screen card as its width changes. */
+@media (min-width: 1025px) and (max-width: 1500px) {
+    .page-about #about {
+        display: flex;
+        align-items: center;
+        padding: 32px;
+    }
+    .page-about .about-info-layout {
+        display: grid;
+        width: min(1000px, 65%);
+        height: auto;
+        margin-left: clamp(280px, 24.5%, 375px);
+        transform: translateX(var(--about-info-shift, 0px));
+        grid-template-columns: minmax(0, 0.35fr) minmax(0, 0.65fr);
+        grid-template-areas: "profile experience" "profile education";
+        column-gap: clamp(28px, 2vw, 38px);
+        row-gap: clamp(28px, 2vw, 38px);
+        align-content: start;
+    }
+    .page-about .about-info-layout .about-content,
+    .page-about .about-info-layout .experience-content,
+    .page-about .about-info-layout .education-content {
+        position: relative;
+        inset: auto;
+        top: auto;
+        left: auto;
+        width: 100%;
+    }
+    .page-about .about-info-layout .education-content { padding-top: 0; }
+}
+
+@media (min-width: 1025px) and (max-width: 1100px) {
+    .page-about #about-viewport {
+        --about-card-width: calc(100vw - clamp(64px, calc(299px - 21.36vw), 80px));
+    }
+    .page-about .about-info-layout {
+        --about-info-offset: clamp(243px, calc(49.33vw - 263px), 280px);
+        width: min(1000px, 65%);
+        margin-left: var(--about-info-offset);
+    }
+}
+
+@media (min-width: 1025px) and (max-width: 1500px) {
+    .page-about .about-info-layout .about-content > .about-row,
+    .page-about .about-info-layout .experience-content .experience-row,
+    .page-about .about-info-layout .education-content .education-row {
+        font-size: 14px;
+    }
+}
+
+@media (min-width: 1501px) {
+    .page-about .about-info-layout .about-content > .about-row,
+    .page-about .about-info-layout .experience-content .experience-row,
+    .page-about .about-info-layout .education-content .education-row {
+        font-size: 19.6px;
+    }
+}
+
+@media (min-width: 768px) {
+    .page-about .education-row .about-row-content { column-gap: 8px; }
+    .page-about .education-row .about-row-content > b {
+        justify-self: start;
+        text-align: left;
+    }
+    .page-about .education-content .education-row + .education-row .education-description {
+        margin-left: 0.45em;
+    }
+}
+
+@media (min-width: 1025px) and (max-width: 1500px) {
+    .page-about .about-info-layout .about-title { font-size: 35px; }
+    .page-about .about-info-layout .about-content > .about-row,
+    .page-about .about-info-layout .experience-content .experience-row,
+    .page-about .about-info-layout .education-content .education-row { font-size: 17px; }
+}
+
+/* Projects: horizontal width controls the layout; viewport height does not. */
+.page-about #projects_sec .mobile-project-controls { display: none; }
+.page-about #projects_sec .note-page-mobile-break { display: none; }
+
+@media (max-width: 1024px) {
+    .page-about #projects_sec #project-note {
+        aspect-ratio: 1374 / 1145;
+    }
+    .page-about #projects_sec #project-note-paper {
+        inset: 0;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+@media (min-width: 768px) {
+    .page-about #projects_sec {
+        height: 1080px;
+        min-height: 1080px;
+    }
+    .page-about #projects_sec #pro_2 { height: 1080px; }
+    .page-about #projects_sec #project-note {
+        top: 94px;
+        transform: none;
+    }
+}
+
+@media (min-width: 1025px) {
+    .page-about #projects_sec .desktop-project-composition {
+        position: absolute;
+        z-index: 0;
+        top: 50%;
+        left: 50%;
+        width: 1740px;
+        height: 1080px;
+        margin-left: -870px;
+        transform: translateY(-50%) scale(var(--desktop-project-scale, 1));
+        transform-origin: center center;
+    }
+    .page-about #projects_sec .desktop-project-composition #pro_2 {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+        padding: 0;
+        place-items: center start;
+    }
+    .page-about #projects_sec .desktop-project-composition #tv_stage {
+        position: relative;
+        left: 148px;
+        width: 1035px;
+        margin-left: 0;
+        transform: scale(0.8);
+        transform-origin: left center;
+    }
+    .page-about #projects_sec #project-note {
+        top: 94px;
+        right: auto;
+        left: 1025px;
+        z-index: 1;
+        width: 715px;
+        transform: none;
+        --note-content-left: 140px;
+        --note-card-left: 165.2px;
+        --note-card-two-left: 176px;
+        --note-card-copy-left: 147px;
+        --note-card-two-copy-left: 162px;
+        --note-page-copy-left: 89px;
+        --note-page-copy-width: 410px;
+    }
+    .page-about #projects_sec #tv_tittle { left: var(--note-content-left); }
+    .page-about #projects_sec #project-note .note-card { left: var(--note-card-left); width: 46.2%; }
+    .page-about #projects_sec #project-note .note-card-two { left: var(--note-card-two-left); }
+    .page-about #projects_sec #project-note .note-card-copy { left: var(--note-card-copy-left); }
+    .page-about #projects_sec #project-note .note-card-two .note-card-copy { left: var(--note-card-two-copy-left); }
+    .page-about #projects_sec .note-page-two-copy {
+        left: var(--note-page-copy-left);
+        width: var(--note-page-copy-width);
+    }
+    .page-about #projects_sec #project-note .note-card-one .note-card-copy {
+        top: 50%;
+        left: 50%;
+        width: max-content;
+        max-width: 100%;
+        text-align: center;
+        white-space: nowrap;
+    }
+    .page-about #projects_sec #project-note .note-card-two .note-card-copy {
+        top: 50%;
+        left: 50%;
+        width: max-content;
+        max-width: 100%;
+        text-align: center;
+        align-items: center;
+        white-space: nowrap;
+        transform: translate(-50%, -50%);
+    }
+    .page-about #projects_sec #project-note.is-details-visible .note-card-one .note-card-copy {
+        animation: noteContentRiseCenteredDesktop 560ms ease-out both;
+    }
+    .page-about #projects_sec #project-note.is-details-visible .note-card-two .note-card-copy {
+        animation: noteContentRiseCenteredDesktop 560ms ease-out both;
+    }
+    @keyframes noteContentRiseCenteredDesktop {
+        from { opacity: 0; transform: translate(-50%, calc(-50% + 18px)); }
+        to { opacity: 1; transform: translate(-50%, -50%); }
+    }
+}
+
+@media (max-width: 1024px) {
+    .page-about #projects_sec .desktop-project-composition { display: contents; }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .page-about #projects_sec #tv_tittle { font-size: clamp(24px, 7.2cqw, 42px); }
+}
+@media (max-width: 767px) {
+    .page-about #projects_sec {
+        display: flex;
+        height: auto;
+        min-height: 100vh;
+        min-height: 100dvh;
+        flex-direction: column;
+        align-items: center;
+        overflow: visible;
+    }
+    .page-about #projects_sec #pro_1 { display: none; }
+    .page-about #projects_sec #pro_2 {
+        position: relative;
+        inset: auto;
+        display: block;
+        flex: none;
+        width: 100%;
+        height: calc(clamp(64px, 9vw, 92px) + min(51.11vw, 340.7px) + 83px);
+        padding: 0;
+    }
+    .page-about #projects_sec #tv_stage {
+        position: absolute;
+        top: clamp(64px, 9vw, 92px);
+        left: 50%;
+        width: min(84vw, 560px);
+        margin: 0;
+        transform: translateX(-50%) scale(0.9);
+        transform-origin: center top;
+    }
+    .page-about #projects_sec #keycap_wrap {
+        display: none;
+    }
+    .page-about #projects_sec #project-note {
+        position: relative;
+        top: auto;
+        right: auto;
+        left: auto;
+        flex: none;
+        width: min(calc(100vw - 32px), 600px);
+        margin: 12px auto 24px;
+        transform: none;
+    }
+    .page-about #projects_sec #tv_tittle { font-size: clamp(20px, 6vw, 42px); }
+    .page-about #projects_sec #note-intro-prompt { font-size: clamp(12px, 3.5vw, 18px); }
+    .page-about #projects_sec #tv_small_txt {
+        max-width: min(86vw, 100%);
+        font-size: clamp(9px, 2.5vw, 12px);
+    }
+    .page-about #projects_sec #tv_stage.is-transitioning #tv_small_txt,
+    .page-about #projects_sec #tv_stage.is-details-visible #tv_small_txt {
+        font-size: clamp(10px, 3vw, 14px);
+    }
+    .page-about #projects_sec .mobile-project-controls {
+        position: absolute;
+        z-index: 8;
+        top: calc(100% + 8px);
+        left: 50%;
+        display: flex;
+        gap: 5.56px;
+        transform: translateX(-50%);
+    }
+    .page-about #projects_sec .mobile-project-arrow.mobile-project-prev {
+        display: none;
+    }
+    .page-about #projects_sec .mobile-project-arrow {
+        display: grid;
+        width: 33.333px;
+        height: 33.333px;
+        padding: 0;
+        place-items: center;
+        border: 2px solid #d28a80;
+        border-radius: 0;
+        background: #fff;
+        color: #d28a80;
+        font: 600 22px/1 'Noto Sans KR', sans-serif;
+        cursor: pointer;
+        transition: border-color 140ms ease, color 140ms ease, transform 140ms ease, filter 140ms ease;
+        -webkit-tap-highlight-color: transparent;
+    }
+    .page-about #projects_sec .mobile-project-arrow:hover,
+    .page-about #projects_sec .mobile-project-arrow:focus-visible,
+    .page-about #projects_sec .mobile-project-arrow.is-pressed {
+        border-color: brown;
+    }
+    .page-about #projects_sec .mobile-project-channel {
+        display: grid;
+        width: 33.333px;
+        height: 33.333px;
+        padding: 0;
+        place-items: center;
+        border: 2px solid #d28a80;
+        border-radius: 0;
+        background: #fff;
+        color: #d28a80;
+        font: 600 12px/1 'Share Tech Mono', monospace;
+        cursor: pointer;
+        transition: border-color 140ms ease, background-color 140ms ease, color 140ms ease, transform 140ms ease, filter 140ms ease;
+    }
+    .page-about #projects_sec .mobile-project-channel:hover,
+    .page-about #projects_sec .mobile-project-channel:focus-visible {
+        border-color: brown;
+    }
+    .page-about #projects_sec .mobile-project-channel.is-active {
+        border-color: #9d272a;
+        background: #9d272a;
+        color: #fff;
+    }
+    .page-about #projects_sec .mobile-project-channel.is-pressed {
+        transform: translateY(1px);
+    }
+    .page-about #projects_sec .mobile-project-arrow:active,
+    .page-about #projects_sec .mobile-project-arrow.is-pressed {
+        transform: translateY(1px);
+    }
+    .page-about #projects_sec #tv_small_txt {
+        top: calc(100% + 52px);
+        right: auto;
+        left: 50%;
+        max-width: min(90vw, 350px);
+        font-size: clamp(8px, 2.1vw, 12px);
+        text-align: center;
+        transform: translateX(-50%);
+    }
+}
+
+@media (max-width: 767px) {
+    .page-about #projects_sec #tv_stage.is-transitioning #tv_small_txt,
+    .page-about #projects_sec #tv_stage.is-details-visible #tv_small_txt {
+        right: auto;
+        left: 50%;
+        width: max-content;
+        max-width: none;
+        overflow: visible;
+        font-size: calc(clamp(10px, 3vw, 14px) - 2px);
+        white-space: nowrap;
+        text-align: center;
+        transform: translateX(-50%);
+    }
+}
+
+@media (max-width: 767px) {
+    .page-about #projects_sec #pro_2 {
+        height: calc(clamp(64px, 9vw, 92px) + min(51.11vw, 340.7px) + 83px);
+    }
+    .page-about #projects_sec #project-note {
+        width: min(calc(100vw - 24px), 360px);
+        margin-top: 12px;
+    }
+    .page-about #projects_sec #tv_tittle { font-size: clamp(18px, 8cqw, 30px); }
+    .page-about #projects_sec #note-intro-prompt { font-size: clamp(12px, 4cqw, 18px); }
+}
+
+/* Laptop composition scales as one unit; keep the TV caption's design size fixed. */
+@media (min-width: 1025px) and (max-width: 1500px) {
+    .page-about #projects_sec #tv_stage #tv_small_txt,
+    .page-about #projects_sec #tv_stage.is-transitioning #tv_small_txt,
+    .page-about #projects_sec #tv_stage.is-details-visible #tv_small_txt {
+        font-size: 18.725px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .page-about #projects_sec {
+        height: auto !important;
+        min-height: 100dvh;
+        overflow: visible;
+    }
+    .page-about #projects_sec #pro_2,
+    .page-about #projects_sec #project-note {
+        flex: 0 0 auto;
+    }
+    .page-about #projects_sec #project-note {
+        max-height: none;
+        overflow: visible;
+    }
+    .page-about #projects_sec #astronaut-project-pill {
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) !important;
+    }
+    .page-about #projects_sec #project-note .note-card-copy {
+        font-size: clamp(9px, 2.6cqw, 14px);
+        font-weight: 600;
+        line-height: 1.25;
+        white-space: normal;
+    }
+    .page-about #projects_sec #project-note .note-card-one .note-card-copy {
+        left: 0;
+        width: 100%;
+        max-width: 100%;
+        padding-inline: 3%;
+        text-align: center;
+    }
+    .page-about #projects_sec #project-note .note-card-two .note-card-copy {
+        gap: 3px;
+    }
+    .page-about #projects_sec #project-note .note-page-two-content {
+        top: 4%;
+        left: 4%;
+        width: 92%;
+        height: 92%;
+    }
+    .page-about #projects_sec #project-note .note-page-two-copy {
+        top: 3%;
+        left: 5%;
+        width: 90%;
+    }
+    .page-about #projects_sec #project-note .note-page-two-heading {
+        margin: 0 0 clamp(6px, 1.5cqw, 10px);
+    }
+    .page-about #projects_sec #project-note .note-page-two-heading > span {
+        font-size: clamp(7px, 1.6cqw, 9px);
+    }
+    .page-about #projects_sec #project-note .note-page-two-heading strong {
+        font-size: clamp(13px, 3.4cqw, 18px);
+    }
+    .page-about #projects_sec #project-note .note-page-two-section h3 {
+        font-size: clamp(7px, 1.4cqw, 9px);
+    }
+    .page-about #projects_sec #project-note .note-page-two-section + .note-page-two-section {
+        margin-top: clamp(2px, 0.8cqw, 5px);
+    }
+    .page-about #projects_sec #project-note .note-page-two-section p {
+        width: auto;
+        font-size: clamp(8px, 2cqw, 11px);
+        line-height: 1.2;
+        white-space: normal;
+    }
+}
+
+/* Match the mobile reference: a broad note below the TV, with side margins. */
+@media (max-width: 767px) {
+    .page-about #projects_sec #project-note {
+        width: min(calc(100vw - 48px), 715px);
+        margin-top: 12px;
+    }
+}
+
+/* Tablet: keep the TV group at the top and place the note in normal flow below it. */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .page-about #projects_sec {
+        display: flex;
+        height: auto !important;
+        min-height: 100dvh;
+        flex-direction: column;
+        align-items: center;
+        overflow: visible !important;
+        padding-bottom: clamp(140px, 18vw, 184px);
+    }
+    .page-about #projects_sec #pro_1 { display: none; }
+    .page-about #projects_sec #pro_2 {
+        position: relative;
+        inset: auto;
+        display: block;
+        flex: none;
+        width: 100%;
+        height: calc(45vw + 48px);
+        box-sizing: border-box;
+        padding: 0;
+    }
+    .page-about #projects_sec #tv_stage {
+        position: absolute;
+        top: 13.4vw;
+        left: clamp(92px, 13.4vw, 140px);
+        width: 65vw;
+        margin: 0;
+        transform: scale(0.72);
+        transform-origin: left top;
+    }
+    .page-about #projects_sec #keycap_wrap {
+        width: 32%;
+    }
+    .page-about #projects_sec #project-note {
+        position: relative;
+        top: auto;
+        right: auto;
+        left: auto;
+        align-self: flex-start;
+        width: min(54vw, 553px);
+        margin: 8px 0 24px 26vw;
+        transform: none;
+    }
+    .page-about #projects_sec #tv_small_txt { right: -23px; }
+}
+
+/* Mobile and tablet memo interiors follow the supplied page layouts. */
+@media (max-width: 1024px) {
+    .page-about #projects_sec #project-note #tv_tittle {
+        top: 10.5%;
+        left: 10.8%;
+        font-size: clamp(25px, 7.2cqw, 42px);
+        line-height: 0.95;
+    }
+    .page-about #projects_sec #project-note #note-description {
+        top: 19.4%;
+        left: 11.3%;
+        width: 78%;
+        font-size: 1.95cqw;
+        font-weight: 700;
+        line-height: 1.35;
+        white-space: nowrap;
+    }
+    .page-about #projects_sec #project-note .note-card {
+        box-shadow: 0 4px 9px rgba(0, 0, 0, 0.2);
+    }
+    .page-about #projects_sec #project-note .note-card-one {
+        top: 29.8%;
+        left: 15.4%;
+        width: 51.8%;
+        height: 25%;
+    }
+    .page-about #projects_sec #project-note .note-card-two {
+        top: 62.5%;
+        left: 28.5%;
+        width: 54.5%;
+        height: 26.5%;
+    }
+    .page-about #projects_sec #project-note .note-card-copy {
+        font-size: clamp(9px, 2.5cqw, 14px);
+        font-weight: 600;
+        line-height: 1.45;
+        white-space: nowrap;
+    }
+    .page-about #projects_sec #project-note .note-card-one .note-card-copy {
+        top: 50%;
+        left: 0;
+        width: 100%;
+        max-width: 100%;
+        padding: 0 3%;
+        text-align: center;
+        transform: translateY(-50%);
+    }
+    .page-about #projects_sec #project-note.is-details-visible .note-card-one .note-card-copy {
+        animation: noteContentRiseTablet 560ms ease-out both;
+    }
+    .page-about #projects_sec #project-note .note-card-two .note-card-copy {
+        top: 19.9%;
+        left: 22.7%;
+        gap: 7px;
+        line-height: 1.3;
+    }
+    .page-about #projects_sec #project-note .note-tape-one-left { left: 12.7%; top: 24.5%; }
+    .page-about #projects_sec #project-note .note-tape-one-right { left: 60.3%; top: 45.5%; }
+    .page-about #projects_sec #project-note .note-tape-two-left { left: 24.1%; top: 59.2%; }
+    .page-about #projects_sec #project-note .note-tape-two-right { left: 74.6%; top: 77%; }
+
+    .page-about #projects_sec #project-note .note-page-two-content {
+        top: 4%;
+        left: 4%;
+        width: 92%;
+        height: 92%;
+    }
+    .page-about #projects_sec #project-note .note-page-two-copy {
+        top: 9%;
+        left: 5%;
+        width: 90%;
+    }
+    .page-about #projects_sec #project-note .note-page-two-heading {
+        margin: 0 0 clamp(7px, 2.2cqw, 12px) 10.4%;
+        line-height: 1;
+    }
+    .page-about #projects_sec #project-note .note-page-two-heading > span {
+        margin-bottom: 3px;
+        font-size: clamp(8px, 2.1cqw, 12px);
+        font-weight: 800;
+        line-height: 1.15;
+    }
+    .page-about #projects_sec #project-note .note-page-two-heading strong {
+        width: 150%;
+        font-size: clamp(22px, 6.2cqw, 36px);
+        line-height: 0.95;
+    }
+    .page-about #projects_sec #project-note .note-page-two-section {
+        grid-template-columns: 10.4% minmax(0, 1fr);
+    }
+    .page-about #projects_sec #project-note .note-page-two-section h3 {
+        margin: 0 0 2px;
+        font-size: clamp(8px, 1.85cqw, 11px);
+        font-weight: 700;
+        line-height: 1.2;
+    }
+    .page-about #projects_sec #project-note .note-page-two-section .note-page-two-number {
+        font-size: clamp(7px, 1.7cqw, 10px);
+        font-weight: 700;
+        line-height: 1.2;
+    }
+    .page-about #projects_sec #project-note .note-page-two-section p {
+        width: auto;
+        font-size: clamp(8px, 1.85cqw, 11px);
+        font-weight: 400;
+        line-height: 1.3;
+        white-space: normal;
+        word-break: keep-all;
+    }
+    .page-about #projects_sec #project-note .note-page-two-section + .note-page-two-section {
+        margin-top: clamp(10px, 3.3cqw, 18px);
+    }
+}
+
+@keyframes noteContentRiseTablet {
+    from { opacity: 0; transform: translateY(calc(-50% + 18px)); }
+    to { opacity: 1; transform: translateY(-50%); }
+}
+
+@media (max-width: 767px) {
+    .page-about #projects_sec #project-note #tv_tittle {
+        font-size: clamp(22px, 7.2cqw, 34px);
+    }
+    .page-about #projects_sec #project-note #note-description {
+        top: 19.4%;
+        font-size: 1.95cqw;
+    }
+    .page-about #projects_sec #project-note .note-card-copy {
+        font-size: clamp(8px, 2.3cqw, 10px);
+        line-height: 1.35;
+    }
+    .page-about #projects_sec #project-note .note-card-two .note-card-copy {
+        gap: 4px;
+    }
+    .page-about #projects_sec #project-note .note-page-two-heading {
+        margin-bottom: clamp(6px, 2.2cqw, 10px);
+    }
+    .page-about #projects_sec #project-note .note-page-two-heading strong {
+        font-size: clamp(22px, 6.2cqw, 30px);
+    }
+    .page-about #projects_sec #project-note .note-page-two-section + .note-page-two-section {
+        margin-top: clamp(9px, 3.3cqw, 15px);
+    }
+}
+
+/* Keep the rotated wide paper inside the responsive section's scrollable height. */
+@media (max-width: 767px) {
+    .page-about #projects_sec {
+        box-sizing: border-box;
+        padding-bottom: clamp(64px, 8vw, 82px);
+    }
+}
+
+@media (max-width: 767px) {
+    .page-about #projects_sec #project-note {
+        width: min(calc(100vw - 48px), 452px);
+        margin-bottom: 24px;
+    }
+    .page-about #projects_sec #astronaut-project-pill {
+        width: 52%;
+        height: 18%;
+        box-shadow: 0 0.65vw 0 rgba(83, 20, 20, 0.95), 0 1.05vw 1.5vw rgba(0, 0, 0, 0.28);
+    }
+    .page-about #projects_sec #astronaut-project-pill .project-pill-bg {
+        box-shadow: inset 0 0.25vw 0 rgba(255, 255, 255, 0.24), inset 0 -0.65vw 0 rgba(83, 20, 20, 0.32);
+    }
+    .page-about #projects_sec #astronaut-project-pill .label {
+        font-size: clamp(4px, 1.35vw, 10.4px);
+    }
+}
+
+/* The second wide memo uses the two-column coordinates of 2번메모지참고.png. */
+@media (max-width: 1024px) {
+    .page-about #projects_sec .note-page-mobile-break { display: block; }
+    .page-about #projects_sec #project-note .note-page-two-copy {
+        top: 4%;
+        z-index: 1;
+    }
+    .page-about #projects_sec #project-note .note-page-two-heading {
+        margin: 0 0 0 8%;
+    }
+    .page-about #projects_sec #project-note .note-page-two-heading strong {
+        font-size: 6.5cqw;
+    }
+    .page-about #projects_sec #project-note .note-page-two-section {
+        position: absolute;
+        left: 29%;
+        width: 71%;
+        margin: 0;
+        grid-template-columns: 10.4% minmax(0, 1fr);
+    }
+    .page-about #projects_sec #project-note .note-page-two-section:nth-of-type(1) { top: 13.1cqw; }
+    .page-about #projects_sec #project-note .note-page-two-section:nth-of-type(2) { top: 31.8cqw; }
+    .page-about #projects_sec #project-note .note-page-two-section:nth-of-type(3) { top: 49.5cqw; }
+    .page-about #projects_sec #project-note .note-page-two-section + .note-page-two-section {
+        margin-top: 0;
+    }
+    .page-about #projects_sec #project-note .note-page-two-heading > span {
+        font-size: clamp(5px, 2.1cqw, 11px);
+    }
+    .page-about #projects_sec #project-note .note-page-two-section h3 {
+        margin-bottom: 1.3cqw;
+        font-size: 2.1cqw;
+    }
+    .page-about #projects_sec #project-note .note-page-two-section .note-page-two-number {
+        font-size: 1.9cqw;
+    }
+    .page-about #projects_sec #project-note .note-page-two-section p {
+        font-size: 2.1cqw;
+        font-weight: 500;
+        line-height: 1.62;
+    }
+}
+
+@media (max-width: 767px) {
+    .page-about #projects_sec #tv_no {
+        font-size: clamp(12px, 3.6vw, 21px);
+    }
+    .page-about #projects_sec .mobile-project-arrow {
+        font-size: 17px;
+    }
+    .page-about #projects_sec #project-note .note-page-two-heading strong {
+        font-size: 6.5cqw;
+    }
+}

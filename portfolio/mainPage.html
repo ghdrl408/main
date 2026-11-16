@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>LKJoo Portfolio</title>
+    </head>
+    <style>
+        @font-face {
+            font-family: 'Noto Sans';
+            src: url('pf_font/NotoSans-VariableFont_wdth,wght.ttf') format('truetype');
+            font-weight: 100 900;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Noto Sans KR';
+            src: url('pf_font/NotoSansKR-VariableFont_wght.ttf') format('truetype');
+            font-weight: 100 900;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Neue Haas Display Thin Italic';
+            src: url('pf_font/NeueHaasDisplayThinItalic.ttf') format('truetype');
+            font-weight: 100;
+            font-style: italic;
+        }
+
+        @font-face {
+            font-family: 'Thirthy Demo';
+            src: url('pf_font/Thirthy Demo.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        *{
+            margin: 0;
+            padding: 0;
+            cursor: none;
+        }
+
+        html, body, body * {
+            cursor: none !important;
+        }
+
+        ::selection {
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+        }
+
+        ::-moz-selection {
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+        }
+
+        #wrap .marquee h1::selection,
+        #wrap .marquee h1 *::selection,
+        #wrap .marquee h1::-moz-selection,
+        #wrap .marquee h1 *::-moz-selection,
+        #wrap.is-playing .tel::selection,
+        #wrap.is-playing .tel::-moz-selection,
+        #wrap.is-playing-3 .tel::selection,
+        #wrap.is-playing-3 .tel::-moz-selection {
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+        }
+
+        body {
+            font-family: 'Noto Sans', 'Noto Sans KR', sans-serif;
+        }
+
+        #custom-cursor {
+            position: fixed;
+            z-index: 9999;
+            width: 18px;
+            height: 18px;
+            border: none;
+            background-color: white;
+            mix-blend-mode: difference;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            transform: translate(-50%, -50%);
+            transition: width 0.1s ease, height 0.1s ease, opacity 0.1s ease;
+        }
+
+        #custom-cursor.is-visible {
+            opacity: 1;
+        }
+
+        #custom-cursor.is-clicking {
+            width: 40.5px;
+            height: 40.5px;
+            background-color: royalblue;
+        }
+
+        #wrap {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            height: 100vh;
+            background-color: white;
+        }
+
+        #bg-video {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+
+        #wrap.is-playing #bg-video {
+            opacity: 0.8;
+        }
+
+        #bg-video-2 {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+
+        #wrap.is-playing-2 #bg-video-2 { opacity: 0.8; }
+
+        #bg-video-3 {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+
+        #wrap.is-playing-3 #bg-video-3 {
+            opacity: 0.8;
+        }
+
+        #wrap.is-playing h1,
+        #wrap.is-playing .tel {
+            color: white;
+        }
+
+        #wrap.is-playing h1 {
+            color: black;
+            mix-blend-mode: normal;
+        }
+
+        #wrap.is-playing #con_wrap > a:first-child .con:hover {
+            border-color: transparent;
+        }
+
+        #wrap.is-playing-2 h1,
+        #wrap.is-playing-2 .tel { color: white; }
+
+        #wrap.is-playing-2 h1 {
+            color: black;
+            mix-blend-mode: normal;
+        }
+
+        #wrap.is-playing-2 #con_wrap > a:nth-child(2) .con:hover {
+            border-color: transparent;
+        }
+
+        #wrap.is-playing-3 h1,
+        #wrap.is-playing-3 .tel {
+            color: white;
+        }
+
+        #wrap.is-playing-3 h1 {
+            color: black;
+            mix-blend-mode: normal;
+        }
+
+        #wrap.is-playing-3 #con_wrap > a:nth-child(3) .con:hover {
+            border-color: transparent;
+        }
+
+        
+
+        section {
+            position: relative;
+            z-index: auto;
+            width: 100%;
+            height: 100vh;
+        }
+
+        
+
+        h1 {
+            font-size: 132.5px;
+            font-weight: 400;
+            flex: 0 0 auto;
+            white-space: nowrap;
+            padding-right: 60px;
+        }
+
+        #wrap .marquee h1 {
+            position: relative;
+            z-index: 2;
+            color: white;
+            mix-blend-mode: normal;
+            user-select: text;
+            -webkit-user-select: text;
+            pointer-events: auto;
+        }
+
+        #wrap .marquee h1::selection,
+        #wrap .marquee h1 *::selection,
+        #wrap .marquee h1::-moz-selection,
+        #wrap .marquee h1 *::-moz-selection {
+            background-color: transparent !important;
+            color: inherit !important;
+        }
+
+        .marquee-selection-bg {
+            position: fixed;
+            z-index: 1;
+            pointer-events: none;
+            background-color: rgba(255, 255, 255, 0.8);
+            mix-blend-mode: difference;
+        }
+
+        .marquee {
+            width: 100%;
+            margin: 37.5px 0 37.5px 0;
+            overflow: hidden;
+            mix-blend-mode: difference;
+        }
+
+        .marquee-track {
+            display: flex;
+            width: max-content;
+            will-change: transform;
+        }
+
+        .marquee-group {
+            display: flex;
+            flex-shrink: 0;
+        }
+
+        @keyframes marquee {
+            from {
+                transform: translateX(0);
+            }
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+        h1 .name {
+            display: inline-block;
+            font: 200 clamp(56px, 10.8vw, 155px) / 1.25 'Thirthy Demo';
+            margin-right: 10px;
+            transform: rotate(-6.5deg);
+        }
+
+        h1 .L {
+            font-size: clamp(69px, 13.2vw, 190px);
+            position: relative;
+            left: 15px;
+        }
+
+        #con_wrap {
+            margin-top: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 60px;
+        }
+
+        #con_wrap > a {
+            display: block;
+            transition: transform 1s ease;
+        }
+
+        #con_wrap > a:first-child {
+            transform: translateX(217.5px);
+        }
+
+        #con_wrap > a:nth-child(2) {
+            opacity: 0;
+            transform: translateX(270px);
+            transition: transform 1s ease;
+        }
+
+        #con_wrap > a:nth-child(3) {
+            transform: translateX(-217.5px);
+        }
+
+        #con_wrap.intro-moving > a:first-child,
+        #con_wrap.intro-center-moving > a:first-child {
+            transform: translateX(0);
+        }
+
+        #con_wrap.intro-moving > a:nth-child(3),
+        #con_wrap.intro-center-moving > a:nth-child(3) {
+            transform: translateX(0);
+        }
+
+        #con_wrap.intro-center-moving > a:nth-child(2),
+        #con_wrap.intro-ready > a:nth-child(2) {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        #con_wrap:not(.intro-ready) {
+            pointer-events: none;
+        }
+
+        .con {
+            position: relative;
+            overflow: visible;
+            width: 187.5px;
+            height: 187.5px;
+            border-radius: 50%;
+            border: 11.25px solid black;
+        }
+
+        .con > div {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: black;
+            font-size: 30px;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+
+        #con_wrap .con > div {
+            font-family: 'Neue Haas Display Thin Italic', sans-serif;
+            font-weight: 100;
+            font-style: italic;
+        }
+
+        .con:hover > div {
+            opacity: 1;
+            color: white;
+        }
+
+        .con:hover {
+            border-color: transparent;
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+
+        #con_txt_left {
+            position: absolute;
+            left: -112.5px;
+            color: black;
+            pointer-events: none;
+        }
+
+        #con_txt_left::after {
+            content: 'About me';
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            clip-path: circle(105px at 206.25px 50%);
+        }
+
+        #con_txt_right {
+            position: absolute;
+            right: -119.5px;
+            color: black;
+            pointer-events: none;
+            
+        }
+
+        #con_txt_right::after {
+            content: attr(data-text);
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font: inherit;
+            line-height: inherit;
+            text-align: inherit;
+            white-space: nowrap;
+            clip-path: circle(105px at 93.75px 50%);
+        }
+
+        #tel_wrap {
+            position: absolute;
+            z-index: 2;
+            bottom: 65px;
+            left: 33.75px;
+            pointer-events: auto;
+            user-select: text !important;
+            -webkit-user-select: text !important;
+            -moz-user-select: text !important;
+            -ms-user-select: text !important;
+        } 
+
+        #tel_wrap .tel {
+            pointer-events: auto;
+            user-select: text !important;
+            -webkit-user-select: text !important;
+            -moz-user-select: text !important;
+            -ms-user-select: text !important;
+        }
+        
+        .tel {
+            font: 22.5px / 33.75px '';
+            float: left;
+            margin-right: 18.75px;
+        }
+
+
+
+
+
+
+
+    </style>
+    <link rel="stylesheet" href="responsive.css">
+    <body class="page-home">
+        <div id="custom-cursor"></div>
+        <div id="wrap">
+            <video id="bg-video" src="pf_img/1.mp4" muted loop playsinline></video>
+            <video id="bg-video-2" src="pf_img/2.mp4" muted loop playsinline></video>
+            <video id="bg-video-3" src="pf_img/3.mp4" muted loop playsinline></video>
+
+            <section>
+                <div class="marquee">
+                    <div class="marquee-track">
+                        <div class="marquee-group">
+                            <h1>Web Publisher Portfolio<span class="name"><span class="L">L</span>eeKIjoo</span></h1>
+                        </div>
+                        <div class="marquee-group" aria-hidden="true">
+                            <h1>Web Publisher Portfolio<span class="name"><span class="L">L</span>eeKIjoo</span></h1>
+                        </div>
+                        <div class="marquee-group" aria-hidden="true">
+                            <h1>Web Publisher Portfolio<span class="name"><span class="L">L</span>eeKIjoo</span></h1>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="tel_wrap">
+                    <div class="tel">Tel. <br> 010.0000.0000</div>
+                    <div class="tel">Mail. <br> aaaaa@gmail.com</div>
+                </div>
+
+                <div id="con_wrap">
+                    <a href="aboutMe.html"><div class="con"><div id="con_txt_left">About me</div></div></a>
+                    <a href="aboutMe.html#projects_sec"><div class="con"><div>Projects</div></div></a>
+                    <a href="aboutMe.html#contact-section"><div class="con"><div id="con_txt_right" data-text="Contact">Contact</div></div></a>
+                </div>
+            </section>
+
+        </div>
+
+
+
+
+
+
+        <script>
+            const firstCon = document.querySelector('#con_wrap > a:first-child .con');
+            const secondCon = document.querySelector('#con_wrap > a:nth-child(2) .con');
+            const thirdCon = document.querySelector('#con_wrap > a:nth-child(3) .con');
+            const wrap = document.querySelector('#wrap');
+            const firstVideo = document.querySelector('#bg-video');
+            const secondVideo = document.querySelector('#bg-video-2');
+            const thirdVideo = document.querySelector('#bg-video-3');
+            const customCursor = document.querySelector('#custom-cursor');
+            const conWrap = document.querySelector('#con_wrap');
+            let resetTimer;
+            let secondResetTimer;
+            let thirdResetTimer;
+
+            setTimeout(() => {
+                conWrap.classList.add('intro-moving');
+            }, 800);
+
+            setTimeout(() => {
+                conWrap.classList.add('intro-center-moving');
+            }, 1800);
+
+            setTimeout(() => {
+                conWrap.classList.add('intro-ready');
+            }, 3000);
+
+            document.addEventListener('mousemove', (event) => {
+                customCursor.style.left = `${event.clientX}px`;
+                customCursor.style.top = `${event.clientY}px`;
+                customCursor.classList.add('is-visible');
+
+                const hoveredAnchor = document.elementFromPoint(event.clientX, event.clientY)?.closest('a');
+                const isInsideAnchor = Boolean(hoveredAnchor);
+
+                const isIntroActive = !conWrap.classList.contains('intro-ready');
+                customCursor.classList.toggle(
+                    'is-clicking',
+                    !isIntroActive && isInsideAnchor
+                );
+            });
+
+            document.addEventListener('mouseleave', () => {
+                customCursor.classList.remove('is-clicking');
+            });
+
+            firstCon.addEventListener('mouseenter', () => {
+                clearTimeout(resetTimer);
+                wrap.classList.add('is-playing');
+                firstVideo.play();
+            });
+
+            firstCon.addEventListener('mouseleave', () => {
+                wrap.classList.remove('is-playing');
+                resetTimer = setTimeout(() => {
+                    firstVideo.pause();
+                    firstVideo.currentTime = 0;
+                }, 300);
+            });
+
+            secondCon.addEventListener('mouseenter', () => {
+                clearTimeout(secondResetTimer);
+                secondVideo.currentTime = 0;
+                const revealSecondVideo = () => {
+                    if (secondCon.matches(':hover')) wrap.classList.add('is-playing-2');
+                };
+                secondVideo.play().then(() => {
+                    if ('requestVideoFrameCallback' in secondVideo) {
+                        secondVideo.requestVideoFrameCallback(revealSecondVideo);
+                    } else setTimeout(revealSecondVideo, 80);
+                });
+            });
+
+            secondCon.addEventListener('mouseleave', () => {
+                wrap.classList.remove('is-playing-2');
+                secondResetTimer = setTimeout(() => {
+                    secondVideo.pause();
+                    secondVideo.currentTime = 0;
+                }, 300);
+            });
+
+            thirdCon.addEventListener('mouseenter', () => {
+                clearTimeout(thirdResetTimer);
+                thirdVideo.currentTime = 0;
+                const revealThirdVideo = () => {
+                    if (thirdCon.matches(':hover')) {
+                        wrap.classList.add('is-playing-3');
+                    }
+                };
+
+                thirdVideo.play().then(() => {
+                    if ('requestVideoFrameCallback' in thirdVideo) {
+                        thirdVideo.requestVideoFrameCallback(revealThirdVideo);
+                    } else {
+                        setTimeout(revealThirdVideo, 80);
+                    }
+                });
+            });
+
+            thirdCon.addEventListener('mouseleave', () => {
+                wrap.classList.remove('is-playing-3');
+                thirdResetTimer = setTimeout(() => {
+                    thirdVideo.pause();
+                    thirdVideo.currentTime = 0;
+                }, 300);
+            });
+            // 첫 번째 텍스트 그룹의 실제 너비를 기준으로 끊김 없이 반복합니다.
+            const marqueeTrack = document.querySelector('.marquee-track');
+            const marqueeGroup = document.querySelector('.marquee-group');
+            const marquee = document.querySelector('.marquee');
+            const marqueeSelectionLayer = document.createElement('div');
+            marqueeSelectionLayer.setAttribute('aria-hidden', 'true');
+            document.body.appendChild(marqueeSelectionLayer);
+            let marqueeX = 0;
+            let marqueeTime = performance.now();
+
+            const updateMarqueeSelection = () => {
+                marqueeSelectionLayer.replaceChildren();
+                const selection = window.getSelection();
+
+                if (!selection || selection.isCollapsed || !selection.rangeCount) {
+                    return;
+                }
+
+                const range = selection.getRangeAt(0);
+                const marqueeRect = marquee.getBoundingClientRect();
+
+                if (!marquee.contains(range.commonAncestorContainer)) {
+                    return;
+                }
+
+                [...range.getClientRects()].forEach((rect) => {
+                    const overlapsMarquee = rect.right > marqueeRect.left &&
+                        rect.left < marqueeRect.right &&
+                        rect.bottom > marqueeRect.top &&
+                        rect.top < marqueeRect.bottom;
+
+                    if (!overlapsMarquee || rect.width === 0 || rect.height === 0) {
+                        return;
+                    }
+
+                    const background = document.createElement('div');
+                    background.className = 'marquee-selection-bg';
+                    background.style.left = `${rect.left}px`;
+                    background.style.top = `${rect.top}px`;
+                    background.style.width = `${rect.width}px`;
+                    background.style.height = `${rect.height}px`;
+                    marqueeSelectionLayer.appendChild(background);
+                });
+            };
+
+            document.addEventListener('selectionchange', updateMarqueeSelection);
+            window.addEventListener('resize', updateMarqueeSelection);
+            window.addEventListener('scroll', updateMarqueeSelection, { passive: true });
+
+            const moveMarquee = (now) => {
+                const elapsed = now - marqueeTime;
+                marqueeTime = now;
+                const loopWidth = marqueeGroup.getBoundingClientRect().width;
+                const speed = (loopWidth / 16000) * 0.7;
+
+                if (loopWidth > 0) {
+                    marqueeX = (marqueeX - speed * elapsed) % loopWidth;
+                    marqueeTrack.style.transform = `translate3d(${marqueeX}px, 0, 0)`;
+                }
+
+                requestAnimationFrame(moveMarquee);
+            };
+
+            requestAnimationFrame(moveMarquee);
+        </script>
+    </body>
+</html>

@@ -1,0 +1,4370 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>LKJoo Portfolio_</title>
+        <script>
+            history.scrollRestoration = 'manual';
+            window.__aboutPageReload = performance.getEntriesByType('navigation')[0]?.type === 'reload';
+            if (window.__aboutPageReload && window.location.hash) {
+                history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
+            }
+            if (!window.__aboutPageReload) window.scrollTo(0, 0);
+        </script>
+        
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400..700&display=swap" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js"></script>
+
+    </head>
+    <style>
+        @font-face {
+            font-family: 'Noto Sans';
+            src: url('pf_font/NotoSans-VariableFont_wdth,wght.ttf') format('truetype');
+            font-weight: 100 900;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Noto Sans KR';
+            src: url('pf_font/NotoSansKR-VariableFont_wght.ttf') format('truetype');
+            font-weight: 100 900;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Thirthy Demo';
+            src: url('pf_font/Thirthy Demo.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'GT America Extended Medium';
+            src: url('pf_font/GT-America-Extended-Medium-Trial.otf') format('opentype');
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'NotoSansKR-ExtraBold';
+            src: url('pf_font/NotoSansKR-ExtraBold.ttf') format('truetype');
+            font-weight: 900;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'NanumMyeongjo-Bold';
+            src: url('pf_font/NanumMyeongjo-Bold.ttf') format('truetype');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'NotoMusic-Regular';
+            src: url('pf_font/NotoMusic-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Oleo Script';
+            src: url('pf_font/OleoScript-Regular.ttf') format('truetype');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Noto Sans SC';
+            src: url('pf_font/NotoSansSC-VariableFont_wght.ttf') format('truetype');
+            font-weight: 100 900;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'IBM Plex Sans KR';
+            src: url('pf_font/IBMPlexSansKR-Regular.ttf') format('truetype');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Pretendard Medium';
+            src: url('pf_font/Pretendard-Medium.otf') format('opentype');
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Anton';
+            src: url('pf_font/Anton-Regular.ttf') format('truetype');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Tangba';
+            src: url('pf_font/Tangba17.ttf') format('truetype');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Share Tech Mono';
+            src: url('pf_font/ShareTechMono-Regular.ttf') format('truetype');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        *{
+            margin: 0;
+            padding: 0;
+            cursor: none;
+        }
+
+        html {
+            overflow-y: scroll;
+            scrollbar-width: none;
+            scroll-snap-type: y mandatory;
+        }
+
+        html::-webkit-scrollbar,
+        .about-card::-webkit-scrollbar {
+            display: none;
+        }
+
+        .about-card { scrollbar-width: none; }
+
+        html, body, body * {
+            cursor: none !important;
+        }
+
+        ::selection {
+            background-color: rgba(255, 255, 255, 0.8);
+            color: black;
+        }
+
+        ::-moz-selection {
+            background-color: rgba(255, 255, 255, 0.8);
+            color: black;
+        }
+
+        .about-card ::selection {
+            background-color: #000;
+            color: #fff;
+        }
+
+        .about-card ::-moz-selection {
+            background-color: #000;
+            color: #fff;
+        }
+
+        .about-pill::selection,
+        .about-pill *::selection,
+        .menu-pill::selection,
+        .menu-pill *::selection,
+        .about-pill::-moz-selection,
+        .about-pill *::-moz-selection,
+        .menu-pill::-moz-selection,
+        .menu-pill *::-moz-selection {
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+        }
+
+        body {
+            background-color: black;
+            font-family: 'Noto Sans', 'Noto Sans KR', sans-serif;
+        }
+
+        body.projects-active #sec_txt,
+        body.projects-active #about-astronaut,
+        body.contact-active #sec_txt,
+        body.contact-active #about-astronaut { visibility: hidden !important; }
+        body.projects-nav-transition #sec_txt,
+        body.projects-nav-transition #about-astronaut { visibility: hidden !important; }
+
+        body.contact-active #sec_txt,
+        body.contact-active #about-astronaut {
+            visibility: hidden !important;
+        }
+
+        body.header-target-contact #sec_txt,
+        body.header-target-contact #about-slider,
+        body.header-target-contact #about-astronaut,
+        body.header-target-contact #about-pagination {
+            visibility: hidden !important;
+        }
+
+        body.intro-scroll-lock {
+            overflow: hidden;
+        }
+
+        li, ul {
+            list-style: none;
+            color: black;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        #custom-cursor {
+            position: fixed;
+            z-index: 9999;
+            width: 18px;
+            height: 18px;
+            border: none;
+            background-color: white;
+            mix-blend-mode: difference;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            transform: translate(-50%, -50%);
+            transition: width 0.1s ease, height 0.1s ease, opacity 0.1s ease;
+        }
+
+        #custom-cursor.is-visible {
+            opacity: 1;
+        }
+
+        #custom-cursor.is-clicking {
+            width: 40.5px;
+            height: 40.5px;
+            background-color: royalblue;
+        }
+
+        #custom-cursor.is-tv-hover {
+            width: 108px;
+            height: 108px;
+            background-color: rgba(0, 0, 0, 0.62);
+            mix-blend-mode: normal;
+        }
+
+        #custom-cursor.is-note-next {
+            width: 108px;
+            height: 108px;
+            background-color: rgba(0, 0, 0, 0.62);
+            mix-blend-mode: normal;
+        }
+
+        #custom-cursor.is-note-prev {
+            width: 108px;
+            height: 108px;
+            background-color: rgba(0, 0, 0, 0.62);
+            mix-blend-mode: normal;
+        }
+
+        #custom-cursor.is-tv-hover::after {
+            content: 'VISIT';
+            display: grid;
+            width: 100%;
+            height: 100%;
+            place-items: center;
+            color: #fff;
+            font: 400 15px/1 'NotoSans', sans-serif;
+            letter-spacing: 3px;
+            white-space: nowrap;
+        }
+
+        #custom-cursor.is-note-next::after {
+            content: 'NEXT';
+            display: grid;
+            width: 100%;
+            height: 100%;
+            place-items: center;
+            color: #fff;
+            font: 400 15px/1 'NotoSans', sans-serif;
+            letter-spacing: 3px;
+            white-space: nowrap;
+        }
+
+        #custom-cursor.is-note-prev::after {
+            content: 'PREV';
+            display: grid;
+            width: 100%;
+            height: 100%;
+            place-items: center;
+            color: #fff;
+            font: 400 15px/1 'NotoSans', sans-serif;
+            letter-spacing: 3px;
+            white-space: nowrap;
+        }
+
+        #about-scroll-hint {
+            position: fixed;
+            z-index: 3;
+            right: clamp(16px, 3vw, 48px);
+            bottom: 16px;
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+            pointer-events: none;
+            transition: 0.05s;
+
+        }
+
+        #about-scroll-hint.is-hidden {
+            visibility: hidden;
+        }
+
+        #back-to-top {
+            position: fixed;
+            z-index: 24;
+            right: clamp(16px, 3vw, 48px);
+            bottom: 16px;
+            width: 120px;
+            height: 120px;
+            padding: 0;
+            border: 0;
+            background: transparent;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+
+        #back-to-top.is-visible {
+            opacity: 0.65;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        #back-to-top img {
+            display: block;
+            width: 100px;
+            height: 100px;
+        }
+
+
+
+        #wrap {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            overflow: visible;
+            background-color: black;
+            transition: background-color 0.7s ease;
+        }
+
+        body.projects-active #wrap,
+        body.contact-active #wrap {
+            background-color: white;
+        }
+
+        header {
+            width: 100%;
+            height: 70px;
+            position: fixed;
+            display: flex;
+            align-items: center;
+            z-index: 30;
+            box-sizing: border-box;
+            padding-right: 15px;
+            transition: background-color 0.6s ease;
+        }
+
+        .header-brand {
+            margin: 0 18.75px;
+            color: white;
+            line-height: 1;
+            cursor: pointer;
+            transition: color 0.6s ease;
+        }
+
+        .header-brand .name {
+            display: inline-block;
+            font: 200 36px / 1.25 'Thirthy Demo', sans-serif;
+        }
+
+        .header-brand .L {
+            position: relative;
+            left: 3px;
+            font-size: 1.12em;
+        }
+
+        #control_wrap {
+            margin-left: auto;
+            margin-right: 20px;
+        }
+
+        #control_wrap li {
+            position: relative;
+            z-index: 1;
+            float: left;
+            display: flex;
+            align-items: center;
+            height: 28px;
+            font-size: 20px;
+            color: white;
+            line-height: 28px;
+            margin: 12px 10px;
+            transition: color 0.6s ease;
+        }
+
+        #control_wrap a:not(:first-child) li {
+            margin: 12px 10px;
+            padding: 0;
+        }
+
+        #control_wrap a:not(:first-child) .menu-pill {
+            background-color: transparent;
+            color: white;
+            opacity: 1;
+            transition: background-color 0.6s ease, color 0.6s ease;
+        }
+
+        #control_wrap a:not(:first-child):hover .menu-pill {
+            background-color: white;
+            color: black;
+            opacity: 0.8;
+        }
+
+        body.projects-active .header-brand,
+        body.projects-active #control_wrap li { color: black; }
+        body.projects-active #control_wrap a:not(:first-child) .menu-pill {
+            background-color: transparent;
+            color: black;
+        }
+        body.projects-active .about-pill {
+            background-color: transparent;
+            color: black;
+            opacity: 1;
+        }
+        body.projects-active #control_wrap a[href$="#projects_sec"] .menu-pill {
+            background-color: black;
+            color: white;
+            opacity: 1;
+        }
+        body.contact-active .header-brand { color: black; }
+        body.contact-active #control_wrap li { color: black; }
+
+        .page-about .about-pill {
+            background-color: white;
+            color: black;
+            opacity: 0.8;
+            transition: none;
+        }
+        .page-about #control_wrap a:not(:first-child) .menu-pill {
+            background-color: transparent;
+            opacity: 1;
+            transition: none;
+        }
+
+        body.page-about:not(.projects-active):not(.contact-active) #control_wrap a:not(:first-child):hover .menu-pill {
+            background-color: white;
+            color: black;
+            opacity: 0.8;
+        }
+
+        body.page-about.contact-active .about-pill {
+            background-color: transparent;
+            color: black;
+            opacity: 1;
+        }
+        body.page-about.contact-active #control_wrap a[href$="#contact-section"] .menu-pill,
+        body.page-about.contact-active #control_wrap a[href$="#contact-section"]:hover .menu-pill,
+        body.page-about.contact-active #control_wrap a[href$="#contact-section"]:focus .menu-pill {
+            background-color: black;
+            color: white;
+            opacity: 1;
+            transition: none;
+        }
+        body.page-about.contact-active #control_wrap a[href$="#projects_sec"] .menu-pill {
+            background: transparent;
+            color: black;
+            opacity: 1;
+        }
+        body.page-about.contact-active #control_wrap a[href$="#about-section"]:hover .about-pill,
+        body.page-about.contact-active #control_wrap a[href$="#about-section"]:focus .about-pill,
+        body.page-about.contact-active #control_wrap a[href$="#projects_sec"]:hover .menu-pill {
+            background-color: black;
+            color: white;
+            opacity: 1;
+        }
+        body.page-about.projects-active #control_wrap a:first-child:hover .about-pill {
+            background-color: black;
+            color: white;
+            opacity: 1;
+        }
+        body.page-about.projects-active #control_wrap a[href$="#contact-section"]:hover .menu-pill {
+            background-color: black;
+            color: white;
+            opacity: 1;
+        }
+
+        body.page-about.header-target-about #control_wrap a[href$="#about-section"] .about-pill {
+            background-color: white;
+            color: black;
+            opacity: 0.8;
+        }
+        body.page-about.header-target-about #control_wrap a[href$="#projects_sec"] .menu-pill,
+        body.page-about.header-target-about #control_wrap a[href$="#contact-section"] .menu-pill {
+            background-color: transparent;
+            opacity: 1;
+        }
+        body.page-about.header-target-projects #control_wrap li,
+        body.page-about.header-target-contact #control_wrap li { color: black; }
+        body.page-about.header-target-projects #control_wrap a[href$="#about-section"] .about-pill,
+        body.page-about.header-target-projects #control_wrap a[href$="#contact-section"] .menu-pill,
+        body.page-about.header-target-contact #control_wrap a[href$="#about-section"] .about-pill {
+            background-color: transparent;
+            opacity: 1;
+        }
+        body.page-about.header-target-projects #control_wrap a[href$="#projects_sec"] .menu-pill,
+        body.page-about.header-target-contact #control_wrap a[href$="#contact-section"] .menu-pill {
+            background-color: black;
+            color: white;
+            opacity: 1;
+        }
+        body.page-about.header-target-contact #control_wrap a[href$="#projects_sec"] .menu-pill {
+            background-color: transparent;
+            color: black;
+            opacity: 1;
+        }
+        body.page-about.header-target-projects #wrap { background-color: white; transition: background-color 0.7s ease; }
+        body.page-about.header-target-contact #wrap {
+            background-color: white;
+            transition: background-color 0.7s ease;
+        }
+        body.page-about.header-target-contact:not(.contact-active) #control_wrap a[href$="#about-section"] .about-pill {
+            color: black;
+        }
+        body.page-about.header-target-contact.contact-active #control_wrap a[href$="#about-section"] .about-pill {
+            color: black;
+        }
+        body.page-about.header-target-projects #control_wrap .about-pill,
+        body.page-about.header-target-projects #control_wrap .menu-pill,
+        body.page-about.header-target-contact #control_wrap .about-pill,
+        body.page-about.header-target-contact #control_wrap .menu-pill {
+            transition: none;
+        }
+
+        .about-pill,.menu-pill {
+            position: relative;
+            z-index: 2;
+            isolation: isolate;
+            display: flex;
+            align-items: center;
+            height: 33px;
+            padding: 0 16px;
+            box-sizing: border-box;
+            border-radius: 999px;
+            background-color: white;
+            color: black;
+            opacity: 0.8;
+            line-height: 1;
+            transition: background-color 0.6s ease, color 0.6s ease;
+        }
+
+        .page-section {
+            width: 100%;
+            height: 1200px;
+            position: relative;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+        }
+
+        .about-section {
+            height: 960px;
+        }
+
+        #projects_sec {
+            min-height: 100vh;
+            min-height: 100dvh;
+            position: relative;
+            overflow: hidden;
+            background: #fff;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+        }
+
+        #projects_sec h2 {
+            position: absolute;
+            top: 130px;
+            left: clamp(24px, 6vw, 100px);
+            margin: 0;
+            color: #111;
+            font-size: clamp(36px, 5vw, 72px);
+            font-weight: 500;
+            line-height: 1;
+        }
+
+        #contact-section {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            height: 100svh;
+            min-height: 100vh;
+            min-height: 100svh;
+            background-color: white;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+        }
+
+        #contact-section #contact-copy {
+            position: absolute;
+            z-index: 19;
+            top: 50%;
+            left: 50%;
+            width: max-content;
+            transform: translate(-50%, -50%);
+            visibility: visible;
+        }
+
+        #contact-section #contact-scroll-hint {
+            position: fixed;
+            z-index: 22;
+            bottom: 16px;
+            left: 50%;
+            width: clamp(64px, 8vw, 150px);
+            height: auto;
+            object-fit: contain;
+            transform: translateX(-50%);
+            pointer-events: none;
+            visibility: hidden;
+        }
+
+        body.contact-active #contact-section #contact-scroll-hint {
+            visibility: visible;
+        }
+
+        body.contact-active #contact-section #contact-scroll-hint.is-hidden {
+            visibility: hidden;
+        }
+
+        #contact-section #back_txt {
+            position: relative;
+            font: 900 60px / 160px 'NotoSansKR-ExtraBold', sans-serif;
+        }
+
+        #contact-section #back_txt h1 img {
+            position: relative;
+            top: 47px;
+            width: 180px;
+        }
+
+        #contact-section #turn_txt {
+            font-family: 'NanumMyeongjo-Bold', serif;
+            font-weight: 700;
+        }
+
+        #contact-section #turn {
+            display: inline-block;
+            min-width: 3em;
+            padding-inline: 0.2em;
+            text-align: center;
+        }
+
+        #contact-section #last_txt {
+            position: relative;
+            top: -45px;
+            height: 220px;
+        }
+
+        #contact-section #last_img { margin-right: 20px; }
+        #contact-section #last_img img { margin-right: -25px; }
+
+        #contact-section #cake {
+            position: relative;
+            top: 33px;
+            width: 168px;
+        }
+
+        #contact-section #contact-copy h3 {
+            position: absolute;
+            top: 87%;
+            right: 24px;
+            margin-top: 16px;
+            font: 40px / 40px 'NotoMusic-Regular', sans-serif;
+        }
+
+        #contact-section #top_txt,
+        #contact-section #mid_txt,
+        #contact-section #last_txt,
+        #contact-section #contact-copy h3 {
+            opacity: 0;
+            clip-path: inset(0 0 100% 0);
+            transform: translateY(100%);
+            will-change: transform, clip-path, opacity;
+        }
+
+        body.contact-copy-revealed #contact-section #top_txt,
+        body.contact-copy-revealed #contact-section #mid_txt,
+        body.contact-copy-revealed #contact-section #last_txt,
+        body.contact-copy-revealed #contact-section #contact-copy h3 {
+            animation: contactRowRise 525ms cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        body.contact-copy-revealed #contact-section #top_txt { animation-delay: 0ms; }
+        body.contact-copy-revealed #contact-section #mid_txt { animation-delay: 130ms; }
+        body.contact-copy-revealed #contact-section #last_txt { animation-delay: 260ms; }
+        body.contact-copy-revealed #contact-section #contact-copy h3 { animation-delay: 390ms; }
+
+        @keyframes contactRowRise {
+            to {
+                opacity: 1;
+                clip-path: inset(0);
+                transform: translateY(0);
+            }
+        }
+
+        #contact-section #con {
+            position: fixed;
+            z-index: 23;
+            top: 50%;
+            left: 0;
+            display: flex;
+            align-items: center;
+            box-sizing: border-box;
+            width: 100%;
+            height: 180px;
+            border-top: 4px solid black;
+            border-bottom: 4px solid black;
+            background-color: white;
+            transform: translateY(calc(var(--contact-viewport-height, 100vh) / 2 - var(--contact-scroll, 0px)));
+            transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+            will-change: transform;
+            visibility: hidden;
+        }
+
+        #contact-section.contact-panel-reset #con {
+            transition: none;
+        }
+
+        body.contact-active #contact-section #con {
+            visibility: visible;
+            box-shadow: 0 0 28px 8px rgba(0, 0, 0, 0.16);
+        }
+
+        #contact-section #left_txt {
+            margin-left: 70px;
+            font: 120px / 180px 'Oleo Script', cursive;
+        }
+
+        #contact-section #left_txt .rotated-w {
+            position: relative;
+            top: -0.058333em;
+            left: -0.01em;
+            display: inline-block;
+            transform: perspective(600px) rotateX(0deg);
+            transform-origin: center;
+            transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        #contact-section #left_txt .rotated-w.is-flipped {
+            transform: perspective(600px) rotateX(180deg);
+        }
+
+        #contact-section.contact-panel-reset #left_txt .rotated-w {
+            transition: none;
+        }
+
+        #contact-section #line {
+            flex: 0 1 240px;
+            height: 3px;
+            margin-inline: auto;
+            background-color: black;
+        }
+
+        #contact-section #right_txt {
+            margin-right: 70px;
+            font: 30px / 50px 'Noto Sans SC', sans-serif;
+            letter-spacing: 4px;
+            text-align: right;
+        }
+
+        #contact-section #mail {
+            text-decoration: underline;
+            text-decoration-thickness: 0.5px;
+            text-decoration-skip-ink: none;
+            text-underline-offset: 5px;
+        }
+
+        #contact-backdrop {
+            position: fixed;
+            z-index: 20;
+            inset: 0;
+            pointer-events: none;
+            visibility: hidden;
+            -webkit-backdrop-filter: blur(var(--contact-blur, 0px)) brightness(var(--contact-brightness, 1));
+            backdrop-filter: blur(var(--contact-blur, 0px)) brightness(var(--contact-brightness, 1));
+        }
+
+        body.contact-active #contact-backdrop {
+            visibility: visible;
+        }
+
+        @media (max-width: 1600px) {
+            #contact-section { --copy-unit: min(3.125vw, 60px); }
+            #contact-section #back_txt {
+                font-size: var(--copy-unit);
+                line-height: calc(var(--copy-unit) * 2.666667);
+            }
+            #contact-section #back_txt h1 img {
+                width: calc(var(--copy-unit) * 3);
+                top: calc(var(--copy-unit) * 0.783333);
+            }
+            #contact-section #last_txt {
+                height: calc(var(--copy-unit) * 3.666667);
+                top: calc(var(--copy-unit) * -0.75);
+            }
+            #contact-section #last_img { margin-right: calc(var(--copy-unit) / 3); }
+            #contact-section #last_img img { margin-right: calc(var(--copy-unit) * -0.416667); }
+            #contact-section #cake {
+                width: calc(var(--copy-unit) * 2.8);
+                top: calc(var(--copy-unit) * 0.55);
+            }
+            #contact-section #contact-copy h3 {
+                top: 87%;
+                right: calc(var(--copy-unit) * 0.4);
+                margin-top: calc(var(--copy-unit) * 0.266667);
+                font-size: calc(var(--copy-unit) * 0.666667);
+                line-height: 1;
+            }
+            #contact-section #con { padding-inline: clamp(20px, 3vw, 48px); gap: 24px; }
+            #contact-section #left_txt {
+                margin: 0;
+                font-size: clamp(40px, 6.25vw, 100px);
+                line-height: 1.2;
+                white-space: nowrap;
+            }
+            #contact-section #right_txt {
+                margin: 0;
+                font-size: clamp(17px, 1.7vw, 28px);
+                line-height: 1.7;
+                white-space: nowrap;
+            }
+            #contact-section #line { flex-basis: clamp(40px, 12vw, 240px); }
+        }
+
+        @media (max-width: 767px) {
+            #contact-section { --copy-unit: min(5vw, 60px); }
+
+            body.page-about.contact-active header,
+            body.page-about.header-target-contact header {
+                background-color: white;
+                transition: none;
+            }
+        }
+
+        @media (max-width: 700px) {
+            #contact-section #con {
+                height: auto;
+                flex-direction: column;
+                gap: 16px;
+                padding: 24px 20px;
+                border-width: 2px;
+            }
+            #contact-section #left_txt { font-size: clamp(32px, 9vw, 56px); }
+            #contact-section #line { flex: none; width: 64px; height: 2px; }
+            #contact-section #right_txt {
+                font-size: clamp(17px, 4.6vw, 22px);
+                text-align: center;
+            }
+        }
+
+        section video {
+            display: block;
+            width: 100%;
+            height: auto;
+            position: relative;
+            top: -110px;
+            clip-path: inset(110px 0 0);
+        }
+
+        #sec_txt {
+            position: fixed;
+            z-index: 2;
+            left: max(40px, calc((100vw - 1677px) / 2));
+            top: 160px;
+            color: white;
+            font-family: 'Noto Nastaliq Urdu', serif;
+            opacity: 0;
+            transition: opacity 0.6s ease, top 0.8s ease;
+            will-change: transform, opacity;
+        }
+
+        #fst_txt {
+            font: 500 140px / 120px 'Noto Nastaliq Urdu', serif;
+            transition: transform 0.8s ease;
+        }
+
+        #keep_txt {
+            position: relative;
+            left: 90px;
+        }
+
+        #sec_txt .overlap-o {
+            display: inline-block;
+            letter-spacing: -0.28em;
+            margin-left: 0.05em;
+            margin-right: 0.30em;
+        }
+
+        #line_txt {
+            display: inline-block;
+            text-decoration: none;
+            position: relative;
+            font-style: italic;
+            font-weight: 200;
+            font-family: 'Fraunces', serif;
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        #line_txt::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            bottom: 7%;
+            left: 0;
+            border-bottom: 0.75px solid currentColor;
+        }
+
+        #line_txt span {
+            display: inline-block;
+        }
+
+        #line_txt span:not(:last-of-type) {
+            margin-right: 150px;
+        }
+        
+        #about-viewport {
+            --about-card-width: min(1677px, calc(100vw - 80px));
+            position: absolute;
+            top: 220px;
+            left: 50%;
+            width: min(calc(var(--about-card-width) + 160px), calc(100% - 80px));
+            height: 640px;
+            overflow: visible;
+            transform: translateX(-50%);
+        }
+
+        #about-slider {
+            position: absolute;
+            top: 0;
+            left: calc(50% - (var(--about-card-width) / 2));
+            width: calc((var(--about-card-width) + 36px) * 2);
+            display: flow-root;
+            --about-offset: 0px;
+            transform: translateY(100%) translateX(var(--about-offset));
+            visibility: hidden;
+            pointer-events: none;
+            transition: transform 0.3s ease-out, visibility 0s linear 0.3s;
+        }
+
+        #about-slider.about-is-visible {
+            transform: translateY(0) translateX(var(--about-offset));
+            visibility: visible;
+            pointer-events: auto;
+            transition: transform 0.3s ease-out 0.2s, visibility 0s linear 0.2s;
+        }
+
+        .about-card {
+            width: var(--about-card-width);
+            height: 640px;
+            float: left;
+            display: block;
+            padding: 64px 72px;
+            box-sizing: border-box;
+            background: #fff;
+            border-radius: 28px;
+            overflow: hidden;
+            position: relative;
+            margin-right: 36px;
+        }
+
+        #about {
+            height: 640px;
+            padding: 32px 72px;
+            overflow: hidden;
+            scrollbar-width: none;
+        }
+
+        #about::-webkit-scrollbar { display: none; }
+
+        .about-info-layout {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr);
+            grid-template-areas: "profile experience" "education education";
+            column-gap: clamp(28px, 3vw, 52px);
+            row-gap: 12px;
+            width: min(1200px, 78%);
+            color: #000;
+        }
+
+        .about-content {
+            position: relative;
+            isolation: isolate;
+            grid-area: profile;
+            min-width: 0;
+        }
+
+        .about-content > .about-title,
+        .about-content > .about-row {
+            position: relative;
+            z-index: 1;
+        }
+
+        .experience-content { grid-area: experience; min-width: 0; }
+
+        .license-content {
+            grid-area: credentials;
+            min-width: 0;
+            color: #000;
+        }
+
+        .education-content { grid-area: education; min-width: 0; padding-top: 34px; }
+
+        .skill-content {
+            position: relative;
+            left: 0;
+            z-index: 1;
+            color: #000;
+            height: 100%;
+        }
+
+        .skill-content .about-title {
+            margin-bottom: 0;
+            font-size: 42px;
+        }
+
+        .skill-license {
+            position: absolute;
+            inset: auto 88px 24px 0;
+            grid-area: auto;
+            width: auto;
+        }
+
+        .skill-license > .about-title {
+            margin: 0 0 12px;
+            text-align: left;
+            transform: translateY(-12px);
+        }
+
+        .skill-license .license-row {
+            min-height: 32px;
+            margin: 0 0 0 16px;
+        }
+
+        .skill-scroll-hint {
+            position: absolute;
+            z-index: 2;
+            right: 0;
+            left: auto;
+            bottom: -20px;
+            width: clamp(54px, 7vw, 84px);
+            height: auto;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transform: none;
+            transition: opacity 0.2s ease, visibility 0s linear 0.2s;
+        }
+
+        .skill-scroll-hint.is-visible {
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.2s ease;
+        }
+
+        .skill-grid {
+            position: absolute;
+            display: grid;
+            grid-template-columns: repeat(var(--skill-columns, 8), var(--skill-size, 0px));
+            align-items: center;
+            gap: var(--skill-gap, 0px);
+            width: max-content;
+            left: var(--skill-left, 0px);
+            top: var(--skill-top, 0px);
+        }
+
+        .skill-item {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            min-width: 0;
+            aspect-ratio: 1;
+            justify-self: center;
+            display: grid;
+            place-items: center;
+            flex: 0 0 auto;
+            opacity: 0;
+            transform: translateY(12px);
+            transition: transform 0.42s ease, opacity 0.42s ease;
+        }
+
+        .skill-item.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .skill-item img {
+            position: absolute;
+            display: block;
+            left: var(--art-left, 4%);
+            top: var(--art-top, 4%);
+            width: var(--art-width, 92%);
+            height: var(--art-height, 92%);
+            object-fit: contain;
+        }
+
+        /* Match shield widths to the other logos; labels sit above the icon cells. */
+        .skill-html, .skill-css, .skill-js { overflow: visible; }
+        .skill-html { --art-width: 129.3208%; --art-height: 147.5472%; --art-left: -14.2264%; --art-top: -36.3585%; }
+        .skill-css { --art-width: 127.9238%; --art-height: 148.9524%; --art-left: -13.5238%; --art-top: -37.181%; }
+        .skill-js { --art-width: 128.8%; --art-height: 148.9524%; --art-left: -16.1524%; --art-top: -37.181%; }
+        /* Other logos use their visible artwork bounds, excluding source padding. */
+        .skill-photoshop { --art-width: 133.3578%; --art-height: 133.3578%; --art-left: -16.2569%; --art-top: -17.1009%; }
+        .skill-illustrator { --art-width: 109.1963%; --art-height: 109.1963%; --art-left: -4.5981%; --art-top: -4.5981%; }
+        .skill-figma { --art-width: 105.2613%; --art-height: 105.2613%; --art-left: -2.6306%; --art-top: -1.8018%; }
+        .skill-clipstudio { --art-width: 111.8636%; --art-height: 111.8636%; --art-left: -4.3636%; --art-top: -8.5455%; }
+
+        .about-title {
+            width: fit-content;
+            margin: 0 0 16px;
+            border-bottom: 1px solid #000;
+            font: italic 400 28px / 1.05 'Fraunces', serif;
+            white-space: nowrap;
+        }
+
+        .about-title.education-title { margin-top: 0; }
+
+        .about-info-layout .about-title {
+            margin-bottom: 28px;
+            font-size: 42px;
+        }
+
+        .about-info-layout .about-content > .about-title { margin-bottom: 8px; }
+
+        .about-info-layout .experience-content > .about-title,
+        .about-info-layout .license-content > .about-title,
+        .about-info-layout .education-content > .about-title { margin-bottom: 16px; }
+
+        .typing-text {
+            display: inline-block;
+            min-height: 1em;
+        }
+
+        .typing-char { display: inline-block; color: #000; }
+
+        .typing-char.is-current {
+            padding: 0 0.04em;
+            background: #000;
+            color: #fff;
+        }
+
+        .about-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            min-height: 40px;
+            margin: 8px 0;
+            overflow: hidden;
+            color: #000;
+            font-family: 'Pretendard Medium', sans-serif;
+            font-size: 21.6px;
+            line-height: 1.2;
+        }
+
+        .page-about .about-row-content,
+        .page-about .about-row-content *:not(b) { font-weight: 200; }
+
+        .page-about .about-row-content > b { font-weight: 600; }
+
+        .page-about .about-content > .about-row .about-row-content > b { font-weight: 200; }
+
+        .about-content > .about-row { font-size: 21.6px; overflow: visible; }
+
+        .about-content > .about-row .about-row-content { min-width: 0; overflow-wrap: anywhere; }
+
+        .experience-content .experience-row,
+        .license-content .license-row,
+        .education-content .education-row { margin-left: 24px; }
+
+        .experience-content .experience-row {
+            display: block;
+            min-height: 0;
+            margin: 0 0 21px 24px;
+            overflow: visible;
+        }
+
+        .experience-row .about-row-content {
+            display: grid;
+            grid-template-columns: var(--about-date-column) max-content;
+            column-gap: 8px;
+            line-height: 1.2;
+            white-space: nowrap;
+        }
+
+        .experience-row .experience-detail { 
+            display: flex;
+            align-items: baseline;
+            flex-wrap: nowrap;
+            gap: 0 0.45em;
+            white-space: nowrap;
+        }
+
+        .experience-row .experience-detail > * { white-space: nowrap; }
+
+        .experience-row .experience-detail strong { font-weight: 200; }
+
+        .experience-row .experience-description {
+            color: #3f3f3f;
+            font-size: 1em;
+            font-weight: 200;
+        }
+
+        .about-row .about-icon {
+            position: static;
+            flex: 0 0 42px;
+            width: 42px;
+            height: 42px;
+            display: grid;
+            place-items: center;
+            transform: translateY(120%);
+            opacity: 0;
+            transition: transform 0.55s ease, opacity 0.55s ease;
+        }
+
+        .about-row .about-icon svg {
+            width: 36px;
+            height: 36px;
+            fill: none;
+            stroke: #000;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .about-row .about-icon svg.is-solid-icon {
+            fill: #000;
+        }
+
+        .about-row .about-icon svg .mail-flap {
+            fill: none;
+            stroke: #fff;
+            stroke-width: 2.5;
+        }
+
+        .about-row-content {
+            transform: translateY(120%);
+            opacity: 0;
+            font-weight: 200;
+            transition: transform 0.55s ease, opacity 0.55s ease;
+        }
+
+        .about-row.is-visible .about-icon,
+        .about-row.is-visible .about-row-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .about-row.education-row {
+            align-items: flex-start;
+            font-size: 21.6px;
+            white-space: nowrap;
+            line-height: 1.2;
+            overflow: visible;
+        }
+
+        .about-row.education-row .about-row-content { min-width: max-content; white-space: nowrap; overflow-wrap: normal; }
+
+        .about-row.education-row .about-icon {
+            display: none;
+        }
+
+        #about-astronaut {
+            position: absolute;
+            z-index: 2;
+            top: 0;
+            left: calc(50% - (var(--about-card-width) / 2));
+            width: var(--about-card-width);
+            height: 640px;
+            border-radius: 28px;
+            overflow: hidden;
+            pointer-events: none;
+            transform: translateY(100%);
+            visibility: hidden;
+            transition: transform 0.3s ease-out, visibility 0s linear 0.3s;
+        }
+
+        #about-slider.about-is-visible ~ #about-astronaut {
+            transform: translateY(0);
+            visibility: visible;
+            transition: transform 0.3s ease-out 0.2s, visibility 0s linear 0.2s;
+        }
+
+        #about-astronaut img {
+            display: block;
+            position: absolute;
+            left: calc(50% + 80px);
+            bottom: -26px;
+            width: 928px;
+            height: auto;
+            -webkit-mask-image: linear-gradient(to bottom, #000 73%, rgba(0, 0, 0, 0.5) 77%);
+            mask-image: linear-gradient(to bottom, #000 73%, rgba(0, 0, 0, 0.5) 77%);
+        }
+
+        #about-pagination {
+            position: absolute;
+            top: 873px;
+            left: 50%;
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transform: translateX(-50%);
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease 0.2s, visibility 0s linear 0.5s;
+        }
+
+        #about-pagination.is-visible {
+            visibility: visible;
+            opacity: 1;
+            transition: opacity 0.3s ease 0.2s;
+        }
+
+        #about-pagination button {
+            width: 16px;
+            height: 16px;
+            padding: 0;
+            border: 0;
+            border-radius: 999px;
+            background: white;
+            opacity: 0.85;
+            cursor: none;
+            transition: width 0.25s ease, opacity 0.25s ease;
+        }
+
+        #about-pagination button.is-active {
+            width: 48px;
+            opacity: 1;
+        }
+
+        #sec_txt.about-mode #line_txt {
+            opacity: 0;
+            transform: translateY(18px);
+        }
+
+        #sec_txt.about-mode {
+            position: absolute;
+            top: 120px;
+        }
+
+        #sec_txt.about-mode #fst_txt {
+            transform: scale(0.49);
+            transform-origin: left top;
+            transition: transform 0.8s ease;
+        }
+
+        body.sec-txt-instant-top #fst_txt {
+            transition: none !important;
+        }
+
+        body.sec-txt-instant-top #sec_txt {
+            transition: none !important;
+        }
+
+        #pro_div {
+            width: 300px;
+            height: 300px;
+            background-color: blue;
+        }
+
+        #pro_2 {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            place-items: center start;
+            box-sizing: border-box;
+            padding-left: clamp(0px, 3vw, 48px);
+        }
+
+        #tv_wrap {
+            display: block;
+            width: 100%;
+            height: auto;
+            position: relative;
+            z-index: 1;
+            pointer-events: none;
+            transform: scale(1.03);
+            transform-origin: left bottom;
+        }
+
+        #tv_video {
+            position: absolute;
+            z-index: 0;
+            left: 9.45%;
+            top: 7.801%;
+            width: 83.327%;
+            height: 73.439%;
+            display: block;
+            object-fit: fill;
+            clip-path: none;
+        }
+
+        #tv_noise_video {
+            position: absolute;
+            z-index: 1;
+            left: 9.45%;
+            top: 7.801%;
+            width: 83.327%;
+            height: 73.439%;
+            display: block;
+            object-fit: fill;
+            clip-path: none;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 55ms linear;
+        }
+
+        #tv_riding_video {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: fill;
+            clip-path: inset(100% 0 0);
+            pointer-events: none;
+        }
+
+        #tv_riding_link {
+            position: absolute;
+            z-index: 0;
+            left: 9.45%;
+            top: 7.801%;
+            width: 83.327%;
+            height: 73.439%;
+            pointer-events: none;
+        }
+
+        #tv_riding_link.is-interactive {
+            pointer-events: auto;
+            cursor: none;
+        }
+
+        #tv_riding_video.is-revealing {
+            animation: tvScreenRise 180ms cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        @keyframes tvScreenRise {
+            from { clip-path: inset(100% 0 0); }
+            to { clip-path: inset(0); }
+        }
+
+        #tv_noise_video.is-active {
+            opacity: 1;
+        }
+
+        #tv_stage {
+            position: relative;
+            z-index: 2;
+            width: min(1035px, calc(100% - 32px));
+            margin-left: 250px;
+            left: -5vw;
+            transform: scale(0.8);
+            transform-origin: left center;
+        }
+
+        #astronaut-head-backdrop,
+        #astronaut-head {
+            position: absolute;
+            left: -14.3%;
+            top: 62.6%;
+            width: 30.6%;
+            aspect-ratio: 1;
+            object-fit: contain;
+            pointer-events: none;
+        }
+
+        #astronaut-head-backdrop { z-index: 3; }
+
+        #astronaut-project-zone {
+            position: absolute;
+            z-index: 4;
+            left: -9.9%;
+            top: 71.9%;
+            width: 20.1%;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            pointer-events: auto;
+        }
+
+        #astronaut-project-pill {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            display: grid;
+            width: clamp(50px, 52%, 106px);
+            height: clamp(20px, 18%, 30px);
+            place-items: center;
+            overflow: hidden;
+            border-radius: 999px;
+            background: transparent;
+            transform: translate(-50%, -50%);
+            transform-style: preserve-3d;
+            box-shadow: 0 5px 0 rgba(83, 20, 20, 0.95), 0 8px 12px rgba(0, 0, 0, 0.28);
+            pointer-events: none;
+            will-change: transform;
+        }
+
+        #astronaut-project-pill .project-pill-bg {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            border-radius: inherit;
+            background: brown;
+            box-shadow: inset 0 2px 1px rgba(255, 255, 255, 0.24), inset 0 -5px 0 rgba(83, 20, 20, 0.32);
+        }
+
+        #astronaut-project-pill .label {
+            position: relative;
+            z-index: 1;
+            color: white;
+            font-family: 'Share Tech Mono', 'Noto Sans', sans-serif;
+            font-size: calc(clamp(7.5px, 1.1vw, 11px) + 2px);
+            font-weight: 600;
+            line-height: 1;
+            letter-spacing: 0.04em;
+            white-space: nowrap;
+            pointer-events: none;
+            will-change: transform;
+        }
+
+        #astronaut-head { z-index: 5; }
+
+        #project-note {
+            position: absolute;
+            z-index: 1;
+            --note-content-left: 19.6%;
+            top: 8.7%;
+            left: 56%;
+            width: min(37.5vw, 715px);
+            aspect-ratio: 715 / 824;
+            container-type: inline-size;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 500ms ease;
+        }
+
+        #project-note.is-visible {
+            opacity: 1;
+        }
+
+        #project-note-paper {
+            position: absolute;
+            left: 10.3%;
+            top: 7.6%;
+            width: 75.4%;
+            height: 80.8%;
+            transform: rotate(-2deg);
+            transform-origin: center;
+            filter: none;
+            transition: transform 700ms cubic-bezier(0.2, 0.75, 0.25, 1), filter 150ms ease-out;
+        }
+
+        #project-note.is-visible #project-note-paper {
+            transform: rotate(6deg);
+        }
+
+        #project-note.has-static-paper #project-note-paper {
+            filter: drop-shadow(7px 9px 7px rgba(47, 38, 25, 0.16));
+        }
+
+        #project-note-paper img,
+        #project-note-paper canvas {
+            position: absolute;
+            inset: 0;
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        #project-note-paper canvas { opacity: 0; }
+        #project-note.is-playing #project-note-paper img { opacity: 0; }
+        #project-note.is-playing #project-note-paper canvas { opacity: 1; }
+
+        #project-note-paper #project-note-folded,
+        #project-note-paper #project-note-folded-left,
+        #project-note-paper #project-note-turn-motion {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        #project-note-paper.is-turning #project-note-folded,
+        #project-note-paper.is-turning #project-note-folded-left,
+        #project-note-paper.is-turn-complete #project-note-turn-motion {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        #project-note-paper.is-folded:not(.is-turning) #project-note-folded,
+        #project-note-paper.is-folded-corner-visible #project-note-folded-left {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #project-note.is-second-page #project-note-paper #project-note-folded {
+            display: none !important;
+        }
+
+        #project-note-paper.is-turning #project-note-turn-motion {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #project-note-turn-hotspot {
+            position: absolute;
+            z-index: 8;
+            right: 0;
+            bottom: 0;
+            width: 18%;
+            height: 15%;
+            padding: 0;
+            border: 0;
+            background: transparent;
+            clip-path: polygon(100% 0, 100% 100%, 0 100%);
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        #project-note-prev-hotspot {
+            position: absolute;
+            z-index: 8;
+            left: 0;
+            bottom: 0;
+            width: 18%;
+            height: 15%;
+            padding: 0;
+            border: 0;
+            background: transparent;
+            clip-path: polygon(0 0, 100% 100%, 0 100%);
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        #project-note-paper.is-folded #project-note-turn-hotspot {
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        #project-note-paper.is-folded-corner-visible #project-note-prev-hotspot {
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        #project-note.is-turn-loading #project-note-turn-hotspot,
+        #project-note.is-turn-loading #project-note-prev-hotspot {
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        #project-note-paper.is-turning #project-note-turn-hotspot {
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        #project-note-paper.is-turning #project-note-prev-hotspot,
+        #project-note-paper.is-turning-back #project-note-prev-hotspot {
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        #note-description {
+            position: absolute;
+            z-index: 2;
+            top: 25.2%;
+            left: calc(var(--note-content-left) + 1px);
+            width: 69%;
+            color: #111;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: clamp(10px, 0.8vw, 14px);
+            font-size: clamp(10px, 2cqw, 14px);
+            font-weight: 700;
+            line-height: 1.35;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        #project-note .note-card {
+            position: absolute;
+            z-index: 2;
+            left: 23.1%;
+            width: 46.2%;
+            height: 16.5%;
+            box-sizing: border-box;
+            box-shadow: 0 4px 9px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transform: translateY(18px);
+            transition: opacity 500ms ease-out, transform 500ms ease-out;
+        }
+
+        #project-note .note-card-one {
+            top: 34.7%;
+            background: #a52a2a;
+        }
+
+        #project-note .note-card-one .note-card-copy {
+            top: 50%;
+        }
+
+        #project-note .note-card-two {
+            top: 60.7%;
+            left: 24.6%;
+            background: #d1c4c4;
+        }
+
+        #project-note.is-details-visible .note-card {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .note-card-copy {
+            position: absolute;
+            left: 20.5%;
+            top: 22.8%;
+            box-sizing: border-box;
+            color: #fff;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: clamp(9px, 0.78vw, 15px);
+            font-size: clamp(9px, 2.05cqw, 15px);
+            font-weight: 400;
+            line-height: 1.9;
+            white-space: nowrap;
+            opacity: 0;
+            transform: translateY(18px);
+        }
+
+        #project-note .note-card-two .note-card-copy {
+            left: 22.7%;
+            top: 19.9%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            line-height: 1.12;
+        }
+
+        #project-note .note-card-two .note-card-copy span { display: block; }
+
+        #project-note .note-page-two-content {
+            position: absolute;
+            z-index: 6;
+            top: 7.6%;
+            left: 10.3%;
+            display: flex;
+            width: 75.4%;
+            height: 80.8%;
+            overflow: hidden;
+            pointer-events: none;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        #project-note .note-page-two-copy {
+            position: absolute;
+            top: 14.9%;
+            left: 16.5%;
+            display: flex;
+            width: 66.2%;
+            flex-direction: column;
+            gap: 0;
+            color: #24211f;
+        }
+
+        #project-note .note-page-two-heading {
+            margin: 0 0 50px 10.4%;
+            font-family: 'Noto Sans KR', sans-serif;
+            line-height: 1;
+        }
+
+        #project-note .note-page-two-heading > span {
+            display: block;
+            margin-bottom: clamp(4px, 0.8cqw, 6px);
+            color: #a52a2a;
+            font-size: clamp(9px, 2cqw, 15px);
+            font-weight: 800;
+        }
+
+        #project-note .note-page-two-heading strong {
+            display: block;
+            width: 150%;
+            color: #a52a2a;
+            font-family: 'Anton', 'Arial Narrow', sans-serif;
+            font-size: clamp(23.4px, 6.565cqw, 46.8px);
+            font-weight: 400;
+            line-height: 0.95;
+            white-space: nowrap;
+            transform: scaleX(0.8);
+            transform-origin: left top;
+        }
+
+        #project-note.is-second-page .note-page-two-content {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #project-note.is-second-page .note-page-two-section {
+            animation: noteContentRise 560ms ease-out both;
+        }
+
+        #project-note.is-second-page .note-page-two-section:nth-of-type(2) { animation-delay: 90ms; }
+        #project-note.is-second-page .note-page-two-section:nth-of-type(3) { animation-delay: 180ms; }
+
+        #project-note.is-second-page .note-page-two-heading .tv-letter {
+            display: inline-block;
+            animation: tvLetterRise 625ms cubic-bezier(0.65, 0, 0.9, 0.2) both;
+        }
+
+        #project-note .note-page-two-section h3 {
+            grid-column: 2;
+            margin: 0 0 clamp(3px, 0.7cqw, 5px);
+            color: #a52a2a;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: clamp(9px, 2.1cqw, 15px);
+            font-weight: 700;
+            line-height: 1.25;
+        }
+
+        #project-note .note-page-two-section {
+            display: grid;
+            grid-template-columns: 10.4% minmax(0, 1fr);
+            align-items: start;
+        }
+
+        #project-note .note-page-two-section + .note-page-two-section {
+            margin-top: clamp(14px, 3.8cqw, 27px);
+        }
+
+        #project-note .note-page-two-section .note-page-two-number {
+            grid-column: 1;
+            grid-row: 1 / span 2;
+            padding-top: 0.2em;
+            color: #a52a2a;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: clamp(7px, 1.6cqw, 12px);
+            font-weight: 700;
+            line-height: 1.25;
+        }
+
+        #project-note .note-page-two-section p {
+            grid-column: 2;
+            margin: 0;
+            color: #24211f;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: clamp(8px, 1.9cqw, 13.5px);
+            font-weight: 400;
+            line-height: 1.65;
+            word-break: keep-all;
+        }
+
+        #project-note .note-page-two-section:nth-of-type(2) p {
+            width: 128%;
+            white-space: nowrap;
+        }
+
+        #project-note.is-details-visible .note-card-copy {
+            animation: noteContentRise 560ms ease-out both;
+        }
+
+        #project-note.is-details-visible .note-card-one .note-card-copy {
+            animation: noteContentRiseCentered 560ms ease-out both;
+        }
+
+        @keyframes noteContentRise {
+            from { opacity: 0; transform: translateY(18px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes noteContentRiseCentered {
+            from { opacity: 0; transform: translateY(calc(-50% + 18px)); }
+            to { opacity: 1; transform: translateY(-50%); }
+        }
+
+        #project-note .note-tape {
+            position: absolute;
+            z-index: 6;
+            width: 11.2%;
+            aspect-ratio: 87 / 90;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        #project-note .note-tape img {
+            position: absolute;
+            inset: 0;
+            display: block;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+        }
+
+        #project-note .note-tape-motion { object-fit: contain; }
+        #project-note .note-tape-static { object-fit: contain; }
+
+        #project-note.has-tape .note-tape,
+        #project-note .note-tape.is-complete {
+            visibility: visible;
+        }
+
+        #project-note .note-tape.is-playing .note-tape-motion { opacity: 1; }
+        #project-note .note-tape.is-complete .note-tape-static { opacity: 1; }
+
+        #project-note.is-turning:not(.is-turning-back) .note-card {
+            opacity: 0;
+            transition: opacity 150ms ease;
+            animation: none;
+        }
+
+        #project-note.is-turning-back .note-card {
+            opacity: 0;
+            transition: none;
+        }
+
+        #project-note.is-turning #tv_tittle,
+        #project-note.is-turning #note-description {
+            animation: noteTextMaskOut 240ms cubic-bezier(0.55, 0, 0.85, 0.35) both;
+        }
+
+        #project-note.is-turning:not(.is-turning-back) .note-tape {
+            opacity: 0;
+            transition: opacity 150ms ease;
+            animation: none;
+        }
+
+        #project-note.is-turning-back .note-page-two-copy {
+            animation: noteTextMaskOut 240ms cubic-bezier(0.55, 0, 0.85, 0.35) both;
+        }
+
+        #project-note.is-turn-complete .note-card,
+        #project-note.is-turn-complete #tv_tittle,
+        #project-note.is-turn-complete #note-description,
+        #project-note.is-turn-complete .note-card-copy {
+            opacity: 0;
+            visibility: hidden;
+            animation: none;
+        }
+
+        #project-note.is-later-page #tv_tittle,
+        #project-note.is-later-page #note-description {
+            display: none;
+            opacity: 0;
+            visibility: hidden;
+            animation: none;
+        }
+
+        @keyframes noteTextMaskOut {
+            from { opacity: 1; clip-path: inset(0); }
+            to { opacity: 1; transform: translateY(-110%); clip-path: inset(0 0 100% 0); }
+        }
+
+        #project-note.is-turn-complete .note-tape {
+            visibility: hidden;
+        }
+
+        #project-note .note-tape-one-left { left: 20.7%; top: 31%; }
+        #project-note .note-tape-one-right { left: 63.5%; top: 44.8%; }
+        #project-note .note-tape-two-left { left: 20.7%; top: 57.8%; }
+        #project-note .note-tape-two-right { left: 63.6%; top: 69.5%; }
+
+        #tv_tittle {
+            position: absolute;
+            z-index: 6;
+            top: 15%;
+            left: 19.6%;
+            color: #a52a2a;
+            font-family: 'Anton', sans-serif;
+            font-size: clamp(36px, 10.1cqw, 72px);
+            font-weight: 400;
+            line-height: 0.95;
+            white-space: nowrap;
+            transform: scaleX(0.8);
+            transform-origin: left top;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        #tv_small_txt,
+        #tv_no {
+            font-family: 'Share Tech Mono', 'IBM Plex Sans KR', monospace;
+            font-size: clamp(12px, 1.5vw, 18.75px);
+            
+        }
+
+        #tv_small_txt {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            max-width: min(75vw, 80%);
+            text-align: right;
+            overflow: hidden;
+            font-size: clamp(8.4px, 1.05vw, 13.125px);
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        #tv_small_txt_inner {
+            display: block;
+        }
+
+        #tv_stage.is-intro #tv_small_txt {
+            opacity: 0;
+            visibility: hidden;
+            animation: none;
+        }
+
+        #note-intro-prompt {
+            position: absolute;
+            z-index: 6;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #111;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 25px;
+            font-weight: 400;
+            line-height: 1;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        #project-note.is-intro #note-intro-prompt {
+            opacity: 1;
+            visibility: visible;
+            animation: tvPressBlink 900ms steps(1, end) infinite;
+        }
+
+        #project-note.is-transitioning #note-intro-prompt,
+        #project-note.is-riding-ready #note-intro-prompt {
+            opacity: 0;
+            visibility: hidden;
+            animation: none;
+        }
+
+        @keyframes tvPressBlink {
+            0%, 44% { opacity: 1; }
+            45%, 100% { opacity: 0.18; }
+        }
+
+        
+        #tv_tittle {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        #tv_stage.is-transitioning #tv_small_txt {
+            font-size: calc(clamp(8.4px, 1.05vw, 13.125px) + 5.6px);
+        }
+
+        #tv_stage.is-transitioning #tv_small_txt_inner {
+            animation: tvPressArrowOut 240ms cubic-bezier(0.55, 0, 0.85, 0.35) forwards;
+        }
+
+        @keyframes tvPressArrowOut {
+            to { transform: translateY(-110%); }
+        }
+
+        #project-note.is-riding-ready #tv_tittle {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #tv_stage.is-details-visible #tv_small_txt {
+            opacity: 1;
+            visibility: visible;
+            font-size: calc(clamp(8.4px, 1.05vw, 13.125px) + 5.6px);
+            line-height: 1.2;
+        }
+
+        #tv_stage.is-details-visible #tv_small_txt .tv-letter {
+            display: inline-block;
+            animation: tvLetterRise 625ms cubic-bezier(0.65, 0, 0.9, 0.2) both;
+        }
+
+        #project-note.is-details-visible #note-description {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #project-note.is-details-visible #note-description .tv-letter {
+            display: inline-block;
+            animation: tvLetterRise 625ms cubic-bezier(0.65, 0, 0.9, 0.2) both;
+        }
+
+        #project-note.is-riding-ready #tv_tittle .tv-letter {
+            display: inline-block;
+            animation: tvLetterRise 625ms cubic-bezier(0.65, 0, 0.9, 0.2) both;
+        }
+
+        @keyframes tvLetterRise {
+            0% { opacity: 0; transform: translateY(1.2em); clip-path: inset(0 0 100% 0); }
+            8% { opacity: 0.45; transform: translateY(1.1em); clip-path: inset(0 0 88% 0); }
+            100% { opacity: 1; transform: translateY(0); clip-path: inset(0); }
+        }
+
+        #tv_no {
+            position: absolute;
+            z-index: 2;
+            pointer-events: none;
+            top: 15%;
+            right: 14%;
+            color: brown;
+            font-size: calc(clamp(12px, 1.5vw, 22.75px) + 13px);
+            font-weight: 1000;
+            transform: scale(1.03);
+            transform-origin: left bottom;
+        }
+
+        #keycap_wrap {
+            position: absolute;
+            z-index: 6;
+            left: 0;
+            top: calc(100% + -70px);
+            transform: rotate(13deg);
+            width: min(215px, 48%);
+            aspect-ratio: 1602 / 982;
+        }
+        
+
+        .keycap-part {
+            position: absolute;
+            z-index: 1;
+            display: block;
+            padding: 0;
+            border: 0;
+            background: transparent;
+            cursor: none;
+            transform-origin: center 75%;
+            will-change: transform;
+        }
+
+        .keycap-part img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: fill;
+            pointer-events: none;
+        }
+
+        .keycap-left {
+            --keycap-rotation: 4deg;
+            z-index: 2;
+            transform: rotate(var(--keycap-rotation)) scale(1.1);
+            left: calc(0.9% + 3px);
+            top: calc(17.8% + 7px);
+            width: calc(63.75% + 9px);
+            height: calc(69.35% + 9px);
+            clip-path: polygon(21% 14%, 43% 5%, 67% 4%, 84% 28%, 88% 57%, 79% 83%, 55% 96%, 29% 90%, 15% 68%, 14% 43%);
+            transform-origin: center bottom;
+        }
+
+        .keycap-right {
+            --keycap-rotation: 5deg;
+            transform: rotate(var(--keycap-rotation)) scale(1.1);
+            left: calc(37.3% + 8px);
+            top: calc(3.1% + 7px);
+            width: calc(63.75% + 9px);
+            height: calc(69.35% + 9px);
+            clip-path: polygon(21% 14%, 43% 5%, 67% 4%, 84% 28%, 88% 57%, 79% 83%, 55% 96%, 29% 90%, 15% 68%, 14% 43%);
+            transform-origin: center bottom;
+        }
+
+        @keyframes keycapPress {
+            0%, 100% { transform: rotate(var(--keycap-rotation)) scale(1.1); }
+            38%, 62% { transform: rotate(var(--keycap-rotation)) scale(1.1) scaleY(0.7); }
+        }
+
+        .keycap-part.is-pressed {
+            animation: keycapPress 150ms cubic-bezier(0.35, 0, 0.6, 1);
+        }
+
+        @media (max-width: 600px) {
+            #keycap_wrap {
+                width: min(280px, 62%);
+                top: calc(100% + 12px);
+            }
+        }
+
+
+    </style>
+    <link rel="stylesheet" href="responsive.css?v=20261112-desktop-composition">
+
+
+
+    <body class="page-about">
+        <div id="custom-cursor"></div>
+            <div id="wrap">
+                <header>
+                    <a href="mainPage.html" rel="noopener noreferrer"><h1 class="header-brand"><span class="name"><span class="L">L</span>eeKIjoo</span></h1></a>
+                        <ul id="control_wrap">
+                        <a href="aboutMe.html#about-section"><li><div class="about-pill">About me</div></li></a>
+                        <a href="aboutMe.html#projects_sec"><li><div class="menu-pill">Projects</div></li></a>
+                        <a href="aboutMe.html#contact-section"><li><div class="menu-pill">Contact</div></li></a>
+                    </ul>
+                </header>
+
+                <section class="page-section">
+                    <video src="pf_img/1.mp4" autoplay muted loop playsinline></video>
+                    <img id="about-scroll-hint" src="pf_img/Scroll down.gif" alt="아래로 스크롤" width="150" height="150">
+                </section>
+
+                <section id="about-section" class="page-section about-section">
+                    <div id="sec_txt">
+                        <div id="fst_txt" ><span id="keep_txt">K<span class="overlap-o">EE</span>P QUESTINING,</span><br> <div id="line_txt"><span>WHO</span><span>am</span><span>I</span> ?</div></div>
+                    </div>
+
+                    <div id="about-viewport">
+                        <div id="about-slider">
+                        <div id="about" class="about-card">
+                            <div class="about-info-layout">
+                                <div class="about-content">
+                                    <h2 class="about-title"><span class="typing-text" data-text="WHO am I?"></span></h2>
+                                    <div class="about-row" data-delay="0">
+                                        <span class="about-icon" aria-hidden="true"><svg class="is-solid-icon" viewBox="0 0 48 48"><circle cx="24" cy="14" r="6"></circle><path d="M12 37c1-7 5-11 12-11s11 4 12 11"></path></svg></span>
+                                        <div class="about-row-content">이기주 (<b>1997.04.08</b>)</div>
+                                    </div>
+                                    <div class="about-row" data-delay="120">
+                                        <span class="about-icon" aria-hidden="true"><svg class="is-solid-icon" viewBox="0 0 48 48"><path d="M15 9h6l3 9-4 3c2 4 5 7 9 9l3-4 8 3v6c0 2-2 4-4 4C23 38 10 25 10 12c0-2 2-3 5-3Z"></path></svg></span>
+                                        <div class="about-row-content">010 - 3941 - 1331</div>
+                                    </div>
+                                    <div class="about-row" data-delay="240">
+                                        <span class="about-icon" aria-hidden="true"><svg class="is-solid-icon" viewBox="0 0 48 48"><rect x="8" y="12" width="32" height="24" rx="2"></rect><path class="mail-flap" d="m10 15 14 11 14-11"></path></svg></span>
+                                        <div class="about-row-content">ghdrl408@gmail.com</div>
+                                    </div>
+                                </div>
+
+                                <div class="experience-content">
+                                    <h2 class="about-title"><span class="typing-text" data-text="Experience"></span></h2>
+                                    <div class="about-row experience-row" data-delay="0"><div class="about-row-content"><b>2025. 01 ~ 2025. 07</b><span class="experience-detail"><strong>하나미</strong><span class="experience-description">호주 캐주얼 일식당 주방보조</span></span></div></div>
+                                    <div class="about-row experience-row" data-delay="100"><div class="about-row-content"><b>2021. 07 ~ 2024. 10</b><span class="experience-detail"><strong>문테크놀러지</strong><span class="experience-description">회사 소속 프리랜서 웹툰 작가</span></span></div></div>
+                                    <div class="about-row experience-row" data-delay="200"><div class="about-row-content"><b>2019. 12 ~ 2020. 09</b><span class="experience-detail"><strong>소봉식당</strong><span class="experience-description">일본가정식당 주방업무</span></span></div></div>
+                                    <div class="about-row experience-row" data-delay="300"><div class="about-row-content"><b>2016. 10 ~ 2019. 01</b><span class="experience-detail"><strong>하이볼 가든</strong><span class="experience-description">칵테일 조주 및 손님 응대</span></span></div></div>
+                                </div>
+
+                                <div class="education-content">
+                                    <h2 class="about-title education-title"><span class="typing-text" data-text="Education"></span></h2>
+                                    <div class="about-row education-row" data-delay="0">
+                                        <div class="about-row-content"><b>2026. 06 ~ 11</b><span class="education-description">AI융합 스마트기기 UIUX디자인 전문인력양성과정 수료</span></div>
+                                    </div>
+                                    <div class="about-row education-row" data-delay="120">
+                                        <div class="about-row-content"><b>2013 ~ 2014</b><span class="education-description">춘천 한샘고등학교 패션디자인과 (중퇴 / 검정고시)</span></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                            <div class="about-card skill-card">
+                                <div class="skill-content">
+                                    <h2 class="about-title"><span class="typing-text" data-text="My Skill"></span></h2>
+                                    <div class="skill-grid" aria-label="Skills">
+                                        <div class="skill-item skill-html"><img src="pf_img/01html.png" alt="HTML"></div>
+                                        <div class="skill-item skill-css"><img src="pf_img/02css.png" alt="CSS"></div>
+                                        <div class="skill-item skill-js"><img src="pf_img/03js.png" alt="JavaScript"></div>
+                                        <div class="skill-item"><img src="pf_img/04jQ 1.png" alt="jQuery"></div>
+                                        <div class="skill-item skill-photoshop"><img src="pf_img/05포토샵 .png" alt="Photoshop"></div>
+                                        <div class="skill-item skill-illustrator"><img src="pf_img/06일러스트 1.png" alt="Illustrator"></div>
+                                        <div class="skill-item skill-figma"><img src="pf_img/07피그마 1.png" alt="Figma"></div>
+                                        <div class="skill-item skill-clipstudio"><img src="pf_img/08클립스튜디오.png" alt="Clip Studio"></div>
+                                    </div>
+                                    <div class="license-content skill-license">
+                                        <h2 class="about-title"><span class="typing-text" data-text="License"></span></h2>
+                                        <div class="about-row license-row" data-delay="0">
+                                            <div class="about-row-content"><b>2026. 10</b> GTQ 1급</div>
+                                        </div>
+                                    </div>
+                                    <img class="skill-scroll-hint" src="pf_img/Scroll.gif" alt="아래로 스크롤">
+                                </div>
+                            </div>
+                        </div>
+                        <div id="about-astronaut" aria-hidden="true"><img src="pf_img/우주인걷기.gif" alt="우주인"></div>
+                    </div>
+                    <div id="about-pagination" aria-label="About 카드 탐색">
+                        <button class="is-active" type="button" aria-label="첫 번째 카드"></button>
+                        <button type="button" aria-label="두 번째 카드"></button>
+                    </div>
+                </section>
+
+                <section id="projects_sec" aria-label="Projects">
+
+                
+                    <div id="pro_1"></div>
+
+                    <div class="desktop-project-composition">
+                    <div id="pro_2">
+                        <div id="tv_stage">
+                            <video id="tv_video" src="pf_img/proImg/시작영상.mp4" muted loop playsinline preload="auto" aria-label="Riding Busan 시작 영상"></video>
+                            <a id="tv_riding_link" href="https://riding-busan.ghdrl408.chatgpt.site/" target="_blank" rel="noopener noreferrer" aria-label="Riding Busan 프로젝트 열기">
+                                <video id="tv_riding_video" src="pf_img/proImg/라이딩부산.mp4" muted loop playsinline preload="auto" aria-hidden="true"></video>
+                            </a>
+                            <video id="tv_noise_video" src="pf_img/proImg/변환용 노이즈.mp4" muted playsinline preload="auto" aria-hidden="true"></video>
+                            <img id="tv_wrap" src="./pf_img/proImg/tv.png" alt="tv">
+                            <div id="tv_no">CH 00</div>
+                            <img id="astronaut-head-backdrop" src="pf_img/proImg/우주인머리 뒷배경.png" alt="">
+                            <div id="astronaut-project-zone">
+                                <div id="astronaut-project-pill" aria-hidden="true">
+                                    <div class="project-pill-bg"></div>
+                                    <span class="label">PROJECTS</span>
+                                </div>
+                            </div>
+                            <img id="astronaut-head" src="pf_img/proImg/우주인머리.png" alt="">
+                            <div id="keycap_wrap" aria-label="프로젝트 이동">
+                                <button class="keycap-part keycap-left" type="button" aria-label="이전 프로젝트">
+                                    <img src="./pf_img/proImg/키캡왼쪽.png" alt="키캡">
+                                </button>
+                                <button class="keycap-part keycap-right" type="button" aria-label="다음 프로젝트">
+                                    <img src="./pf_img/proImg/키캡오른쪽.png" alt="키캡">
+                                </button>
+                            </div>
+                            <div id="tv_small_txt"><span id="tv_small_txt_inner">Press arrow keys</span></div>
+                            <div class="mobile-project-controls" role="group" aria-label="프로젝트 채널 선택">
+                                <button class="mobile-project-arrow mobile-project-prev" type="button" aria-label="이전 채널">←</button>
+                                <button class="mobile-project-channel is-active" type="button" data-channel="00" aria-label="채널 00">00</button>
+                                <button class="mobile-project-channel" type="button" data-channel="01" aria-label="채널 01">01</button>
+                                <button class="mobile-project-arrow mobile-project-next" type="button" aria-label="다음 채널">→</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="project-note" aria-label="메모지">
+                        <div id="project-note-paper">
+                            <canvas id="project-note-motion" width="563" height="696" aria-hidden="true"></canvas>
+                            <img id="project-note-static" src="pf_img/proImg/메모지.png" alt="메모지">
+                            <img id="project-note-folded" src="pf_img/proImg/메모지 오른쪽접힘.png" alt="">
+                            <img id="project-note-folded-left" src="pf_img/proImg/메모지 왼쪽접힘.png" alt="">
+                            <img id="project-note-turn-motion" alt="">
+                            <button id="project-note-turn-hotspot" type="button" aria-label="다음 페이지"></button>
+                            <button id="project-note-prev-hotspot" type="button" aria-label="이전 페이지"></button>
+                        </div>
+                        <div id="note-intro-prompt">Press the Arrow Key</div>
+                        <div id="tv_tittle">RIDING BUSAN</div>
+                        <div id="note-description"></div>
+                        <div class="note-page-two-content" aria-label="Riding Busan project notes">
+                            <div class="note-page-two-copy">
+                                <div class="note-page-two-heading">
+                                    <span id="note-page-two-riding-title">RIDING BUSAN</span>
+                                    <strong id="note-page-two-main-title">PROJECT NOTES</strong>
+                                </div>
+                                <section class="note-page-two-section">
+                                    <span class="note-page-two-number">01</span>
+                                    <h3>기획 배경</h3>
+                                    <p>부산 시내의 정체와 잦은 신호를 벗어나 가볍게 달리고<span class="note-page-mobile-break"></span> 싶은 라이더를 위해,<br>바다와 산을 따라 달리는 편도 1~2시간대 근교 코스 선정.</p>
+                                </section>
+                                <section class="note-page-two-section">
+                                    <span class="note-page-two-number">02</span>
+                                    <h3>제작 과정</h3>
+                                    <p>모바일 앱 구상 후 기획서를 직접 작성.<br>이를 바탕으로 Codex를 활용해 웹사이트 초안을 제작한 뒤,<br>화면·기능·디자인 등 하나하나 검토하고 수정 방향 제시.</p>
+                                </section>
+                                <section class="note-page-two-section">
+                                    <span class="note-page-two-number">03</span>
+                                    <h3>코스 탐색과 기록</h3>
+                                    <p>코스 카드에서 풍경·예상 소요 시간·거리 비교.<br>마음에 드는 코스는 찜하고,<br>라이딩 중 사진과 메모로 주행 기록 기능 추가.</p>
+                                </section>
+                            </div>
+                        </div>
+                        <div class="note-card note-card-one" aria-label="프로젝트 기획 정보">
+                            <div class="note-card-copy">AI 를 활용한 프로젝트 기획<br>제작 기간 7일<br>VSCode / Codex / Gemini</div>
+                        </div>
+                        <div class="note-card note-card-two" aria-label="프로젝트 기능">
+                            <div class="note-card-copy"><span>카카오맵API<br>-라이딩 경로, 주행 동선 확인</span><span>기상청 API 연동<br>-경유지, 목적지의 현재 날씨 체크</span></div>
+                        </div>
+                        <div class="note-tape note-tape-one-left" aria-hidden="true">
+                            <img class="note-tape-motion" src="pf_img/proImg/마스킹모션1.gif" alt="">
+                            <img class="note-tape-static" src="pf_img/proImg/짧은 마스킹_그림자제거.png" alt="마스킹">
+                        </div>
+                        <div class="note-tape note-tape-one-right" aria-hidden="true">
+                            <img class="note-tape-motion" src="pf_img/proImg/마스킹모션1.gif" alt="">
+                            <img class="note-tape-static" src="pf_img/proImg/짧은 마스킹_그림자제거.png" alt="마스킹">
+                        </div>
+                        <div class="note-tape note-tape-two-left" aria-hidden="true">
+                            <img class="note-tape-motion" src="pf_img/proImg/마스킹모션1.gif" alt="">
+                            <img class="note-tape-static" src="pf_img/proImg/짧은 마스킹_그림자제거.png" alt="마스킹">
+                        </div>
+                        <div class="note-tape note-tape-two-right" aria-hidden="true">
+                            <img class="note-tape-motion" src="pf_img/proImg/마스킹모션1.gif" alt="">
+                            <img class="note-tape-static" src="pf_img/proImg/짧은 마스킹_그림자제거.png" alt="마스킹">
+                        </div>
+                    </div>
+                    </div>
+
+                </section>
+
+                <section id="contact-section" aria-label="Contact">
+                    <div id="contact-copy">
+                        <div id="back_txt">
+                            <h1 id="top_txt"><b>일단 시작<img src="pf_img/손가락.png" alt="손가락 이미지"><span>해보고</span></b></h1>
+                            <h1 id="mid_txt"><b>나만의 <span id="turn_txt">(<span id="turn" tabindex="0">기준</span>)</span> 을</b></h1>
+                            <h1 id="last_txt">
+                                <span id="last_img">
+                                    <img src="pf_img/구름.png" alt="구름">
+                                    <img src="pf_img/별.png" alt="별">
+                                    <img id="cake" src="pf_img/케이크 조각.png" alt="케이크">
+                                </span>
+                                <b>만들자 !</b>
+                            </h1>
+                        </div>
+                        <h3>CREATIVE WORKS</h3>
+                    </div>
+
+                    <img id="contact-scroll-hint" src="pf_img/Scroll.gif" alt="아래로 스크롤" width="150" height="150">
+
+                    <div id="con">
+                        <div id="left_txt" aria-label="Work With Me !">Work With <span class="rotated-w" aria-hidden="true">W</span>e !</div>
+                        <div id="line"></div>
+                        <div id="right_txt">
+                            <div>010-0000-0000</div>
+                            <div id="mail">aaaaa0123@gmail.com</div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div id="contact-backdrop" aria-hidden="true"></div>
+            <button id="back-to-top" type="button" aria-label="첫 번째 섹션으로 돌아가기">
+                <img src="pf_img/Back to Top.gif" alt="탑버튼">
+            </button>
+
+        <script>
+
+            const customCursor = document.querySelector('#custom-cursor');
+            const aboutScrollHint = document.querySelector('#about-scroll-hint');
+            const backToTop = document.querySelector('#back-to-top');
+            const headerBrand = document.querySelector('.header-brand');
+            const contactSection = document.querySelector('#contact-section');
+            const contactPanel = document.querySelector('#contact-section #con');
+            const contactRotatedW = document.querySelector('#contact-section .rotated-w');
+            const contactBackdrop = document.querySelector('#contact-backdrop');
+            const contactScrollHint = document.querySelector('#contact-scroll-hint');
+            const turn = document.querySelector('#turn');
+            const tvStage = document.querySelector('#tv_stage');
+            const tvVideo = document.querySelector('#tv_video');
+            const tvRidingVideo = document.querySelector('#tv_riding_video');
+            const tvRidingLink = document.querySelector('#tv_riding_link');
+            const tvNoiseVideo = document.querySelector('#tv_noise_video');
+            const tvNo = document.querySelector('#tv_no');
+            const tvTitle = document.querySelector('#tv_tittle');
+            const projectNote = document.querySelector('#project-note');
+            const desktopProjectComposition = document.querySelector('.desktop-project-composition');
+            const projectNotePaper = document.querySelector('#project-note-paper');
+            const projectNoteStatic = document.querySelector('#project-note-static');
+            const projectNoteFolded = document.querySelector('#project-note-folded');
+            const projectNoteFoldedLeft = document.querySelector('#project-note-folded-left');
+            const noteDescription = document.querySelector('#note-description');
+            const notePageTwoRidingTitle = document.querySelector('#note-page-two-riding-title');
+            const notePageTwoMainTitle = document.querySelector('#note-page-two-main-title');
+            const projectNoteTurnMotion = document.querySelector('#project-note-turn-motion');
+            const projectNoteTurnHotspot = document.querySelector('#project-note-turn-hotspot');
+            const projectNotePrevHotspot = document.querySelector('#project-note-prev-hotspot');
+            const projectNoteAssetPaths = {
+                compact: {
+                    paper: 'pf_img/proImg/메모지.png',
+                    nextFold: 'pf_img/proImg/메모지 오른쪽접힘.png',
+                    prevFold: 'pf_img/proImg/메모지 왼쪽접힘.png',
+                    nextTurn: 'pf_img/proImg/메모지 오른쪽넘김.gif',
+                    prevTurn: 'pf_img/proImg/메모지 왼쪽넘김.gif'
+                },
+                wide: {
+                    paper: 'pf_img/proImg/넓은 메모지.png',
+                    nextFold: 'pf_img/proImg/넓은 메모지 오른쪽접힘.png',
+                    prevFold: 'pf_img/proImg/넓은 메모지 왼쪽접힘.png',
+                    nextTurn: 'pf_img/proImg/넓은 메모지 오른쪽넘김_공통속도.gif',
+                    prevTurn: 'pf_img/proImg/넓은 메모지 왼쪽넘김_공통속도.gif'
+                }
+            };
+            const projectNoteTurnMotionPaths = {
+                compactNext: projectNoteAssetPaths.compact.nextTurn,
+                compactPrev: projectNoteAssetPaths.compact.prevTurn,
+                wideNext: projectNoteAssetPaths.wide.nextTurn,
+                widePrev: projectNoteAssetPaths.wide.prevTurn
+            };
+            const projectNoteTurnMotionBlobs = new Map();
+            const makeProjectNoteGifPlayOnce = async (blob) => {
+                const bytes = new Uint8Array(await blob.arrayBuffer());
+                const marker = new TextEncoder().encode('NETSCAPE2.0');
+                // Remove the GIF's infinite-loop extension so its folded first frame cannot replay.
+                for (let i = 3; i < Math.min(bytes.length - 16, 1024); i += 1) {
+                    if (bytes[i - 3] !== 0x21 || bytes[i - 2] !== 0xff || bytes[i - 1] !== 0x0b ||
+                        bytes[i + 11] !== 0x03 || bytes[i + 12] !== 0x01 || bytes[i + 15] !== 0x00 ||
+                        !marker.every((value, offset) => bytes[i + offset] === value)) continue;
+                    return new Blob([bytes.subarray(0, i - 3), bytes.subarray(i + 16)], { type: 'image/gif' });
+                }
+                return blob;
+            };
+            const getProjectNoteTurnMotionBlob = (pathKey) => {
+                if (!projectNoteTurnMotionBlobs.has(pathKey)) {
+                    const path = projectNoteTurnMotionPaths[pathKey];
+                    projectNoteTurnMotionBlobs.set(
+                        pathKey,
+                        fetch(path).then((response) => response.ok ? response.blob() : null)
+                            .then((blob) => blob ? makeProjectNoteGifPlayOnce(blob) : null)
+                            .catch(() => null)
+                    );
+                }
+                return projectNoteTurnMotionBlobs.get(pathKey);
+            };
+            const projectNoteWideLayout = window.matchMedia('(max-width: 1024px)');
+            const setProjectNoteAssetSet = () => {
+                const assets = projectNoteWideLayout.matches
+                    ? projectNoteAssetPaths.wide
+                    : projectNoteAssetPaths.compact;
+                projectNoteStatic.src = assets.paper;
+                projectNoteFolded.src = assets.nextFold;
+                projectNoteFoldedLeft.src = assets.prevFold;
+            };
+            setProjectNoteAssetSet();
+            const updateDesktopProjectCompositionScale = () => {
+                if (projectNoteWideLayout.matches) {
+                    desktopProjectComposition.style.removeProperty('--desktop-project-scale');
+                    return;
+                }
+
+                const projectsRect = document.querySelector('#projects_sec').getBoundingClientRect();
+                if (!projectsRect.width) return;
+
+                const desktopCompositionWidth = 1740;
+                const scale = Math.min(1, projectsRect.width / desktopCompositionWidth);
+                desktopProjectComposition.style.setProperty('--desktop-project-scale', String(scale));
+            };
+            let desktopProjectCompositionFrame = 0;
+            const scheduleDesktopProjectCompositionScale = () => {
+                if (desktopProjectCompositionFrame) window.cancelAnimationFrame(desktopProjectCompositionFrame);
+                desktopProjectCompositionFrame = window.requestAnimationFrame(() => {
+                    desktopProjectCompositionFrame = 0;
+                    updateDesktopProjectCompositionScale();
+                });
+            };
+            window.addEventListener('resize', scheduleDesktopProjectCompositionScale);
+            document.querySelector('#tv_wrap').addEventListener('load', scheduleDesktopProjectCompositionScale);
+            projectNoteWideLayout.addEventListener('change', () => {
+                setProjectNoteAssetSet();
+                scheduleDesktopProjectCompositionScale();
+            });
+            scheduleDesktopProjectCompositionScale();
+            const projectNoteTurnMotionDurations = { next: 990, prev: 990 };
+            const projectNoteContentRevealLeadMs = 250;
+            const projectNoteFoldDelayAfterContentMs = 300;
+            let projectNoteTurnMotionObjectUrl = null;
+            const projectNoteCanvas = document.querySelector('#project-note-motion');
+            const projectNoteContext = projectNoteCanvas.getContext('2d');
+            const projectNoteFrames = new Image();
+            projectNoteFrames.src = 'pf_img/proImg/메모지 시작모션_프레임.png';
+            const projectNoteTapeWrappers = [...document.querySelectorAll('#project-note .note-tape')];
+            const tvSmallTxt = document.querySelector('#tv_small_txt_inner');
+            const tvLeftKey = document.querySelector('.keycap-left');
+            const tvRightKey = document.querySelector('.keycap-right');
+            const mobileProjectPrev = document.querySelector('.mobile-project-prev');
+            const mobileProjectNext = document.querySelector('.mobile-project-next');
+            const mobileProjectChannels = [...document.querySelectorAll('.mobile-project-channel')];
+            let tvMode = 'idle';
+            const setMobileProjectChannel = (channel) => {
+                mobileProjectChannels.forEach((button) => {
+                    button.classList.toggle('is-active', button.dataset.channel === channel);
+                });
+            };
+            let tvNoiseFadeTimer = null;
+            const tvNoiseRevealMs = 445;
+            const tvNoiseDurationMs = 500;
+            let tvRevealTimer = null;
+            let projectNoteDetailsTimer = null;
+            let projectNoteTapeTimer = null;
+            let projectNoteTurnTimer = null;
+            let projectNoteContentRevealTimer = null;
+            let projectNoteFoldedCornerTimer = null;
+            let projectNoteIntroPlayed = false;
+            let projectNoteIntroComplete = false;
+            let projectNoteAnimationFrame = null;
+            let projectNoteTapeMotionPlayed = false;
+            let projectNoteTapeMotionComplete = false;
+            let projectNotePage = 1;
+
+            const showProjectNoteStatic = () => {
+                window.cancelAnimationFrame(projectNoteAnimationFrame);
+                projectNoteAnimationFrame = null;
+                projectNoteIntroComplete = true;
+                projectNote.classList.remove('is-playing');
+                projectNote.classList.add('has-static-paper');
+                if (tvMode === 'intro') projectNote.classList.add('is-intro');
+            };
+
+            const playProjectNoteIntro = () => {
+                if (projectNoteIntroPlayed) return;
+                projectNoteIntroPlayed = true;
+                projectNote.classList.add('is-visible');
+                if (projectNoteWideLayout.matches) {
+                    showProjectNoteStatic();
+                    return;
+                }
+                const startAnimation = () => {
+                    if (projectNoteIntroComplete) return;
+                    projectNote.classList.add('is-playing');
+                    projectNote.classList.add('has-static-paper');
+                    const startedAt = performance.now();
+                    const drawFrame = (now) => {
+                        const elapsed = now - startedAt;
+                        const sourceElapsed = elapsed * 2.2;
+                        const frameIndex = Math.min(48, Math.floor(sourceElapsed / 30));
+                        const frameX = (frameIndex % 7) * 563;
+                        const frameY = Math.floor(frameIndex / 7) * 696;
+                        projectNoteContext.clearRect(0, 0, 563, 696);
+                        projectNoteContext.drawImage(projectNoteFrames, frameX, frameY, 563, 696, 0, 0, 563, 696);
+                        if (elapsed >= 2840 / 2.2) {
+                            showProjectNoteStatic();
+                            return;
+                        }
+                        projectNoteAnimationFrame = window.requestAnimationFrame(drawFrame);
+                    };
+                    drawFrame(startedAt);
+                };
+                if (projectNoteFrames.complete && projectNoteFrames.naturalWidth > 0) {
+                    startAnimation();
+                } else {
+                    projectNoteFrames.addEventListener('load', startAnimation, { once: true });
+                    projectNoteFrames.addEventListener('error', showProjectNoteStatic, { once: true });
+                }
+            };
+
+            const showProjectNoteFoldedCorner = () => {
+                if (tvMode !== 'riding' || !projectNote.classList.contains('is-details-visible') ||
+                    projectNote.classList.contains('is-turn-loading') ||
+                    projectNote.classList.contains('is-turning') || projectNote.classList.contains('is-turn-complete')) return;
+                projectNotePaper.classList.add('is-folded');
+            };
+
+            const getProjectNoteContentAnimationRemainingMs = (page) => {
+                const contentRoots = page === 2
+                    ? [...projectNote.querySelectorAll('.note-page-two-content')]
+                    : [
+                        projectNote.querySelector('#tv_tittle'),
+                        projectNote.querySelector('#note-description'),
+                        ...projectNote.querySelectorAll('.note-card'),
+                        tvStage.querySelector('#tv_small_txt')
+                    ].filter(Boolean);
+                const contentElements = new Set(contentRoots.flatMap((root) => [
+                    root,
+                    ...root.querySelectorAll('*')
+                ]));
+                const remainingTimes = [...contentElements].flatMap((element) =>
+                    element.getAnimations().map((animation) => {
+                        const timing = animation.effect?.getComputedTiming?.();
+                        const endTime = Number(timing?.endTime) || 0;
+                        const currentTime = Number(animation.currentTime) || 0;
+                        const playbackRate = Math.max(Math.abs(animation.playbackRate) || 1, 0.01);
+                        return Math.max(0, (endTime - currentTime) / playbackRate);
+                    })
+                );
+                return Math.max(0, ...remainingTimes);
+            };
+            const showScheduledProjectNoteFoldedCorner = (page) => {
+                window.requestAnimationFrame(() => {
+                    window.requestAnimationFrame(() => {
+                        if (page === 1) {
+                            showProjectNoteFoldedCorner();
+                            void getProjectNoteTurnMotionBlob(
+                                `${projectNoteWideLayout.matches ? 'wide' : 'compact'}Next`
+                            );
+                            return;
+                        }
+                        if (projectNotePage !== 2 ||
+                            !projectNote.classList.contains('is-turn-complete') ||
+                            projectNote.classList.contains('is-turning')) return;
+                        projectNotePaper.classList.add('is-folded-corner-visible');
+                        void getProjectNoteTurnMotionBlob(
+                            `${projectNoteWideLayout.matches ? 'wide' : 'compact'}Prev`
+                        );
+                    });
+                });
+            };
+            const scheduleProjectNoteFoldedCornerAfterContent = (page) => {
+                window.clearTimeout(projectNoteFoldedCornerTimer);
+                window.requestAnimationFrame(() => {
+                    window.requestAnimationFrame(() => {
+                        const delay = getProjectNoteContentAnimationRemainingMs(page) + projectNoteFoldDelayAfterContentMs;
+                        projectNoteFoldedCornerTimer = window.setTimeout(() => {
+                            showScheduledProjectNoteFoldedCorner(page);
+                        }, delay);
+                    });
+                });
+            };
+
+            const finishProjectNoteTapeMotion = () => {
+                window.clearTimeout(projectNoteTapeTimer);
+                projectNoteTapeMotionComplete = true;
+                projectNoteTapeWrappers.forEach((tape) => {
+                    tape.classList.remove('is-playing');
+                    tape.classList.add('is-complete');
+                });
+            };
+
+            const playProjectNoteTapes = () => {
+                projectNote.classList.add('has-tape');
+                if (projectNoteTapeMotionPlayed) {
+                    projectNoteTapeWrappers.forEach((tape) => tape.classList.add('is-complete'));
+                    return;
+                }
+                projectNoteTapeMotionPlayed = true;
+                projectNoteTapeMotionComplete = false;
+                const playId = Date.now();
+                projectNoteTapeWrappers.forEach((tape) => {
+                    const motion = tape.querySelector('.note-tape-motion');
+                    motion.addEventListener('error', finishProjectNoteTapeMotion, { once: true });
+                    motion.src = `pf_img/proImg/마스킹모션1.gif?play=${playId}`;
+                    tape.classList.add('is-playing');
+                });
+                // Stop before this GIF's infinite loop starts its second 630ms pass.
+                projectNoteTapeTimer = window.setTimeout(finishProjectNoteTapeMotion, 600);
+            };
+
+            const setTvPlainText = (element, text) => {
+                element.replaceChildren(document.createTextNode(text));
+            };
+
+            const setTvStaggeredText = (element, text, startDelay, letterDelay) => {
+                element.replaceChildren();
+                let letterIndex = 0;
+                for (const character of text) {
+                    if (character === '\n') {
+                        element.appendChild(document.createElement('br'));
+                        continue;
+                    }
+                    if (character === ' ') {
+                        element.appendChild(document.createTextNode(' '));
+                        continue;
+                    }
+                    const letter = document.createElement('span');
+                    letter.className = 'tv-letter';
+                    letter.textContent = character;
+                    letter.style.animationDelay = `${startDelay + letterIndex * letterDelay}ms`;
+                    element.appendChild(letter);
+                    letterIndex += 1;
+                }
+            };
+
+            const loadProjectNoteTurnMotion = async (direction) => {
+                const pathKey = `${projectNoteWideLayout.matches ? 'wide' : 'compact'}${direction === 'next' ? 'Next' : 'Prev'}`;
+                const path = projectNoteTurnMotionPaths[pathKey];
+                const blob = await getProjectNoteTurnMotionBlob(pathKey);
+                const preloadSource = blob
+                    ? URL.createObjectURL(blob)
+                    : `${path}?preload=${Date.now()}`;
+                const preloadImage = new Image();
+                preloadImage.src = preloadSource;
+                try {
+                    await preloadImage.decode();
+                } catch {}
+                if (blob) URL.revokeObjectURL(preloadSource);
+
+                const source = blob
+                    ? URL.createObjectURL(new Blob([blob], { type: blob.type }))
+                    : `${path}?play=${Date.now()}`;
+                if (projectNoteTurnMotionObjectUrl) {
+                    URL.revokeObjectURL(projectNoteTurnMotionObjectUrl);
+                }
+                projectNoteTurnMotionObjectUrl = blob ? source : null;
+                projectNoteTurnMotion.src = source;
+            };
+
+            const showProjectNoteDetails = () => {
+                if (tvMode !== 'riding' || projectNote.classList.contains('is-details-visible') ||
+                    projectNote.classList.contains('is-turning') || projectNote.classList.contains('is-turn-complete')) return;
+
+                projectNote.classList.add('is-details-visible');
+                tvStage.classList.add('is-details-visible');
+                void getProjectNoteTurnMotionBlob(
+                    `${projectNoteWideLayout.matches ? 'wide' : 'compact'}Next`
+                );
+                projectNoteTapeTimer = window.setTimeout(playProjectNoteTapes, 500);
+                scheduleProjectNoteFoldedCornerAfterContent(1);
+            };
+
+            const turnProjectNotePage = async () => {
+                if (!projectNotePaper.classList.contains('is-folded') || projectNotePage !== 1 ||
+                    projectNote.classList.contains('is-turning') ||
+                    projectNote.classList.contains('is-turn-loading')) return;
+
+                if (projectNoteTapeMotionPlayed && !projectNoteTapeMotionComplete) finishProjectNoteTapeMotion();
+                projectNote.classList.add('is-turn-loading');
+                customCursor.classList.remove('is-note-next');
+                await loadProjectNoteTurnMotion('next');
+                if (!projectNote.classList.contains('is-turn-loading')) return;
+                projectNote.classList.remove('is-turn-loading');
+                projectNote.classList.remove('is-turn-complete');
+                projectNotePaper.classList.remove('is-turn-complete');
+                projectNotePaper.classList.remove('is-folded-corner-visible');
+                setTvStaggeredText(notePageTwoRidingTitle, 'RIDING BUSAN', 0, 19);
+                setTvStaggeredText(notePageTwoMainTitle, 'PROJECT NOTES', 0, 19);
+                projectNotePage = 2;
+                projectNote.classList.add('is-turning');
+                projectNotePaper.classList.add('is-turning');
+
+                window.clearTimeout(projectNoteFoldedCornerTimer);
+                window.clearTimeout(projectNoteContentRevealTimer);
+                projectNoteContentRevealTimer = window.setTimeout(() => {
+                    if (!projectNote.classList.contains('is-turning') ||
+                        projectNote.classList.contains('is-turning-back')) return;
+                    projectNote.classList.add('is-later-page', 'is-second-page');
+                }, Math.max(0, projectNoteTurnMotionDurations.next - projectNoteContentRevealLeadMs));
+
+                projectNoteTurnTimer = window.setTimeout(() => {
+                    projectNote.classList.remove('is-turning');
+                    projectNote.classList.add('is-turn-complete', 'is-later-page');
+                    projectNote.classList.add('is-second-page');
+                    projectNotePaper.classList.remove('is-turning', 'is-folded');
+                    projectNotePaper.classList.add('is-turn-complete');
+                    scheduleProjectNoteFoldedCornerAfterContent(2);
+                }, projectNoteTurnMotionDurations.next);
+            };
+
+            const turnProjectNoteBack = async () => {
+                if (projectNotePage !== 2 || !projectNote.classList.contains('is-turn-complete') ||
+                    projectNote.classList.contains('is-turning') ||
+                    projectNote.classList.contains('is-turn-loading') ||
+                    projectNote.classList.contains('is-turning-back')) return;
+
+                customCursor.classList.remove('is-note-prev');
+                projectNote.classList.add('is-turn-loading');
+                await loadProjectNoteTurnMotion('prev');
+                if (!projectNote.classList.contains('is-turn-loading')) return;
+                projectNote.classList.remove('is-turn-loading');
+                projectNoteTapeWrappers.forEach((tape) => tape.classList.remove('is-playing', 'is-complete'));
+                projectNote.classList.remove('has-tape');
+                projectNote.classList.remove('is-turn-complete');
+                projectNotePaper.classList.remove('is-turn-complete');
+                projectNotePaper.classList.remove('is-folded-corner-visible');
+                projectNotePage = 1;
+                projectNote.classList.add('is-turning', 'is-turning-back');
+                projectNotePaper.classList.add('is-turning', 'is-turning-back');
+
+                window.clearTimeout(projectNoteContentRevealTimer);
+                projectNoteContentRevealTimer = window.setTimeout(() => {
+                    if (!projectNote.classList.contains('is-turning-back')) return;
+                    projectNote.classList.remove('is-turning', 'is-turning-back', 'is-later-page', 'is-second-page');
+                }, Math.max(0, projectNoteTurnMotionDurations.prev - projectNoteContentRevealLeadMs));
+
+                projectNoteTurnTimer = window.setTimeout(() => {
+                    projectNote.classList.remove('is-turning', 'is-turning-back', 'is-turn-complete');
+                    projectNotePaper.classList.remove('is-turning', 'is-turning-back', 'is-turn-complete', 'is-folded', 'is-folded-corner-visible');
+                    projectNote.classList.remove('is-later-page', 'is-second-page');
+                    projectNoteTapeMotionPlayed = false;
+                    projectNoteTapeMotionComplete = false;
+                    projectNoteTapeWrappers.forEach((tape) => tape.classList.remove('is-playing', 'is-complete'));
+                    playProjectNoteTapes();
+                    scheduleProjectNoteFoldedCornerAfterContent(1);
+                }, projectNoteTurnMotionDurations.prev);
+            };
+
+            const resetTvSection = (playIntro = false, keepNoise = false) => {
+                projectNotePage = 1;
+                window.clearTimeout(tvNoiseFadeTimer);
+                window.clearTimeout(tvRevealTimer);
+                window.clearTimeout(projectNoteDetailsTimer);
+                window.clearTimeout(projectNoteTapeTimer);
+                window.clearTimeout(projectNoteTurnTimer);
+                window.clearTimeout(projectNoteContentRevealTimer);
+                window.clearTimeout(projectNoteFoldedCornerTimer);
+                if (projectNoteTapeMotionPlayed && !projectNoteTapeMotionComplete) finishProjectNoteTapeMotion();
+                tvMode = playIntro ? 'intro' : 'idle';
+                tvStage.classList.remove('is-intro', 'is-transitioning', 'is-riding-ready');
+                projectNote.classList.remove('is-intro', 'is-transitioning', 'is-riding-ready', 'is-details-visible', 'is-turn-loading', 'is-turning', 'is-turning-back', 'is-turn-complete', 'is-later-page', 'is-second-page', 'has-tape');
+                projectNotePaper.classList.remove('is-folded', 'is-turning', 'is-turning-back', 'is-turn-complete', 'is-folded-corner-visible');
+                projectNoteTapeWrappers.forEach((tape) => tape.classList.remove('is-playing', 'is-complete'));
+                tvStage.classList.remove('is-details-visible');
+                tvRidingLink.classList.remove('is-interactive');
+                if (playIntro) {
+                    projectNoteTapeMotionPlayed = false;
+                    projectNoteTapeMotionComplete = false;
+                    tvStage.classList.add('is-intro');
+                    if (projectNoteIntroComplete) projectNote.classList.add('is-intro');
+                }
+                setTvPlainText(tvTitle, 'RIDING BUSAN');
+                setTvPlainText(noteDescription, '');
+                tvNo.textContent = 'CH 00';
+                setMobileProjectChannel('00');
+                setTvPlainText(tvSmallTxt, 'Press arrow keys');
+                if (!keepNoise) {
+                    tvNoiseVideo.classList.remove('is-active');
+                    tvNoiseVideo.pause();
+                    if (tvNoiseVideo.readyState > 0) tvNoiseVideo.currentTime = 0;
+                }
+                tvVideo.pause();
+                tvRidingVideo.pause();
+                tvRidingVideo.classList.remove('is-revealing');
+                if (tvRidingVideo.readyState > 0) tvRidingVideo.currentTime = 0;
+
+                if (playIntro) {
+                    tvVideo.currentTime = 0;
+                    tvVideo.play().catch(() => {});
+                }
+            };
+
+            const startTvRide = () => {
+                if (tvMode !== 'intro') return;
+                window.clearTimeout(tvNoiseFadeTimer);
+                window.clearTimeout(tvRevealTimer);
+                tvMode = 'transitioning';
+                projectNote.classList.remove('is-intro');
+                projectNote.classList.add('is-transitioning');
+                tvNo.textContent = 'CH 01';
+                setMobileProjectChannel('01');
+                tvStage.classList.remove('is-intro');
+                tvStage.classList.add('is-transitioning');
+
+                tvVideo.pause();
+                tvRidingVideo.pause();
+                if (tvRidingVideo.readyState > 0) tvRidingVideo.currentTime = 0;
+                tvRidingVideo.play().catch(() => {});
+
+                tvNoiseVideo.pause();
+                if (tvNoiseVideo.readyState > 0) tvNoiseVideo.currentTime = 0;
+                tvNoiseVideo.classList.add('is-active');
+                tvNoiseVideo.play().catch(() => {});
+
+                tvNoiseFadeTimer = window.setTimeout(() => {
+                    tvNoiseVideo.classList.remove('is-active');
+                    tvRidingVideo.classList.add('is-revealing');
+                    tvStage.classList.remove('is-transitioning');
+                    setTvStaggeredText(tvTitle, 'RIDING BUSAN', 0, 19);
+                    const noteDescriptionText = '부산 근교의 아름다운 자연경관을 즐길 수 있는 오토바이 라이딩 코스 추천 웹사이트';
+                    setTvStaggeredText(noteDescription, noteDescriptionText, 0, 12);
+                    setTvStaggeredText(tvSmallTxt, '어디로든 떠나고 싶은 순간, 당신의 다음 길을 찾아보세요.', 0, 12);
+                    tvStage.classList.add('is-riding-ready');
+                    projectNote.classList.remove('is-transitioning');
+                    projectNote.classList.add('is-riding-ready');
+                    tvRidingLink.classList.add('is-interactive');
+                    tvMode = 'riding';
+                    projectNoteDetailsTimer = window.setTimeout(showProjectNoteDetails, 850);
+                }, tvNoiseRevealMs);
+                tvRevealTimer = window.setTimeout(() => {
+                    tvNoiseVideo.classList.remove('is-active');
+                    tvNoiseVideo.pause();
+                }, tvNoiseDurationMs);
+            };
+
+            projectNoteTurnHotspot.addEventListener('click', turnProjectNotePage);
+            projectNotePrevHotspot.addEventListener('click', turnProjectNoteBack);
+            document.querySelectorAll('.keycap-part').forEach((key) => {
+                key.addEventListener('click', () => {
+                    key.classList.remove('is-pressed');
+                    void key.offsetWidth;
+                    key.classList.add('is-pressed');
+                    key.addEventListener('animationend', () => {
+                        key.classList.remove('is-pressed');
+                    }, { once: true });
+                });
+            });
+            tvRightKey.addEventListener('click', startTvRide);
+            const showMobileArrowPress = (button) => {
+                button.classList.add('is-pressed');
+                window.setTimeout(() => button.classList.remove('is-pressed'), 140);
+            };
+            const returnToIntroChannel = () => {
+                if (tvMode === 'transitioning') return;
+                if (tvMode !== 'riding') {
+                    setMobileProjectChannel('00');
+                    return;
+                }
+                tvMode = 'transitioning';
+                tvNo.textContent = 'CH 00';
+                setMobileProjectChannel('00');
+                window.clearTimeout(tvNoiseFadeTimer);
+                window.clearTimeout(tvRevealTimer);
+                tvRidingLink.classList.remove('is-interactive');
+                tvNoiseVideo.pause();
+                if (tvNoiseVideo.readyState > 0) tvNoiseVideo.currentTime = 0;
+                tvNoiseVideo.classList.add('is-active');
+                tvNoiseVideo.play().catch(() => {});
+                tvNoiseFadeTimer = window.setTimeout(() => {
+                    resetTvSection(true, true);
+                    tvMode = 'transitioning';
+                    tvRevealTimer = window.setTimeout(() => {
+                        tvNoiseVideo.classList.remove('is-active');
+                        tvNoiseVideo.pause();
+                        tvMode = 'intro';
+                    }, tvNoiseDurationMs - tvNoiseRevealMs);
+                }, tvNoiseRevealMs);
+            };
+            tvLeftKey.addEventListener('click', returnToIntroChannel);
+            mobileProjectPrev.addEventListener('click', () => {
+                showMobileArrowPress(mobileProjectPrev);
+                returnToIntroChannel();
+            });
+            mobileProjectNext.addEventListener('click', () => {
+                showMobileArrowPress(mobileProjectNext);
+                startTvRide();
+            });
+            mobileProjectChannels.forEach((button) => {
+                button.addEventListener('click', () => {
+                    showMobileArrowPress(button);
+                    if (button.dataset.channel === '01' && tvMode !== 'riding') startTvRide();
+                    else if (button.dataset.channel === '00') returnToIntroChannel();
+                });
+            });
+            const turnWords = ['기준', '가치관', '목표점', '능력', '목적', '신념', '비전', '역량'];
+            let turnWordIndex = 0;
+            let turnTimer;
+            let contactTravel = 0;
+            let contactScrollTarget = 0;
+            let contactPanelMoving = false;
+            let contactWFlipPending = false;
+            let contactWFlipAnimating = false;
+            let contactReady = false;
+            let contactReadyTimer = null;
+
+            const startTurn = () => {
+                if (turnTimer || !document.body.classList.contains('contact-active') ||
+                    turn.matches(':hover')) return;
+                turnTimer = window.setInterval(() => {
+                    turnWordIndex = (turnWordIndex + 1) % turnWords.length;
+                    turn.textContent = turnWords[turnWordIndex];
+                }, 100);
+            };
+
+            const stopTurn = () => {
+                window.clearInterval(turnTimer);
+                turnTimer = null;
+            };
+
+            const updateContactScroll = () => {
+                const viewportHeight = window.innerHeight;
+                contactTravel = (viewportHeight + contactPanel.offsetHeight) / 2;
+                contactScrollTarget = Math.min(Math.max(contactScrollTarget, 0), contactTravel);
+                const progress = contactTravel ? contactScrollTarget / contactTravel : 0;
+                const localScroll = window.scrollY - contactSection.offsetTop;
+                const isContactActive = localScroll >= -1;
+                const contactCopyLead = Math.min(120, viewportHeight * 0.15);
+
+                contactSection.style.setProperty('--contact-viewport-height', `${viewportHeight}px`);
+                contactSection.style.setProperty('--contact-scroll', `${contactScrollTarget}px`);
+                contactScrollHint.classList.toggle(
+                    'is-hidden', !contactReady || contactScrollTarget > 0 || contactPanelMoving
+                );
+                contactBackdrop.style.setProperty('--contact-blur', `${progress * 5}px`);
+                contactBackdrop.style.setProperty('--contact-brightness', 1 - progress * 0.06);
+                document.body.classList.toggle('contact-active', isContactActive);
+
+                if (localScroll >= -contactCopyLead) {
+                    document.body.classList.add('contact-copy-revealed');
+                }
+
+                if (isContactActive) {
+                    startTurn();
+                }
+                else stopTurn();
+            };
+
+            const resetContactReady = () => {
+                window.clearTimeout(contactReadyTimer);
+                contactReadyTimer = null;
+                contactReady = false;
+                contactScrollHint.classList.add('is-hidden');
+            };
+
+            const resetContactPanel = () => {
+                contactScrollTarget = 0;
+                contactPanelMoving = false;
+                contactWFlipPending = false;
+                contactWFlipAnimating = false;
+                contactSection.classList.add('contact-panel-reset');
+                updateContactScroll();
+                contactPanel.getBoundingClientRect();
+                window.requestAnimationFrame(() => {
+                    contactSection.classList.remove('contact-panel-reset');
+                });
+            };
+
+            const startContactReadyDelay = () => {
+                if (contactReady || contactReadyTimer) return;
+                contactScrollHint.classList.add('is-hidden');
+                contactReadyTimer = window.setTimeout(() => {
+                    contactReadyTimer = null;
+                    if (currentSection !== 3 || Math.abs(window.scrollY - contactSectionTop) > 2) return;
+                    contactReady = true;
+                    updateContactScroll();
+                }, 300);
+            };
+
+            const moveContactPanel = (deltaY) => {
+                const nextTarget = deltaY > 0 ? contactTravel : 0;
+                if (Math.abs(nextTarget - contactScrollTarget) > 0.5) {
+                    contactScrollTarget = nextTarget;
+                    contactPanelMoving = true;
+                    contactWFlipPending = deltaY > 0;
+                }
+                if (deltaY < 0) {
+                    contactWFlipPending = false;
+                }
+                updateContactScroll();
+            };
+
+            const setContactWFlipped = (flipped) => {
+                const isFlipped = contactRotatedW.classList.contains('is-flipped');
+                if (isFlipped === flipped) return;
+                contactWFlipAnimating = true;
+                contactRotatedW.classList.toggle('is-flipped', flipped);
+            };
+
+            const finishContactWFlip = (event) => {
+                if (event.target === contactRotatedW && event.propertyName === 'transform') {
+                    contactWFlipAnimating = false;
+                }
+            };
+
+            contactRotatedW.addEventListener('transitionend', finishContactWFlip);
+            contactRotatedW.addEventListener('transitioncancel', finishContactWFlip);
+
+            contactPanel.addEventListener('transitionend', (event) => {
+                if (event.propertyName === 'transform') {
+                    contactPanelMoving = false;
+                    if (contactWFlipPending && contactScrollTarget >= contactTravel - 0.5) {
+                        contactWFlipPending = false;
+                        setContactWFlipped(true);
+                    }
+                    updateContactScroll();
+                }
+            });
+
+            turn.addEventListener('mouseenter', stopTurn);
+            turn.addEventListener('mouseleave', startTurn);
+            window.addEventListener('scroll', updateContactScroll, { passive: true });
+            window.addEventListener('resize', updateContactScroll);
+            new ResizeObserver(updateContactScroll).observe(contactPanel);
+
+            const updateAboutScrollHint = () => {
+                aboutScrollHint.classList.toggle('is-hidden', window.scrollY > 0);
+            };
+            window.addEventListener('scroll', updateAboutScrollHint, { passive: true });
+            updateAboutScrollHint();
+
+            document.addEventListener('mousemove', (event) => {
+                customCursor.style.left = `${event.clientX}px`;
+                customCursor.style.top = `${event.clientY}px`;
+                customCursor.classList.add('is-visible');
+
+                const brandRect = headerBrand.getBoundingClientRect();
+                const isInsideHeaderBrand = event.clientX >= brandRect.left &&
+                    event.clientX <= brandRect.right &&
+                    event.clientY >= brandRect.top &&
+                    event.clientY <= brandRect.bottom;
+
+                const hoveredElement = document.elementFromPoint(event.clientX, event.clientY);
+                const isInsideMobileProjectControl = Boolean(hoveredElement?.closest('.mobile-project-controls button'));
+                const hoveredAnchor = hoveredElement?.closest('a');
+                const isInsideAnchor = Boolean(hoveredAnchor);
+                const isInsideTvVideo = Boolean(hoveredElement?.closest('#tv_riding_link')) && tvMode === 'riding';
+                const isInsideNoteTurn = !projectNote.classList.contains('is-turn-loading') &&
+                    Boolean(hoveredElement?.closest('#project-note-turn-hotspot'));
+                const isInsideNotePrev = !projectNote.classList.contains('is-turn-loading') &&
+                    Boolean(hoveredElement?.closest('#project-note-prev-hotspot'));
+
+                customCursor.classList.toggle('is-tv-hover', isInsideTvVideo);
+                customCursor.classList.toggle('is-note-next', isInsideNoteTurn);
+                customCursor.classList.toggle('is-note-prev', isInsideNotePrev);
+                customCursor.classList.toggle(
+                    'is-clicking',
+                    isInsideHeaderBrand || isInsideAnchor || turn.contains(hoveredElement) || backToTop.contains(hoveredElement) || Boolean(hoveredElement?.closest('.keycap-part')) || isInsideMobileProjectControl
+                );
+            });
+
+            document.addEventListener('mouseleave', () => {
+                customCursor.classList.remove('is-clicking');
+                customCursor.classList.remove('is-tv-hover');
+                customCursor.classList.remove('is-note-next', 'is-note-prev');
+            });
+            
+            document.querySelectorAll('a[href]').forEach((link) => {
+                link.addEventListener('click', (event) => {
+                    const href = link.getAttribute('href');
+
+                    if (!href || href === '#' || href.startsWith('#') || link.target === '_blank') {
+                        return;
+                    }
+
+                    const destination = new URL(link.href, window.location.href);
+                    if (destination.origin === window.location.origin && destination.hash && document.getElementById(destination.hash.slice(1))) {
+                        const targetIndex = destination.hash === '#projects_sec'
+                            ? 2
+                            : destination.hash === '#contact-section' ? 3
+                                : destination.hash === '#about-section' ? 1 : null;
+                        if (targetIndex !== null) {
+                            event.preventDefault();
+                            if (targetIndex === 3 || currentSection === 3) resetContactPanel();
+                            document.body.classList.remove(
+                                'header-target-about', 'header-target-projects', 'header-target-contact'
+                            );
+                            document.body.classList.add(`header-target-${
+                                targetIndex === 1 ? 'about' : targetIndex === 2 ? 'projects' : 'contact'
+                            }`);
+                            if (currentSection === 3 && targetIndex !== 3) resetContactReady();
+                            document.body.classList.remove('intro-scroll-lock');
+                            history.pushState(null, '', destination.hash);
+                            currentSection = targetIndex;
+                            sectionScrollTarget = targetIndex === 2
+                                ? projectsSectionTop
+                                : targetIndex === 3 ? contactSectionTop : aboutSectionTop;
+                            aboutSectionSettled = false;
+                            isScrollingToBottom = true;
+                            if (targetIndex === 1) {
+                                updateAboutCard(0);
+                                guardFirstAboutCard();
+                            }
+                            window.clearTimeout(smoothScrollTimer);
+                            smoothScrollTimer = window.setTimeout(ensureSectionArrival, 1500);
+                            window.scrollTo({
+                                top: sectionScrollTarget,
+                                behavior: 'smooth'
+                            });
+                            return;
+                        }
+                    }
+
+                    return;
+                });
+            });
+
+            const aboutSlider = document.querySelector('#about-slider');
+            const about = document.querySelector('#about');
+            const aboutPagination = document.querySelector('#about-pagination');
+            const aboutPaginationButtons = [...aboutPagination.querySelectorAll('button')];
+            const aboutSection = document.querySelector('.about-section');
+            const projectsSection = document.querySelector('#projects_sec');
+            const astronautProjectZone = document.querySelector('#astronaut-project-zone');
+            const astronautProjectPill = document.querySelector('#astronaut-project-pill');
+            const astronautProjectLabel = astronautProjectPill.querySelector('.label');
+            const astronautHead = document.querySelector('#astronaut-head');
+            const astronautStaticLayout = window.matchMedia('(max-width: 1024px)');
+
+            if (window.gsap) {
+                const resetAstronautProjectPill = () => {
+                    window.gsap.killTweensOf([astronautProjectPill, astronautProjectLabel]);
+                    window.gsap.set(astronautProjectPill, { x: 0, y: 0 });
+                    window.gsap.set(astronautProjectLabel, { x: 0, y: 0 });
+                };
+                if (astronautStaticLayout.matches) resetAstronautProjectPill();
+                astronautStaticLayout.addEventListener('change', (event) => {
+                    if (event.matches) resetAstronautProjectPill();
+                });
+
+                projectsSection.addEventListener('mousemove', (event) => {
+                    if (astronautStaticLayout.matches) return;
+                    const rect = astronautProjectZone.getBoundingClientRect();
+                    const scale = rect.width / astronautProjectZone.offsetWidth || 1;
+                    const headRect = astronautHead.getBoundingClientRect();
+                    const astronautCenterX = headRect.left + headRect.width / 2;
+                    const astronautCenterY = headRect.top + headRect.height / 2;
+                    const pillRect = astronautProjectPill.getBoundingClientRect();
+                    const maxMovement = Math.max(0, rect.width / 2 - Math.hypot(pillRect.width / 2, pillRect.height / 2) - 2);
+                    const pointerOffsetX = event.clientX - astronautCenterX;
+                    const pointerOffsetY = event.clientY - astronautCenterY;
+                    let mappedX = pointerOffsetX * 0.2;
+                    let mappedY = pointerOffsetY * 0.2;
+                    const movementLength = Math.hypot(mappedX, mappedY);
+                    let clampRatio = 1;
+                    if (movementLength > maxMovement && movementLength > 0) {
+                        clampRatio = maxMovement / movementLength;
+                        mappedX *= clampRatio;
+                        mappedY *= clampRatio;
+                    }
+
+                    const zoneCenterX = rect.left + rect.width / 2;
+                    const zoneCenterY = rect.top + rect.height / 2;
+                    const safeHeadRadius = Math.min(headRect.width, headRect.height) * 0.42;
+                    const pillRadius = Math.hypot(pillRect.width / 2, pillRect.height / 2);
+                    const maxHeadMovement = Math.max(0, safeHeadRadius - pillRadius - 2);
+                    let pillOffsetX = zoneCenterX + mappedX - astronautCenterX;
+                    let pillOffsetY = zoneCenterY + mappedY - astronautCenterY;
+                    const pillOffsetLength = Math.hypot(pillOffsetX, pillOffsetY);
+                    if (pillOffsetLength > maxHeadMovement && pillOffsetLength > 0) {
+                        const headClampRatio = maxHeadMovement / pillOffsetLength;
+                        pillOffsetX *= headClampRatio;
+                        pillOffsetY *= headClampRatio;
+                        mappedX = astronautCenterX + pillOffsetX - zoneCenterX;
+                        mappedY = astronautCenterY + pillOffsetY - zoneCenterY;
+                    }
+                    const labelMaxX = Math.max(0, (astronautProjectPill.clientWidth - astronautProjectLabel.offsetWidth) / 2 - 2);
+                    const labelMaxY = Math.max(0, (astronautProjectPill.clientHeight - astronautProjectLabel.offsetHeight) / 2 - 2);
+                    const labelTargetX = pointerOffsetX * 0.12 * clampRatio / scale;
+                    const labelTargetY = pointerOffsetY * 0.12 * clampRatio / scale;
+
+                    gsap.to(astronautProjectPill, {
+                        x: mappedX / scale,
+                        y: mappedY / scale,
+                        duration: 0.4,
+                        ease: 'power2.out',
+                        overwrite: 'auto'
+                    });
+                    gsap.to(astronautProjectLabel, {
+                        x: Math.max(-labelMaxX, Math.min(labelMaxX, labelTargetX)),
+                        y: Math.max(-labelMaxY, Math.min(labelMaxY, labelTargetY)),
+                        duration: 0.4,
+                        ease: 'power2.out',
+                        overwrite: true
+                    });
+                });
+
+                projectsSection.addEventListener('mouseleave', () => {
+                    if (astronautStaticLayout.matches) return;
+                    gsap.to(astronautProjectPill, {
+                        x: 0,
+                        y: 0,
+                        duration: 0.7,
+                        ease: 'elastic.out(1,0.4)',
+                        overwrite: 'auto'
+                    });
+                    gsap.to(astronautProjectLabel, {
+                        x: 0,
+                        y: 0,
+                        duration: 0.7,
+                        ease: 'elastic.out(1,0.4)',
+                        overwrite: true
+                    });
+                });
+            }
+
+            let tvSectionIsActive = false;
+            const tvSectionObserver = new IntersectionObserver(([entry]) => {
+                const activeThreshold = matchMedia('(max-width: 1199px)').matches ? 0.25 : 0.5;
+                const isActive = entry.isIntersecting && entry.intersectionRatio >= activeThreshold;
+                if (isActive === tvSectionIsActive) return;
+                tvSectionIsActive = isActive;
+                if (isActive) playProjectNoteIntro();
+                else if (projectNoteIntroPlayed && !projectNoteIntroComplete) showProjectNoteStatic();
+                resetTvSection(isActive);
+            }, { threshold: [0, 0.25, 0.5] });
+            tvSectionObserver.observe(projectsSection);
+            let aboutSectionTop = aboutSection.offsetTop;
+            let projectsSectionTop = projectsSection.offsetTop;
+            let contactSectionTop = contactSection.offsetTop;
+            const syncSectionTops = () => {
+                aboutSectionTop = aboutSection.offsetTop;
+                projectsSectionTop = projectsSection.offsetTop;
+                contactSectionTop = contactSection.offsetTop;
+            };
+            const aboutCardGap = 36;
+            let activeAboutCard = 0;
+            let aboutWheelCooldown = false;
+            let aboutWheelGestureDirection = 0;
+            let aboutWheelResetTimer;
+            let aboutEntryWheelGuard = false;
+            let aboutEntryWheelTimer;
+            const initialSection = !window.__aboutPageReload && window.location.hash === '#contact-section'
+                ? 3
+                : !window.__aboutPageReload && window.location.hash === '#projects_sec'
+                    ? 2
+                    : !window.__aboutPageReload && window.location.hash === '#about-section' ? 1 : 0;
+            let firstSectionVisited = initialSection === 0;
+            let dimVideoTitleOnReturn = false;
+            let currentSection = initialSection;
+            let aboutSequenceStarted = false;
+            let isAboutSequenceAnimating = false;
+            let aboutRevealTimer;
+            let aboutModeTimer;
+            let lastScrollSection = 0;
+            let skillSequenceStarted = false;
+            let skillSequenceStarting = false;
+
+            // Fit the icons into free space beside or above the unchanged astronaut.
+            const skillCard = document.querySelector('.skill-card');
+            const skillContent = document.querySelector('.skill-content');
+            const skillGrid = document.querySelector('.skill-grid');
+            const skillLicense = skillContent.querySelector('.skill-license');
+            const aboutViewport = document.querySelector('#about-viewport');
+            const astronautImage = document.querySelector('#about-astronaut img');
+            const fitAboutAstronaut = () => {
+                const responsive = matchMedia('(max-width: 1500px)').matches;
+                const isTablet = matchMedia('(min-width: 768px) and (max-width: 1024px)').matches;
+                const isNotebook = matchMedia('(min-width: 1025px) and (max-width: 1500px)').matches;
+
+                if (!responsive) {
+                    ['--astronaut-image-width', '--astronaut-art-width', '--astronaut-margin',
+                        '--astronaut-gap', '--astronaut-reserve'].forEach((property) => {
+                        aboutViewport.style.removeProperty(property);
+                    });
+                    astronautImage.style.removeProperty('width');
+                    astronautImage.style.removeProperty('right');
+                    astronautImage.style.removeProperty('left');
+                    return;
+                }
+
+                const cardWidth = about.offsetWidth;
+                const cardHeight = about.offsetHeight;
+                const margin = Math.min(48, Math.max(18, window.innerWidth * 0.03));
+                const gap = Math.min(28, Math.max(12, window.innerWidth * 0.02));
+                const isMobile = matchMedia('(max-width: 767px)').matches;
+                const imageWidth = isMobile
+                    ? Math.min(440, cardWidth * 1.1, cardHeight * 1.25)
+                    : isTablet || isNotebook
+                        ? Math.min(768, cardWidth * 0.92, cardHeight * 1.2)
+                    : Math.max(0, Math.min(
+                        cardHeight * 1.45,
+                        (cardWidth - 170) * (1100 / 264)
+                    ));
+                const artWidth = imageWidth * (264 / 1100);
+                const reserve = artWidth + margin + gap;
+                const notebookShift = isNotebook
+                    ? Math.min(10, Math.max(0, (1080 - window.innerWidth) * (10 / 55)))
+                    : 0;
+
+                aboutViewport.style.setProperty('--astronaut-image-width', `${imageWidth}px`);
+                aboutViewport.style.setProperty('--astronaut-art-width', `${artWidth}px`);
+                aboutViewport.style.setProperty('--astronaut-margin', `${margin}px`);
+                aboutViewport.style.setProperty('--astronaut-gap', `${gap}px`);
+                aboutViewport.style.setProperty('--astronaut-reserve', `${reserve}px`);
+                astronautImage.style.width = `${imageWidth}px`;
+                if (isTablet || isNotebook) {
+                    astronautImage.style.left = `${(isNotebook ? 41 : margin) - imageWidth * (415 / 1100) + (isNotebook ? 0 : 1)}px`;
+                    astronautImage.style.right = 'auto';
+                } else {
+                    astronautImage.style.left = 'auto';
+                    // The GIF artwork ends at x=679 in its 1100px-wide transparent canvas.
+                    astronautImage.style.right = `${margin - imageWidth * (421 / 1100)}px`;
+                }
+            };
+            // 아이콘의 최대 크기(px). 작은 화면에서는 남는 공간에 맞춰 자동 축소합니다.
+            const maxSkillSize = 110.875;
+            const fitSkillGrid = () => {
+                const padding = getComputedStyle(skillCard);
+                const width = skillContent.clientWidth;
+                const height = skillContent.clientHeight;
+                const isMobile = matchMedia('(max-width: 767px)').matches;
+                const isTablet = matchMedia('(min-width: 768px) and (max-width: 1024px)').matches;
+                const isNotebook = matchMedia('(min-width: 1025px) and (max-width: 1500px)').matches;
+                const isNarrowLaptop = matchMedia('(min-width: 1025px) and (max-width: 1200px)').matches;
+                const fitMaxSkillSize = isTablet ? 92 : isNotebook ? 99 : maxSkillSize;
+                const isDesktop = matchMedia('(min-width: 1501px)').matches;
+                const columns = isMobile ? 4 : (isTablet || isNotebook || isNarrowLaptop) ? 4 : 8;
+                const labelSpace = 0.30;
+                const shieldBottomSpace = 0.03;
+                const gap = isMobile
+                    ? Math.min(24, Math.max(3, width * 0.015))
+                    : Math.min(24, Math.max(6, width * 0.025));
+                const margin = 16;
+                const licenseSpace = skillLicense.offsetHeight + (isMobile ? 64 : margin);
+                const title = skillContent.querySelector('.about-title');
+                const top = title.offsetHeight + (isMobile ? 10.8 : Math.min(24, height * 0.08));
+                // Visible artwork bounds across all 52 GIF frames: (415, 83)–(678, 758)
+                // within the 1100 × 800 source. Transparent padding can hold icons.
+                const imageLeft = astronautImage.offsetLeft + astronautImage.offsetWidth * 415 / 1100
+                    - parseFloat(padding.paddingLeft);
+                const imageTop = astronautImage.offsetTop + astronautImage.offsetHeight * 83 / 800
+                    - parseFloat(padding.paddingTop);
+                const footer = getComputedStyle(astronautImage.parentElement, '::before');
+                const footerTop = footer.content !== 'none'
+                    ? height + parseFloat(padding.paddingBottom) - (parseFloat(footer.height) || 0)
+                    : height;
+                const imageRight = astronautImage.offsetLeft + astronautImage.offsetWidth * 679 / 1100
+                    - parseFloat(padding.paddingLeft);
+                const desktopRegionLeft = imageRight + margin + 130;
+                const tabletRegionLeft = imageRight + margin;
+                const notebookRegionLeft = imageRight + margin - 24;
+                const regions = isMobile
+                    ? [{ left: width * 0.06, width: width * 0.88, height: height - top - licenseSpace }]
+                    : isDesktop || isTablet || isNotebook
+                        ? [{ left: isDesktop ? desktopRegionLeft : isNotebook ? notebookRegionLeft : tabletRegionLeft, width: Math.max(0, width - (isDesktop ? desktopRegionLeft : isNotebook ? notebookRegionLeft : tabletRegionLeft)), height: height - top - licenseSpace }]
+                        : [
+                        { width: Math.min(width, imageLeft - margin), height: height - top - licenseSpace },
+                        { width, height: Math.min(height, imageTop - margin, footerTop - margin) - top - licenseSpace }
+                    ];
+                const chooseRegions = (columnCount) => {
+                    const rowCount = Math.ceil(8 / columnCount);
+                    return regions.map(region => ({
+                        ...region,
+                        size: Math.max(0, Math.min(fitMaxSkillSize,
+                            (region.width - gap * (columnCount - 1)) / columnCount,
+                            (region.height - gap * (rowCount - 1)) / (rowCount + labelSpace + shieldBottomSpace)))
+                    })).sort((a, b) => b.size - a.size);
+                };
+                const choices = chooseRegions(columns);
+                const rows = Math.ceil(8 / columns);
+                const best = choices[0];
+                const gridWidth = best.size * columns + gap * (columns - 1);
+                const gridHeight = best.size * (rows + labelSpace + shieldBottomSpace) + gap * (rows - 1);
+                const mobileGridLift = isMobile ? Math.max(37, Math.min(46, 82 - width * 0.113)) : 0;
+                const skillTop = top + best.size * labelSpace + Math.max(0, (best.height - gridHeight) / 2)
+                    - (isMobile ? 10 + mobileGridLift : isNotebook ? 0 : 40);
+                skillGrid.style.setProperty('--skill-columns', columns);
+                skillGrid.style.setProperty('--skill-size', `${best.size}px`);
+                skillGrid.style.setProperty('--skill-gap', `${gap}px`);
+                skillGrid.style.setProperty('--skill-left', `${(best.left || 0) + Math.max(0, (best.width - gridWidth) / 2)}px`);
+                skillGrid.style.setProperty('--skill-top', `${skillTop}px`);
+                if (isMobile) {
+                    skillLicense.style.top = `${skillTop + gridHeight + 32}px`;
+                    skillLicense.style.bottom = 'auto';
+                    const titleTop = title.offsetTop + title.offsetHeight * 0.5;
+                    const contentBottom = skillLicense.offsetTop + skillLicense.offsetHeight;
+                    const verticalLift = Math.max(0, (height - (contentBottom - titleTop)) / 2 - titleTop);
+                    skillContent.style.setProperty('--mobile-skill-lift', `${verticalLift}px`);
+                } else {
+                    skillLicense.style.removeProperty('top');
+                    skillLicense.style.removeProperty('bottom');
+                    skillContent.style.removeProperty('--mobile-skill-lift');
+                }
+            };
+            const skillLayoutObserver = new ResizeObserver(fitSkillGrid);
+            [skillContent, astronautImage, skillContent.querySelector('.about-title'), skillLicense].forEach(element => {
+                skillLayoutObserver.observe(element);
+            });
+            astronautImage.addEventListener('load', fitSkillGrid);
+            const aboutInfoLayout = document.querySelector('.about-info-layout');
+            const fitAboutInfoLayout = () => {
+                if (!matchMedia('(min-width: 1025px) and (max-width: 1500px)').matches) {
+                    aboutInfoLayout.style.removeProperty('--about-info-shift');
+                    return;
+                }
+
+                aboutInfoLayout.style.setProperty('--about-info-shift', '0px');
+                const range = document.createRange();
+                const walker = document.createTreeWalker(aboutInfoLayout, NodeFilter.SHOW_TEXT);
+                let textRight = -Infinity;
+                let textNode;
+                while ((textNode = walker.nextNode())) {
+                    if (!textNode.textContent.trim()) continue;
+                    range.selectNodeContents(textNode);
+                    textRight = Math.max(textRight, range.getBoundingClientRect().right);
+                }
+
+                const rightEdge = about.getBoundingClientRect().right;
+                aboutInfoLayout.style.setProperty('--about-info-shift', `${Math.min(0, rightEdge - textRight)}px`);
+            };
+            document.fonts.ready.then(() => {
+                fitAboutAstronaut();
+                fitAboutInfoLayout();
+                fitSkillGrid();
+            });
+            window.addEventListener('resize', () => {
+                fitAboutAstronaut();
+                fitAboutInfoLayout();
+                fitSkillGrid();
+            });
+            fitAboutAstronaut();
+            fitAboutInfoLayout();
+            fitSkillGrid();
+
+            const updateAboutCard = (index) => {
+                activeAboutCard = Math.max(0, Math.min(aboutPaginationButtons.length - 1, index));
+                const aboutCardStep = about.offsetWidth + aboutCardGap;
+                aboutSlider.style.setProperty('--about-offset', `${-(activeAboutCard * aboutCardStep)}px`);
+                aboutPaginationButtons.forEach((button, buttonIndex) => {
+                    button.classList.toggle('is-active', buttonIndex === activeAboutCard);
+                });
+
+                if (activeAboutCard === 1) {
+                    startSkillSequence();
+                }
+            };
+
+            const guardFirstAboutCard = () => {
+                // 첫 방문의 연속 휠만 막는다. 재방문에서는 섹션 이동 중
+                // sectionScrollTarget이 이미 휠을 막으므로 도착 후 첫 휠은 카드 이동에 쓴다.
+                if (aboutSequenceStarted) return;
+                aboutEntryWheelGuard = true;
+                window.clearTimeout(aboutEntryWheelTimer);
+                aboutEntryWheelTimer = window.setTimeout(() => {
+                    aboutEntryWheelGuard = false;
+                }, 350);
+            };
+
+            aboutPaginationButtons.forEach((button, index) => {
+                button.addEventListener('click', () => updateAboutCard(index));
+            });
+
+            const delay = (milliseconds) => new Promise((resolve) => {
+                window.setTimeout(resolve, milliseconds);
+            });
+
+            const typeText = async (element, text) => {
+                element.replaceChildren();
+                const typingCharacterDelay = 52.5;
+
+                for (const character of text) {
+                    const typedCharacter = document.createElement('span');
+                    typedCharacter.className = 'typing-char is-current';
+                    typedCharacter.textContent = character === ' ' ? '\u00a0' : character;
+                    element.appendChild(typedCharacter);
+                    await delay(typingCharacterDelay);
+                    typedCharacter.classList.remove('is-current');
+                }
+            };
+
+            const startSkillSequence = async () => {
+                if (skillSequenceStarted || skillSequenceStarting) {
+                    return;
+                }
+
+                skillSequenceStarting = true;
+                try {
+                    await delay(350);
+
+                    if (activeAboutCard !== 1) return;
+
+                    skillSequenceStarted = true;
+                    const skillTitle = document.querySelector('.skill-content .typing-text');
+                    const licenseTitle = skillLicense.querySelector('.typing-text');
+                    const licenseRow = skillLicense.querySelector('.license-row');
+                    const skillItems = [...skillContent.querySelectorAll('.skill-item')];
+                    skillItems.forEach((item) => item.classList.add('is-visible'));
+                    await Promise.all([
+                        typeText(skillTitle, skillTitle.dataset.text),
+                        typeText(licenseTitle, licenseTitle.dataset.text),
+                        revealAboutRow(licenseRow)
+                    ]);
+                    document.querySelector('.skill-scroll-hint').classList.add('is-visible');
+                } finally {
+                    skillSequenceStarting = false;
+                }
+            };
+
+            const revealAboutRow = async (row, wait = 0) => {
+                if (wait > 0) await delay(wait);
+                row.classList.add('is-visible');
+            };
+
+            const startAboutSequence = async () => {
+                if (aboutSequenceStarted) {
+                    return;
+                }
+
+                aboutSequenceStarted = true;
+                isAboutSequenceAnimating = true;
+                document.body.classList.add('intro-scroll-lock');
+
+                try {
+                    await delay(650);
+
+                    const aboutTitle = about.querySelector('.about-content > .about-title .typing-text');
+                    const experienceTitle = about.querySelector('.experience-content .typing-text');
+                    const educationTitle = about.querySelector('.education-title .typing-text');
+                    const infoRows = about.querySelectorAll('.about-content > .about-row:not(.education-row)');
+                    const experienceRows = about.querySelectorAll('.experience-row');
+                    const educationRows = about.querySelectorAll('.education-row');
+
+                    await Promise.all([
+                        typeText(aboutTitle, aboutTitle.dataset.text),
+                        typeText(experienceTitle, experienceTitle.dataset.text),
+                        typeText(educationTitle, educationTitle.dataset.text),
+                        ...[...infoRows, ...experienceRows, ...educationRows].map(row => revealAboutRow(row))
+                    ]);
+                    await delay(550);
+                } finally {
+                    isAboutSequenceAnimating = false;
+                    document.body.classList.remove('intro-scroll-lock');
+                }
+            };
+
+            const showAboutAtPageEnd = () => {
+                const isInsideAboutSection = window.scrollY >= aboutSectionTop - 10 &&
+                    window.scrollY < projectsSectionTop - 10;
+                const reachedInteractionEnd = isInsideAboutSection;
+
+                if (reachedInteractionEnd &&
+                    !aboutSlider.classList.contains('about-is-visible') &&
+                    !aboutRevealTimer) {
+                    const revealAboutCard = () => {
+                        aboutRevealTimer = null;
+
+                        if (window.scrollY < aboutSectionTop - 10 ||
+                            window.scrollY >= projectsSectionTop - 10) {
+                            return;
+                        }
+
+                        // 카드 노출은 KEEP QUESTINING 텍스트의 클래스 상태에 의존하지 않는다.
+                        // 재방문이나 빠른 휠 입력으로 텍스트 상태가 늦어져도 카드가 멈추지 않게 한다.
+                        const revealDelay = aboutSequenceStarted ? 100 : 850;
+                        aboutRevealTimer = window.setTimeout(() => {
+                            aboutRevealTimer = null;
+
+                            if (window.scrollY >= aboutSectionTop - 10 &&
+                                window.scrollY < projectsSectionTop - 10) {
+                                aboutSlider.classList.add('about-is-visible');
+                                aboutPagination.classList.add('is-visible');
+                                startAboutSequence();
+                            }
+                        }, revealDelay);
+                    };
+
+                    aboutRevealTimer = window.setTimeout(revealAboutCard, 0);
+                }
+            };
+
+            window.addEventListener('scroll', showAboutAtPageEnd, { passive: true });
+            showAboutAtPageEnd();
+
+            const secTxt = document.querySelector('#sec_txt');
+            const firstPageSection = document.querySelector('#wrap > .page-section');
+            let secTxtTicking = false;
+            let isScrollingToBottom = false;
+            let introScrollUnlocked = false;
+            let smoothScrollTimer;
+            let aboutSectionSettled = false;
+            let sectionScrollTarget = null;
+            let secTxtReturnSnapshot = null;
+
+            lastScrollSection = initialSection;
+            introScrollUnlocked = initialSection !== 0;
+            if (initialSection === 0) {
+                window.scrollTo(0, 0);
+                document.body.classList.add('intro-scroll-lock');
+            } else {
+                document.body.classList.remove('intro-scroll-lock');
+                aboutSectionSettled = initialSection === 1;
+                if (initialSection === 2) document.body.classList.add('projects-active');
+                if (initialSection === 3) document.body.classList.add('contact-active');
+                if (initialSection === 1) {
+                    document.body.classList.add('about-active');
+                    updateAboutCard(0);
+                    showAboutAtPageEnd();
+                }
+            }
+            updateContactScroll();
+            if (initialSection === 3) startContactReadyDelay();
+
+            const setSecTxtOpacity = (progress) => {
+                secTxt.style.opacity = Math.max(0, Math.min(1, progress));
+            };
+
+            const showSecTxtReturnSnapshot = () => {
+                secTxtReturnSnapshot?.remove();
+
+                const snapshot = secTxt.cloneNode(true);
+                const sourceNodes = [secTxt, ...secTxt.querySelectorAll('*')];
+                const snapshotNodes = [snapshot, ...snapshot.querySelectorAll('*')];
+                const snapshotTitle = snapshot.querySelector('#fst_txt');
+                const snapshotSubtitle = snapshot.querySelector('#line_txt');
+
+                sourceNodes.forEach((source, index) => {
+                    const computed = getComputedStyle(source);
+                    const target = snapshotNodes[index];
+                    for (const property of computed) {
+                        target.style.setProperty(property, computed.getPropertyValue(property));
+                    }
+                    target.removeAttribute('id');
+                });
+
+                if (snapshotTitle) {
+                    Object.assign(snapshotTitle.style, {
+                        transform: 'none',
+                        transition: 'none',
+                        visibility: 'visible'
+                    });
+                }
+                if (snapshotSubtitle) {
+                    Object.assign(snapshotSubtitle.style, {
+                        opacity: '1',
+                        transform: 'none',
+                        transition: 'none',
+                        visibility: 'visible'
+                    });
+                }
+
+                snapshot.classList.remove('about-mode');
+                snapshot.setAttribute('aria-hidden', 'true');
+                Object.assign(snapshot.style, {
+                    position: 'absolute',
+                    opacity: '0.5',
+                    transition: 'none',
+                    visibility: 'visible',
+                    pointerEvents: 'none',
+                    zIndex: '2'
+                });
+
+                firstPageSection.append(snapshot);
+                secTxtReturnSnapshot = snapshot;
+            };
+
+            const restoreSecTxtAtTop = () => {
+                firstSectionVisited = true;
+                dimVideoTitleOnReturn = true;
+                secTxt.classList.remove('about-mode');
+                secTxt.style.visibility = 'visible';
+                setSecTxtOpacity(0.5);
+                showSecTxtReturnSnapshot();
+                secTxt.classList.add('about-mode');
+                secTxt.style.opacity = '0.5';
+                secTxt.style.visibility = 'hidden';
+
+                void secTxt.offsetWidth;
+                document.body.classList.remove('sec-txt-instant-top');
+            };
+
+            const updateSecTxtPosition = () => {
+                const reachedAboutSection = currentSection === 1 && aboutSectionSettled;
+                const atAboutSection = window.scrollY >= aboutSectionTop - 10 &&
+                    window.scrollY < projectsSectionTop;
+                const aboutAlreadyExists = aboutSequenceStarted ||
+                    aboutSlider.classList.contains('about-is-visible');
+
+                if (atAboutSection || reachedAboutSection) {
+                    window.clearTimeout(aboutModeTimer);
+                    aboutModeTimer = null;
+                    if (reachedAboutSection || !secTxt.classList.contains('about-mode')) {
+                        secTxt.style.visibility = 'visible';
+                    }
+
+                    if (reachedAboutSection) {
+                        secTxt.style.opacity = '1';
+                    }
+
+                    if (aboutAlreadyExists) {
+                        secTxt.classList.add('about-mode');
+                    } else if (!secTxt.classList.contains('about-mode') && !aboutModeTimer) {
+                        aboutModeTimer = window.setTimeout(() => {
+                            aboutModeTimer = null;
+
+                            if ((window.scrollY >= aboutSectionTop - 10 &&
+                                window.scrollY < projectsSectionTop) || currentSection === 1) {
+                                secTxt.classList.add('about-mode');
+                            }
+                        }, 300);
+                    }
+                } else {
+                    window.clearTimeout(aboutModeTimer);
+                    aboutModeTimer = null;
+                }
+
+                // About 섹션에 도착한 뒤에는 축소된 섹션 제목을 선명하게 유지합니다.
+                if (atAboutSection || reachedAboutSection) {
+                    setSecTxtOpacity(dimVideoTitleOnReturn && currentSection === 0 ? 0.5 : 1);
+                }
+
+                if (dimVideoTitleOnReturn && currentSection === 0 && window.scrollY <= 1) {
+                    secTxt.style.visibility = 'visible';
+                    if (secTxtReturnSnapshot) {
+                        secTxt.classList.add('about-mode');
+                        secTxt.style.opacity = '0.5';
+                        secTxt.style.visibility = 'hidden';
+                    } else {
+                        secTxt.classList.remove('about-mode');
+                        setSecTxtOpacity(0.5);
+                    }
+                }
+
+                secTxtTicking = false;
+            };
+
+            const ensureSectionArrival = () => {
+                if (sectionScrollTarget === null) return;
+
+                if (Math.abs(window.scrollY - sectionScrollTarget) > 2) {
+                    window.scrollTo({ top: sectionScrollTarget, behavior: 'smooth' });
+                    smoothScrollTimer = window.setTimeout(ensureSectionArrival, 800);
+                    return;
+                }
+
+                currentSection = sectionScrollTarget === contactSectionTop
+                    ? 3
+                    : sectionScrollTarget === projectsSectionTop
+                        ? 2
+                        : sectionScrollTarget === aboutSectionTop ? 1 : 0;
+                if (currentSection === 2) {
+                    document.body.classList.add('projects-active');
+                    document.body.classList.remove('projects-nav-transition');
+                }
+                if (currentSection === 3) {
+                    document.body.classList.remove('projects-active', 'projects-nav-transition');
+                    document.body.classList.add('contact-active');
+                    document.body.classList.add('contact-copy-revealed');
+                    startContactReadyDelay();
+                } else {
+                    resetContactReady();
+                    resetContactPanel();
+                }
+                aboutSectionSettled = currentSection === 1;
+                sectionScrollTarget = null;
+                isScrollingToBottom = false;
+                document.body.classList.remove(
+                    'header-target-about', 'header-target-projects', 'header-target-contact'
+                );
+                if (currentSection === 0) {
+                    restoreSecTxtAtTop();
+                } else if (currentSection === 1) {
+                    firstSectionVisited = true;
+                    secTxtReturnSnapshot?.remove();
+                    secTxtReturnSnapshot = null;
+                }
+                if (currentSection === 1) {
+                    guardFirstAboutCard();
+                    showAboutAtPageEnd();
+                }
+            };
+
+            if (initialSection !== 0) {
+                window.requestAnimationFrame(() => {
+                    syncSectionTops();
+                    sectionScrollTarget = initialSection === 3
+                        ? contactSectionTop
+                        : initialSection === 2 ? projectsSectionTop : aboutSectionTop;
+                    isScrollingToBottom = true;
+                    window.scrollTo({ top: sectionScrollTarget, behavior: 'smooth' });
+                    window.clearTimeout(smoothScrollTimer);
+                    smoothScrollTimer = window.setTimeout(ensureSectionArrival, 1500);
+                });
+            }
+
+            const handleAboutWheel = (event) => {
+                if (isAboutSequenceAnimating || skillSequenceStarting) {
+                    if (event.deltaY > 0 && currentSection === 1) guardFirstAboutCard();
+                    event.preventDefault();
+                    return;
+                }
+
+                const readingCard = event.target?.closest('.about-card');
+                if (readingCard && aboutSectionSettled && sectionScrollTarget === null &&
+                    getComputedStyle(readingCard).overflowY === 'auto') {
+                    const remaining = readingCard.scrollHeight - readingCard.clientHeight - readingCard.scrollTop;
+                    if ((event.deltaY > 0 && remaining > 2) ||
+                        (event.deltaY < 0 && readingCard.scrollTop > 2)) return;
+                }
+
+                const contactBoundary = contactSectionTop - 1;
+                const projectsBoundary = (aboutSectionTop + projectsSectionTop) / 2;
+                const isAtContactSection = window.scrollY >= contactBoundary;
+                const isAtProjectsSection = !isAtContactSection && window.scrollY >= projectsBoundary;
+                const isAtAboutSection = !isAtProjectsSection &&
+                    !isAtContactSection && window.scrollY >= aboutSectionTop / 2;
+                const isAtPageTop = !isAtAboutSection && !isAtProjectsSection && !isAtContactSection;
+                const canMoveUp = isAtAboutSection && event.deltaY < 0;
+                const canMoveDown = !isAtAboutSection && event.deltaY > 0;
+
+                if (sectionScrollTarget !== null) {
+                    if (sectionScrollTarget === aboutSectionTop && event.deltaY > 0) {
+                        guardFirstAboutCard();
+                    }
+                    event.preventDefault();
+                    return;
+                }
+
+                if (isAtContactSection) {
+                    currentSection = 3;
+                    event.preventDefault();
+                    if (contactWFlipAnimating && event.deltaY < 0) return;
+                    if (!contactReady) return;
+                    if (event.deltaY > 0) {
+                        moveContactPanel(event.deltaY);
+                    } else if (contactScrollTarget > 0) {
+                        moveContactPanel(event.deltaY);
+                    } else if (contactPanelMoving) {
+                        return;
+                    } else if (window.scrollY <= contactSectionTop + 2) {
+                        resetContactReady();
+                        resetContactPanel();
+                        currentSection = 2;
+                        sectionScrollTarget = projectsSectionTop;
+                        aboutSectionSettled = false;
+                        window.clearTimeout(smoothScrollTimer);
+                        smoothScrollTimer = window.setTimeout(ensureSectionArrival, 1500);
+                        window.scrollTo({ top: projectsSectionTop, behavior: 'smooth' });
+                    }
+                    return;
+                }
+
+                if (isAtProjectsSection) {
+                    currentSection = 2;
+                    if (matchMedia('(max-width: 1199px)').matches) {
+                        const projectsBottom = projectsSectionTop + projectsSection.offsetHeight;
+                        const isInsideProjects = window.scrollY > projectsSectionTop + 2 &&
+                            window.scrollY + window.innerHeight < projectsBottom - 2;
+                        const canScrollWithinProjects = isInsideProjects ||
+                            (event.deltaY > 0 && window.scrollY + window.innerHeight < projectsBottom - 2) ||
+                            (event.deltaY < 0 && window.scrollY > projectsSectionTop + 2);
+                        if (canScrollWithinProjects) return;
+                    }
+                    event.preventDefault();
+                    if (event.deltaY < 0) {
+                        event.preventDefault();
+                        isScrollingToBottom = true;
+                        sectionScrollTarget = aboutSectionTop;
+                        aboutSectionSettled = false;
+                        document.querySelectorAll('.about-card').forEach((card) => { card.scrollTop = 0; });
+                        updateAboutCard(0);
+                        window.clearTimeout(smoothScrollTimer);
+                        smoothScrollTimer = window.setTimeout(ensureSectionArrival, 1500);
+                        window.scrollTo({ top: aboutSectionTop, behavior: 'smooth' });
+                    } else if (event.deltaY > 0) {
+                        event.preventDefault();
+                        document.body.classList.remove(
+                            'header-target-about', 'header-target-projects', 'header-target-contact'
+                        );
+                        document.body.classList.add('header-target-contact');
+                        currentSection = 3;
+                        sectionScrollTarget = contactSectionTop;
+                        isScrollingToBottom = true;
+                        aboutSectionSettled = false;
+                        window.clearTimeout(smoothScrollTimer);
+                        smoothScrollTimer = window.setTimeout(ensureSectionArrival, 1500);
+                        window.scrollTo({ top: contactSectionTop, behavior: 'smooth' });
+                    }
+                    return;
+                }
+
+                currentSection = isAtAboutSection ? 1 : 0;
+
+                if (isAtAboutSection && event.deltaY !== 0) {
+                    const wheelDirection = event.deltaY > 0 ? 1 : -1;
+
+                    event.preventDefault();
+
+                    // 섹션으로 이동하는 도중 들어온 큰 휠 입력이
+                    // 카드 이동으로 처리되지 않도록 완전히 도착할 때까지 대기한다.
+                    if (!aboutSectionSettled) {
+                        return;
+                    }
+
+                    if (aboutEntryWheelGuard || !aboutSlider.classList.contains('about-is-visible')) {
+                        guardFirstAboutCard();
+                        return;
+                    }
+
+                    if (aboutWheelCooldown &&
+                        wheelDirection !== aboutWheelGestureDirection) {
+                        aboutWheelCooldown = false;
+                    }
+
+                    if (aboutWheelCooldown) {
+                        window.clearTimeout(aboutWheelResetTimer);
+                        aboutWheelResetTimer = window.setTimeout(() => {
+                            aboutWheelCooldown = false;
+                            aboutWheelGestureDirection = 0;
+                        }, 350);
+                        return;
+                    }
+
+                    aboutWheelCooldown = true;
+                    aboutWheelGestureDirection = wheelDirection;
+                    window.clearTimeout(aboutWheelResetTimer);
+                    aboutWheelResetTimer = window.setTimeout(() => {
+                        aboutWheelCooldown = false;
+                        aboutWheelGestureDirection = 0;
+                    }, 350);
+
+                    if (event.deltaY < 0 && activeAboutCard === 0) {
+                        dimVideoTitleOnReturn = true;
+                        document.body.classList.add('sec-txt-instant-top');
+                        isScrollingToBottom = true;
+                        sectionScrollTarget = 0;
+                        currentSection = 0;
+                        aboutSectionSettled = false;
+                        // 흰 카드처럼 두 번째 섹션에 붙여 스크롤과 함께 아래로 내린다.
+                        window.clearTimeout(aboutModeTimer);
+                        aboutModeTimer = null;
+                        secTxt.classList.add('about-mode');
+                        secTxt.style.opacity = '1';
+                        secTxt.style.visibility = 'visible';
+                        window.clearTimeout(smoothScrollTimer);
+                        smoothScrollTimer = window.setTimeout(ensureSectionArrival, 1500);
+                        window.scrollTo({
+                            top: 0,
+                            behavior: 'smooth'
+                        });
+                        return;
+                    }
+
+                    if (wheelDirection > 0 &&
+                        activeAboutCard === aboutPaginationButtons.length - 1) {
+                        isScrollingToBottom = true;
+                        sectionScrollTarget = projectsSectionTop;
+                        currentSection = 2;
+                        aboutSectionSettled = false;
+                        window.clearTimeout(smoothScrollTimer);
+                        smoothScrollTimer = window.setTimeout(ensureSectionArrival, 1500);
+                        window.scrollTo({
+                            top: projectsSectionTop,
+                            behavior: 'smooth'
+                        });
+                        return;
+                    }
+
+                    const nextAboutCard = wheelDirection > 0
+                        ? Math.min(activeAboutCard + 1, aboutPaginationButtons.length - 1)
+                        : Math.max(activeAboutCard - 1, 0);
+                    updateAboutCard(nextAboutCard);
+                    return;
+                }
+
+                if (event.deltaY === 0) {
+                    return;
+                }
+
+                // 이동할 다음/이전 섹션이 없을 때도 현재 위치를 유지합니다.
+                if (!canMoveUp && !canMoveDown) {
+                    event.preventDefault();
+                    return;
+                }
+
+                // opacity transition이 끝날 때까지 body 스크롤을 확실하게 잠급니다.
+                if (isAtPageTop && canMoveDown && !introScrollUnlocked) {
+                    event.preventDefault();
+                    secTxt.style.visibility = 'visible';
+
+                    // 첫 번째 휠: 페이지는 고정하고 텍스트를 절반만 선명하게 만듭니다.
+                    setSecTxtOpacity(0.5);
+                    window.setTimeout(() => {
+                        introScrollUnlocked = true;
+                        document.body.classList.remove('intro-scroll-lock');
+                    }, 650);
+                    return;
+                }
+
+                // 두 번째 휠: 최하단까지 부드럽게 이동합니다.
+                event.preventDefault();
+                isScrollingToBottom = true;
+                window.clearTimeout(smoothScrollTimer);
+
+                currentSection = canMoveUp ? 0 : 1;
+                if (currentSection === 1) dimVideoTitleOnReturn = false;
+                sectionScrollTarget = currentSection === 1 ? aboutSectionTop : 0;
+                smoothScrollTimer = window.setTimeout(ensureSectionArrival, 1500);
+                aboutSectionSettled = false;
+                if (currentSection === 1) setSecTxtOpacity(0.5);
+
+                // 첫 번째 섹션에서 두 번째 섹션으로 진입할 때는
+                // 이전에 보던 카드 위치를 남기지 않고 항상 첫 번째 카드부터 시작한다.
+                if (currentSection === 1) {
+                    document.querySelectorAll('.about-card').forEach((card) => {
+                        card.scrollTop = 0;
+                    });
+                    updateAboutCard(0);
+                    guardFirstAboutCard();
+                }
+
+                const targetScroll = currentSection === 1 ? aboutSectionTop : 0;
+
+                window.scrollTo({
+                    top: targetScroll,
+                    behavior: 'smooth'
+                });
+
+                // 브라우저별로 smooth scroll 중간의 scroll 이벤트가 누락되어도
+                // 두 번째 섹션 도착 후 카드 노출 예약이 반드시 시작되게 한다.
+                if (currentSection === 1) {
+                    window.setTimeout(showAboutAtPageEnd, 80);
+                    window.setTimeout(() => {
+                        if (currentSection === 1 && window.scrollY >= aboutSectionTop - 10) {
+                            aboutSectionSettled = true;
+                            isScrollingToBottom = false;
+                            updateSecTxtPosition();
+                        }
+                    }, 900);
+                }
+            };
+            window.addEventListener('wheel', handleAboutWheel, { passive: false, capture: true });
+
+            const updateBackToTopVisibility = () => {
+                backToTop.classList.toggle('is-visible', window.scrollY >= aboutSectionTop - 1);
+            };
+
+            backToTop.addEventListener('click', () => {
+                dimVideoTitleOnReturn = true;
+                document.body.classList.add('sec-txt-instant-top');
+                resetContactReady();
+                resetContactPanel();
+                document.body.classList.remove(
+                    'projects-active', 'contact-active', 'projects-nav-transition',
+                    'header-target-about', 'header-target-projects', 'header-target-contact'
+                );
+                currentSection = 0;
+                sectionScrollTarget = 0;
+                isScrollingToBottom = true;
+                aboutSectionSettled = false;
+                window.clearTimeout(smoothScrollTimer);
+                smoothScrollTimer = window.setTimeout(ensureSectionArrival, 1500);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+            updateBackToTopVisibility();
+
+            // Swipes use section/card states; cards with clipped content never trap gestures.
+            let aboutTouch = null;
+            window.addEventListener('touchstart', (event) => {
+                if (event.touches.length !== 1) { aboutTouch = null; return; }
+                const touch = event.touches[0];
+                const card = event.target.closest('.about-card');
+                const cardCanScroll = card && ['auto', 'scroll'].includes(getComputedStyle(card).overflowY);
+                aboutTouch = {
+                    x: touch.clientX, y: touch.clientY, card,
+                    scrollY: window.scrollY,
+                    scrollTop: cardCanScroll ? card.scrollTop : 0,
+                    maxScroll: cardCanScroll ? card.scrollHeight - card.clientHeight : 0,
+                    scrolledCard: false
+                };
+            }, { passive: true });
+
+            window.addEventListener('touchmove', (event) => {
+                if (!aboutTouch || event.touches.length !== 1) return;
+                const dx = aboutTouch.x - event.touches[0].clientX;
+                const dy = aboutTouch.y - event.touches[0].clientY;
+                if (Math.abs(dy) > Math.abs(dx) && window.scrollY >= contactSectionTop - 1) {
+                    if (event.cancelable) event.preventDefault();
+                    return;
+                }
+                const canReadCard = aboutTouch.card && Math.abs(dy) > Math.abs(dx) &&
+                    ((dy > 0 && aboutTouch.scrollTop < aboutTouch.maxScroll - 2) ||
+                     (dy < 0 && aboutTouch.scrollTop > 2));
+                if (canReadCard && !isAboutSequenceAnimating && !skillSequenceStarting &&
+                    sectionScrollTarget === null) {
+                    aboutTouch.scrolledCard = true;
+                    return;
+                }
+                if (event.cancelable) event.preventDefault();
+            }, { passive: false });
+
+            window.addEventListener('touchend', (event) => {
+                const gesture = aboutTouch;
+                aboutTouch = null;
+                if (!gesture || gesture.scrolledCard || !event.changedTouches.length) return;
+                const dx = gesture.x - event.changedTouches[0].clientX;
+                const dy = gesture.y - event.changedTouches[0].clientY;
+                if (Math.max(Math.abs(dx), Math.abs(dy)) < 40) return;
+                const horizontal = Math.abs(dx) > Math.abs(dy);
+                if (horizontal) {
+                    if (!aboutSectionSettled || isAboutSequenceAnimating || skillSequenceStarting ||
+                        sectionScrollTarget !== null || !aboutSlider.classList.contains('about-is-visible')) return;
+                    updateAboutCard(activeAboutCard + (dx > 0 ? 1 : -1));
+                } else if (window.scrollY >= contactSectionTop - 1) {
+                    handleAboutWheel({ deltaY: dy, preventDefault() {} });
+                } else if (dy > 0 && window.scrollY >= projectsSectionTop - 10) {
+                    window.scrollTo({ top: contactSectionTop, behavior: 'smooth' });
+                } else {
+                    handleAboutWheel({ deltaY: dy, preventDefault() {} });
+                }
+            }, { passive: true });
+            window.addEventListener('touchcancel', () => { aboutTouch = null; }, { passive: true });
+
+            window.addEventListener('resize', () => {
+                const previousAboutTop = aboutSectionTop;
+                const previousProjectsTop = projectsSectionTop;
+                const previousContactTop = contactSectionTop;
+                syncSectionTops();
+                updateAboutCard(activeAboutCard);
+                if ((previousAboutTop !== aboutSectionTop ||
+                    previousProjectsTop !== projectsSectionTop ||
+                    previousContactTop !== contactSectionTop) &&
+                    (aboutSectionSettled || currentSection >= 2 || sectionScrollTarget !== null)) {
+                    const resizedTarget = currentSection === 3
+                        ? contactSectionTop
+                        : currentSection === 2
+                            ? projectsSectionTop
+                            : currentSection === 1 ? aboutSectionTop : 0;
+                    if (sectionScrollTarget !== null) sectionScrollTarget = resizedTarget;
+                    window.scrollTo({ top: resizedTarget, behavior: 'instant' });
+                }
+            });
+
+            window.addEventListener('scrollend', () => {
+                const isWithinContact = Math.abs(window.scrollY - contactSectionTop) <= 2;
+                const sectionTops = [0, aboutSectionTop, projectsSectionTop, contactSectionTop];
+                const nearestSectionTop = sectionTops.reduce((nearest, top) =>
+                    Math.abs(window.scrollY - top) < Math.abs(window.scrollY - nearest)
+                        ? top
+                        : nearest
+                );
+                const targetSection = sectionScrollTarget ??
+                    (isWithinContact ? window.scrollY : nearestSectionTop);
+
+                if (Math.abs(window.scrollY - targetSection) > 2) {
+                    window.scrollTo({ top: targetSection, behavior: 'smooth' });
+                    return;
+                }
+
+                const arrivedFromFirstSection = sectionScrollTarget === aboutSectionTop &&
+                    currentSection === 0;
+                sectionScrollTarget = null;
+                isScrollingToBottom = false;
+                window.clearTimeout(smoothScrollTimer);
+                document.body.classList.remove(
+                    'header-target-about', 'header-target-projects', 'header-target-contact'
+                );
+                currentSection = targetSection >= (projectsSectionTop + contactSectionTop) / 2
+                    ? 3
+                    : targetSection === projectsSectionTop
+                        ? 2
+                        : targetSection === aboutSectionTop ? 1 : 0;
+                if (currentSection === 3) startContactReadyDelay();
+                else {
+                    resetContactReady();
+                    resetContactPanel();
+                }
+                if (currentSection === 2) {
+                    document.body.classList.add('projects-active');
+                    document.body.classList.remove('projects-nav-transition');
+                }
+                if (currentSection === 3) {
+                    document.body.classList.remove('projects-active', 'projects-nav-transition');
+                    document.body.classList.add('contact-active');
+                    document.body.classList.add('contact-copy-revealed');
+                }
+                aboutSectionSettled = currentSection === 1;
+
+                if (currentSection === 0 && window.scrollY <= 1) {
+                    restoreSecTxtAtTop();
+                } else if (currentSection === 1) {
+                    firstSectionVisited = true;
+                    secTxtReturnSnapshot?.remove();
+                    secTxtReturnSnapshot = null;
+                }
+
+                if (window.scrollY !== targetSection) {
+                    window.scrollTo({
+                        top: targetSection,
+                        behavior: 'smooth'
+                    });
+                }
+
+                if (currentSection === 1) {
+                    if (arrivedFromFirstSection) guardFirstAboutCard();
+                    window.setTimeout(showAboutAtPageEnd, 80);
+                }
+            }, { passive: true });
+
+            window.addEventListener('scroll', () => {
+                updateBackToTopVisibility();
+                if (window.scrollY >= aboutSectionTop - 1 && currentSection === 1) {
+                    aboutSectionSettled = true;
+                    isScrollingToBottom = false;
+                }
+
+                if (secTxt.classList.contains('about-mode')) {
+                    secTxt.style.visibility = window.scrollY >= aboutSectionTop - 1
+                        ? 'visible'
+                        : 'hidden';
+                }
+
+                const scrollSection = window.scrollY >= contactSectionTop - 1
+                    ? 3
+                    : window.scrollY >= (aboutSectionTop + projectsSectionTop) / 2
+                        ? 2
+                        : window.scrollY >= aboutSectionTop / 2 ? 1 : 0;
+
+                document.body.classList.toggle('projects-active', scrollSection === 2);
+                document.body.classList.toggle('about-active', scrollSection === 1);
+                document.body.classList.toggle('contact-active', window.scrollY >= contactSectionTop - 1);
+
+                if (scrollSection === 1 && lastScrollSection === 0) {
+                    updateAboutCard(0);
+                }
+
+                // 첫 번째 섹션에 있는 동안에는 다음 섹션 진입 상태가
+                // 이전 카드 위치를 기억하지 않도록 항상 첫 카드로 유지한다.
+                if (scrollSection === 0 && activeAboutCard !== 0) {
+                    updateAboutCard(0);
+                }
+
+                lastScrollSection = scrollSection;
+
+                if (!secTxtTicking) {
+                    window.requestAnimationFrame(updateSecTxtPosition);
+                    secTxtTicking = true;
+                }
+            }, { passive: true });
+
+            setSecTxtOpacity(window.scrollY > 0 ? 1 : 0);
+            updateSecTxtPosition();
+
+        </script>
+
+    </body>
+</html>

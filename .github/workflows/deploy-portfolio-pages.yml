@@ -1,0 +1,58 @@
+name: Deploy portfolio to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'portfolio/**'
+      - '.github/workflows/deploy-portfolio-pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Prepare portfolio pages
+        run: |
+          mkdir -p _site/portfolio
+          rsync -a --exclude='test.html' --exclude='내일_작업메모.md' portfolio/ _site/portfolio/
+          cat > _site/index.html <<'EOF'
+          <!doctype html>
+          <html lang="ko">
+          <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <meta http-equiv="refresh" content="0; url=portfolio/mainPage.html">
+            <title>LKJoo Portfolio</title>
+          </head>
+          <body>
+            <a href="portfolio/mainPage.html">포트폴리오로 이동</a>
+            <script>location.replace("portfolio/mainPage.html");</script>
+          </body>
+          </html>
+          EOF
+          touch _site/.nojekyll
+      - name: Upload site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
