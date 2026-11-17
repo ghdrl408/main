@@ -1,12 +1,12 @@
 @font-face {
   font-family: "GalmuriMono11Local";
-  src: url("../Font/GalmuriMono11.ttf") format("truetype");
+  src: url("../last/Font/GalmuriMono11.ttf") format("truetype");
   font-display: swap;
 }
 
 @font-face {
   font-family: "DenkiChipHangulLocal";
-  src: url("../Font/x10y12pxDenkiChipHangul.ttf") format("truetype");
+  src: url("../last/Font/x10y12pxDenkiChipHangul.ttf") format("truetype");
   font-display: swap;
 }
 
