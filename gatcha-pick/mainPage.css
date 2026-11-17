@@ -62,11 +62,12 @@ body {
 .header-ball-toggle {
   position: absolute;
   z-index: 12;
-  top: 3.05%;
-  left: 93.475%;
+  top: 4.95%;
+  left: 94.875%;
   display: grid;
-  width: 2.8%;
-  height: 3.8%;
+  width: 3.45%;
+  height: 4.45%;
+  transform: translate(-50%, -50%);
   place-items: center;
   margin: 0;
   padding: 0;
@@ -101,10 +102,10 @@ body {
   position: absolute;
   z-index: 1;
   display: block;
-  width: 108.929%;
+  width: 88.38%;
   height: auto;
-  left: -4.464%;
-  top: -6.053%;
+  left: 5.81%;
+  top: 3.65%;
   user-select: none;
   -webkit-user-drag: none;
 }
