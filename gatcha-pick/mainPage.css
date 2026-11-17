@@ -70,8 +70,22 @@ body {
   place-items: center;
   margin: 0;
   padding: 0;
-  border: 1px solid #000;
+  border: 0;
   background: #d9d9d9;
+}
+
+.header-ball-toggle::after {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  display: none;
+  border: 1px solid #000;
+  content: "";
+  pointer-events: none;
+}
+
+.header-ball-toggle[aria-expanded="true"]::after {
+  display: block;
 }
 
 .home-logo-link {
@@ -85,6 +99,7 @@ body {
 
 .header-ball-icon {
   position: absolute;
+  z-index: 1;
   display: block;
   width: 108.929%;
   height: auto;
