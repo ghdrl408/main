@@ -8,7 +8,7 @@
   <link rel="preload" as="image" href="2st_img/머신화면.png">
   <link rel="preload" as="image" href="2st_img/머신.svg" type="image/svg+xml">
   <link rel="preload" as="image" href="1st_img/헤더 클릭 보라공.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="mainPage.css?v=profile-square-3500e53">
+  <link rel="stylesheet" href="mainPage.css?v=profile-edit-20261117">
   <script src="mainPage.js" defer></script>
 </head>
 <body>
@@ -21,6 +21,7 @@
       </button>
 
       <aside class="profile-panel" id="profile-panel" aria-label="프로필" aria-hidden="true" inert>
+        <div class="profile-view" id="profile-view">
         <div class="profile-card">
           <img class="profile-avatar" src="2st_img/프로필/프사.svg" alt="프로필 사진">
           <div class="profile-info">
@@ -54,6 +55,58 @@
           <img class="state-hover" src="2st_img/프로필/키워드수정버튼 호버.svg" alt="">
           <img class="state-pressed" src="2st_img/프로필/키워드수정버튼 클릭.svg" alt="">
         </button>
+        </div>
+
+        <section class="profile-edit-view" id="profile-edit-view" aria-label="프로필 수정" aria-hidden="true" inert>
+          <button class="profile-photo-button" id="profile-photo-button" type="button" aria-label="프로필 사진 선택">
+            <img class="profile-edit-avatar" id="profile-edit-avatar" src="2st_img/프로필/프사.svg" alt="현재 프로필 사진">
+            <span class="profile-camera-badge" aria-hidden="true">
+              <svg viewBox="0 0 24 24" focusable="false">
+                <path d="M8.1 6.7 9.4 5h5.2l1.3 1.7h3.2c.9 0 1.6.7 1.6 1.6v9.1c0 .9-.7 1.6-1.6 1.6H4.9c-.9 0-1.6-.7-1.6-1.6V8.3c0-.9.7-1.6 1.6-1.6h3.2Zm3.9 2.1a4.1 4.1 0 1 0 0 8.2 4.1 4.1 0 0 0 0-8.2Zm0 1.8a2.3 2.3 0 1 1 0 4.6 2.3 2.3 0 0 1 0-4.6Z" fill="currentColor"/>
+              </svg>
+            </span>
+          </button>
+          <input class="profile-photo-input" id="profile-photo-input" type="file" accept="image/*" tabindex="-1" aria-label="프로필 사진 파일 선택">
+
+          <div class="profile-nickname-box">
+            <input id="profile-nickname" type="text" maxlength="12" value="김김" aria-label="별명">
+            <button id="profile-nickname-clear" type="button" aria-label="별명 지우기">×</button>
+          </div>
+
+          <div class="profile-age-controls" role="radiogroup" aria-label="연령대">
+            <label class="profile-radio-target age-teen"><input type="radio" name="profile-age" value="10대" aria-label="10대"><span></span></label>
+            <label class="profile-radio-target age-twenties"><input type="radio" name="profile-age" value="20대" aria-label="20대" checked><span></span></label>
+            <label class="profile-radio-target age-thirties"><input type="radio" name="profile-age" value="30대" aria-label="30대"><span></span></label>
+            <label class="profile-radio-target age-forties"><input type="radio" name="profile-age" value="40대 이상" aria-label="40대 이상"><span></span></label>
+          </div>
+
+          <div class="profile-region-selects" aria-label="지역 선택">
+            <div class="profile-select-wrap">
+              <select id="profile-province" aria-label="시·도 선택">
+                <option value="">시·도 선택</option>
+              </select>
+            </div>
+            <div class="profile-select-wrap">
+              <select id="profile-city" aria-label="시·군·구 선택" disabled>
+                <option value="">시·군·구 선택</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="profile-car-cover" aria-hidden="true"></div>
+          <div class="profile-car-label" aria-hidden="true">자동차</div>
+          <div class="profile-car-options" role="radiogroup" aria-label="자동차 보유 여부">
+            <label class="profile-car-choice car-yes"><span>있음</span><input type="radio" name="profile-car" value="있음" aria-label="자동차 있음"><span class="profile-radio-box"></span></label>
+            <label class="profile-car-choice car-no"><span>없음</span><input type="radio" name="profile-car" value="없음" aria-label="자동차 없음" checked><span class="profile-radio-box"></span></label>
+          </div>
+
+          <button class="profile-back image-state-button" id="profile-back" type="button" aria-label="프로필 화면으로 돌아가기">
+            <img class="state-idle" src="2st_img/프로필수정/돌아가기 기본버튼.svg" alt="">
+            <img class="state-hover" src="2st_img/프로필수정/돌아가기 호버버튼.svg" alt="">
+            <img class="state-pressed" src="2st_img/프로필수정/돌아가기 클릭버튼.svg" alt="">
+          </button>
+          <div class="profile-edit-age-legend screen-reader-only">연령대는 한 개만 선택할 수 있습니다.</div>
+        </section>
       </aside>
 
       <button class="reference-button button-place" type="button" data-choice="place" aria-label="어디갈까?" aria-pressed="false">

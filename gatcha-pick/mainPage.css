@@ -388,6 +388,279 @@ body {
   clip-path: inset(0);
 }
 
+.profile-panel.is-editing .profile-view {
+  display: none;
+}
+
+.profile-edit-view {
+  position: absolute;
+  inset: 0;
+  display: none;
+  overflow: hidden;
+  background: #d9d9d9 url("2st_img/프로필수정/프로필수정.png") center / 100% 100% no-repeat;
+  container-type: inline-size;
+}
+
+.profile-panel.is-editing .profile-edit-view {
+  display: block;
+}
+
+.profile-photo-button {
+  position: absolute;
+  top: 13.1%;
+  left: 34.1%;
+  width: 28.7%;
+  aspect-ratio: 1;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+}
+
+.profile-edit-avatar {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-camera-badge {
+  position: absolute;
+  right: -4%;
+  bottom: -4%;
+  display: grid;
+  width: 31%;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 1px solid #000;
+  border-radius: 50%;
+  background: #ededed;
+}
+
+.profile-camera-badge svg {
+  display: block;
+  width: 62%;
+  height: 62%;
+}
+
+.profile-photo-input {
+  display: none;
+}
+
+.profile-nickname-box {
+  position: absolute;
+  top: 32.5%;
+  left: 7.1%;
+  display: flex;
+  align-items: center;
+  width: 85.2%;
+  height: 4%;
+  padding: 0 3.1% 0 4.7%;
+  border-radius: 5px;
+  background: #fff;
+}
+
+.profile-nickname-box input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #000;
+  font-family: "GalmuriMono11Local", monospace;
+  font-size: 5.8cqw;
+  line-height: 1;
+}
+
+.profile-nickname-box button {
+  display: grid;
+  flex: 0 0 5.9cqw;
+  width: 5.9cqw;
+  height: 5.9cqw;
+  place-items: center;
+  padding: 0 0 1px;
+  border: 0;
+  border-radius: 50%;
+  background: #999;
+  color: #fff;
+  font: 18px/1 Arial, sans-serif;
+}
+
+.profile-age-controls {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.profile-radio-target {
+  position: absolute;
+  display: block;
+  width: 6.1cqw;
+  height: 6.1cqw;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.profile-radio-target input,
+.profile-car-choice input {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.profile-radio-target input {
+  inset: 0;
+}
+
+.profile-radio-target > span,
+.profile-radio-box {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 2px solid #000;
+  background: #fff;
+}
+
+.profile-radio-target input:checked + span,
+.profile-car-choice input:checked + .profile-radio-box {
+  background: #000;
+}
+
+.profile-radio-target input:focus-visible + span,
+.profile-car-choice input:focus-visible + .profile-radio-box {
+  outline: 2px solid #555;
+  outline-offset: 2px;
+}
+
+.age-teen { top: 45.85%; left: 32.2%; }
+.age-twenties { top: 45.85%; left: 64.6%; }
+.age-thirties { top: 50.55%; left: 32.2%; }
+.age-forties { top: 50.55%; left: 79.7%; }
+
+.profile-region-selects {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.profile-select-wrap {
+  position: absolute;
+  left: 7.1%;
+  width: 85.2%;
+  height: 4%;
+  pointer-events: auto;
+}
+
+.profile-select-wrap:first-child { top: 62.5%; }
+.profile-select-wrap:last-child { top: 66.9%; }
+
+.profile-select-wrap::after {
+  position: absolute;
+  top: 50%;
+  right: 5%;
+  width: 0;
+  height: 0;
+  border-top: 7px solid #999;
+  border-right: 6px solid transparent;
+  border-left: 6px solid transparent;
+  content: "";
+  pointer-events: none;
+  transform: translateY(-25%);
+}
+
+.profile-select-wrap select {
+  width: 100%;
+  height: 100%;
+  padding: 0 12% 0 4.7%;
+  appearance: none;
+  border: 0;
+  border-radius: 5px;
+  outline-color: #333;
+  background: #fff;
+  color: #000;
+  font-family: "GalmuriMono11Local", monospace;
+  font-size: 5.2cqw;
+}
+
+.profile-car-cover {
+  position: absolute;
+  z-index: 4;
+  top: 70.9%;
+  left: 0;
+  width: 100%;
+  height: 10.5%;
+  background: #d9d9d9;
+}
+
+.profile-car-label {
+  position: absolute;
+  z-index: 5;
+  top: 72.4%;
+  left: 8.4%;
+  color: #000;
+  font-family: "DenkiChipHangulLocal", sans-serif;
+  font-size: 6cqw;
+  line-height: 1.2;
+}
+
+.profile-car-options {
+  position: absolute;
+  z-index: 5;
+  top: 76.7%;
+  left: 7.1%;
+  display: flex;
+  align-items: center;
+  width: 85.2%;
+  height: 5.9%;
+  border-radius: 5px;
+  background: #fff;
+  color: #000;
+  font-family: "GalmuriMono11Local", monospace;
+  font-size: 5.6cqw;
+}
+
+.profile-car-choice {
+  position: absolute;
+  top: 50%;
+  display: flex;
+  align-items: center;
+  gap: 7%;
+  height: 6.1cqw;
+  white-space: nowrap;
+  transform: translateY(-50%);
+}
+
+.profile-car-choice.car-yes { left: 10.5%; }
+.profile-car-choice.car-no { left: 54%; }
+
+.profile-car-choice .profile-radio-box {
+  flex: 0 0 6.1cqw;
+  width: 6.1cqw;
+  height: 6.1cqw;
+}
+
+.profile-car-choice input {
+  right: 0;
+  width: 6.1cqw;
+  height: 6.1cqw;
+}
+
+.profile-back {
+  right: 6.2%;
+  bottom: 4%;
+  width: 34%;
+}
+
 .profile-card {
   position: absolute;
   top: 11.8%;
