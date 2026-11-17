@@ -169,7 +169,7 @@ drawStage?.querySelector(".gesture-orbit")?.addEventListener("animationend", eve
   if (event.animationName !== "gesture-orbit-spin") return;
   drawStage.classList.remove("is-guide-active");
   const shell = drawMachineSlot?.querySelector(".machine-art");
-  if (shell) shell.src = "2st_img/프로필/3st_img/머신 (레버X).svg";
+  if (shell) shell.src = "3st_img/머신 (레버X).svg";
   drawStage.classList.add("is-lever-ready");
   if (leverControl) leverControl.disabled = false;
 });
@@ -324,10 +324,10 @@ const purpleHeaderBall = new Image();
 purpleHeaderBall.src = headerBallAssets.purple;
 
 for (const src of [
-  "2st_img/프로필/3st_img/머신 (레버X).svg",
-  "2st_img/프로필/3st_img/레버.svg",
-  "2st_img/프로필/3st_img/회전커서.svg",
-  "2st_img/프로필/3st_img/회전화살표.svg"
+  "3st_img/머신 (레버X).svg",
+  "3st_img/레버.svg",
+  "3st_img/회전커서.svg",
+  "3st_img/회전화살표.svg"
 ]) {
   const image = new Image();
   image.src = src;
