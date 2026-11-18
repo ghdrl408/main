@@ -192,6 +192,48 @@ body {
 
 .draw-result.is-active { visibility: visible; }
 
+.draw-restart-button {
+  position: absolute;
+  z-index: 6;
+  top: 7.6%;
+  right: 4.2%;
+  display: block;
+  width: 16.3%;
+  aspect-ratio: 156 / 59;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease;
+}
+
+.draw-restart-button.is-visible {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.draw-restart-button img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.draw-restart-button .state-hover,
+.draw-restart-button .state-pressed { opacity: 0; }
+
+.draw-restart-button:hover .state-idle,
+.draw-restart-button:focus-visible .state-idle { opacity: 0; }
+
+.draw-restart-button:hover .state-hover,
+.draw-restart-button:focus-visible .state-hover { opacity: 1; }
+
+.draw-restart-button:active .state-hover { opacity: 0; }
+.draw-restart-button:active .state-pressed { opacity: 1; }
+
 .draw-result-package {
   position: absolute;
   inset: 0;

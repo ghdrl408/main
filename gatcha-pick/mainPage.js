@@ -117,6 +117,7 @@ const leverArt = document.querySelector(".lever-art");
 const gachaResult = document.querySelector("#gacha-result");
 const gachaResultPackage = document.querySelector("#gacha-result-package");
 const gachaResultLabel = document.querySelector("#gacha-result-label");
+const drawRestartButton = document.querySelector("#draw-restart-button");
 const choiceLabels = {
   place: "어디갈까?",
   food: "뭐먹을까?",
@@ -212,7 +213,7 @@ const placeResultOptions = [
   { label: "야시장 구경", keywords: ["활기찬", "북적이는"] },
   { label: "전통시장 먹거리 골목", keywords: ["북적이는", "이색적인"] },
   { label: "유람선 야경 투어", keywords: ["낭만적인", "탁 트인"] },
-  { label: "근교 드라이브 코스", keywords: ["여유로운", "자연의"] },
+  { label: "근교 드라이브 코스", keywords: ["여유로운", "자연의"], requiresCar: true },
   { label: "야외 영화제", keywords: ["낭만적인", "분위기 있는", "분위기있는", "데이트"] },
   { label: "야구 경기장", keywords: ["활기찬", "북적이는"] },
   { label: "캠핑장", keywords: ["자연의", "여유로운"] },
@@ -277,14 +278,44 @@ const nearbyProvincesByProvince = {
   "제주특별자치도": []
 };
 
+const ageAffinityLabels = {
+  "10대": new Set([
+    "마라샹궈", "탕수육", "양념치킨", "후라이드치킨", "수제버거와 감자튀김", "타코와 나초", "마라탕",
+    "방탈출 카페", "인생네컷 사진관", "보드게임 카페", "실내 클라이밍장", "볼링장", "코인 노래방", "야구 경기장"
+  ]),
+  "20대": new Set([
+    "봉골레 파스타", "마라샹궈", "크림 리소토", "돈코츠라멘", "타코와 나초", "마라탕", "로제 파스타", "팟타이",
+    "방탈출 카페", "강아지 카페", "인생네컷 사진관", "빈티지 소품샵", "루프탑 야경 명소", "야시장 구경", "재즈 라이브 공연"
+  ]),
+  "30대": new Set([
+    "샤브샤브", "마늘보쌈", "갈비찜", "고등어구이 정식", "연어덮밥", "수제버거와 감자튀김", "식물원 산책",
+    "글램핑장", "재즈 라이브 공연", "여의도 한강공원 피크닉", "송도 센트럴파크", "순천만국가정원 산책"
+  ]),
+  "40대 이상": new Set([
+    "순두부찌개", "해물파전", "뼈해장국", "제육볶음", "갈비찜", "비빔밥", "칼국수", "마늘보쌈", "고등어구이 정식",
+    "순대국밥", "설렁탕", "부산 돼지국밥", "미술관 전시", "독립 서점", "식물원 산책", "전통시장 먹거리 골목",
+    "서울숲 산책", "북촌 한옥마을", "남산 둘레길", "수원 화성 산책", "무등산 숲길", "한밭수목원 산책"
+  ])
+};
+
+const adultOnlyResultPattern = /치맥|맥주|소주|와인|막걸리|사케|술집|포차/;
+const fortyPlusAvoidPattern = /마라탕|마라샹궈/;
+
 function makeGachaResultLabel() {
   const resultOptions = selectedActivityChoice === "food" ? foodResultOptions : placeResultOptions;
   const selectedKeywords = Array.isArray(profileSettings.keywords) ? profileSettings.keywords : [];
+  const ageGroup = profileSettings.age || "20대";
   const province = profileSettings.province;
   const city = profileSettings.city || "전체";
   const carCanExpandPlaces = selectedActivityChoice === "place" && profileSettings.car === "있음";
   const nearbyProvinces = new Set(carCanExpandPlaces ? nearbyProvincesByProvince[province] || [] : []);
-  const optionPoolByRegion = resultOptions.filter(option => {
+  const ageAndTravelSafeOptions = resultOptions.filter(option => {
+    if (ageGroup === "10대" && (option.adultOnly || adultOnlyResultPattern.test(option.label))) return false;
+    if (ageGroup === "40대 이상" && (option.avoidAgeGroups?.includes(ageGroup) || fortyPlusAvoidPattern.test(option.label))) return false;
+    if (option.requiresCar && profileSettings.car !== "있음") return false;
+    return true;
+  });
+  const optionPoolByRegion = ageAndTravelSafeOptions.filter(option => {
     if (!option.province) return true;
     if (option.province === province) {
       return carCanExpandPlaces || city === "전체" || !option.cities || option.cities.includes(city);
@@ -293,18 +324,28 @@ function makeGachaResultLabel() {
   });
   const eligibleOptions = optionPoolByRegion.length
     ? optionPoolByRegion
-    : resultOptions.filter(option => !option.province);
+    : ageAndTravelSafeOptions.filter(option => !option.province).length
+      ? ageAndTravelSafeOptions.filter(option => !option.province)
+      : ageAndTravelSafeOptions;
   const scoredOptions = eligibleOptions.map(option => ({
     option,
-    score: option.keywords.reduce((score, keyword) => score + Number(selectedKeywords.includes(keyword)), 0)
+    keywordScore: option.keywords.reduce((score, keyword) => score + Number(selectedKeywords.includes(keyword)), 0),
+    preferenceWeight: 1
+      + (ageAffinityLabels[ageGroup]?.has(option.label) ? 2 : 0)
+      + (carCanExpandPlaces && option.requiresCar ? 2 : 0)
   }));
-  const bestScore = Math.max(0, ...scoredOptions.map(item => item.score));
-  const minimumKeywordScore = Math.max(1, bestScore - 1);
-  const optionPool = bestScore > 0
-    ? scoredOptions.filter(item => item.score >= minimumKeywordScore).map(item => item.option)
-    : eligibleOptions;
-  const selectedResult = optionPool[Math.floor(Math.random() * optionPool.length)];
-  return selectedResult.label;
+  const bestKeywordScore = Math.max(0, ...scoredOptions.map(item => item.keywordScore));
+  const minimumKeywordScore = Math.max(1, bestKeywordScore - 1);
+  const optionPool = bestKeywordScore > 0
+    ? scoredOptions.filter(item => item.keywordScore >= minimumKeywordScore)
+    : scoredOptions;
+  const totalWeight = optionPool.reduce((total, item) => total + item.preferenceWeight, 0);
+  let randomWeight = Math.random() * totalWeight;
+  const selectedOption = optionPool.find(item => {
+    randomWeight -= item.preferenceWeight;
+    return randomWeight < 0;
+  }) || optionPool.at(-1);
+  return selectedOption.option.label;
 }
 
 function showGachaResult() {
@@ -338,6 +379,9 @@ function showGachaResult() {
   gachaResultLabel.textContent = makeGachaResultLabel();
   gachaResult.className = "draw-result is-active";
   gachaResult.setAttribute("aria-hidden", "false");
+  drawRestartButton?.classList.remove("is-visible");
+  drawRestartButton?.setAttribute("aria-hidden", "true");
+  if (drawRestartButton) drawRestartButton.tabIndex = -1;
   drawStage.classList.remove("is-lever-ready");
   drawStage.classList.add("is-result-active");
   leverControl.disabled = true;
@@ -355,7 +399,15 @@ function showGachaResult() {
   window.setTimeout(() => gachaResult.classList.add("is-falling"), 1400);
   window.setTimeout(() => gachaResult.classList.add("is-landed"), 2300);
   window.setTimeout(() => gachaResult.classList.add("is-half"), 2500);
-  window.setTimeout(() => gachaResult.classList.add("is-open"), 3100);
+  window.setTimeout(() => {
+    gachaResult.classList.add("is-open");
+    window.setTimeout(() => {
+      if (!drawStage.classList.contains("is-active")) return;
+      drawRestartButton?.classList.add("is-visible");
+      drawRestartButton?.setAttribute("aria-hidden", "false");
+      if (drawRestartButton) drawRestartButton.tabIndex = 0;
+    }, 850);
+  }, 3100);
 }
 
 function expandScrollingMachine() {
@@ -615,11 +667,22 @@ const keywordGroups = [
   ["귀여운", "분위기 있는", "조용한", "활기찬", "감성적인", "자연의", "탁 트인", "아늑한", "낭만적인", "빈티지한", "세련된", "이색적인", "여유로운", "북적이는", "몽환적인", "빈티지", "레트로", "분위기있는", "아기자기한", "데이트"]
 ];
 const availableKeywords = new Set(keywordGroups.flat());
-const savedKeywords = Array.isArray(profileSettings.keywords)
+const storedKeywords = Array.isArray(profileSettings.keywords)
   ? [...new Set(profileSettings.keywords.filter(keyword => availableKeywords.has(keyword)))].slice(0, availableKeywords.size)
   : [];
-if (JSON.stringify(savedKeywords) !== JSON.stringify(profileSettings.keywords)) {
-  saveProfileSettings({ keywords: savedKeywords });
+const pickInitialKeywords = (keywords, count) => {
+  const shuffled = [...keywords];
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(Math.random() * (index + 1));
+    [shuffled[index], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[index]];
+  }
+  return shuffled.slice(0, count);
+};
+const savedKeywords = !profileSettings.keywordsInitialized && storedKeywords.length === 0
+  ? pickInitialKeywords([...availableKeywords], 6)
+  : storedKeywords;
+if (!profileSettings.keywordsInitialized || JSON.stringify(savedKeywords) !== JSON.stringify(profileSettings.keywords)) {
+  saveProfileSettings({ keywords: savedKeywords, keywordsInitialized: true });
 }
 const keywordEditGrid = document.querySelector("#keyword-edit-grid");
 const keywordSelectionCount = document.querySelector("#keyword-selection-count");
@@ -929,7 +992,10 @@ purpleHeaderBall.src = headerBallAssets.purple;
 for (const src of [
   "3st_img/머신 (레버X).svg",
   "3st_img/레버.svg",
-  "3st_img/커서화살표.svg"
+  "3st_img/커서화살표.svg",
+  "3st_img/처음으로 기본버튼.svg",
+  "3st_img/처음으로 호버버튼.svg",
+  "3st_img/처음으로 클릭버튼.svg"
 ]) {
   const image = new Image();
   image.src = src;
