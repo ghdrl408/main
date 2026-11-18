@@ -297,12 +297,12 @@ body {
 
 .draw-result.is-splitting .draw-result-ball-left {
   left: calc(var(--ball-center-x) - var(--split-distance));
-  top: calc(var(--ball-center-y) + 8px);
+  top: calc(var(--ball-center-y) + var(--split-vertical-offset));
 }
 
 .draw-result.is-splitting .draw-result-ball-right {
   left: calc(var(--ball-center-x) + var(--split-distance));
-  top: calc(var(--ball-center-y) + 8px);
+  top: calc(var(--ball-center-y) + var(--split-vertical-offset));
   transform: translate(-50%, -50%) scale(1) rotate(15deg);
 }
 
@@ -327,7 +327,7 @@ body {
   top: var(--paper-y);
   left: var(--paper-x);
   width: var(--paper-size);
-  height: var(--paper-size);
+  height: var(--paper-height);
   z-index: 2;
   transform: translate(-50%, -50%);
   opacity: 0;
