@@ -1580,10 +1580,51 @@
     }
 }
 
-/* Center all second-page copy as one block across responsive layouts. */
+/* Keep the desktop second-page copy vertically centered; responsive layouts override it below. */
 .page-about #projects_sec #project-note.is-second-page .note-page-two-copy {
-    top: 50%;
+    top: 45%;
     transform: translateY(-50%);
+}
+
+@media (max-width: 1024px) {
+    .page-about #projects_sec #project-note.is-second-page .note-page-two-copy {
+        top: 4%;
+        transform: none;
+    }
+}
+
+/* Increase leading only for the two-line items in the first memo's second color card. */
+.page-about #projects_sec #project-note .note-card-two .note-card-copy > span:has(br) {
+    line-height: 1.4;
+}
+
+@media (max-width: 1024px) {
+    .page-about #projects_sec #project-note .note-card-two .note-card-copy > span:has(br) {
+        line-height: 1.625;
+    }
+}
+
+/* Tighten the process grid and enlarge its three non-board previews. */
+@media (min-width: 1025px) {
+    .page-about #projects_sec #project-note.is-gacha-project .note-process-item:nth-child(3),
+    .page-about #projects_sec #project-note.is-gacha-project .note-process-item:nth-child(4) {
+        top: 52.5%;
+    }
+    .page-about #projects_sec #project-note.is-gacha-project .note-process-item:nth-child(n + 2) img {
+        left: 16%;
+        width: 68%;
+    }
+}
+
+@media (max-width: 1024px) {
+    .page-about #projects_sec #project-note.is-gacha-project .note-process-item:nth-child(3),
+    .page-about #projects_sec #project-note.is-gacha-project .note-process-item:nth-child(4) {
+        top: 58.5%;
+    }
+    .page-about #projects_sec #project-note.is-gacha-project .note-process-item:nth-child(n + 2) img {
+        left: 5%;
+        width: 90%;
+    }
 }
 @keyframes noteContentRiseCenteredInCard {
     from { opacity: 0; transform: translateY(calc(-50% + 18px)); }

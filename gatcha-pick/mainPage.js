@@ -452,7 +452,8 @@ function expandScrollingMachine() {
     clone.classList.add("is-zooming");
     const targetWidth = drawStage.clientWidth * 0.62;
     const targetHeight = targetWidth * (1010 / 658);
-    clone.style.left = `${(drawStage.clientWidth - targetWidth) / drawStage.clientWidth * 100}%`;
+    const targetLeft = (drawStage.clientWidth - targetWidth) / 2;
+    clone.style.left = `${targetLeft / drawStage.clientWidth * 100}%`;
     clone.style.top = `${(drawStage.clientHeight * 0.98 - targetHeight) / drawStage.clientHeight * 100}%`;
     clone.style.width = `${targetWidth / drawStage.clientWidth * 100}%`;
     clone.style.height = `${targetHeight / drawStage.clientHeight * 100}%`;
@@ -821,6 +822,7 @@ const nicknameClearButton = document.querySelector("#profile-nickname-clear");
 const profileNameDisplay = document.querySelector(".profile-info .name-part");
 const editAvatar = document.querySelector("#profile-edit-avatar");
 const profileAvatar = document.querySelector(".profile-avatar");
+const defaultAvatarFrames = document.querySelectorAll(".is-default-avatar");
 const photoPicker = document.querySelector("#profile-photo-input");
 const photoPickerButton = document.querySelector("#profile-photo-button");
 const provinceSelect = document.querySelector("#profile-province");
@@ -912,6 +914,7 @@ for (const radio of document.querySelectorAll('input[name="profile-car"]')) {
 if (profileSettings.photo && editAvatar && profileAvatar) {
   editAvatar.src = profileSettings.photo;
   profileAvatar.src = profileSettings.photo;
+  defaultAvatarFrames.forEach((frame) => frame.classList.remove("is-default-avatar"));
 }
 
 photoPickerButton?.addEventListener("click", () => photoPicker?.click());
@@ -930,6 +933,7 @@ photoPicker?.addEventListener("change", () => {
       const photo = canvas.toDataURL("image/jpeg", 0.88);
       editAvatar.src = photo;
       profileAvatar.src = photo;
+      defaultAvatarFrames.forEach((frame) => frame.classList.remove("is-default-avatar"));
       saveProfileSettings({ photo });
     }, { once: true });
     source.src = String(reader.result);
