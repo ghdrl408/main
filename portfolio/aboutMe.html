@@ -1947,15 +1947,17 @@
         #project-note.is-second-page .note-page-two-section::before {
             position: absolute;
             z-index: -1;
-            inset: -0.55em -1.2em -0.55em 8%;
+            inset: -1.15em -1.4em -1.15em -1.65em;
             border-radius: 50%;
             background: radial-gradient(
-                ellipse 72% 70% at 52% 50%,
-                rgba(244, 241, 232, 0.9) 0%,
-                rgba(244, 241, 232, 0.72) 55%,
+                ellipse 125% 100% at 56% 50%,
+                rgba(244, 241, 232, 0.98) 0%,
+                rgba(244, 241, 232, 0.9) 66%,
                 rgba(244, 241, 232, 0) 100%
             );
-            filter: blur(9px);
+            filter: blur(11px);
+            -webkit-backdrop-filter: blur(2.5px);
+            backdrop-filter: blur(2.5px);
             content: '';
             pointer-events: none;
         }
@@ -1998,6 +2000,10 @@
 
         @media (min-width: 1025px) {
             #project-note .note-page-three-heading { left: 13%; }
+            #project-note.is-gacha-project .note-process-item:nth-child(2) { left: 50%; top: 20%; }
+            #project-note.is-gacha-project .note-process-item:nth-child(4) { left: 50%; }
+            #project-note.is-gacha-project .note-process-item:nth-child(n + 2) img { object-position: center bottom; }
+            #project-note.is-gacha-project .note-process-item span { top: 79%; }
         }
 
         #project-note .note-page-three-heading > span {
@@ -2187,7 +2193,7 @@
             overflow-x: hidden;
             overflow-y: auto;
             overscroll-behavior: contain;
-            scrollbar-color: #777 #d5d0c6;
+            scrollbar-width: none;
             cursor: none !important;
         }
 
@@ -2202,9 +2208,38 @@
             cursor: none !important;
         }
 
-        #note-process-modal .note-process-modal-scroll::-webkit-scrollbar,
-        #note-process-modal .note-process-modal-scroll::-webkit-scrollbar-track,
-        #note-process-modal .note-process-modal-scroll::-webkit-scrollbar-thumb {
+        #note-process-modal .note-process-modal-scroll::-webkit-scrollbar {
+            display: none;
+            width: 0;
+            height: 0;
+        }
+
+        #note-process-modal .note-process-modal-scrollbar {
+            position: absolute;
+            z-index: 2;
+            right: 18px;
+            bottom: 18px;
+            left: 18px;
+            display: none;
+            height: 14px;
+            background: #d5d0c6;
+            touch-action: none;
+            cursor: none !important;
+        }
+
+        #note-process-modal .note-process-modal-scrollbar.is-visible {
+            display: block;
+        }
+
+        #note-process-modal .note-process-modal-scrollbar-thumb {
+            position: absolute;
+            top: 3px;
+            left: 0;
+            height: 8px;
+            min-width: 36px;
+            border-radius: 6px;
+            background: #777;
+            touch-action: none;
             cursor: none !important;
         }
 
@@ -2826,6 +2861,9 @@
                             <div class="note-process-modal-scroll" tabindex="0">
                                 <img class="note-process-modal-image" alt="">
                             </div>
+                            <div class="note-process-modal-scrollbar" aria-hidden="true">
+                                <span class="note-process-modal-scrollbar-thumb"></span>
+                            </div>
                         </div>
                     </div>
 
@@ -2901,6 +2939,8 @@
             const noteProcessModal = document.querySelector('#note-process-modal');
             const noteProcessModalImage = noteProcessModal.querySelector('.note-process-modal-image');
             const noteProcessModalScroll = noteProcessModal.querySelector('.note-process-modal-scroll');
+            const noteProcessModalScrollbar = noteProcessModal.querySelector('.note-process-modal-scrollbar');
+            const noteProcessModalScrollbarThumb = noteProcessModalScrollbar.querySelector('.note-process-modal-scrollbar-thumb');
             const noteProcessModalClose = noteProcessModal.querySelector('.note-process-modal-close');
             const noteProcessItems = [...projectNote.querySelectorAll('.note-process-item')];
             const noteCardCopies = [...projectNote.querySelectorAll('.note-card-copy')];
@@ -3320,6 +3360,7 @@
                     const needsHorizontalScroll = item.dataset.horizontal === 'true';
                     noteProcessModal.dataset.horizontal = String(needsHorizontalScroll);
                     noteProcessModalScroll.classList.toggle('is-horizontal-scroll', needsHorizontalScroll);
+                    noteProcessModalScrollbar.classList.toggle('is-visible', needsHorizontalScroll);
                     noteProcessModalScroll.scrollTop = 0;
                     noteProcessModalScroll.scrollLeft = 0;
                     noteProcessModal.classList.add('is-open');
@@ -3327,8 +3368,25 @@
                     noteProcessPreviousOverflow = document.body.style.overflow;
                     document.body.style.overflow = 'hidden';
                     noteProcessModalClose.focus({ preventScroll: true });
+                    requestAnimationFrame(updateNoteProcessScrollbar);
                 });
             });
+            const updateNoteProcessScrollbar = () => {
+                const maxScroll = noteProcessModalScroll.scrollWidth - noteProcessModalScroll.clientWidth;
+                const trackWidth = noteProcessModalScrollbar.clientWidth;
+                if (maxScroll <= 0 || trackWidth <= 0) {
+                    noteProcessModalScrollbarThumb.style.width = '100%';
+                    noteProcessModalScrollbarThumb.style.transform = 'translateX(0)';
+                    return;
+                }
+                const thumbWidth = Math.max(36, trackWidth * noteProcessModalScroll.clientWidth / noteProcessModalScroll.scrollWidth);
+                const thumbTravel = trackWidth - thumbWidth;
+                noteProcessModalScrollbarThumb.style.width = `${thumbWidth}px`;
+                noteProcessModalScrollbarThumb.style.transform = `translateX(${thumbTravel * noteProcessModalScroll.scrollLeft / maxScroll}px)`;
+            };
+            noteProcessModalImage.addEventListener('load', updateNoteProcessScrollbar);
+            noteProcessModalScroll.addEventListener('scroll', updateNoteProcessScrollbar, { passive: true });
+            window.addEventListener('resize', updateNoteProcessScrollbar);
             noteProcessModalClose.addEventListener('click', closeNoteProcessModal);
             noteProcessModal.addEventListener('click', (event) => {
                 if (event.target === noteProcessModal) closeNoteProcessModal();
@@ -3356,8 +3414,6 @@
             let noteProcessDragStartScrollLeft = 0;
             noteProcessModalScroll.addEventListener('pointerdown', (event) => {
                 if (!noteProcessModalScroll.classList.contains('is-horizontal-scroll') || event.button !== 0) return;
-                if (event.target === noteProcessModalScroll &&
-                    event.offsetY >= noteProcessModalScroll.clientHeight - 16) return;
                 noteProcessDragPointerId = event.pointerId;
                 noteProcessDragStartX = event.clientX;
                 noteProcessDragStartScrollLeft = noteProcessModalScroll.scrollLeft;
@@ -3380,6 +3436,47 @@
             };
             noteProcessModalScroll.addEventListener('pointerup', finishNoteProcessDrag);
             noteProcessModalScroll.addEventListener('pointercancel', finishNoteProcessDrag);
+
+            let noteProcessScrollbarPointerId = null;
+            let noteProcessScrollbarStartX = 0;
+            let noteProcessScrollbarStartLeft = 0;
+            noteProcessModalScrollbar.addEventListener('pointerdown', (event) => {
+                if (event.button !== 0) return;
+                const trackRect = noteProcessModalScrollbar.getBoundingClientRect();
+                const thumbRect = noteProcessModalScrollbarThumb.getBoundingClientRect();
+                const maxScroll = noteProcessModalScroll.scrollWidth - noteProcessModalScroll.clientWidth;
+                const thumbTravel = trackRect.width - thumbRect.width;
+                if (event.target !== noteProcessModalScrollbarThumb && thumbTravel > 0) {
+                    const targetLeft = Math.max(0, Math.min(thumbTravel, event.clientX - trackRect.left - thumbRect.width / 2));
+                    noteProcessModalScroll.scrollLeft = targetLeft / thumbTravel * maxScroll;
+                    updateNoteProcessScrollbar();
+                    return;
+                }
+                noteProcessScrollbarPointerId = event.pointerId;
+                noteProcessScrollbarStartX = event.clientX;
+                noteProcessScrollbarStartLeft = noteProcessModalScroll.scrollLeft;
+                noteProcessModalScrollbarThumb.setPointerCapture(event.pointerId);
+                event.preventDefault();
+            });
+            noteProcessModalScrollbarThumb.addEventListener('pointermove', (event) => {
+                if (event.pointerId !== noteProcessScrollbarPointerId) return;
+                const thumbTravel = noteProcessModalScrollbar.clientWidth - noteProcessModalScrollbarThumb.offsetWidth;
+                const maxScroll = noteProcessModalScroll.scrollWidth - noteProcessModalScroll.clientWidth;
+                if (thumbTravel <= 0 || maxScroll <= 0) return;
+                noteProcessModalScroll.scrollLeft = noteProcessScrollbarStartLeft +
+                    (event.clientX - noteProcessScrollbarStartX) * maxScroll / thumbTravel;
+                updateNoteProcessScrollbar();
+                event.preventDefault();
+            });
+            const finishNoteProcessScrollbarDrag = (event) => {
+                if (event.pointerId !== noteProcessScrollbarPointerId) return;
+                noteProcessScrollbarPointerId = null;
+                if (noteProcessModalScrollbarThumb.hasPointerCapture(event.pointerId)) {
+                    noteProcessModalScrollbarThumb.releasePointerCapture(event.pointerId);
+                }
+            };
+            noteProcessModalScrollbarThumb.addEventListener('pointerup', finishNoteProcessScrollbarDrag);
+            noteProcessModalScrollbarThumb.addEventListener('pointercancel', finishNoteProcessScrollbarDrag);
 
             const updateNoteDescription = () => {
                 const text = getNoteDescriptionText();
@@ -3509,7 +3606,7 @@
                 projectNotePaper.classList.remove('is-folded-corner-visible');
                 projectNotePage = targetPage;
                 projectNote.classList.add('is-turning');
-                projectNote.classList.toggle('is-turning-back', targetPage === 1);
+                projectNote.classList.add('is-turning-back');
                 projectNotePaper.classList.add('is-turning', 'is-turning-back');
 
                 window.clearTimeout(projectNoteContentRevealTimer);
