@@ -827,7 +827,8 @@ const provinceSelect = document.querySelector("#profile-province");
 const citySelect = document.querySelector("#profile-city");
 
 if (nicknameInput) {
-  nicknameInput.value = String(profileSettings.nickname ?? "사용자").slice(0, 7);
+  const savedNickname = profileSettings.nickname;
+  nicknameInput.value = String(savedNickname === "김김" ? "사용자" : savedNickname ?? "사용자").slice(0, 7);
   if (nicknameInput.value !== profileSettings.nickname) saveProfileSettings({ nickname: nicknameInput.value });
   if (profileNameDisplay) profileNameDisplay.textContent = nicknameInput.value || "사용자";
   nicknameInput.addEventListener("input", () => {
