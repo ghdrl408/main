@@ -851,6 +851,10 @@
         --note-page-copy-left: 89px;
         --note-page-copy-width: 410px;
     }
+    .page-about #projects_sec #project-note.is-gacha-project {
+        --note-page-copy-left: 60px;
+        --note-page-copy-width: 439px;
+    }
     .page-about #projects_sec #tv_tittle { left: var(--note-content-left); }
     .page-about #projects_sec #project-note .note-card { left: var(--note-card-left); width: 46.2%; }
     .page-about #projects_sec #project-note .note-card-two { left: var(--note-card-two-left); }
@@ -859,6 +863,10 @@
     .page-about #projects_sec .note-page-two-copy {
         left: var(--note-page-copy-left);
         width: var(--note-page-copy-width);
+    }
+    .page-about #projects_sec #project-note.is-gacha-project .note-page-two-section:nth-of-type(2) p {
+        width: auto;
+        white-space: normal;
     }
     .page-about #projects_sec #project-note .note-card-one .note-card-copy {
         top: 50%;
@@ -1054,7 +1062,21 @@
     .page-about #projects_sec #tv_stage #tv_small_txt,
     .page-about #projects_sec #tv_stage.is-transitioning #tv_small_txt,
     .page-about #projects_sec #tv_stage.is-details-visible #tv_small_txt {
-        font-size: 18.725px;
+        font-size: var(--desktop-tv-caption-font-size, 14px);
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .page-about #projects_sec #tv_stage #tv_small_txt,
+    .page-about #projects_sec #tv_stage.is-transitioning #tv_small_txt,
+    .page-about #projects_sec #tv_stage.is-details-visible #tv_small_txt {
+        right: 0;
+        left: auto;
+        width: min(82vw, 520px);
+        max-width: none;
+        text-align: right;
+        transform: none;
+        white-space: pre-line;
     }
 }
 
@@ -1239,6 +1261,25 @@
         gap: 7px;
         line-height: 1.3;
     }
+    .page-about #projects_sec #project-note.is-gacha-project .note-card-two .note-card-copy {
+        top: 50%;
+        left: 50%;
+        width: 100%;
+        max-width: 100%;
+        align-items: center;
+        gap: 7px;
+        line-height: 1.3;
+        text-align: center;
+        white-space: normal;
+        transform: translate(-50%, -50%);
+    }
+    .page-about #projects_sec #project-note.is-gacha-project.is-details-visible .note-card-two .note-card-copy {
+        animation: noteContentRiseGachaCentered 560ms ease-out both;
+    }
+    @keyframes noteContentRiseGachaCentered {
+        from { opacity: 0; transform: translate(-50%, calc(-50% + 18px)); }
+        to { opacity: 1; transform: translate(-50%, -50%); }
+    }
     .page-about #projects_sec #project-note .note-tape-one-left { left: 12.7%; top: 24.5%; }
     .page-about #projects_sec #project-note .note-tape-one-right { left: 60.3%; top: 45.5%; }
     .page-about #projects_sec #project-note .note-tape-two-left { left: 24.1%; top: 59.2%; }
@@ -1317,6 +1358,9 @@
     .page-about #projects_sec #project-note .note-card-two .note-card-copy {
         gap: 4px;
     }
+    .page-about #projects_sec #project-note.is-gacha-project .note-card-two .note-card-copy {
+        gap: 4px;
+    }
     .page-about #projects_sec #project-note .note-page-two-heading {
         margin-bottom: clamp(6px, 2.2cqw, 10px);
     }
@@ -1384,14 +1428,33 @@
     }
     .page-about #projects_sec #project-note .note-page-two-section {
         position: absolute;
-        left: 29%;
-        width: 71%;
+        left: 23%;
+        width: 77%;
         margin: 0;
         grid-template-columns: 10.4% minmax(0, 1fr);
+    }
+    .page-about #projects_sec #project-note.is-gacha-project .note-page-two-section {
+        left: 18%;
+        width: 82%;
+        position: relative;
+        top: auto;
+        margin: 0;
     }
     .page-about #projects_sec #project-note .note-page-two-section:nth-of-type(1) { top: 13.1cqw; }
     .page-about #projects_sec #project-note .note-page-two-section:nth-of-type(2) { top: 31.8cqw; }
     .page-about #projects_sec #project-note .note-page-two-section:nth-of-type(3) { top: 49.5cqw; }
+    .page-about #projects_sec #project-note.is-gacha-project .note-page-two-section:nth-of-type(1),
+    .page-about #projects_sec #project-note.is-gacha-project .note-page-two-section:nth-of-type(2),
+    .page-about #projects_sec #project-note.is-gacha-project .note-page-two-section:nth-of-type(3) {
+        top: auto;
+    }
+    .page-about #projects_sec #project-note.is-gacha-project .note-page-two-section:first-of-type {
+        margin-top: clamp(8px, 2cqw, 12px);
+    }
+    .page-about #projects_sec #project-note.is-gacha-project .note-page-two-section + .note-page-two-section {
+        margin-top: clamp(8px, 2cqw, 12px);
+    }
+    .page-about #projects_sec #project-note.is-gacha-project .gacha-inline-phrase { white-space: nowrap; }
     .page-about #projects_sec #project-note .note-page-two-section + .note-page-two-section {
         margin-top: 0;
     }
@@ -1515,6 +1578,12 @@
     .page-about #projects_sec #project-note.is-details-visible .note-card-two .note-card-copy {
         animation: noteContentRiseCenteredInCard 560ms ease-out both;
     }
+}
+
+/* Center all second-page copy as one block across responsive layouts. */
+.page-about #projects_sec #project-note.is-second-page .note-page-two-copy {
+    top: 50%;
+    transform: translateY(-50%);
 }
 @keyframes noteContentRiseCenteredInCard {
     from { opacity: 0; transform: translateY(calc(-50% + 18px)); }

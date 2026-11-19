@@ -215,7 +215,7 @@
 
         #custom-cursor {
             position: fixed;
-            z-index: 9999;
+            z-index: 10001;
             width: 18px;
             height: 18px;
             border: none;
@@ -259,6 +259,13 @@
             mix-blend-mode: normal;
         }
 
+        #custom-cursor.is-note-more {
+            width: 75.6px;
+            height: 75.6px;
+            background-color: rgba(0, 0, 0, 0.72);
+            mix-blend-mode: normal;
+        }
+
         #custom-cursor.is-tv-hover::after {
             content: 'VISIT';
             display: grid;
@@ -292,6 +299,18 @@
             color: #fff;
             font: 400 15px/1 'NotoSans', sans-serif;
             letter-spacing: 3px;
+            white-space: nowrap;
+        }
+
+        #custom-cursor.is-note-more::after {
+            content: 'MORE';
+            display: grid;
+            width: 100%;
+            height: 100%;
+            place-items: center;
+            color: #fff;
+            font: 400 10.5px/1 'NotoSans', sans-serif;
+            letter-spacing: 2.1px;
             white-space: nowrap;
         }
 
@@ -1396,8 +1415,6 @@
             position: relative;
             z-index: 1;
             pointer-events: none;
-            transform: scale(1.03);
-            transform-origin: left bottom;
         }
 
         #tv_video {
@@ -1438,6 +1455,32 @@
             pointer-events: none;
         }
 
+        #tv_gacha_link {
+            position: absolute;
+            z-index: 0;
+            left: 9.45%;
+            top: 7.801%;
+            width: 83.327%;
+            height: 73.439%;
+            pointer-events: none;
+        }
+
+        #tv_gacha_link.is-interactive {
+            pointer-events: auto;
+            cursor: none;
+        }
+
+        #tv_gacha_video {
+            position: absolute;
+            inset: 0;
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: fill;
+            clip-path: inset(100% 0 0);
+            pointer-events: none;
+        }
+
         #tv_riding_link {
             position: absolute;
             z-index: 0;
@@ -1454,6 +1497,10 @@
         }
 
         #tv_riding_video.is-revealing {
+            animation: tvScreenRise 180ms cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        #tv_gacha_video.is-revealing {
             animation: tvScreenRise 180ms cubic-bezier(0.16, 1, 0.3, 1) both;
         }
 
@@ -1618,6 +1665,24 @@
             display: none !important;
         }
 
+        #project-note.is-gacha-project.is-second-page #project-note-paper #project-note-folded {
+            display: block !important;
+        }
+
+        #project-note.is-gacha-project.is-second-page #project-note-paper #project-note-folded-left,
+        #project-note.is-third-page #project-note-paper #project-note-folded {
+            display: none !important;
+        }
+
+        #project-note.is-turning-to-third .note-page-two-copy {
+            animation: noteTextMaskOut 240ms cubic-bezier(0.55, 0, 0.85, 0.35) both;
+        }
+
+        #project-note.is-second-page .note-page-two-copy {
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
         #project-note-paper.is-turning #project-note-turn-motion {
             opacity: 1;
             visibility: visible;
@@ -1755,6 +1820,7 @@
         }
 
         #project-note .note-card-two .note-card-copy span { display: block; }
+        #project-note .note-card-two .note-card-copy .gacha-note-copy { line-height: 1.35; }
 
         #project-note .note-page-two-content {
             position: absolute;
@@ -1867,9 +1933,300 @@
             word-break: keep-all;
         }
 
+        #project-note.is-second-page .note-page-two-section p {
+            margin: -0.3em -0.55em;
+            padding: 0.3em 0.55em;
+            background: none;
+        }
+
+        #project-note.is-second-page .note-page-two-section {
+            position: relative;
+            isolation: isolate;
+        }
+
+        #project-note.is-second-page .note-page-two-section::before {
+            position: absolute;
+            z-index: -1;
+            inset: -0.55em -1.2em -0.55em 8%;
+            border-radius: 50%;
+            background: radial-gradient(
+                ellipse 72% 70% at 52% 50%,
+                rgba(244, 241, 232, 0.9) 0%,
+                rgba(244, 241, 232, 0.72) 55%,
+                rgba(244, 241, 232, 0) 100%
+            );
+            filter: blur(9px);
+            content: '';
+            pointer-events: none;
+        }
+
+        #project-note .note-page-two-section p .note-sentence { display: block; }
+        #project-note .note-page-two-section p .note-sentence + .note-sentence { margin-top: 0.5em; }
+
         #project-note .note-page-two-section:nth-of-type(2) p {
             width: 128%;
             white-space: nowrap;
+        }
+
+        #project-note .note-page-three-content {
+            position: absolute;
+            z-index: 7;
+            top: 7.6%;
+            left: 10.3%;
+            width: 75.4%;
+            height: 80.8%;
+            color: #171615;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        #project-note.is-third-page .note-page-three-content {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #project-note .note-page-three-heading {
+            position: absolute;
+            top: 6%;
+            left: 8%;
+            margin: 0;
+            color: #a52a2a;
+            font-family: 'Noto Sans KR', sans-serif;
+            line-height: 1;
+        }
+
+        @media (min-width: 1025px) {
+            #project-note .note-page-three-heading { left: 13%; }
+        }
+
+        #project-note .note-page-three-heading > span {
+            display: block;
+            margin-bottom: 0.3%;
+            font-size: clamp(9px, 2cqw, 15px);
+            font-weight: 800;
+        }
+
+        #project-note .note-page-three-heading strong {
+            display: block;
+            width: 150%;
+            font-family: 'Anton', 'Arial Narrow', sans-serif;
+            font-size: clamp(23.4px, 6.565cqw, 46.8px);
+            font-weight: 400;
+            line-height: 0.95;
+            white-space: nowrap;
+            transform: scaleX(0.8);
+            transform-origin: left top;
+        }
+
+        #project-note.is-third-page .note-page-three-heading .tv-letter {
+            display: inline-block;
+            animation: tvLetterRise 625ms cubic-bezier(0.65, 0, 0.9, 0.2) both;
+        }
+
+        #project-note .note-process-grid {
+            display: contents;
+        }
+
+        #project-note .note-page-three-content {
+            display: block;
+        }
+
+        #project-note .note-process-item {
+            position: absolute;
+            display: block;
+            width: 46%;
+            height: 31%;
+            padding: 0;
+            border: 0;
+            background: transparent;
+            color: inherit;
+            font: inherit;
+            pointer-events: auto;
+            cursor: pointer;
+        }
+
+        #project-note .note-process-item img {
+            position: absolute;
+            top: 0;
+            left: 12%;
+            display: block;
+            width: 76%;
+            height: 74%;
+            min-height: 0;
+            object-fit: contain;
+            transition: transform 180ms ease;
+        }
+
+        #project-note .note-process-item:nth-child(n + 2) img {
+            left: 19%;
+            width: 62%;
+        }
+
+        #project-note .note-process-item span {
+            position: absolute;
+            top: 79%;
+            left: 0;
+            width: 100%;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: clamp(9px, calc(3cqw - 2px), 22px);
+            font-weight: 500;
+            line-height: 1.1;
+            white-space: nowrap;
+        }
+
+        #project-note .note-process-item:nth-child(1) { left: 8%; top: 20%; }
+        #project-note .note-process-item:nth-child(2) { left: 54%; top: 21.5%; }
+        #project-note .note-process-item:nth-child(3) { left: 8%; top: 57%; }
+        #project-note .note-process-item:nth-child(4) { left: 54%; top: 57%; }
+
+        #project-note .note-process-item:hover img,
+        #project-note .note-process-item:focus-visible img {
+            transform: scale(1.035);
+        }
+
+        @media (max-width: 1024px) {
+            #project-note .note-page-three-content {
+                inset: 0;
+                width: 100%;
+                height: 100%;
+            }
+            #project-note .note-page-three-heading {
+                position: absolute;
+                top: 5%;
+                left: 7.5%;
+                margin: 0;
+            }
+            #project-note .note-process-item {
+                width: 27%;
+                height: 30%;
+            }
+            #project-note .note-process-item img {
+                left: 0;
+                width: 100%;
+                height: 74%;
+            }
+            #project-note .note-process-item span {
+                top: 78%;
+                font-size: clamp(11px, 3cqw, 24px);
+            }
+            #project-note .note-process-item:nth-child(n + 2) img {
+                left: 8%;
+                width: 84%;
+            }
+            #project-note .note-process-item:nth-child(1) { left: 22.5%; top: 21.5%; }
+            #project-note .note-process-item:nth-child(2) { left: 63%; top: 26.7%; }
+            #project-note .note-process-item:nth-child(3) { left: 22.2%; top: 63.4%; }
+            #project-note .note-process-item:nth-child(4) { left: 62.7%; top: 63.4%; }
+            #project-note .note-process-item:nth-child(1) { height: 36%; }
+            #project-note .note-process-item:nth-child(2) { height: 29%; }
+            #project-note .note-process-item:nth-child(3),
+            #project-note .note-process-item:nth-child(4) { height: 31%; }
+        }
+
+        #project-note.is-third-page .note-process-item {
+            animation: noteContentRise 560ms ease-out both;
+        }
+
+        #project-note.is-third-page .note-process-item:nth-child(2) { animation-delay: 90ms; }
+        #project-note.is-third-page .note-process-item:nth-child(3) { animation-delay: 180ms; }
+        #project-note.is-third-page .note-process-item:nth-child(4) { animation-delay: 270ms; }
+
+        #note-process-modal {
+            position: fixed;
+            z-index: 10000;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            padding: 5vh 5vw;
+            background: rgba(12, 12, 12, 0.84);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 180ms ease, visibility 180ms ease;
+        }
+
+        #note-process-modal.is-open {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        #note-process-modal .note-process-modal-panel {
+            position: relative;
+            width: min(92vw, 1180px);
+            height: min(84vh, 850px);
+            padding: 44px 18px 18px;
+            box-sizing: border-box;
+            background: #f4f0e6;
+            box-shadow: 0 14px 48px rgba(0, 0, 0, 0.35);
+        }
+
+        #note-process-modal .note-process-modal-close {
+            position: absolute;
+            z-index: 1;
+            top: 8px;
+            right: 12px;
+            width: 32px;
+            height: 32px;
+            border: 0;
+            background: transparent;
+            color: #171615;
+            font: 32px/1 sans-serif;
+            cursor: pointer;
+        }
+
+        #note-process-modal,
+        #note-process-modal * {
+            cursor: none !important;
+        }
+
+        #note-process-modal .note-process-modal-scroll {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            overflow-y: auto;
+            overscroll-behavior: contain;
+            scrollbar-color: #777 #d5d0c6;
+            cursor: none !important;
+        }
+
+        #note-process-modal .note-process-modal-scroll.is-horizontal-scroll {
+            overflow-x: auto;
+            cursor: none !important;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        #note-process-modal .note-process-modal-scroll.is-horizontal-scroll.is-dragging {
+            cursor: none !important;
+        }
+
+        #note-process-modal .note-process-modal-scroll::-webkit-scrollbar,
+        #note-process-modal .note-process-modal-scroll::-webkit-scrollbar-track,
+        #note-process-modal .note-process-modal-scroll::-webkit-scrollbar-thumb {
+            cursor: none !important;
+        }
+
+        #note-process-modal .note-process-modal-image {
+            display: block;
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            max-height: 100%;
+            margin: 0 auto;
+            object-fit: contain;
+            user-select: none;
+            -webkit-user-drag: none;
+            pointer-events: none;
+        }
+
+        #note-process-modal[data-horizontal="true"] .note-process-modal-image {
+            width: auto;
+            max-width: none;
+            max-height: none;
+            height: min(72vh, 760px);
+            margin: 0;
         }
 
         #project-note.is-details-visible .note-card-copy {
@@ -1945,6 +2302,30 @@
             animation: noteTextMaskOut 240ms cubic-bezier(0.55, 0, 0.85, 0.35) both;
         }
 
+        #project-note.is-turning-back .note-page-three-content {
+            animation: none;
+        }
+
+        #project-note.is-turning-back .note-page-three-heading {
+            animation: noteThirdTitleFlyUp 240ms cubic-bezier(0.55, 0, 0.85, 0.35) both;
+        }
+
+        #project-note.is-turning-back .note-process-item {
+            animation: noteThirdContentFlyOut 240ms cubic-bezier(0.55, 0, 0.85, 0.35) both;
+        }
+
+        #project-note.is-turning-back .note-process-item:nth-child(2) { animation-delay: 25ms; }
+        #project-note.is-turning-back .note-process-item:nth-child(3) { animation-delay: 50ms; }
+        #project-note.is-turning-back .note-process-item:nth-child(4) { animation-delay: 75ms; }
+
+        @keyframes noteThirdTitleFlyUp {
+            to { opacity: 0; transform: translateY(-115%); }
+        }
+
+        @keyframes noteThirdContentFlyOut {
+            to { opacity: 0; transform: translate(18%, -18%); }
+        }
+
         #project-note.is-turn-complete .note-card,
         #project-note.is-turn-complete #tv_tittle,
         #project-note.is-turn-complete #note-description,
@@ -1957,6 +2338,13 @@
         #project-note.is-later-page #tv_tittle,
         #project-note.is-later-page #note-description {
             display: none;
+            opacity: 0;
+            visibility: hidden;
+            animation: none;
+        }
+
+        #project-note.is-later-page .note-card,
+        #project-note.is-later-page .note-tape {
             opacity: 0;
             visibility: hidden;
             animation: none;
@@ -2016,6 +2404,16 @@
             display: block;
         }
 
+        #tv_small_txt_inner .tv-line-break {
+            display: none;
+        }
+
+        @media (min-width: 768px) and (max-width: 1024px) {
+            #tv_stage.is-details-visible #tv_small_txt_inner .tv-line-break {
+                display: block;
+            }
+        }
+
         #tv_stage.is-intro #tv_small_txt {
             opacity: 0;
             visibility: hidden;
@@ -2067,11 +2465,11 @@
         }
 
         #tv_stage.is-transitioning #tv_small_txt_inner {
-            animation: tvPressArrowOut 240ms cubic-bezier(0.55, 0, 0.85, 0.35) forwards;
+            animation: tvPressArrowOutDown 240ms cubic-bezier(0.55, 0, 0.85, 0.35) forwards;
         }
 
-        @keyframes tvPressArrowOut {
-            to { transform: translateY(-110%); }
+        @keyframes tvPressArrowOutDown {
+            to { transform: translateY(110%); }
         }
 
         #project-note.is-riding-ready #tv_tittle {
@@ -2306,6 +2704,9 @@
                             <a id="tv_riding_link" href="https://riding-busan.ghdrl408.chatgpt.site/" target="_blank" rel="noopener noreferrer" aria-label="Riding Busan 프로젝트 열기">
                                 <video id="tv_riding_video" src="pf_img/proImg/라이딩부산.mp4" muted loop playsinline preload="auto" aria-hidden="true"></video>
                             </a>
+                            <a id="tv_gacha_link" href="https://ghdrl408.github.io/main/gatcha-pick/" target="_blank" rel="noopener noreferrer" aria-label="GACHA-PICK 프로젝트 열기">
+                                <video id="tv_gacha_video" src="pro_scd/가차픽 끝.mp4" muted loop playsinline preload="auto" aria-hidden="true"></video>
+                            </a>
                             <video id="tv_noise_video" src="pf_img/proImg/변환용 노이즈.mp4" muted playsinline preload="auto" aria-hidden="true"></video>
                             <img id="tv_wrap" src="./pf_img/proImg/tv.png" alt="tv">
                             <div id="tv_no">CH 00</div>
@@ -2356,18 +2757,42 @@
                                 <section class="note-page-two-section">
                                     <span class="note-page-two-number">01</span>
                                     <h3>기획 배경</h3>
-                                    <p>부산 시내의 정체와 잦은 신호를 벗어나 가볍게 달리고<span class="note-page-mobile-break"></span> 싶은 라이더를 위해,<br>바다와 산을 따라 달리는 편도 1~2시간대 근교 코스 선정.</p>
+                                    <p>부산 시내의 정체와 잦은 신호를 벗어나 가볍게 달리고 싶은 라이더를 위해, 바다와 산을 따라 달리는 편도 1~2시간대 근교 코스 선정.</p>
                                 </section>
                                 <section class="note-page-two-section">
                                     <span class="note-page-two-number">02</span>
                                     <h3>제작 과정</h3>
-                                    <p>모바일 앱 구상 후 기획서를 직접 작성.<br>이를 바탕으로 Codex를 활용해 웹사이트 초안을 제작한 뒤,<br>화면·기능·디자인 등 하나하나 검토하고 수정 방향 제시.</p>
+                                    <p><span class="note-sentence">모바일 앱 구상 후 기획서를 직접 작성.</span><span class="note-sentence">이를 바탕으로 Codex를 활용해 웹사이트 초안을 제작한 뒤,<br>화면·기능·디자인 등 하나하나 검토하고 수정 방향 제시.</span></p>
                                 </section>
                                 <section class="note-page-two-section">
                                     <span class="note-page-two-number">03</span>
                                     <h3>코스 탐색과 기록</h3>
-                                    <p>코스 카드에서 풍경·예상 소요 시간·거리 비교.<br>마음에 드는 코스는 찜하고,<br>라이딩 중 사진과 메모로 주행 기록 기능 추가.</p>
+                                    <p><span class="note-sentence">코스 카드에서 풍경·예상 소요 시간·거리 비교.</span><span class="note-sentence">마음에 드는 코스는 찜하고,<br>라이딩 중 사진과 메모로 주행 기록 기능 추가.</span></p>
                                 </section>
+                            </div>
+                        </div>
+                        <div class="note-page-three-content" aria-label="Gacha-Pick design process">
+                            <div class="note-page-three-heading">
+                                <span id="note-page-three-title">GACHA-PICK</span>
+                                <strong id="note-page-three-subtitle">DESIGN PROCESS</strong>
+                            </div>
+                            <div class="note-process-grid">
+                                <button class="note-process-item" type="button" data-title="기획·디자인 보드" data-original="pro_scd/프로세스/가차픽_디자인보드 원본.png" data-horizontal="true" aria-label="기획·디자인 보드 원본 보기">
+                                    <img src="pro_scd/프로세스/가차픽_디자인보드.png" alt="가차픽 기획·디자인 보드 미리보기">
+                                    <span>기획·디자인 보드</span>
+                                </button>
+                                <button class="note-process-item" type="button" data-title="IA" data-original="pro_scd/프로세스/가차픽_IA.jpg" aria-label="IA 원본 보기">
+                                    <img src="pro_scd/프로세스/가차픽_IA.jpg" alt="가차픽 IA 미리보기">
+                                    <span>IA</span>
+                                </button>
+                                <button class="note-process-item" type="button" data-title="스토리보드" data-original="pro_scd/프로세스/가차픽_스토리보드 원본.jpg" aria-label="스토리보드 원본 보기">
+                                    <img src="pro_scd/프로세스/가차픽_스토리보드 크롭.jpg" alt="가차픽 스토리보드 미리보기">
+                                    <span>스토리보드</span>
+                                </button>
+                                <button class="note-process-item" type="button" data-title="와이어 프레임" data-original="pro_scd/프로세스/가차픽_와이어프레임.jpg" aria-label="와이어 프레임 원본 보기">
+                                    <img src="pro_scd/프로세스/가차픽_와이어프레임.jpg" alt="가차픽 와이어 프레임 미리보기">
+                                    <span>와이어 프레임</span>
+                                </button>
                             </div>
                         </div>
                         <div class="note-card note-card-one" aria-label="프로젝트 기획 정보">
@@ -2393,6 +2818,15 @@
                             <img class="note-tape-static" src="pf_img/proImg/짧은 마스킹_그림자제거.png" alt="마스킹">
                         </div>
                     </div>
+                    </div>
+
+                    <div id="note-process-modal" aria-hidden="true">
+                        <div class="note-process-modal-panel" role="dialog" aria-modal="true" aria-label="프로세스 원본 이미지">
+                            <button class="note-process-modal-close" type="button" aria-label="팝업 닫기">×</button>
+                            <div class="note-process-modal-scroll" tabindex="0">
+                                <img class="note-process-modal-image" alt="">
+                            </div>
+                        </div>
                     </div>
 
                 </section>
@@ -2447,7 +2881,9 @@
             const tvStage = document.querySelector('#tv_stage');
             const tvVideo = document.querySelector('#tv_video');
             const tvRidingVideo = document.querySelector('#tv_riding_video');
+            const tvGachaVideo = document.querySelector('#tv_gacha_video');
             const tvRidingLink = document.querySelector('#tv_riding_link');
+            const tvGachaLink = document.querySelector('#tv_gacha_link');
             const tvNoiseVideo = document.querySelector('#tv_noise_video');
             const tvNo = document.querySelector('#tv_no');
             const tvTitle = document.querySelector('#tv_tittle');
@@ -2460,6 +2896,19 @@
             const noteDescription = document.querySelector('#note-description');
             const notePageTwoRidingTitle = document.querySelector('#note-page-two-riding-title');
             const notePageTwoMainTitle = document.querySelector('#note-page-two-main-title');
+            const notePageThreeTitle = document.querySelector('#note-page-three-title');
+            const notePageThreeSubtitle = document.querySelector('#note-page-three-subtitle');
+            const noteProcessModal = document.querySelector('#note-process-modal');
+            const noteProcessModalImage = noteProcessModal.querySelector('.note-process-modal-image');
+            const noteProcessModalScroll = noteProcessModal.querySelector('.note-process-modal-scroll');
+            const noteProcessModalClose = noteProcessModal.querySelector('.note-process-modal-close');
+            const noteProcessItems = [...projectNote.querySelectorAll('.note-process-item')];
+            const noteCardCopies = [...projectNote.querySelectorAll('.note-card-copy')];
+            const noteCardOriginalHtml = noteCardCopies.map((element) => element.innerHTML);
+            const notePageTwoParagraphs = [...projectNote.querySelectorAll('.note-page-two-section p')];
+            const notePageTwoParagraphOriginalHtml = notePageTwoParagraphs.map((element) => element.innerHTML);
+            const notePageTwoSectionTitles = [...projectNote.querySelectorAll('.note-page-two-section h3')];
+            const notePageTwoSectionTitleOriginalTexts = notePageTwoSectionTitles.map((element) => element.textContent);
             const projectNoteTurnMotion = document.querySelector('#project-note-turn-motion');
             const projectNoteTurnHotspot = document.querySelector('#project-note-turn-hotspot');
             const projectNotePrevHotspot = document.querySelector('#project-note-prev-hotspot');
@@ -2469,21 +2918,31 @@
                     nextFold: 'pf_img/proImg/메모지 오른쪽접힘.png',
                     prevFold: 'pf_img/proImg/메모지 왼쪽접힘.png',
                     nextTurn: 'pf_img/proImg/메모지 오른쪽넘김.gif',
-                    prevTurn: 'pf_img/proImg/메모지 왼쪽넘김.gif'
+                    prevTurn: 'pf_img/proImg/메모지 왼쪽넘김.gif',
+                    gachaSecondFold: 'pro_scd/양쪽 메모지 접힘.png',
+                    gachaNextTurn: 'pro_scd/양쪽 메모지 오른쪽넘김.gif',
+                    gachaPrevTurn: 'pro_scd/양쪽 메모지 왼쪽넘김.gif'
                 },
                 wide: {
                     paper: 'pf_img/proImg/넓은 메모지.png',
                     nextFold: 'pf_img/proImg/넓은 메모지 오른쪽접힘.png',
                     prevFold: 'pf_img/proImg/넓은 메모지 왼쪽접힘.png',
                     nextTurn: 'pf_img/proImg/넓은 메모지 오른쪽넘김_공통속도.gif',
-                    prevTurn: 'pf_img/proImg/넓은 메모지 왼쪽넘김_공통속도.gif'
+                    prevTurn: 'pf_img/proImg/넓은 메모지 왼쪽넘김_공통속도.gif',
+                    gachaSecondFold: 'pro_scd/넓은 메모지 양쪽접힘.png',
+                    gachaNextTurn: 'pro_scd/넓은 양쪽 메모지 오른쪽넘김.gif',
+                    gachaPrevTurn: 'pro_scd/넓은 양쪽 메모지 왼쪽넘김.gif'
                 }
             };
             const projectNoteTurnMotionPaths = {
                 compactNext: projectNoteAssetPaths.compact.nextTurn,
                 compactPrev: projectNoteAssetPaths.compact.prevTurn,
                 wideNext: projectNoteAssetPaths.wide.nextTurn,
-                widePrev: projectNoteAssetPaths.wide.prevTurn
+                widePrev: projectNoteAssetPaths.wide.prevTurn,
+                compactGachaNext: projectNoteAssetPaths.compact.gachaNextTurn,
+                compactGachaPrev: projectNoteAssetPaths.compact.gachaPrevTurn,
+                wideGachaNext: projectNoteAssetPaths.wide.gachaNextTurn,
+                wideGachaPrev: projectNoteAssetPaths.wide.gachaPrevTurn
             };
             const projectNoteTurnMotionBlobs = new Map();
             const makeProjectNoteGifPlayOnce = async (blob) => {
@@ -2523,6 +2982,7 @@
             const updateDesktopProjectCompositionScale = () => {
                 if (projectNoteWideLayout.matches) {
                     desktopProjectComposition.style.removeProperty('--desktop-project-scale');
+                    desktopProjectComposition.style.removeProperty('--desktop-tv-caption-font-size');
                     return;
                 }
 
@@ -2532,6 +2992,17 @@
                 const desktopCompositionWidth = 1740;
                 const scale = Math.min(1, projectsRect.width / desktopCompositionWidth);
                 desktopProjectComposition.style.setProperty('--desktop-project-scale', String(scale));
+                const isNotebook = matchMedia('(min-width: 1025px) and (max-width: 1500px)').matches;
+                if (isNotebook && scale > 0) {
+                    const notebookProgress = Math.min(1, Math.max(0, (window.innerWidth - 1025) / (1500 - 1025)));
+                    const sectionWidthRatio = projectsRect.width / window.innerWidth;
+                    const pcMinimumScale = Math.min(1, 1501 * sectionWidthRatio / desktopCompositionWidth);
+                    const pcMinimumFontSize = Math.min(13.125, Math.max(8.4, 1501 * 0.0105)) + 5.6;
+                    const scaledFontSize = 14 + (pcMinimumFontSize * pcMinimumScale - 14) * notebookProgress;
+                    desktopProjectComposition.style.setProperty('--desktop-tv-caption-font-size', `${scaledFontSize / scale}px`);
+                } else {
+                    desktopProjectComposition.style.removeProperty('--desktop-tv-caption-font-size');
+                }
             };
             let desktopProjectCompositionFrame = 0;
             const scheduleDesktopProjectCompositionScale = () => {
@@ -2545,6 +3016,7 @@
             document.querySelector('#tv_wrap').addEventListener('load', scheduleDesktopProjectCompositionScale);
             projectNoteWideLayout.addEventListener('change', () => {
                 setProjectNoteAssetSet();
+                syncProjectNotePageAssets();
                 scheduleDesktopProjectCompositionScale();
             });
             scheduleDesktopProjectCompositionScale();
@@ -2570,6 +3042,15 @@
                     button.classList.toggle('is-active', button.dataset.channel === channel);
                 });
             };
+            const setMobileProjectChannelLayout = (isGachaMode) => {
+                const channels = isGachaMode ? ['01', '02'] : ['00', '01'];
+                mobileProjectChannels.forEach((button, index) => {
+                    const channel = channels[index];
+                    button.dataset.channel = channel;
+                    button.textContent = channel;
+                    button.setAttribute('aria-label', `채널 ${channel}`);
+                });
+            };
             let tvNoiseFadeTimer = null;
             const tvNoiseRevealMs = 445;
             const tvNoiseDurationMs = 500;
@@ -2585,6 +3066,23 @@
             let projectNoteTapeMotionPlayed = false;
             let projectNoteTapeMotionComplete = false;
             let projectNotePage = 1;
+            const syncProjectNotePageAssets = () => {
+                const assets = projectNoteWideLayout.matches
+                    ? projectNoteAssetPaths.wide
+                    : projectNoteAssetPaths.compact;
+                projectNoteStatic.src = assets.paper;
+                projectNoteFolded.src = tvMode === 'gacha' && projectNotePage === 2
+                    ? assets.gachaSecondFold
+                    : assets.nextFold;
+                projectNoteFoldedLeft.src = assets.prevFold;
+            };
+            syncProjectNotePageAssets();
+            const getProjectNoteTurnMotionPathKey = (direction, fromPage = projectNotePage) => {
+                const layout = projectNoteWideLayout.matches ? 'wide' : 'compact';
+                const turn = direction === 'next' ? 'Next' : 'Prev';
+                const gachaSpreadTurn = tvMode === 'gacha' && fromPage === 2;
+                return `${layout}${gachaSpreadTurn ? 'Gacha' : ''}${turn}`;
+            };
 
             const showProjectNoteStatic = () => {
                 window.cancelAnimationFrame(projectNoteAnimationFrame);
@@ -2633,7 +3131,7 @@
             };
 
             const showProjectNoteFoldedCorner = () => {
-                if (tvMode !== 'riding' || !projectNote.classList.contains('is-details-visible') ||
+                if (!['riding', 'gacha'].includes(tvMode) || !projectNote.classList.contains('is-details-visible') ||
                     projectNote.classList.contains('is-turn-loading') ||
                     projectNote.classList.contains('is-turning') || projectNote.classList.contains('is-turn-complete')) return;
                 projectNotePaper.classList.add('is-folded');
@@ -2642,6 +3140,8 @@
             const getProjectNoteContentAnimationRemainingMs = (page) => {
                 const contentRoots = page === 2
                     ? [...projectNote.querySelectorAll('.note-page-two-content')]
+                    : page === 3
+                    ? [...projectNote.querySelectorAll('.note-page-three-content')]
                     : [
                         projectNote.querySelector('#tv_tittle'),
                         projectNote.querySelector('#note-description'),
@@ -2669,17 +3169,23 @@
                         if (page === 1) {
                             showProjectNoteFoldedCorner();
                             void getProjectNoteTurnMotionBlob(
-                                `${projectNoteWideLayout.matches ? 'wide' : 'compact'}Next`
+                                getProjectNoteTurnMotionPathKey('next', 1)
                             );
                             return;
                         }
-                        if (projectNotePage !== 2 ||
+                        if (projectNotePage !== page || ![2, 3].includes(page) ||
                             !projectNote.classList.contains('is-turn-complete') ||
                             projectNote.classList.contains('is-turning')) return;
                         projectNotePaper.classList.add('is-folded-corner-visible');
-                        void getProjectNoteTurnMotionBlob(
-                            `${projectNoteWideLayout.matches ? 'wide' : 'compact'}Prev`
-                        );
+                        if (tvMode === 'gacha' && page === 2) {
+                            projectNotePaper.classList.add('is-folded');
+                            void getProjectNoteTurnMotionBlob(getProjectNoteTurnMotionPathKey('next', page));
+                        }
+                        if (tvMode === 'gacha') {
+                            void getProjectNoteTurnMotionBlob(getProjectNoteTurnMotionPathKey('prev', page));
+                        } else {
+                            void getProjectNoteTurnMotionBlob(getProjectNoteTurnMotionPathKey('prev', 2));
+                        }
                     });
                 });
             };
@@ -2732,7 +3238,9 @@
                 let letterIndex = 0;
                 for (const character of text) {
                     if (character === '\n') {
-                        element.appendChild(document.createElement('br'));
+                        const lineBreak = document.createElement('br');
+                        lineBreak.className = 'tv-line-break';
+                        element.appendChild(lineBreak);
                         continue;
                     }
                     if (character === ' ') {
@@ -2748,9 +3256,130 @@
                 }
             };
 
-            const getNoteDescriptionText = () => matchMedia('(min-width: 1025px)').matches
-                ? '부산 근교의 아름다운 자연경관을 즐길 수 있는\n오토바이 라이딩 코스 추천 웹사이트'
-                : '부산 근교의 아름다운 자연경관을 즐길 수 있는 오토바이 라이딩 코스 추천 웹사이트';
+            const getGachaTvSmallText = () => '과거의 무드를 가득 담은 레트로 뽑기 머신으로\n당신의 오늘을 선택해보세요!';
+            let gachaTvSmallTextLayoutText = '';
+            const updateGachaTvSmallText = () => {
+                const text = getGachaTvSmallText();
+                if (text === gachaTvSmallTextLayoutText) return;
+                gachaTvSmallTextLayoutText = text;
+                setTvStaggeredText(tvSmallTxt, text, 0, 12);
+            };
+            const gachaNoteDescription = '선택이 어려운 현대인들을 위한 랜덤 뽑기형 추천 서비스';
+            const gachaPageTwoSectionTitles = ['기획 배경', '제작 과정', '캡슐 뽑기와 추천'];
+            const gachaPageTwoParagraphHtml = [
+                '<span class="note-sentence">친구나 연인과 만났을 때, 뭘 먹고 어디 갈지<br>정하는 데 시간이 걸리는 상황에서 아이디어를 얻음.</span><span class="note-sentence">고민을 줄이고 게임을 하듯 즐겁게 선택할 수 있도록<br>랜덤 뽑기 방식의 추천 서비스 기획.</span>',
+                '<span class="note-sentence">디자인 프로세스를 단계별로 제작 후 기획 완성.</span><span class="note-sentence">무드보드를 바탕으로 회색 창, 파란 타이틀 바, 픽셀 그래픽을 적용해 화면을 디자인하고, 재미를 더할 수 있는 오락성 <span class="gacha-inline-phrase">인터랙션 추가</span>.</span>',
+                '<span class="note-sentence">메뉴나 장소를 고르고 친구와 갈지, 연인과 갈지 선택.</span><span class="note-sentence">지역과 취향 키워드를 반영해 후보 중 하나를 무작위로 추천.</span><span class="note-sentence">레버를 돌리면 캡슐이 나오고, 접힌 쪽지가 펼쳐지며 결과 공개.</span>'
+            ];
+            const getNoteDescriptionText = () => tvMode === 'gacha'
+                ? gachaNoteDescription
+                : matchMedia('(min-width: 1025px)').matches
+                    ? '부산 근교의 아름다운 자연경관을 즐길 수 있는\n오토바이 라이딩 코스 추천 웹사이트'
+                    : '부산 근교의 아름다운 자연경관을 즐길 수 있는 오토바이 라이딩 코스 추천 웹사이트';
+
+            const setProjectNoteProject = (project) => {
+                const isGacha = project === 'gacha';
+                projectNote.classList.toggle('is-gacha-project', isGacha);
+                noteCardCopies.forEach((element, index) => {
+                    if (!isGacha) {
+                        element.innerHTML = noteCardOriginalHtml[index];
+                        return;
+                    }
+                    element.innerHTML = index === 0
+                        ? '레트로 콘셉트로 화면 디자인 및 웹 구현<br>제작 기간 10일<br>VSCord / Codex / PhotoShop / Figma'
+                        : '<span>지역과 취향 키워드를 반영한 랜덤 추천</span><span class="gacha-note-copy">고민에 맞는 선택지 클릭 후<br>레버를 돌리면 캡슐 속 쪽지에 결과 공개</span>';
+                });
+                notePageTwoParagraphs.forEach((element, index) => {
+                    element.innerHTML = isGacha ? gachaPageTwoParagraphHtml[index] : notePageTwoParagraphOriginalHtml[index];
+                });
+                notePageTwoSectionTitles.forEach((element, index) => {
+                    element.textContent = isGacha
+                        ? gachaPageTwoSectionTitles[index]
+                        : notePageTwoSectionTitleOriginalTexts[index];
+                });
+                setTvStaggeredText(notePageTwoRidingTitle, isGacha ? 'GACHA-PICK' : 'RIDING BUSAN', 0, 19);
+                setTvStaggeredText(notePageTwoMainTitle, 'PROJECT NOTES', 0, 19);
+                setTvStaggeredText(notePageThreeTitle, isGacha ? 'GACHA-PICK' : '', 0, 19);
+                setTvStaggeredText(notePageThreeSubtitle, isGacha ? 'DESIGN PROCESS' : '', 0, 19);
+            };
+
+            let noteProcessLastTrigger = null;
+            let noteProcessPreviousOverflow = '';
+            const closeNoteProcessModal = () => {
+                noteProcessModal.classList.remove('is-open');
+                noteProcessModal.setAttribute('aria-hidden', 'true');
+                noteProcessModalScroll.classList.remove('is-dragging');
+                document.body.style.overflow = noteProcessPreviousOverflow;
+                noteProcessLastTrigger?.focus({ preventScroll: true });
+            };
+            noteProcessItems.forEach((item) => {
+                item.addEventListener('click', () => {
+                    noteProcessLastTrigger = item;
+                    noteProcessModalImage.src = item.dataset.original;
+                    noteProcessModalImage.alt = `${item.dataset.title} 원본 이미지`;
+                    const needsHorizontalScroll = item.dataset.horizontal === 'true';
+                    noteProcessModal.dataset.horizontal = String(needsHorizontalScroll);
+                    noteProcessModalScroll.classList.toggle('is-horizontal-scroll', needsHorizontalScroll);
+                    noteProcessModalScroll.scrollTop = 0;
+                    noteProcessModalScroll.scrollLeft = 0;
+                    noteProcessModal.classList.add('is-open');
+                    noteProcessModal.setAttribute('aria-hidden', 'false');
+                    noteProcessPreviousOverflow = document.body.style.overflow;
+                    document.body.style.overflow = 'hidden';
+                    noteProcessModalClose.focus({ preventScroll: true });
+                });
+            });
+            noteProcessModalClose.addEventListener('click', closeNoteProcessModal);
+            noteProcessModal.addEventListener('click', (event) => {
+                if (event.target === noteProcessModal) closeNoteProcessModal();
+            });
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape' && noteProcessModal.classList.contains('is-open')) {
+                    closeNoteProcessModal();
+                }
+            });
+            noteProcessModalScroll.addEventListener('wheel', (event) => {
+                if (noteProcessModalScroll.scrollWidth > noteProcessModalScroll.clientWidth) {
+                    event.preventDefault();
+                    noteProcessModalScroll.scrollLeft += event.deltaY || event.deltaX;
+                } else if (noteProcessModalScroll.scrollHeight > noteProcessModalScroll.clientHeight) {
+                    event.preventDefault();
+                    noteProcessModalScroll.scrollTop += event.deltaY;
+                } else {
+                    event.preventDefault();
+                }
+                event.stopPropagation();
+            }, { passive: false });
+
+            let noteProcessDragPointerId = null;
+            let noteProcessDragStartX = 0;
+            let noteProcessDragStartScrollLeft = 0;
+            noteProcessModalScroll.addEventListener('pointerdown', (event) => {
+                if (!noteProcessModalScroll.classList.contains('is-horizontal-scroll') || event.button !== 0) return;
+                if (event.target === noteProcessModalScroll &&
+                    event.offsetY >= noteProcessModalScroll.clientHeight - 16) return;
+                noteProcessDragPointerId = event.pointerId;
+                noteProcessDragStartX = event.clientX;
+                noteProcessDragStartScrollLeft = noteProcessModalScroll.scrollLeft;
+                noteProcessModalScroll.setPointerCapture(event.pointerId);
+                noteProcessModalScroll.classList.add('is-dragging');
+                event.preventDefault();
+            });
+            noteProcessModalScroll.addEventListener('pointermove', (event) => {
+                if (event.pointerId !== noteProcessDragPointerId) return;
+                noteProcessModalScroll.scrollLeft = noteProcessDragStartScrollLeft - (event.clientX - noteProcessDragStartX);
+                event.preventDefault();
+            });
+            const finishNoteProcessDrag = (event) => {
+                if (event.pointerId !== noteProcessDragPointerId) return;
+                noteProcessDragPointerId = null;
+                noteProcessModalScroll.classList.remove('is-dragging');
+                if (noteProcessModalScroll.hasPointerCapture(event.pointerId)) {
+                    noteProcessModalScroll.releasePointerCapture(event.pointerId);
+                }
+            };
+            noteProcessModalScroll.addEventListener('pointerup', finishNoteProcessDrag);
+            noteProcessModalScroll.addEventListener('pointercancel', finishNoteProcessDrag);
 
             const updateNoteDescription = () => {
                 const text = getNoteDescriptionText();
@@ -2759,8 +3388,8 @@
                 setTvStaggeredText(noteDescription, text, 0, 12);
             };
 
-            const loadProjectNoteTurnMotion = async (direction) => {
-                const pathKey = `${projectNoteWideLayout.matches ? 'wide' : 'compact'}${direction === 'next' ? 'Next' : 'Prev'}`;
+            const loadProjectNoteTurnMotion = async (direction, fromPage = projectNotePage) => {
+                const pathKey = getProjectNoteTurnMotionPathKey(direction, fromPage);
                 const path = projectNoteTurnMotionPaths[pathKey];
                 const blob = await getProjectNoteTurnMotionBlob(pathKey);
                 const preloadSource = blob
@@ -2784,7 +3413,7 @@
             };
 
             const showProjectNoteDetails = () => {
-                if (tvMode !== 'riding' || projectNote.classList.contains('is-details-visible') ||
+                if (!['riding', 'gacha'].includes(tvMode) || projectNote.classList.contains('is-details-visible') ||
                     projectNote.classList.contains('is-turning') || projectNote.classList.contains('is-turn-complete')) return;
 
                 projectNote.classList.add('is-details-visible');
@@ -2797,23 +3426,29 @@
             };
 
             const turnProjectNotePage = async () => {
-                if (!projectNotePaper.classList.contains('is-folded') || projectNotePage !== 1 ||
+                const fromPage = projectNotePage;
+                const isTurningToThird = tvMode === 'gacha' && fromPage === 2;
+                if (!projectNotePaper.classList.contains('is-folded') ||
+                    (fromPage !== 1 && !isTurningToThird) ||
                     projectNote.classList.contains('is-turning') ||
                     projectNote.classList.contains('is-turn-loading')) return;
 
                 if (projectNoteTapeMotionPlayed && !projectNoteTapeMotionComplete) finishProjectNoteTapeMotion();
                 projectNote.classList.add('is-turn-loading');
                 customCursor.classList.remove('is-note-next');
-                await loadProjectNoteTurnMotion('next');
+                await loadProjectNoteTurnMotion('next', fromPage);
                 if (!projectNote.classList.contains('is-turn-loading')) return;
                 projectNote.classList.remove('is-turn-loading');
                 projectNote.classList.remove('is-turn-complete');
                 projectNotePaper.classList.remove('is-turn-complete');
                 projectNotePaper.classList.remove('is-folded-corner-visible');
-                setTvStaggeredText(notePageTwoRidingTitle, 'RIDING BUSAN', 0, 19);
-                setTvStaggeredText(notePageTwoMainTitle, 'PROJECT NOTES', 0, 19);
-                projectNotePage = 2;
+                if (!isTurningToThird) {
+                    setTvStaggeredText(notePageTwoRidingTitle, tvMode === 'gacha' ? 'GACHA-PICK' : 'RIDING BUSAN', 0, 19);
+                    setTvStaggeredText(notePageTwoMainTitle, 'PROJECT NOTES', 0, 19);
+                }
+                projectNotePage = fromPage + 1;
                 projectNote.classList.add('is-turning');
+                projectNote.classList.toggle('is-turning-to-third', isTurningToThird);
                 projectNotePaper.classList.add('is-turning');
 
                 window.clearTimeout(projectNoteFoldedCornerTimer);
@@ -2821,54 +3456,94 @@
                 projectNoteContentRevealTimer = window.setTimeout(() => {
                     if (!projectNote.classList.contains('is-turning') ||
                         projectNote.classList.contains('is-turning-back')) return;
-                    projectNote.classList.add('is-later-page', 'is-second-page');
+                    projectNote.classList.add('is-later-page');
+                    if (isTurningToThird) {
+                        projectNote.classList.remove('is-second-page');
+                        projectNote.classList.add('is-third-page');
+                    } else {
+                        projectNote.classList.add('is-second-page');
+                    }
+                    syncProjectNotePageAssets();
                 }, Math.max(0, projectNoteTurnMotionDurations.next - projectNoteContentRevealLeadMs));
 
                 projectNoteTurnTimer = window.setTimeout(() => {
-                    projectNote.classList.remove('is-turning');
+                    projectNote.classList.remove('is-turning', 'is-turning-to-third');
                     projectNote.classList.add('is-turn-complete', 'is-later-page');
-                    projectNote.classList.add('is-second-page');
+                    if (isTurningToThird) {
+                        projectNote.classList.remove('is-second-page');
+                        projectNote.classList.add('is-third-page');
+                    } else {
+                        projectNote.classList.add('is-second-page');
+                    }
                     projectNotePaper.classList.remove('is-turning', 'is-folded');
                     projectNotePaper.classList.add('is-turn-complete');
-                    scheduleProjectNoteFoldedCornerAfterContent(2);
+                    syncProjectNotePageAssets();
+                    if (isTurningToThird) {
+                        projectNotePaper.classList.add('is-folded-corner-visible');
+                        void getProjectNoteTurnMotionBlob(getProjectNoteTurnMotionPathKey('prev', 3));
+                    } else {
+                        scheduleProjectNoteFoldedCornerAfterContent(2);
+                    }
                 }, projectNoteTurnMotionDurations.next);
             };
 
             const turnProjectNoteBack = async () => {
-                if (projectNotePage !== 2 || !projectNote.classList.contains('is-turn-complete') ||
+                const fromPage = projectNotePage;
+                const targetPage = fromPage - 1;
+                if (![2, 3].includes(fromPage) || !projectNote.classList.contains('is-turn-complete') ||
                     projectNote.classList.contains('is-turning') ||
                     projectNote.classList.contains('is-turn-loading') ||
                     projectNote.classList.contains('is-turning-back')) return;
 
                 customCursor.classList.remove('is-note-prev');
                 projectNote.classList.add('is-turn-loading');
-                await loadProjectNoteTurnMotion('prev');
+                await loadProjectNoteTurnMotion('prev', fromPage);
                 if (!projectNote.classList.contains('is-turn-loading')) return;
                 projectNote.classList.remove('is-turn-loading');
-                projectNoteTapeWrappers.forEach((tape) => tape.classList.remove('is-playing', 'is-complete'));
-                projectNote.classList.remove('has-tape');
+                if (targetPage === 1) {
+                    projectNoteTapeWrappers.forEach((tape) => tape.classList.remove('is-playing', 'is-complete'));
+                    projectNote.classList.remove('has-tape');
+                }
                 projectNote.classList.remove('is-turn-complete');
                 projectNotePaper.classList.remove('is-turn-complete');
                 projectNotePaper.classList.remove('is-folded-corner-visible');
-                projectNotePage = 1;
-                projectNote.classList.add('is-turning', 'is-turning-back');
+                projectNotePage = targetPage;
+                projectNote.classList.add('is-turning');
+                projectNote.classList.toggle('is-turning-back', targetPage === 1);
                 projectNotePaper.classList.add('is-turning', 'is-turning-back');
 
                 window.clearTimeout(projectNoteContentRevealTimer);
                 projectNoteContentRevealTimer = window.setTimeout(() => {
-                    if (!projectNote.classList.contains('is-turning-back')) return;
-                    projectNote.classList.remove('is-turning', 'is-turning-back', 'is-later-page', 'is-second-page');
+                    if (!projectNote.classList.contains('is-turning')) return;
+                    projectNote.classList.remove('is-turning', 'is-turning-back');
+                    if (targetPage === 1) {
+                        projectNote.classList.remove('is-later-page', 'is-second-page', 'is-third-page');
+                    } else {
+                        projectNote.classList.remove('is-third-page');
+                        projectNote.classList.add('is-later-page', 'is-second-page');
+                    }
+                    syncProjectNotePageAssets();
                 }, Math.max(0, projectNoteTurnMotionDurations.prev - projectNoteContentRevealLeadMs));
 
                 projectNoteTurnTimer = window.setTimeout(() => {
                     projectNote.classList.remove('is-turning', 'is-turning-back', 'is-turn-complete');
-                    projectNotePaper.classList.remove('is-turning', 'is-turning-back', 'is-turn-complete', 'is-folded', 'is-folded-corner-visible');
-                    projectNote.classList.remove('is-later-page', 'is-second-page');
-                    projectNoteTapeMotionPlayed = false;
-                    projectNoteTapeMotionComplete = false;
-                    projectNoteTapeWrappers.forEach((tape) => tape.classList.remove('is-playing', 'is-complete'));
-                    playProjectNoteTapes();
-                    scheduleProjectNoteFoldedCornerAfterContent(1);
+                    projectNotePaper.classList.remove('is-turning', 'is-turning-back', 'is-turn-complete');
+                    if (targetPage === 1) {
+                        projectNotePaper.classList.remove('is-folded', 'is-folded-corner-visible');
+                        projectNote.classList.remove('is-later-page', 'is-second-page', 'is-third-page');
+                        projectNoteTapeMotionPlayed = false;
+                        projectNoteTapeMotionComplete = false;
+                        projectNoteTapeWrappers.forEach((tape) => tape.classList.remove('is-playing', 'is-complete'));
+                        syncProjectNotePageAssets();
+                        playProjectNoteTapes();
+                        scheduleProjectNoteFoldedCornerAfterContent(1);
+                    } else {
+                        projectNote.classList.add('is-turn-complete');
+                        projectNotePaper.classList.add('is-turn-complete');
+                        projectNote.classList.add('is-later-page', 'is-second-page');
+                        syncProjectNotePageAssets();
+                        scheduleProjectNoteFoldedCornerAfterContent(2);
+                    }
                 }, projectNoteTurnMotionDurations.prev);
             };
 
@@ -2883,12 +3558,16 @@
                 window.clearTimeout(projectNoteFoldedCornerTimer);
                 if (projectNoteTapeMotionPlayed && !projectNoteTapeMotionComplete) finishProjectNoteTapeMotion();
                 tvMode = playIntro ? 'intro' : 'idle';
+                setProjectNoteProject('riding');
+                setMobileProjectChannelLayout(false);
                 tvStage.classList.remove('is-intro', 'is-transitioning', 'is-riding-ready');
-                projectNote.classList.remove('is-intro', 'is-transitioning', 'is-riding-ready', 'is-details-visible', 'is-turn-loading', 'is-turning', 'is-turning-back', 'is-turn-complete', 'is-later-page', 'is-second-page', 'has-tape');
+                projectNote.classList.remove('is-intro', 'is-transitioning', 'is-riding-ready', 'is-details-visible', 'is-turn-loading', 'is-turning', 'is-turning-back', 'is-turning-to-third', 'is-turn-complete', 'is-later-page', 'is-second-page', 'is-third-page', 'has-tape');
                 projectNotePaper.classList.remove('is-folded', 'is-turning', 'is-turning-back', 'is-turn-complete', 'is-folded-corner-visible');
+                syncProjectNotePageAssets();
                 projectNoteTapeWrappers.forEach((tape) => tape.classList.remove('is-playing', 'is-complete'));
                 tvStage.classList.remove('is-details-visible');
                 tvRidingLink.classList.remove('is-interactive');
+                tvGachaLink.classList.remove('is-interactive');
                 if (playIntro) {
                     projectNoteTapeMotionPlayed = false;
                     projectNoteTapeMotionComplete = false;
@@ -2910,6 +3589,9 @@
                 tvRidingVideo.pause();
                 tvRidingVideo.classList.remove('is-revealing');
                 if (tvRidingVideo.readyState > 0) tvRidingVideo.currentTime = 0;
+                tvGachaVideo.pause();
+                tvGachaVideo.classList.remove('is-revealing');
+                if (tvGachaVideo.readyState > 0) tvGachaVideo.currentTime = 0;
 
                 if (playIntro) {
                     tvVideo.currentTime = 0;
@@ -2917,10 +3599,51 @@
                 }
             };
 
+            const resetProjectNoteToFirstPage = () => {
+                window.clearTimeout(projectNoteTurnTimer);
+                window.clearTimeout(projectNoteContentRevealTimer);
+                window.clearTimeout(projectNoteFoldedCornerTimer);
+                projectNotePage = 1;
+                projectNote.classList.remove(
+                    'is-turn-loading', 'is-turning', 'is-turning-back', 'is-turning-to-third', 'is-turn-complete', 'is-later-page', 'is-second-page', 'is-third-page'
+                );
+                projectNotePaper.classList.remove(
+                    'is-folded', 'is-turning', 'is-turning-back', 'is-turn-complete', 'is-folded-corner-visible'
+                );
+                syncProjectNotePageAssets();
+            };
+
+            const animateProjectNoteOutForChannelChange = () => {
+                window.clearTimeout(projectNoteDetailsTimer);
+                window.clearTimeout(projectNoteTapeTimer);
+                window.clearTimeout(projectNoteTurnTimer);
+                window.clearTimeout(projectNoteContentRevealTimer);
+                window.clearTimeout(projectNoteFoldedCornerTimer);
+
+                if (!projectNote.classList.contains('is-details-visible')) {
+                    resetProjectNoteToFirstPage();
+                    return;
+                }
+
+                const isSecondPage = projectNotePage === 2;
+                projectNote.classList.add('is-turning');
+                projectNote.classList.toggle('is-turning-back', isSecondPage);
+                window.setTimeout(() => {
+                    resetProjectNoteToFirstPage();
+                    projectNote.classList.remove('is-details-visible', 'is-riding-ready', 'has-tape');
+                    tvStage.classList.remove('is-details-visible');
+                    projectNoteTapeWrappers.forEach((tape) => tape.classList.remove('is-playing', 'is-complete'));
+                }, 240);
+            };
+
             const startTvRide = () => {
-                if (tvMode !== 'intro') return;
+                if (tvMode !== 'intro' && tvMode !== 'gacha') return;
+                animateProjectNoteOutForChannelChange();
+                setMobileProjectChannelLayout(false);
+                tvGachaLink.classList.remove('is-interactive');
                 window.clearTimeout(tvNoiseFadeTimer);
                 window.clearTimeout(tvRevealTimer);
+                window.clearTimeout(projectNoteDetailsTimer);
                 tvMode = 'transitioning';
                 projectNote.classList.remove('is-intro');
                 projectNote.classList.add('is-transitioning');
@@ -2930,6 +3653,9 @@
                 tvStage.classList.add('is-transitioning');
 
                 tvVideo.pause();
+                tvGachaVideo.pause();
+                tvGachaVideo.classList.remove('is-revealing');
+                tvRidingVideo.classList.remove('is-revealing');
                 tvRidingVideo.pause();
                 if (tvRidingVideo.readyState > 0) tvRidingVideo.currentTime = 0;
                 tvRidingVideo.play().catch(() => {});
@@ -2943,6 +3669,8 @@
                     tvNoiseVideo.classList.remove('is-active');
                     tvRidingVideo.classList.add('is-revealing');
                     tvStage.classList.remove('is-transitioning');
+                    tvMode = 'riding';
+                    setProjectNoteProject('riding');
                     setTvStaggeredText(tvTitle, 'RIDING BUSAN', 0, 19);
                     updateNoteDescription();
                     setTvStaggeredText(tvSmallTxt, '어디로든 떠나고 싶은 순간, 당신의 다음 길을 찾아보세요.', 0, 12);
@@ -2950,13 +3678,75 @@
                     projectNote.classList.remove('is-transitioning');
                     projectNote.classList.add('is-riding-ready');
                     tvRidingLink.classList.add('is-interactive');
-                    tvMode = 'riding';
+                    if (projectNote.classList.contains('is-details-visible')) {
+                        scheduleProjectNoteFoldedCornerAfterContent(1);
+                    }
                     projectNoteDetailsTimer = window.setTimeout(showProjectNoteDetails, 850);
                 }, tvNoiseRevealMs);
                 tvRevealTimer = window.setTimeout(() => {
                     tvNoiseVideo.classList.remove('is-active');
                     tvNoiseVideo.pause();
                 }, tvNoiseDurationMs);
+            };
+
+            const startTvGacha = () => {
+                if (tvMode !== 'riding') return;
+                animateProjectNoteOutForChannelChange();
+                setMobileProjectChannelLayout(true);
+                window.clearTimeout(tvNoiseFadeTimer);
+                window.clearTimeout(tvRevealTimer);
+                window.clearTimeout(projectNoteDetailsTimer);
+                tvMode = 'transitioning';
+                tvNo.textContent = 'CH 02';
+                setMobileProjectChannel('02');
+                projectNote.classList.remove('is-intro');
+                projectNote.classList.add('is-transitioning');
+                tvStage.classList.remove('is-intro');
+                tvStage.classList.add('is-transitioning');
+                tvRidingLink.classList.remove('is-interactive');
+                tvGachaLink.classList.remove('is-interactive');
+
+                tvVideo.pause();
+                tvRidingVideo.pause();
+                tvRidingVideo.classList.remove('is-revealing');
+                tvGachaVideo.pause();
+                tvGachaVideo.classList.remove('is-revealing');
+                if (tvGachaVideo.readyState > 0) tvGachaVideo.currentTime = 0;
+                tvGachaVideo.play().catch(() => {});
+
+                tvNoiseVideo.pause();
+                if (tvNoiseVideo.readyState > 0) tvNoiseVideo.currentTime = 0;
+                tvNoiseVideo.classList.add('is-active');
+                tvNoiseVideo.play().catch(() => {});
+
+                tvNoiseFadeTimer = window.setTimeout(() => {
+                    tvNoiseVideo.classList.remove('is-active');
+                    tvGachaVideo.classList.add('is-revealing');
+                    tvStage.classList.remove('is-transitioning');
+                    tvStage.classList.add('is-riding-ready');
+                    projectNote.classList.remove('is-transitioning');
+                    projectNote.classList.add('is-riding-ready');
+                    tvMode = 'gacha';
+                    setProjectNoteProject('gacha');
+                    setTvStaggeredText(tvTitle, 'GACHA-PICK', 0, 19);
+                    updateNoteDescription();
+                    gachaTvSmallTextLayoutText = '';
+                    updateGachaTvSmallText();
+                    tvGachaLink.classList.add('is-interactive');
+                    if (projectNote.classList.contains('is-details-visible')) {
+                        scheduleProjectNoteFoldedCornerAfterContent(1);
+                    }
+                    projectNoteDetailsTimer = window.setTimeout(showProjectNoteDetails, 850);
+                }, tvNoiseRevealMs);
+                tvRevealTimer = window.setTimeout(() => {
+                    tvNoiseVideo.classList.remove('is-active');
+                    tvNoiseVideo.pause();
+                }, tvNoiseDurationMs);
+            };
+
+            const startTvNextChannel = () => {
+                if (tvMode === 'intro') startTvRide();
+                else if (tvMode === 'riding') startTvGacha();
             };
 
             projectNoteTurnHotspot.addEventListener('click', turnProjectNotePage);
@@ -2971,14 +3761,14 @@
                     }, { once: true });
                 });
             });
-            tvRightKey.addEventListener('click', startTvRide);
+            tvRightKey.addEventListener('click', startTvNextChannel);
             const showMobileArrowPress = (button) => {
                 button.classList.add('is-pressed');
                 window.setTimeout(() => button.classList.remove('is-pressed'), 140);
             };
             const returnToIntroChannel = () => {
                 if (tvMode === 'transitioning') return;
-                if (tvMode !== 'riding') {
+                if (tvMode !== 'riding' && tvMode !== 'gacha') {
                     setMobileProjectChannel('00');
                     return;
                 }
@@ -2987,7 +3777,10 @@
                 setMobileProjectChannel('00');
                 window.clearTimeout(tvNoiseFadeTimer);
                 window.clearTimeout(tvRevealTimer);
+                tvStage.classList.remove('is-intro');
+                tvStage.classList.add('is-transitioning');
                 tvRidingLink.classList.remove('is-interactive');
+                tvGachaLink.classList.remove('is-interactive');
                 tvNoiseVideo.pause();
                 if (tvNoiseVideo.readyState > 0) tvNoiseVideo.currentTime = 0;
                 tvNoiseVideo.classList.add('is-active');
@@ -3002,14 +3795,18 @@
                     }, tvNoiseDurationMs - tvNoiseRevealMs);
                 }, tvNoiseRevealMs);
             };
-            tvLeftKey.addEventListener('click', returnToIntroChannel);
+            const startTvPreviousChannel = () => {
+                if (tvMode === 'gacha') startTvRide();
+                else returnToIntroChannel();
+            };
+            tvLeftKey.addEventListener('click', startTvPreviousChannel);
             mobileProjectPrev.addEventListener('click', () => {
                 showMobileArrowPress(mobileProjectPrev);
-                returnToIntroChannel();
+                startTvPreviousChannel();
             });
             mobileProjectNext.addEventListener('click', () => {
                 showMobileArrowPress(mobileProjectNext);
-                startTvRide();
+                startTvNextChannel();
             });
             mobileProjectChannels.forEach((button) => {
                 button.addEventListener('click', () => {
@@ -3154,7 +3951,8 @@
             window.addEventListener('scroll', updateAboutScrollHint, { passive: true });
             updateAboutScrollHint();
 
-            document.addEventListener('mousemove', (event) => {
+            document.addEventListener('pointermove', (event) => {
+                if (event.pointerType !== 'mouse') return;
                 customCursor.style.left = `${event.clientX}px`;
                 customCursor.style.top = `${event.clientY}px`;
                 customCursor.classList.add('is-visible');
@@ -3169,25 +3967,30 @@
                 const isInsideMobileProjectControl = Boolean(hoveredElement?.closest('.mobile-project-controls button'));
                 const hoveredAnchor = hoveredElement?.closest('a');
                 const isInsideAnchor = Boolean(hoveredAnchor);
-                const isInsideTvVideo = Boolean(hoveredElement?.closest('#tv_riding_link')) && tvMode === 'riding';
+                const isInsideTvVideo = (Boolean(hoveredElement?.closest('#tv_riding_link')) && tvMode === 'riding') ||
+                    (Boolean(hoveredElement?.closest('#tv_gacha_link')) && tvMode === 'gacha');
                 const isInsideNoteTurn = !projectNote.classList.contains('is-turn-loading') &&
                     Boolean(hoveredElement?.closest('#project-note-turn-hotspot'));
                 const isInsideNotePrev = !projectNote.classList.contains('is-turn-loading') &&
                     Boolean(hoveredElement?.closest('#project-note-prev-hotspot'));
+                const isInsideNoteMore = tvMode === 'gacha' && projectNotePage === 3 &&
+                    projectNote.classList.contains('is-third-page') &&
+                    Boolean(hoveredElement?.closest('.note-process-item'));
 
                 customCursor.classList.toggle('is-tv-hover', isInsideTvVideo);
                 customCursor.classList.toggle('is-note-next', isInsideNoteTurn);
                 customCursor.classList.toggle('is-note-prev', isInsideNotePrev);
+                customCursor.classList.toggle('is-note-more', isInsideNoteMore);
                 customCursor.classList.toggle(
                     'is-clicking',
-                    isInsideHeaderBrand || isInsideAnchor || turn.contains(hoveredElement) || backToTop.contains(hoveredElement) || Boolean(hoveredElement?.closest('.keycap-part')) || isInsideMobileProjectControl
+                    isInsideHeaderBrand || isInsideAnchor || turn.contains(hoveredElement) || backToTop.contains(hoveredElement) || Boolean(hoveredElement?.closest('.keycap-part, #note-process-modal .note-process-modal-close')) || isInsideMobileProjectControl
                 );
-            });
+            }, true);
 
             document.addEventListener('mouseleave', () => {
                 customCursor.classList.remove('is-clicking');
                 customCursor.classList.remove('is-tv-hover');
-                customCursor.classList.remove('is-note-next', 'is-note-prev');
+                customCursor.classList.remove('is-note-next', 'is-note-prev', 'is-note-more');
             });
             
             document.querySelectorAll('a[href]').forEach((link) => {
@@ -3919,6 +4722,11 @@
             }
 
             const handleAboutWheel = (event) => {
+                if (noteProcessModal.classList.contains('is-open')) {
+                    event.preventDefault();
+                    return;
+                }
+
                 if (isAboutSequenceAnimating || skillSequenceStarting) {
                     if (event.deltaY > 0 && currentSection === 1) guardFirstAboutCard();
                     event.preventDefault();
