@@ -99,6 +99,13 @@
         }
 
         @font-face {
+            font-family: 'Pretendard Black';
+            src: url('pf_font/Pretendard-Black.otf') format('opentype');
+            font-weight: 900;
+            font-style: normal;
+        }
+
+        @font-face {
             font-family: 'Anton';
             src: url('pf_font/Anton-Regular.ttf') format('truetype');
             font-weight: 400;
@@ -2497,9 +2504,9 @@
             top: 15%;
             left: 19.6%;
             color: #a52a2a;
-            font-family: 'Anton', sans-serif;
+            font-family: 'Pretendard Black', sans-serif;
             font-size: clamp(36px, 10.1cqw, 72px);
-            font-weight: 400;
+            font-weight: 900;
             line-height: 0.95;
             white-space: nowrap;
             transform: scaleX(0.8);
@@ -2834,7 +2841,7 @@
                             <a id="tv_gacha_link" href="https://ghdrl408.github.io/main/gatcha-pick/" target="_blank" rel="noopener noreferrer" aria-label="GACHA-PICK 프로젝트 열기">
                                 <video id="tv_gacha_video" src="pro_scd/가차픽 끝.mp4" muted loop playsinline preload="auto" aria-hidden="true"></video>
                             </a>
-                            <a id="tv_lotus_link" href="https://ghdrl408.github.io/main/" target="_blank" rel="noopener noreferrer" aria-label="부여 연꽃축제 프로젝트 열기">
+                            <a id="tv_lotus_link" href="https://ghdrl408.github.io/main/lotusFes/" target="_blank" rel="noopener noreferrer" aria-label="부여 연꽃축제 프로젝트 열기">
                                 <video id="tv_lotus_video" src="pro_3/연꽃축제 끝.mp4" muted loop playsinline preload="auto" aria-hidden="true"></video>
                             </a>
                             <video id="tv_noise_video" src="pf_img/proImg/변환용 노이즈.mp4" muted playsinline preload="auto" aria-hidden="true"></video>
@@ -3409,7 +3416,9 @@
             };
             window.addEventListener('resize', () => window.requestAnimationFrame(fitLotusProjectNoteTitle));
 
-            const getGachaTvSmallText = () => '과거의 무드를 가득 담은 레트로 뽑기 머신으로\n당신의 오늘을 선택해보세요!';
+            const getGachaTvSmallText = () => matchMedia('(min-width: 768px) and (max-width: 1024px)').matches
+                ? '과거의 무드를 가득 담은 레트로 뽑기 머신으로\n당신의 오늘을 선택해보세요!'
+                : '과거의 무드를 가득 담은 레트로 뽑기 머신으로 당신의 오늘을 선택해보세요!';
             let gachaTvSmallTextLayoutText = '';
             const updateGachaTvSmallText = () => {
                 const text = getGachaTvSmallText();
@@ -3417,6 +3426,11 @@
                 gachaTvSmallTextLayoutText = text;
                 setTvStaggeredText(tvSmallTxt, text, 0, 12);
             };
+            window.addEventListener('resize', () => {
+                if (tvMode !== 'gacha') return;
+                gachaTvSmallTextLayoutText = '';
+                updateGachaTvSmallText();
+            });
             const gachaNoteDescription = '선택이 어려운 현대인들을 위한 랜덤 뽑기형 추천 서비스';
             const lotusNoteDescription = '개인 웹 퍼블리싱 실습을 위해 제작한 가상의 축제 홍보 웹페이지';
             const gachaPageTwoSectionTitles = ['기획 배경', '제작 과정', '캡슐 뽑기와 추천'];
@@ -3815,7 +3829,7 @@
                     tvStage.classList.add('is-intro');
                     if (projectNoteIntroComplete) projectNote.classList.add('is-intro');
                 }
-                setTvPlainText(tvTitle, 'RIDING BUSAN');
+                setTvPlainText(tvTitle, '라이딩부산');
                 setTvPlainText(noteDescription, '');
                 noteDescriptionLayoutText = '';
                 tvNo.textContent = 'CH 00';
@@ -3918,7 +3932,7 @@
                     tvStage.classList.remove('is-transitioning');
                     tvMode = 'riding';
                     setProjectNoteProject('riding');
-                    setTvStaggeredText(tvTitle, 'RIDING BUSAN', 0, 19);
+                    setTvStaggeredText(tvTitle, '라이딩부산', 0, 19);
                     updateNoteDescription();
                     setTvStaggeredText(tvSmallTxt, '어디로든 떠나고 싶은 순간, 당신의 다음 길을 찾아보세요.', 0, 12);
                     tvStage.classList.add('is-riding-ready');
@@ -3978,7 +3992,7 @@
                     projectNote.classList.add('is-riding-ready');
                     tvMode = 'gacha';
                     setProjectNoteProject('gacha');
-                    setTvStaggeredText(tvTitle, 'GACHA-PICK', 0, 19);
+                    setTvStaggeredText(tvTitle, '가챠-픽', 0, 19);
                     updateNoteDescription();
                     gachaTvSmallTextLayoutText = '';
                     updateGachaTvSmallText();
@@ -4036,10 +4050,10 @@
                     projectNote.classList.add('is-riding-ready');
                     tvMode = 'lotus';
                     setProjectNoteProject('lotus');
-                    setTvStaggeredText(tvTitle, 'BUYEO FALL LOTUS FESTIVAL', 0, 19);
+                    setTvStaggeredText(tvTitle, '부여가을연꽃축제', 0, 19);
                     window.requestAnimationFrame(fitLotusProjectNoteTitle);
                     updateNoteDescription();
-                    setTvStaggeredText(tvSmallTxt, lotusNoteDescription, 0, 12);
+                    setTvStaggeredText(tvSmallTxt, '연꽃 향기 가득한 부여에서 가을을 즐겨보세요!', 0, 12);
                     tvLotusLink.classList.add('is-interactive');
                     if (projectNote.classList.contains('is-details-visible')) {
                         scheduleProjectNoteFoldedCornerAfterContent(1);
