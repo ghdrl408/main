@@ -285,6 +285,10 @@
             white-space: nowrap;
         }
 
+        #custom-cursor.is-tv-hover-more::after {
+            content: 'MORE';
+        }
+
         #custom-cursor.is-note-next::after {
             content: 'NEXT';
             display: grid;
@@ -1448,7 +1452,15 @@
             clip-path: none;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 55ms linear;
+            transition: none;
+        }
+
+        #tv_stage.is-screen-transitioning #tv_video,
+        #tv_stage.is-screen-transitioning #tv_riding_video:not(.is-revealing),
+        #tv_stage.is-screen-transitioning #tv_gacha_video:not(.is-revealing),
+        #tv_stage.is-screen-transitioning #tv_lotus_video:not(.is-revealing),
+        #tv_stage.is-screen-transitioning #tv_emoji_video:not(.is-revealing) {
+            visibility: hidden;
         }
 
         #tv_riding_video {
@@ -1482,12 +1494,27 @@
             pointer-events: none;
         }
 
+        #tv_emoji_link {
+            position: absolute;
+            z-index: 0;
+            left: 9.45%;
+            top: 7.801%;
+            width: 83.327%;
+            height: 73.439%;
+            pointer-events: none;
+        }
+
         #tv_gacha_link.is-interactive {
             pointer-events: auto;
             cursor: none;
         }
 
         #tv_lotus_link.is-interactive {
+            pointer-events: auto;
+            cursor: none;
+        }
+
+        #tv_emoji_link.is-interactive {
             pointer-events: auto;
             cursor: none;
         }
@@ -1538,6 +1565,21 @@
         }
 
         #tv_lotus_video.is-revealing {
+            animation: tvScreenRise 180ms cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        #tv_emoji_video {
+            position: absolute;
+            inset: 0;
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: fill;
+            clip-path: inset(100% 0 0);
+            pointer-events: none;
+        }
+
+        #tv_emoji_video.is-revealing {
             animation: tvScreenRise 180ms cubic-bezier(0.16, 1, 0.3, 1) both;
         }
 
@@ -2100,9 +2142,12 @@
         @media (min-width: 1025px) {
             #project-note .note-page-three-heading { left: 13%; }
             #project-note.is-gacha-project .note-process-item:nth-child(2) { left: 50%; top: 20%; }
+            #project-note.is-gacha-project .note-process-item:nth-child(2) img { top: -0.8cqw; }
             #project-note.is-gacha-project .note-process-item:nth-child(4) { left: 50%; }
             #project-note.is-gacha-project .note-process-item:nth-child(n + 2) img { object-position: center bottom; }
             #project-note.is-gacha-project .note-process-item span { top: 79%; }
+            #project-note.is-gacha-project .note-process-item:nth-child(3) span,
+            #project-note.is-gacha-project .note-process-item:nth-child(4) span { top: calc(84% + 0.8cqw); }
         }
 
         #project-note .note-page-three-heading > span {
@@ -2122,6 +2167,12 @@
             white-space: nowrap;
             transform: scaleX(0.8);
             transform-origin: left top;
+        }
+
+        @media (min-width: 1501px) {
+            #project-note.is-gacha-project .note-process-item span {
+                font-size: calc(16.77px / var(--desktop-project-scale, 1));
+            }
         }
 
         #project-note.is-third-page .note-page-three-heading .tv-letter {
@@ -2844,6 +2895,9 @@
                             <a id="tv_lotus_link" href="https://ghdrl408.github.io/main/lotusFes/" target="_blank" rel="noopener noreferrer" aria-label="부여 연꽃축제 프로젝트 열기">
                                 <video id="tv_lotus_video" src="pro_3/연꽃축제 끝.mp4" muted loop playsinline preload="auto" aria-hidden="true"></video>
                             </a>
+                            <a id="tv_emoji_link" aria-label="네 번째 프로젝트 영상">
+                                <video id="tv_emoji_video" src="pro_3/임티.mp4" muted loop playsinline preload="auto" aria-hidden="true"></video>
+                            </a>
                             <video id="tv_noise_video" src="pf_img/proImg/변환용 노이즈.mp4" muted playsinline preload="auto" aria-hidden="true"></video>
                             <img id="tv_wrap" src="./pf_img/proImg/tv.png" alt="tv">
                             <div id="tv_no">CH 00</div>
@@ -3023,9 +3077,11 @@
             const tvRidingVideo = document.querySelector('#tv_riding_video');
             const tvGachaVideo = document.querySelector('#tv_gacha_video');
             const tvLotusVideo = document.querySelector('#tv_lotus_video');
+            const tvEmojiVideo = document.querySelector('#tv_emoji_video');
             const tvRidingLink = document.querySelector('#tv_riding_link');
             const tvGachaLink = document.querySelector('#tv_gacha_link');
             const tvLotusLink = document.querySelector('#tv_lotus_link');
+            const tvEmojiLink = document.querySelector('#tv_emoji_link');
             const tvNoiseVideo = document.querySelector('#tv_noise_video');
             const tvNo = document.querySelector('#tv_no');
             const tvTitle = document.querySelector('#tv_tittle');
@@ -3191,7 +3247,9 @@
                     ? ['01', '02']
                     : mode === 'lotus'
                         ? ['02', '03']
-                        : ['00', '01'];
+                        : mode === 'emoji'
+                            ? ['03', '04']
+                            : ['00', '01'];
                 mobileProjectChannels.forEach((button, index) => {
                     const channel = channels[index];
                     button.dataset.channel = channel;
@@ -3203,8 +3261,20 @@
             const tvNoiseRevealMs = 445;
             const tvNoiseDurationMs = 500;
             let tvRevealTimer = null;
+            let tvScreenTransitionTimer = null;
+            const beginTvScreenTransition = () => {
+                window.clearTimeout(tvScreenTransitionTimer);
+                tvStage.classList.add('is-screen-transitioning');
+            };
+            const finishTvScreenTransitionAfterReveal = () => {
+                window.clearTimeout(tvScreenTransitionTimer);
+                tvScreenTransitionTimer = window.setTimeout(() => {
+                    tvStage.classList.remove('is-screen-transitioning');
+                }, 180);
+            };
             let projectNoteDetailsTimer = null;
             let projectNoteTapeTimer = null;
+            let projectNoteTapeMotionGeneration = 0;
             let projectNoteTurnTimer = null;
             let projectNoteContentRevealTimer = null;
             let projectNoteFoldedCornerTimer = null;
@@ -3214,6 +3284,7 @@
             let projectNoteTapeMotionPlayed = false;
             let projectNoteTapeMotionComplete = false;
             let projectNotePage = 1;
+            let projectNoteTurnRequestGeneration = 0;
             const syncProjectNotePageAssets = () => {
                 const assets = projectNoteWideLayout.matches
                     ? projectNoteAssetPaths.wide
@@ -3279,7 +3350,7 @@
             };
 
             const showProjectNoteFoldedCorner = () => {
-                if (!['riding', 'gacha', 'lotus'].includes(tvMode) || !projectNote.classList.contains('is-details-visible') ||
+                if (!['riding', 'gacha', 'lotus', 'emoji'].includes(tvMode) || !projectNote.classList.contains('is-details-visible') ||
                     projectNote.classList.contains('is-turn-loading') ||
                     projectNote.classList.contains('is-turning') || projectNote.classList.contains('is-turn-complete')) return;
                 projectNotePaper.classList.add('is-folded');
@@ -3349,6 +3420,15 @@
                 });
             };
 
+            const resetProjectNoteTapeMotion = () => {
+                window.clearTimeout(projectNoteTapeTimer);
+                projectNoteTapeMotionGeneration += 1;
+                projectNoteTapeMotionPlayed = false;
+                projectNoteTapeMotionComplete = false;
+                projectNote.classList.remove('has-tape');
+                projectNoteTapeWrappers.forEach((tape) => tape.classList.remove('is-playing', 'is-complete'));
+            };
+
             const finishProjectNoteTapeMotion = () => {
                 window.clearTimeout(projectNoteTapeTimer);
                 projectNoteTapeMotionComplete = true;
@@ -3366,22 +3446,54 @@
                 }
                 projectNoteTapeMotionPlayed = true;
                 projectNoteTapeMotionComplete = false;
-                const playId = Date.now();
+                const playId = ++projectNoteTapeMotionGeneration;
                 projectNoteTapeWrappers.forEach((tape) => {
                     const motion = tape.querySelector('.note-tape-motion');
-                    motion.addEventListener('error', finishProjectNoteTapeMotion, { once: true });
+                    motion.addEventListener('error', () => {
+                        if (playId === projectNoteTapeMotionGeneration) finishProjectNoteTapeMotion();
+                    }, { once: true });
                     motion.src = `pf_img/proImg/마스킹모션1.gif?play=${playId}`;
                     tape.classList.add('is-playing');
                 });
                 // Stop before this GIF's infinite loop starts its second 630ms pass.
-                projectNoteTapeTimer = window.setTimeout(finishProjectNoteTapeMotion, 600);
+                projectNoteTapeTimer = window.setTimeout(() => {
+                    if (playId === projectNoteTapeMotionGeneration) finishProjectNoteTapeMotion();
+                }, 600);
             };
 
+            const pendingProjectNoteTextUpdates = new Map();
+            const shouldDeferProjectNoteTextUpdate = (element) =>
+                projectNote.classList.contains('is-turning') && (element === tvTitle || element === noteDescription);
             const setTvPlainText = (element, text) => {
+                if (shouldDeferProjectNoteTextUpdate(element)) {
+                    pendingProjectNoteTextUpdates.set(element, () => setTvPlainText(element, text));
+                    return;
+                }
+                pendingProjectNoteTextUpdates.delete(element);
                 element.replaceChildren(document.createTextNode(text));
             };
 
+            const setTvPlainTextWithBreaks = (element, text) => {
+                const fragment = document.createDocumentFragment();
+                text.split('\n').forEach((line, index) => {
+                    if (index) {
+                        const lineBreak = document.createElement('br');
+                        lineBreak.className = 'tv-line-break';
+                        fragment.appendChild(lineBreak);
+                    }
+                    fragment.appendChild(document.createTextNode(line));
+                });
+                element.replaceChildren(fragment);
+            };
+
             const setTvStaggeredText = (element, text, startDelay, letterDelay) => {
+                if (shouldDeferProjectNoteTextUpdate(element)) {
+                    pendingProjectNoteTextUpdates.set(element, () =>
+                        setTvStaggeredText(element, text, startDelay, letterDelay)
+                    );
+                    return;
+                }
+                pendingProjectNoteTextUpdates.delete(element);
                 element.replaceChildren();
                 let letterIndex = 0;
                 for (const character of text) {
@@ -3407,12 +3519,12 @@
             const fitLotusProjectNoteTitle = () => {
                 if (!projectNote.classList.contains('is-lotus-project')) return;
                 tvTitle.style.removeProperty('font-size');
-                const titleWidth = tvTitle.getBoundingClientRect().width;
+                tvTitle.style.transform = 'scaleX(0.8)';
+                const titleWidth = tvTitle.offsetWidth;
                 const noteWidth = projectNote.getBoundingClientRect().width;
                 const availableWidth = noteWidth * 0.78;
                 if (!titleWidth || titleWidth <= availableWidth) return;
-                const baseFontSize = Number.parseFloat(getComputedStyle(tvTitle).fontSize);
-                tvTitle.style.fontSize = `${baseFontSize * availableWidth / titleWidth}px`;
+                tvTitle.style.transform = `scaleX(${Math.min(0.8, availableWidth / titleWidth)})`;
             };
             window.addEventListener('resize', () => window.requestAnimationFrame(fitLotusProjectNoteTitle));
 
@@ -3428,13 +3540,23 @@
             };
             window.addEventListener('resize', () => {
                 if (tvMode !== 'gacha') return;
-                gachaTvSmallTextLayoutText = '';
-                updateGachaTvSmallText();
+                const text = getGachaTvSmallText();
+                if (text === gachaTvSmallTextLayoutText) return;
+                gachaTvSmallTextLayoutText = text;
+                setTvPlainTextWithBreaks(tvSmallTxt, text);
             });
             const gachaNoteDescription = '선택이 어려운 현대인들을 위한 랜덤 뽑기형 추천 서비스';
             const lotusNoteDescription = '개인 웹 퍼블리싱 실습을 위해 제작한 가상의 축제 홍보 웹페이지';
             const gachaPageTwoSectionTitles = ['기획 배경', '제작 과정', '캡슐 뽑기와 추천'];
             const lotusPageTwoSectionTitles = ['제작 배경', '세로 메뉴 구현', '화면 구성'];
+            const lotusMobileNoteMedia = matchMedia('(max-width: 1024px)');
+            const getLotusFirstCardCopyHtml = () => lotusMobileNoteMedia.matches
+                ? 'AI 사용 없이 HTML · CSS 직접 작성<br>제작 기간 4시간<br>VSCord'
+                : 'AI사용 없이 HTML · CSS 직접 작성<br>제작 기간 4시간<br>VSCord';
+            lotusMobileNoteMedia.addEventListener('change', () => {
+                if (!projectNote.classList.contains('is-lotus-project')) return;
+                noteCardCopies[0].innerHTML = getLotusFirstCardCopyHtml();
+            });
             const gachaPageTwoParagraphHtml = [
                 '<span class="note-sentence">친구나 연인과 만났을 때, 뭘 먹고 어디 갈지<br>정하는 데 시간이 걸리는 상황에서 아이디어를 얻음.</span><span class="note-sentence">고민을 줄이고 게임을 하듯 즐겁게 선택할 수 있도록<br>랜덤 뽑기 방식의 추천 서비스 기획.</span>',
                 '<span class="note-sentence">디자인 프로세스를 단계별로 제작 후 기획 완성.</span><span class="note-sentence">무드보드를 바탕으로 회색 창, 파란 타이틀 바, 픽셀 그래픽을 적용해 화면을 디자인하고, 재미를 더할 수 있는 오락성 <span class="gacha-inline-phrase">인터랙션 추가</span>.</span>',
@@ -3458,7 +3580,10 @@
                 const isLotus = project === 'lotus';
                 projectNote.classList.toggle('is-gacha-project', isGacha);
                 projectNote.classList.toggle('is-lotus-project', isLotus);
-                if (!isLotus) tvTitle.style.removeProperty('font-size');
+                if (!isLotus) {
+                    tvTitle.style.removeProperty('font-size');
+                    tvTitle.style.removeProperty('transform');
+                }
                 noteCardCopies.forEach((element, index) => {
                     if (!isGacha && !isLotus) {
                         element.innerHTML = noteCardOriginalHtml[index];
@@ -3466,8 +3591,8 @@
                     }
                     if (isLotus) {
                         element.innerHTML = index === 0
-                            ? 'AI사용 없이 HTML · CSS 직접 작성<br>제작 기간 4시간<br>VSCord'
-                            : '<span>메인 배너 자동 슬라이드</span><span>공지사항 제목 클릭 시<br>안내문 팝업창 생성</span>';
+                            ? getLotusFirstCardCopyHtml()
+                            : '<span>메인 배너 자동 슬라이드</span><span class="lotus-notice-copy">공지사항 제목 클릭 시 안내문 팝업창 생성</span>';
                         return;
                     }
                     element.innerHTML = index === 0
@@ -3493,6 +3618,15 @@
                 setTvStaggeredText(notePageTwoMainTitle, 'PROJECT NOTES', 0, 19);
                 setTvStaggeredText(notePageThreeTitle, isGacha ? 'GACHA-PICK' : '', 0, 19);
                 setTvStaggeredText(notePageThreeSubtitle, isGacha ? 'DESIGN PROCESS' : '', 0, 19);
+            };
+            let pendingProjectNoteProject = null;
+            const setProjectNoteProjectForTransition = (project) => {
+                if (projectNote.classList.contains('is-turning')) {
+                    pendingProjectNoteProject = project;
+                    return;
+                }
+                pendingProjectNoteProject = null;
+                setProjectNoteProject(project);
             };
 
             let noteProcessLastTrigger = null;
@@ -3662,9 +3796,15 @@
             };
 
             const showProjectNoteDetails = () => {
-                if (!['riding', 'gacha', 'lotus'].includes(tvMode) || projectNote.classList.contains('is-details-visible') ||
-                    projectNote.classList.contains('is-turning') || projectNote.classList.contains('is-turn-complete')) return;
+                if (!['riding', 'gacha', 'lotus', 'emoji'].includes(tvMode)) return;
+                if (projectNote.classList.contains('is-turning') || projectNote.classList.contains('is-turn-loading')) {
+                    projectNoteDetailsTimer = window.setTimeout(showProjectNoteDetails, 100);
+                    return;
+                }
+                if (projectNote.classList.contains('is-details-visible') ||
+                    projectNote.classList.contains('is-turn-complete')) return;
 
+                resetProjectNoteTapeMotion();
                 projectNote.classList.add('is-details-visible');
                 tvStage.classList.add('is-details-visible');
                 void getProjectNoteTurnMotionBlob(
@@ -3682,11 +3822,13 @@
                     projectNote.classList.contains('is-turning') ||
                     projectNote.classList.contains('is-turn-loading')) return;
 
+                const turnRequestGeneration = ++projectNoteTurnRequestGeneration;
                 if (projectNoteTapeMotionPlayed && !projectNoteTapeMotionComplete) finishProjectNoteTapeMotion();
                 projectNote.classList.add('is-turn-loading');
                 customCursor.classList.remove('is-note-next');
                 await loadProjectNoteTurnMotion('next', fromPage);
-                if (!projectNote.classList.contains('is-turn-loading')) return;
+                if (turnRequestGeneration !== projectNoteTurnRequestGeneration ||
+                    !projectNote.classList.contains('is-turn-loading')) return;
                 projectNote.classList.remove('is-turn-loading');
                 projectNote.classList.remove('is-turn-complete');
                 projectNotePaper.classList.remove('is-turn-complete');
@@ -3749,14 +3891,15 @@
                     projectNote.classList.contains('is-turn-loading') ||
                     projectNote.classList.contains('is-turning-back')) return;
 
+                const turnRequestGeneration = ++projectNoteTurnRequestGeneration;
                 customCursor.classList.remove('is-note-prev');
                 projectNote.classList.add('is-turn-loading');
                 await loadProjectNoteTurnMotion('prev', fromPage);
-                if (!projectNote.classList.contains('is-turn-loading')) return;
+                if (turnRequestGeneration !== projectNoteTurnRequestGeneration ||
+                    !projectNote.classList.contains('is-turn-loading')) return;
                 projectNote.classList.remove('is-turn-loading');
                 if (targetPage === 1) {
-                    projectNoteTapeWrappers.forEach((tape) => tape.classList.remove('is-playing', 'is-complete'));
-                    projectNote.classList.remove('has-tape');
+                    resetProjectNoteTapeMotion();
                 }
                 projectNote.classList.remove('is-turn-complete');
                 projectNotePaper.classList.remove('is-turn-complete');
@@ -3785,9 +3928,6 @@
                     if (targetPage === 1) {
                         projectNotePaper.classList.remove('is-folded', 'is-folded-corner-visible');
                         projectNote.classList.remove('is-later-page', 'is-second-page', 'is-third-page');
-                        projectNoteTapeMotionPlayed = false;
-                        projectNoteTapeMotionComplete = false;
-                        projectNoteTapeWrappers.forEach((tape) => tape.classList.remove('is-playing', 'is-complete'));
                         syncProjectNotePageAssets();
                         playProjectNoteTapes();
                         scheduleProjectNoteFoldedCornerAfterContent(1);
@@ -3801,33 +3941,45 @@
                 }, projectNoteTurnMotionDurations.prev);
             };
 
-            const resetTvSection = (playIntro = false, keepNoise = false) => {
-                projectNotePage = 1;
+            const resetTvSection = (playIntro = false, keepNoise = false, preserveProjectNoteTransition = false) => {
+                const keepProjectNoteTurning = preserveProjectNoteTransition && projectNote.classList.contains('is-turning');
+                if (!keepProjectNoteTurning) {
+                    projectNoteTurnRequestGeneration += 1;
+                    projectNotePage = 1;
+                    window.clearTimeout(projectNoteDetailsTimer);
+                    window.clearTimeout(projectNoteTapeTimer);
+                    window.clearTimeout(projectNoteTurnTimer);
+                    window.clearTimeout(projectNoteContentRevealTimer);
+                    window.clearTimeout(projectNoteFoldedCornerTimer);
+                    resetProjectNoteTapeMotion();
+                    setProjectNoteProject('riding');
+                    pendingProjectNoteProject = null;
+                    pendingProjectNoteTextUpdates.clear();
+                }
                 window.clearTimeout(tvNoiseFadeTimer);
                 window.clearTimeout(tvRevealTimer);
-                window.clearTimeout(projectNoteDetailsTimer);
-                window.clearTimeout(projectNoteTapeTimer);
-                window.clearTimeout(projectNoteTurnTimer);
-                window.clearTimeout(projectNoteContentRevealTimer);
-                window.clearTimeout(projectNoteFoldedCornerTimer);
-                if (projectNoteTapeMotionPlayed && !projectNoteTapeMotionComplete) finishProjectNoteTapeMotion();
+                window.clearTimeout(tvScreenTransitionTimer);
                 tvMode = playIntro ? 'intro' : 'idle';
-                setProjectNoteProject('riding');
                 setMobileProjectChannelLayout('intro');
-                tvStage.classList.remove('is-intro', 'is-transitioning', 'is-riding-ready');
-                projectNote.classList.remove('is-intro', 'is-transitioning', 'is-riding-ready', 'is-details-visible', 'is-turn-loading', 'is-turning', 'is-turning-back', 'is-turning-to-third', 'is-turn-complete', 'is-later-page', 'is-second-page', 'is-third-page', 'has-tape');
-                projectNotePaper.classList.remove('is-folded', 'is-turning', 'is-turning-back', 'is-turn-complete', 'is-folded-corner-visible');
-                syncProjectNotePageAssets();
-                projectNoteTapeWrappers.forEach((tape) => tape.classList.remove('is-playing', 'is-complete'));
-                tvStage.classList.remove('is-details-visible');
+                tvStage.classList.remove('is-intro', 'is-transitioning', 'is-screen-transitioning', 'is-riding-ready');
+                if (!keepProjectNoteTurning) {
+                    projectNote.classList.remove('is-intro', 'is-transitioning', 'is-riding-ready', 'is-details-visible', 'is-turn-loading', 'is-turning', 'is-turning-back', 'is-turning-to-third', 'is-turn-complete', 'is-later-page', 'is-second-page', 'is-third-page', 'has-tape');
+                    projectNotePaper.classList.remove('is-folded', 'is-turning', 'is-turning-back', 'is-turn-complete', 'is-folded-corner-visible');
+                    syncProjectNotePageAssets();
+                    projectNoteTapeWrappers.forEach((tape) => tape.classList.remove('is-playing', 'is-complete'));
+                    tvStage.classList.remove('is-details-visible');
+                }
                 tvRidingLink.classList.remove('is-interactive');
                 tvGachaLink.classList.remove('is-interactive');
                 tvLotusLink.classList.remove('is-interactive');
+                tvEmojiLink.classList.remove('is-interactive');
                 if (playIntro) {
-                    projectNoteTapeMotionPlayed = false;
-                    projectNoteTapeMotionComplete = false;
+                    if (!keepProjectNoteTurning) {
+                        projectNoteTapeMotionPlayed = false;
+                        projectNoteTapeMotionComplete = false;
+                    }
                     tvStage.classList.add('is-intro');
-                    if (projectNoteIntroComplete) projectNote.classList.add('is-intro');
+                    if (!keepProjectNoteTurning && projectNoteIntroComplete) projectNote.classList.add('is-intro');
                 }
                 setTvPlainText(tvTitle, '라이딩부산');
                 setTvPlainText(noteDescription, '');
@@ -3850,6 +4002,9 @@
                 tvLotusVideo.pause();
                 tvLotusVideo.classList.remove('is-revealing');
                 if (tvLotusVideo.readyState > 0) tvLotusVideo.currentTime = 0;
+                tvEmojiVideo.pause();
+                tvEmojiVideo.classList.remove('is-revealing');
+                if (tvEmojiVideo.readyState > 0) tvEmojiVideo.currentTime = 0;
 
                 if (playIntro) {
                     tvVideo.currentTime = 0;
@@ -3877,21 +4032,57 @@
                 window.clearTimeout(projectNoteTurnTimer);
                 window.clearTimeout(projectNoteContentRevealTimer);
                 window.clearTimeout(projectNoteFoldedCornerTimer);
+                const turnRequestGeneration = ++projectNoteTurnRequestGeneration;
+                resetProjectNoteTapeMotion();
 
                 if (!projectNote.classList.contains('is-details-visible')) {
+                    projectNote.classList.remove('is-turn-loading');
                     resetProjectNoteToFirstPage();
                     return;
                 }
 
-                const isSecondPage = projectNotePage === 2;
+                const fromPage = projectNotePage;
+                const isLaterPage = projectNotePage > 1;
+                const turnDirection = isLaterPage ? 'prev' : 'next';
+                projectNote.classList.remove('is-turn-complete');
+                projectNotePaper.classList.remove('is-turn-complete', 'is-folded', 'is-folded-corner-visible');
+                projectNote.classList.add('is-turn-loading');
                 projectNote.classList.add('is-turning');
-                projectNote.classList.toggle('is-turning-back', isSecondPage);
-                window.setTimeout(() => {
-                    resetProjectNoteToFirstPage();
-                    projectNote.classList.remove('is-details-visible', 'is-riding-ready', 'has-tape');
-                    tvStage.classList.remove('is-details-visible');
-                    projectNoteTapeWrappers.forEach((tape) => tape.classList.remove('is-playing', 'is-complete'));
-                }, 240);
+                projectNote.classList.toggle('is-turning-back', isLaterPage);
+                projectNote.classList.remove('is-turning-to-third');
+                projectNotePaper.classList.remove('is-turning', 'is-turning-back');
+
+                loadProjectNoteTurnMotion(turnDirection, fromPage).then(() => {
+                    if (turnRequestGeneration !== projectNoteTurnRequestGeneration ||
+                        !projectNote.classList.contains('is-turning')) return;
+                    projectNote.classList.remove('is-turn-loading');
+                    projectNotePaper.classList.add('is-turning');
+                    if (isLaterPage) projectNotePaper.classList.add('is-turning-back');
+                    projectNoteTurnTimer = window.setTimeout(() => {
+                        if (turnRequestGeneration !== projectNoteTurnRequestGeneration) return;
+                        projectNoteTurnRequestGeneration += 1;
+                        resetProjectNoteToFirstPage();
+                        projectNote.classList.remove('is-turn-loading', 'is-details-visible', 'has-tape');
+                        tvStage.classList.remove('is-details-visible');
+                        projectNoteTapeWrappers.forEach((tape) => tape.classList.remove('is-playing', 'is-complete'));
+                        if (pendingProjectNoteProject !== null) {
+                            const nextProject = pendingProjectNoteProject;
+                            pendingProjectNoteProject = null;
+                            setProjectNoteProject(nextProject);
+                            if (nextProject === 'lotus') window.requestAnimationFrame(fitLotusProjectNoteTitle);
+                        }
+                        for (const updateText of pendingProjectNoteTextUpdates.values()) updateText();
+                        pendingProjectNoteTextUpdates.clear();
+                        if (tvMode === 'intro') {
+                            setProjectNoteProject('riding');
+                            projectNote.classList.remove('is-riding-ready');
+                            if (projectNoteIntroComplete) projectNote.classList.add('is-intro');
+                            setTvPlainText(tvTitle, 'RIDING BUSAN');
+                            setTvPlainText(noteDescription, '');
+                            noteDescriptionLayoutText = '';
+                        }
+                    }, projectNoteTurnMotionDurations.prev);
+                });
             };
 
             const startTvRide = () => {
@@ -3910,6 +4101,7 @@
                 setMobileProjectChannel('01');
                 tvStage.classList.remove('is-intro');
                 tvStage.classList.add('is-transitioning');
+                beginTvScreenTransition();
 
                 tvVideo.pause();
                 tvGachaVideo.pause();
@@ -3929,9 +4121,10 @@
                 tvNoiseFadeTimer = window.setTimeout(() => {
                     tvNoiseVideo.classList.remove('is-active');
                     tvRidingVideo.classList.add('is-revealing');
+                    finishTvScreenTransitionAfterReveal();
                     tvStage.classList.remove('is-transitioning');
                     tvMode = 'riding';
-                    setProjectNoteProject('riding');
+                    setProjectNoteProjectForTransition('riding');
                     setTvStaggeredText(tvTitle, '라이딩부산', 0, 19);
                     updateNoteDescription();
                     setTvStaggeredText(tvSmallTxt, '어디로든 떠나고 싶은 순간, 당신의 다음 길을 찾아보세요.', 0, 12);
@@ -3939,7 +4132,7 @@
                     projectNote.classList.remove('is-transitioning');
                     projectNote.classList.add('is-riding-ready');
                     tvRidingLink.classList.add('is-interactive');
-                    if (projectNote.classList.contains('is-details-visible')) {
+                    if (projectNote.classList.contains('is-details-visible') && !projectNote.classList.contains('is-turning')) {
                         scheduleProjectNoteFoldedCornerAfterContent(1);
                     }
                     projectNoteDetailsTimer = window.setTimeout(showProjectNoteDetails, 850);
@@ -3964,6 +4157,7 @@
                 projectNote.classList.add('is-transitioning');
                 tvStage.classList.remove('is-intro');
                 tvStage.classList.add('is-transitioning');
+                beginTvScreenTransition();
                 tvRidingLink.classList.remove('is-interactive');
                 tvGachaLink.classList.remove('is-interactive');
                 tvLotusLink.classList.remove('is-interactive');
@@ -3986,18 +4180,19 @@
                 tvNoiseFadeTimer = window.setTimeout(() => {
                     tvNoiseVideo.classList.remove('is-active');
                     tvGachaVideo.classList.add('is-revealing');
+                    finishTvScreenTransitionAfterReveal();
                     tvStage.classList.remove('is-transitioning');
                     tvStage.classList.add('is-riding-ready');
                     projectNote.classList.remove('is-transitioning');
                     projectNote.classList.add('is-riding-ready');
                     tvMode = 'gacha';
-                    setProjectNoteProject('gacha');
+                    setProjectNoteProjectForTransition('gacha');
                     setTvStaggeredText(tvTitle, '가챠-픽', 0, 19);
                     updateNoteDescription();
                     gachaTvSmallTextLayoutText = '';
                     updateGachaTvSmallText();
                     tvGachaLink.classList.add('is-interactive');
-                    if (projectNote.classList.contains('is-details-visible')) {
+                    if (projectNote.classList.contains('is-details-visible') && !projectNote.classList.contains('is-turning')) {
                         scheduleProjectNoteFoldedCornerAfterContent(1);
                     }
                     projectNoteDetailsTimer = window.setTimeout(showProjectNoteDetails, 850);
@@ -4009,7 +4204,7 @@
             };
 
             const startTvLotus = () => {
-                if (tvMode !== 'gacha') return;
+                if (tvMode !== 'gacha' && tvMode !== 'emoji') return;
                 animateProjectNoteOutForChannelChange();
                 setMobileProjectChannelLayout('lotus');
                 window.clearTimeout(tvNoiseFadeTimer);
@@ -4022,9 +4217,11 @@
                 projectNote.classList.add('is-transitioning');
                 tvStage.classList.remove('is-intro');
                 tvStage.classList.add('is-transitioning');
+                beginTvScreenTransition();
                 tvRidingLink.classList.remove('is-interactive');
                 tvGachaLink.classList.remove('is-interactive');
                 tvLotusLink.classList.remove('is-interactive');
+                tvEmojiLink.classList.remove('is-interactive');
 
                 tvVideo.pause();
                 tvRidingVideo.pause();
@@ -4033,6 +4230,8 @@
                 tvGachaVideo.classList.remove('is-revealing');
                 tvLotusVideo.pause();
                 tvLotusVideo.classList.remove('is-revealing');
+                tvEmojiVideo.pause();
+                tvEmojiVideo.classList.remove('is-revealing');
                 if (tvLotusVideo.readyState > 0) tvLotusVideo.currentTime = 0;
                 tvLotusVideo.play().catch(() => {});
 
@@ -4044,18 +4243,78 @@
                 tvNoiseFadeTimer = window.setTimeout(() => {
                     tvNoiseVideo.classList.remove('is-active');
                     tvLotusVideo.classList.add('is-revealing');
+                    finishTvScreenTransitionAfterReveal();
                     tvStage.classList.remove('is-transitioning');
                     tvStage.classList.add('is-riding-ready');
                     projectNote.classList.remove('is-transitioning');
                     projectNote.classList.add('is-riding-ready');
                     tvMode = 'lotus';
-                    setProjectNoteProject('lotus');
+                    setProjectNoteProjectForTransition('lotus');
                     setTvStaggeredText(tvTitle, '부여가을연꽃축제', 0, 19);
                     window.requestAnimationFrame(fitLotusProjectNoteTitle);
                     updateNoteDescription();
                     setTvStaggeredText(tvSmallTxt, '연꽃 향기 가득한 부여에서 가을을 즐겨보세요!', 0, 12);
                     tvLotusLink.classList.add('is-interactive');
-                    if (projectNote.classList.contains('is-details-visible')) {
+                    if (projectNote.classList.contains('is-details-visible') && !projectNote.classList.contains('is-turning')) {
+                        scheduleProjectNoteFoldedCornerAfterContent(1);
+                    }
+                    projectNoteDetailsTimer = window.setTimeout(showProjectNoteDetails, 850);
+                }, tvNoiseRevealMs);
+                tvRevealTimer = window.setTimeout(() => {
+                    tvNoiseVideo.classList.remove('is-active');
+                    tvNoiseVideo.pause();
+                }, tvNoiseDurationMs);
+            };
+
+            const startTvEmoji = () => {
+                if (tvMode !== 'lotus') return;
+                animateProjectNoteOutForChannelChange();
+                setMobileProjectChannelLayout('emoji');
+                window.clearTimeout(tvNoiseFadeTimer);
+                window.clearTimeout(tvRevealTimer);
+                window.clearTimeout(projectNoteDetailsTimer);
+                tvMode = 'transitioning';
+                tvNo.textContent = 'CH 04';
+                setMobileProjectChannel('04');
+                projectNote.classList.remove('is-intro');
+                projectNote.classList.add('is-transitioning');
+                tvStage.classList.remove('is-intro');
+                tvStage.classList.add('is-transitioning');
+                beginTvScreenTransition();
+                tvRidingLink.classList.remove('is-interactive');
+                tvGachaLink.classList.remove('is-interactive');
+                tvLotusLink.classList.remove('is-interactive');
+                tvEmojiLink.classList.remove('is-interactive');
+
+                tvVideo.pause();
+                tvRidingVideo.pause();
+                tvGachaVideo.pause();
+                tvLotusVideo.pause();
+                tvRidingVideo.classList.remove('is-revealing');
+                tvGachaVideo.classList.remove('is-revealing');
+                tvLotusVideo.classList.remove('is-revealing');
+                tvEmojiVideo.pause();
+                tvEmojiVideo.classList.remove('is-revealing');
+                if (tvEmojiVideo.readyState > 0) tvEmojiVideo.currentTime = 0;
+                tvEmojiVideo.play().catch(() => {});
+
+                tvNoiseVideo.pause();
+                if (tvNoiseVideo.readyState > 0) tvNoiseVideo.currentTime = 0;
+                tvNoiseVideo.classList.add('is-active');
+                tvNoiseVideo.play().catch(() => {});
+
+                tvNoiseFadeTimer = window.setTimeout(() => {
+                    tvNoiseVideo.classList.remove('is-active');
+                    tvEmojiVideo.classList.add('is-revealing');
+                    finishTvScreenTransitionAfterReveal();
+                    tvStage.classList.remove('is-transitioning');
+                    tvStage.classList.add('is-riding-ready');
+                    projectNote.classList.remove('is-transitioning');
+                    projectNote.classList.add('is-riding-ready');
+                    tvMode = 'emoji';
+                    setProjectNoteProjectForTransition('emoji');
+                    tvEmojiLink.classList.add('is-interactive');
+                    if (projectNote.classList.contains('is-details-visible') && !projectNote.classList.contains('is-turning')) {
                         scheduleProjectNoteFoldedCornerAfterContent(1);
                     }
                     projectNoteDetailsTimer = window.setTimeout(showProjectNoteDetails, 850);
@@ -4070,6 +4329,7 @@
                 if (tvMode === 'intro') startTvRide();
                 else if (tvMode === 'riding') startTvGacha();
                 else if (tvMode === 'gacha') startTvLotus();
+                else if (tvMode === 'lotus') startTvEmoji();
             };
 
             projectNoteTurnHotspot.addEventListener('click', turnProjectNotePage);
@@ -4091,10 +4351,11 @@
             };
             const returnToIntroChannel = () => {
                 if (tvMode === 'transitioning') return;
-                if (tvMode !== 'riding' && tvMode !== 'gacha' && tvMode !== 'lotus') {
+                if (tvMode !== 'riding' && tvMode !== 'gacha' && tvMode !== 'lotus' && tvMode !== 'emoji') {
                     setMobileProjectChannel('00');
                     return;
                 }
+                animateProjectNoteOutForChannelChange();
                 tvMode = 'transitioning';
                 tvNo.textContent = 'CH 00';
                 setMobileProjectChannelLayout('intro');
@@ -4103,17 +4364,21 @@
                 window.clearTimeout(tvRevealTimer);
                 tvStage.classList.remove('is-intro');
                 tvStage.classList.add('is-transitioning');
+                beginTvScreenTransition();
                 tvRidingLink.classList.remove('is-interactive');
                 tvGachaLink.classList.remove('is-interactive');
                 tvLotusLink.classList.remove('is-interactive');
+                tvEmojiLink.classList.remove('is-interactive');
                 tvLotusVideo.pause();
                 tvLotusVideo.classList.remove('is-revealing');
+                tvEmojiVideo.pause();
+                tvEmojiVideo.classList.remove('is-revealing');
                 tvNoiseVideo.pause();
                 if (tvNoiseVideo.readyState > 0) tvNoiseVideo.currentTime = 0;
                 tvNoiseVideo.classList.add('is-active');
                 tvNoiseVideo.play().catch(() => {});
                 tvNoiseFadeTimer = window.setTimeout(() => {
-                    resetTvSection(true, true);
+                    resetTvSection(true, true, true);
                     tvMode = 'transitioning';
                     tvRevealTimer = window.setTimeout(() => {
                         tvNoiseVideo.classList.remove('is-active');
@@ -4123,7 +4388,8 @@
                 }, tvNoiseRevealMs);
             };
             const startTvPreviousChannel = () => {
-                if (tvMode === 'lotus') startTvGacha();
+                if (tvMode === 'emoji') startTvLotus();
+                else if (tvMode === 'lotus') startTvGacha();
                 else if (tvMode === 'gacha') startTvRide();
                 else returnToIntroChannel();
             };
@@ -4142,6 +4408,7 @@
                     if (button.dataset.channel === '01' && tvMode !== 'riding') startTvRide();
                     else if (button.dataset.channel === '02' && tvMode !== 'gacha') startTvGacha();
                     else if (button.dataset.channel === '03' && tvMode !== 'lotus') startTvLotus();
+                    else if (button.dataset.channel === '04' && tvMode !== 'emoji') startTvEmoji();
                     else if (button.dataset.channel === '00') returnToIntroChannel();
                 });
             });
@@ -4299,7 +4566,9 @@
                 const isInsideAnchor = Boolean(hoveredAnchor);
                 const isInsideTvVideo = (Boolean(hoveredElement?.closest('#tv_riding_link')) && tvMode === 'riding') ||
                     (Boolean(hoveredElement?.closest('#tv_gacha_link')) && tvMode === 'gacha') ||
-                    (Boolean(hoveredElement?.closest('#tv_lotus_link')) && tvMode === 'lotus');
+                    (Boolean(hoveredElement?.closest('#tv_lotus_link')) && tvMode === 'lotus') ||
+                    (Boolean(hoveredElement?.closest('#tv_emoji_link')) && tvMode === 'emoji');
+                const isInsideEmojiVideo = Boolean(hoveredElement?.closest('#tv_emoji_link')) && tvMode === 'emoji';
                 const isInsideNoteTurn = !projectNote.classList.contains('is-turn-loading') &&
                     Boolean(hoveredElement?.closest('#project-note-turn-hotspot'));
                 const isInsideNotePrev = !projectNote.classList.contains('is-turn-loading') &&
@@ -4309,6 +4578,7 @@
                     Boolean(hoveredElement?.closest('.note-process-item'));
 
                 customCursor.classList.toggle('is-tv-hover', isInsideTvVideo);
+                customCursor.classList.toggle('is-tv-hover-more', isInsideEmojiVideo);
                 customCursor.classList.toggle('is-note-next', isInsideNoteTurn);
                 customCursor.classList.toggle('is-note-prev', isInsideNotePrev);
                 customCursor.classList.toggle('is-note-more', isInsideNoteMore);
@@ -4321,6 +4591,7 @@
             document.addEventListener('mouseleave', () => {
                 customCursor.classList.remove('is-clicking');
                 customCursor.classList.remove('is-tv-hover');
+                customCursor.classList.remove('is-tv-hover-more');
                 customCursor.classList.remove('is-note-next', 'is-note-prev', 'is-note-more');
             });
             
@@ -4392,46 +4663,61 @@
                     window.gsap.set(astronautProjectPill, { x: 0, y: 0 });
                     window.gsap.set(astronautProjectLabel, { x: 0, y: 0 });
                 };
-                if (astronautStaticLayout.matches) resetAstronautProjectPill();
-                astronautStaticLayout.addEventListener('change', (event) => {
-                    if (event.matches) resetAstronautProjectPill();
-                });
+                const alignAstronautProjectPill = () => {
+                    const zoneRect = astronautProjectZone.getBoundingClientRect();
+                    const headRect = astronautHead.getBoundingClientRect();
+                    if (!zoneRect.width || !zoneRect.height || !headRect.width || !headRect.height) return;
+                    resetAstronautProjectPill();
+                    astronautProjectPill.style.left = `${((headRect.left + headRect.width / 2 - zoneRect.left) / zoneRect.width) * 100}%`;
+                    astronautProjectPill.style.top = `${((headRect.top + headRect.height / 2 - zoneRect.top) / zoneRect.height) * 100}%`;
+                };
+                window.requestAnimationFrame(alignAstronautProjectPill);
+                astronautHead.addEventListener('load', alignAstronautProjectPill);
+                window.addEventListener('resize', () => window.requestAnimationFrame(alignAstronautProjectPill));
+                astronautStaticLayout.addEventListener('change', alignAstronautProjectPill);
 
-                projectsSection.addEventListener('mousemove', (event) => {
+                window.addEventListener('mousemove', (event) => {
                     if (astronautStaticLayout.matches) return;
                     const rect = astronautProjectZone.getBoundingClientRect();
                     const scale = rect.width / astronautProjectZone.offsetWidth || 1;
                     const headRect = astronautHead.getBoundingClientRect();
                     const astronautCenterX = headRect.left + headRect.width / 2;
                     const astronautCenterY = headRect.top + headRect.height / 2;
-                    const pillRect = astronautProjectPill.getBoundingClientRect();
-                    const maxMovement = Math.max(0, rect.width / 2 - Math.hypot(pillRect.width / 2, pillRect.height / 2) - 2);
                     const pointerOffsetX = event.clientX - astronautCenterX;
                     const pointerOffsetY = event.clientY - astronautCenterY;
-                    let mappedX = pointerOffsetX * 0.2;
-                    let mappedY = pointerOffsetY * 0.2;
-                    const movementLength = Math.hypot(mappedX, mappedY);
+                    const innerRadiusX = Math.max(1, headRect.width * 0.31 - 3);
+                    const innerRadiusY = Math.max(1, headRect.height * 0.28 - 3);
+                    const pillRect = astronautProjectPill.getBoundingClientRect();
+                    const mapPointerAxis = (coordinate, center, start, end, radius) => {
+                        const sideDistance = coordinate >= center ? end - center : center - start;
+                        return ((coordinate - center) / Math.max(1, sideDistance)) * radius;
+                    };
+                    let mappedX = mapPointerAxis(event.clientX, astronautCenterX, 0, window.innerWidth, innerRadiusX);
+                    let mappedY = mapPointerAxis(event.clientY, astronautCenterY, 0, window.innerHeight, innerRadiusY);
                     let clampRatio = 1;
-                    if (movementLength > maxMovement && movementLength > 0) {
-                        clampRatio = maxMovement / movementLength;
+                    const pillHalfWidth = pillRect.width / 2;
+                    const pillHalfHeight = pillRect.height / 2;
+                    const fitsInsideHeadOpening = (offsetX, offsetY) => {
+                        for (const xSign of [-1, 1]) {
+                            for (const ySign of [-1, 1]) {
+                                const cornerX = (offsetX + xSign * pillHalfWidth) / innerRadiusX;
+                                const cornerY = (offsetY + ySign * pillHalfHeight) / innerRadiusY;
+                                if (cornerX * cornerX + cornerY * cornerY > 1) return false;
+                            }
+                        }
+                        return true;
+                    };
+                    if (!fitsInsideHeadOpening(mappedX, mappedY)) {
+                        let lowerBound = 0;
+                        let upperBound = 1;
+                        for (let step = 0; step < 16; step += 1) {
+                            const ratio = (lowerBound + upperBound) / 2;
+                            if (fitsInsideHeadOpening(mappedX * ratio, mappedY * ratio)) lowerBound = ratio;
+                            else upperBound = ratio;
+                        }
+                        clampRatio = lowerBound;
                         mappedX *= clampRatio;
                         mappedY *= clampRatio;
-                    }
-
-                    const zoneCenterX = rect.left + rect.width / 2;
-                    const zoneCenterY = rect.top + rect.height / 2;
-                    const safeHeadRadius = Math.min(headRect.width, headRect.height) * 0.42;
-                    const pillRadius = Math.hypot(pillRect.width / 2, pillRect.height / 2);
-                    const maxHeadMovement = Math.max(0, safeHeadRadius - pillRadius - 2);
-                    let pillOffsetX = zoneCenterX + mappedX - astronautCenterX;
-                    let pillOffsetY = zoneCenterY + mappedY - astronautCenterY;
-                    const pillOffsetLength = Math.hypot(pillOffsetX, pillOffsetY);
-                    if (pillOffsetLength > maxHeadMovement && pillOffsetLength > 0) {
-                        const headClampRatio = maxHeadMovement / pillOffsetLength;
-                        pillOffsetX *= headClampRatio;
-                        pillOffsetY *= headClampRatio;
-                        mappedX = astronautCenterX + pillOffsetX - zoneCenterX;
-                        mappedY = astronautCenterY + pillOffsetY - zoneCenterY;
                     }
                     const labelMaxX = Math.max(0, (astronautProjectPill.clientWidth - astronautProjectLabel.offsetWidth) / 2 - 2);
                     const labelMaxY = Math.max(0, (astronautProjectPill.clientHeight - astronautProjectLabel.offsetHeight) / 2 - 2);
@@ -4454,20 +4740,22 @@
                     });
                 });
 
-                projectsSection.addEventListener('mouseleave', () => {
-                    if (astronautStaticLayout.matches) return;
+                window.addEventListener('mouseout', (event) => {
+                    if (astronautStaticLayout.matches || event.relatedTarget ||
+                        (event.clientX >= 0 && event.clientY >= 0 &&
+                            event.clientX <= window.innerWidth && event.clientY <= window.innerHeight)) return;
                     gsap.to(astronautProjectPill, {
                         x: 0,
                         y: 0,
                         duration: 0.7,
-                        ease: 'elastic.out(1,0.4)',
+                        ease: 'power2.out',
                         overwrite: 'auto'
                     });
                     gsap.to(astronautProjectLabel, {
                         x: 0,
                         y: 0,
                         duration: 0.7,
-                        ease: 'elastic.out(1,0.4)',
+                        ease: 'power2.out',
                         overwrite: true
                     });
                 });

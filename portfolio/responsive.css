@@ -1094,11 +1094,6 @@
         max-height: none;
         overflow: visible;
     }
-    .page-about #projects_sec #astronaut-project-pill {
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%) !important;
-    }
     .page-about #projects_sec #project-note .note-card-copy {
         font-size: clamp(9px, 2.6cqw, 14px);
         font-weight: 600;
@@ -1398,6 +1393,12 @@
     }
 }
 
+@media (min-width: 768px) and (max-width: 1024px) {
+    .page-about #projects_sec #astronaut-project-pill .label {
+        font-size: clamp(7px, 0.9vw, 9px);
+    }
+}
+
 /* Keep the wide desktop intro consistent with the viewport-sized responsive layout. */
 @media (min-width: 1501px) {
     .page-about #wrap > .page-section:first-of-type {
@@ -1593,13 +1594,13 @@
     }
 }
 
-/* Increase leading only for the two-line items in the first memo's second color card. */
-.page-about #projects_sec #project-note .note-card-two .note-card-copy > span:has(br) {
+/* Keep corresponding text rows in the second card typographically consistent. */
+.page-about #projects_sec #project-note .note-card-two .note-card-copy > span {
     line-height: 1.4;
 }
 
 @media (max-width: 1024px) {
-    .page-about #projects_sec #project-note .note-card-two .note-card-copy > span:has(br) {
+    .page-about #projects_sec #project-note .note-card-two .note-card-copy > span {
         line-height: 1.625;
     }
 }
@@ -1629,4 +1630,78 @@
 @keyframes noteContentRiseCenteredInCard {
     from { opacity: 0; transform: translateY(calc(-50% + 18px)); }
     to { opacity: 1; transform: translateY(-50%); }
+}
+
+@media (max-width: 1024px) {
+    .page-about #projects_sec #project-note .note-card-one .note-card-copy {
+        line-height: 1.9;
+    }
+    .page-about #projects_sec #project-note .note-card-two .note-card-copy,
+    .page-about #projects_sec #project-note.is-gacha-project .note-card-two .note-card-copy {
+        top: 50%;
+        gap: 0.275em;
+        transform: translateY(-50%);
+    }
+    .page-about #projects_sec #project-note.is-gacha-project .note-card-two .note-card-copy {
+        transform: translate(-50%, -50%);
+    }
+    .page-about #projects_sec #project-note.is-details-visible .note-card-two .note-card-copy,
+    .page-about #projects_sec #project-note.is-gacha-project.is-details-visible .note-card-two .note-card-copy {
+        animation: none;
+        opacity: 1;
+        visibility: visible;
+    }
+    .page-about #projects_sec #project-note.is-lotus-project .note-card-one .note-card-copy,
+    .page-about #projects_sec #project-note.is-lotus-project .note-card-two .note-card-copy {
+        left: 15%;
+        right: auto;
+        width: 80%;
+        max-width: 80%;
+        margin-inline: 0;
+        padding: 0;
+        box-sizing: border-box;
+        text-align: left;
+    }
+    .page-about #projects_sec #project-note.is-lotus-project .note-card-two .note-card-copy {
+        align-items: flex-start;
+        transform: translateY(-50%);
+    }
+    .page-about #projects_sec #project-note.is-lotus-project .note-card-two .lotus-notice-copy {
+        white-space: nowrap;
+        text-align: left;
+    }
+}
+
+/* Keep second-card text static when responsive breakpoints change. */
+.page-about #projects_sec #project-note.is-details-visible .note-card-two .note-card-copy,
+.page-about #projects_sec #project-note.is-gacha-project.is-details-visible .note-card-two .note-card-copy {
+    animation: none;
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Keep the three red heading/body groups equally spaced on responsive notes. */
+@media (max-width: 1024px) {
+    .page-about #projects_sec #project-note .note-page-two-section,
+    .page-about #projects_sec #project-note.is-gacha-project .note-page-two-section {
+        position: relative;
+        top: auto;
+        margin-top: 0;
+    }
+    .page-about #projects_sec #project-note .note-page-two-section:nth-of-type(1),
+    .page-about #projects_sec #project-note .note-page-two-section:nth-of-type(2),
+    .page-about #projects_sec #project-note .note-page-two-section:nth-of-type(3),
+    .page-about #projects_sec #project-note.is-gacha-project .note-page-two-section:nth-of-type(1),
+    .page-about #projects_sec #project-note.is-gacha-project .note-page-two-section:nth-of-type(2),
+    .page-about #projects_sec #project-note.is-gacha-project .note-page-two-section:nth-of-type(3) {
+        top: auto;
+    }
+    .page-about #projects_sec #project-note .note-page-two-section:first-of-type,
+    .page-about #projects_sec #project-note.is-gacha-project .note-page-two-section:first-of-type {
+        margin-top: clamp(8px, 2cqw, 12px);
+    }
+    .page-about #projects_sec #project-note .note-page-two-section + .note-page-two-section,
+    .page-about #projects_sec #project-note.is-gacha-project .note-page-two-section + .note-page-two-section {
+        margin-top: clamp(8px, 2cqw, 12px);
+    }
 }
