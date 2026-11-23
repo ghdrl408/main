@@ -954,6 +954,7 @@
         font-size: clamp(9px, 2.5vw, 12px);
     }
     .page-about #projects_sec #tv_stage.is-transitioning #tv_small_txt,
+    .page-about #projects_sec #tv_stage.is-small-text-ready #tv_small_txt,
     .page-about #projects_sec #tv_stage.is-details-visible #tv_small_txt {
         font-size: clamp(10px, 3vw, 14px);
     }
@@ -1032,6 +1033,7 @@
 
 @media (max-width: 767px) {
     .page-about #projects_sec #tv_stage.is-transitioning #tv_small_txt,
+    .page-about #projects_sec #tv_stage.is-small-text-ready #tv_small_txt,
     .page-about #projects_sec #tv_stage.is-details-visible #tv_small_txt {
         right: auto;
         left: 50%;
@@ -1061,6 +1063,7 @@
 @media (min-width: 1025px) and (max-width: 1500px) {
     .page-about #projects_sec #tv_stage #tv_small_txt,
     .page-about #projects_sec #tv_stage.is-transitioning #tv_small_txt,
+    .page-about #projects_sec #tv_stage.is-small-text-ready #tv_small_txt,
     .page-about #projects_sec #tv_stage.is-details-visible #tv_small_txt {
         font-size: var(--desktop-tv-caption-font-size, 14px);
     }
@@ -1069,6 +1072,7 @@
 @media (min-width: 768px) and (max-width: 1024px) {
     .page-about #projects_sec #tv_stage #tv_small_txt,
     .page-about #projects_sec #tv_stage.is-transitioning #tv_small_txt,
+    .page-about #projects_sec #tv_stage.is-small-text-ready #tv_small_txt,
     .page-about #projects_sec #tv_stage.is-details-visible #tv_small_txt {
         right: 0;
         left: auto;
@@ -1211,10 +1215,16 @@
         top: 19.4%;
         left: 11.3%;
         width: 78%;
-        font-size: 1.95cqw;
+        font-size: calc(1.95cqw + 2px);
         font-weight: 700;
         line-height: 1.35;
         white-space: nowrap;
+    }
+    .page-about #projects_sec #project-note.is-emoji-project #note-description {
+        font-size: clamp(8px, calc(1.6cqw + 2px), 13px);
+    }
+    .page-about #projects_sec #project-note:not(.is-emoji-project) #note-description {
+        font-size: clamp(8px, calc(1.6cqw + 2px), 13px);
     }
     .page-about #projects_sec #project-note #note-description br { display: none; }
     .page-about #projects_sec #project-note .note-card {
@@ -1344,7 +1354,13 @@
     }
     .page-about #projects_sec #project-note #note-description {
         top: 19.4%;
-        font-size: 1.95cqw;
+        font-size: calc(1.95cqw + 2px);
+    }
+    .page-about #projects_sec #project-note.is-emoji-project #note-description {
+        font-size: clamp(8px, calc(1.6cqw + 2px), 13px);
+    }
+    .page-about #projects_sec #project-note:not(.is-emoji-project) #note-description {
+        font-size: clamp(8px, calc(1.6cqw + 2px), 13px);
     }
     .page-about #projects_sec #project-note .note-card-copy {
         font-size: clamp(8px, 2.3cqw, 10px);
@@ -1529,6 +1545,7 @@
         font-size: 8.4px;
     }
     .page-about #projects_sec #tv_stage.is-transitioning #tv_small_txt,
+    .page-about #projects_sec #tv_stage.is-small-text-ready #tv_small_txt,
     .page-about #projects_sec #tv_stage.is-details-visible #tv_small_txt {
         font-size: 14px;
     }
@@ -1703,5 +1720,29 @@
     .page-about #projects_sec #project-note .note-page-two-section + .note-page-two-section,
     .page-about #projects_sec #project-note.is-gacha-project .note-page-two-section + .note-page-two-section {
         margin-top: clamp(8px, 2cqw, 12px);
+    }
+}
+
+/* Keep revealed project copy at its completed animation frame during viewport reflow. */
+.page-about #projects_sec #project-note.is-layout-settled .note-card-copy,
+.page-about #projects_sec #project-note.is-layout-settled .tv-letter,
+.page-about #projects_sec #tv_stage.is-layout-settled .tv-letter {
+    animation-delay: -2s !important;
+    animation-play-state: paused !important;
+}
+
+@media (max-width: 1024px) {
+    .page-about #projects_sec #project-note.is-emoji-project.is-second-page .note-page-two-copy {
+        top: 50%;
+        transform: translateY(-50%);
+    }
+}
+
+@media (max-width: 1024px) {
+    .page-about #projects_sec #project-note.is-lotus-project.is-second-page .note-page-two-copy {
+        top: 50%;
+        left: 53.25%;
+        width: 90%;
+        transform: translate(-50%, -50%);
     }
 }

@@ -285,10 +285,6 @@
             white-space: nowrap;
         }
 
-        #custom-cursor.is-tv-hover-more::after {
-            content: 'MORE';
-        }
-
         #custom-cursor.is-note-next::after {
             content: 'NEXT';
             display: grid;
@@ -1744,11 +1740,13 @@
             display: none !important;
         }
 
-        #project-note.is-gacha-project.is-second-page #project-note-paper #project-note-folded {
+        #project-note.is-gacha-project.is-second-page #project-note-paper #project-note-folded,
+        #project-note.is-emoji-project.is-second-page #project-note-paper #project-note-folded {
             display: block !important;
         }
 
         #project-note.is-gacha-project.is-second-page #project-note-paper #project-note-folded-left,
+        #project-note.is-emoji-project.is-second-page #project-note-paper #project-note-folded-left,
         #project-note.is-third-page #project-note-paper #project-note-folded {
             display: none !important;
         }
@@ -1765,6 +1763,12 @@
         #project-note-paper.is-turning #project-note-turn-motion {
             opacity: 1;
             visibility: visible;
+            animation: projectNoteTurnFade var(--project-note-turn-duration, 820ms) linear both;
+        }
+
+        @keyframes projectNoteTurnFade {
+            0%, 80% { opacity: 1; }
+            100% { opacity: 0; }
         }
 
         #project-note-turn-hotspot {
@@ -1832,12 +1836,28 @@
             width: 69%;
             color: #111;
             font-family: 'Noto Sans KR', sans-serif;
-            font-size: clamp(10px, 0.8vw, 14px);
-            font-size: clamp(10px, 2cqw, 14px);
+            font-size: clamp(12px, calc(0.8vw + 2px), 16px);
+            font-size: clamp(12px, calc(2cqw + 2px), 16px);
             font-weight: 700;
             line-height: 1.35;
             opacity: 0;
             visibility: hidden;
+        }
+
+        #project-note.is-emoji-project #note-description {
+            font-size: clamp(8px, calc(1.6cqw + 2px), 13px);
+            white-space: nowrap;
+        }
+
+        #project-note:not(.is-emoji-project) #note-description {
+            font-size: clamp(8px, calc(1.6cqw + 2px), 13px);
+        }
+
+        @media (min-width: 1025px) {
+            #project-note.is-emoji-project #note-description {
+                white-space: normal;
+                line-height: 1.35;
+            }
         }
 
         #project-note .note-card {
@@ -2141,13 +2161,20 @@
 
         @media (min-width: 1025px) {
             #project-note .note-page-three-heading { left: 13%; }
-            #project-note.is-gacha-project .note-process-item:nth-child(2) { left: 50%; top: 20%; }
-            #project-note.is-gacha-project .note-process-item:nth-child(2) img { top: -0.8cqw; }
-            #project-note.is-gacha-project .note-process-item:nth-child(4) { left: 50%; }
-            #project-note.is-gacha-project .note-process-item:nth-child(n + 2) img { object-position: center bottom; }
-            #project-note.is-gacha-project .note-process-item span { top: 79%; }
+            #project-note.is-gacha-project .note-process-item:nth-child(2),
+            #project-note.is-emoji-project .note-process-item:nth-child(2) { left: 50%; top: 20%; }
+            #project-note.is-gacha-project .note-process-item:nth-child(2) img,
+            #project-note.is-emoji-project .note-process-item:nth-child(2) img { top: -0.8cqw; }
+            #project-note.is-gacha-project .note-process-item:nth-child(4),
+            #project-note.is-emoji-project .note-process-item:nth-child(4) { left: 50%; }
+            #project-note.is-gacha-project .note-process-item:nth-child(n + 2) img,
+            #project-note.is-emoji-project .note-process-item:nth-child(n + 2) img { object-position: center bottom; }
+            #project-note.is-gacha-project .note-process-item span,
+            #project-note.is-emoji-project .note-process-item span { top: 79%; }
             #project-note.is-gacha-project .note-process-item:nth-child(3) span,
-            #project-note.is-gacha-project .note-process-item:nth-child(4) span { top: calc(84% + 0.8cqw); }
+            #project-note.is-gacha-project .note-process-item:nth-child(4) span,
+            #project-note.is-emoji-project .note-process-item:nth-child(3) span,
+            #project-note.is-emoji-project .note-process-item:nth-child(4) span { top: calc(84% + 0.8cqw); }
         }
 
         #project-note .note-page-three-heading > span {
@@ -2170,7 +2197,8 @@
         }
 
         @media (min-width: 1501px) {
-            #project-note.is-gacha-project .note-process-item span {
+            #project-note.is-gacha-project .note-process-item span,
+            #project-note.is-emoji-project .note-process-item span {
                 font-size: calc(16.77px / var(--desktop-project-scale, 1));
             }
         }
@@ -2406,12 +2434,42 @@
             pointer-events: none;
         }
 
+        #note-process-modal .note-process-modal-image-secondary {
+            display: none;
+        }
+
+        #note-process-modal .note-process-modal-scroll.is-gallery {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+
+        #note-process-modal .note-process-modal-scroll.is-gallery .note-process-modal-image {
+            flex: 0 0 auto;
+            width: auto;
+            max-width: min(42vw, 500px);
+            max-height: 70vh;
+            margin: 0;
+        }
+
+        #note-process-modal .note-process-modal-scroll.is-gallery .note-process-modal-image-secondary {
+            display: block;
+        }
+
         #note-process-modal[data-horizontal="true"] .note-process-modal-image {
             width: auto;
             max-width: none;
             max-height: none;
             height: min(72vh, 760px);
             margin: 0;
+        }
+
+        #note-process-modal[data-horizontal="true"] .note-process-modal-scroll.is-gallery .note-process-modal-image {
+            max-width: min(42vw, 500px);
+            max-height: 70vh;
+            height: auto;
         }
 
         #project-note.is-details-visible .note-card-copy {
@@ -2594,7 +2652,8 @@
         }
 
         @media (min-width: 768px) and (max-width: 1024px) {
-            #tv_stage.is-details-visible #tv_small_txt_inner .tv-line-break {
+            #tv_stage.is-small-text-ready #tv_small_txt_inner .tv-line-break,
+            #tv_stage.is-small-text-exiting #tv_small_txt_inner .tv-line-break {
                 display: block;
             }
         }
@@ -2649,12 +2708,25 @@
             font-size: calc(clamp(8.4px, 1.05vw, 13.125px) + 5.6px);
         }
 
-        #tv_stage.is-transitioning #tv_small_txt_inner {
-            animation: tvPressArrowOutDown 240ms cubic-bezier(0.55, 0, 0.85, 0.35) forwards;
+        #tv_stage.is-small-text-exiting #tv_small_txt {
+            opacity: 1;
+            visibility: visible;
         }
 
-        @keyframes tvPressArrowOutDown {
-            to { transform: translateY(110%); }
+        #tv_stage.is-small-text-exiting #tv_small_txt_inner {
+            animation: tvSmallTextExit 400ms cubic-bezier(0.65, 0, 0.9, 0.2) both;
+        }
+
+        #tv_stage.is-small-text-exiting #tv_small_txt_inner .tv-letter {
+            animation: none;
+            opacity: 1;
+            transform: none;
+            clip-path: none;
+        }
+
+        @keyframes tvSmallTextExit {
+            from { opacity: 1; transform: translateY(0); clip-path: inset(0); }
+            to { opacity: 0; transform: translateY(110%); clip-path: inset(100% 0 0 0); }
         }
 
         #project-note.is-riding-ready #tv_tittle {
@@ -2662,14 +2734,14 @@
             visibility: visible;
         }
 
-        #tv_stage.is-details-visible #tv_small_txt {
+        #tv_stage.is-small-text-ready #tv_small_txt {
             opacity: 1;
             visibility: visible;
             font-size: calc(clamp(8.4px, 1.05vw, 13.125px) + 5.6px);
             line-height: 1.2;
         }
 
-        #tv_stage.is-details-visible #tv_small_txt .tv-letter {
+        #tv_stage.is-small-text-ready #tv_small_txt .tv-letter {
             display: inline-block;
             animation: tvLetterRise 625ms cubic-bezier(0.65, 0, 0.9, 0.2) both;
         }
@@ -2896,7 +2968,7 @@
                                 <video id="tv_lotus_video" src="pro_3/연꽃축제 끝.mp4" muted loop playsinline preload="auto" aria-hidden="true"></video>
                             </a>
                             <a id="tv_emoji_link" aria-label="네 번째 프로젝트 영상">
-                                <video id="tv_emoji_video" src="pro_3/임티.mp4" muted loop playsinline preload="auto" aria-hidden="true"></video>
+                                <video id="tv_emoji_video" src="pro_3/웅냐머리 끝.mp4" muted loop playsinline preload="auto" aria-hidden="true"></video>
                             </a>
                             <video id="tv_noise_video" src="pf_img/proImg/변환용 노이즈.mp4" muted playsinline preload="auto" aria-hidden="true"></video>
                             <img id="tv_wrap" src="./pf_img/proImg/tv.png" alt="tv">
@@ -3016,6 +3088,7 @@
                             <button class="note-process-modal-close" type="button" aria-label="팝업 닫기">×</button>
                             <div class="note-process-modal-scroll" tabindex="0">
                                 <img class="note-process-modal-image" alt="">
+                                <img class="note-process-modal-image note-process-modal-image-secondary" alt="">
                             </div>
                             <div class="note-process-modal-scrollbar" aria-hidden="true">
                                 <span class="note-process-modal-scrollbar-thumb"></span>
@@ -3048,8 +3121,8 @@
                         <div id="left_txt" aria-label="Work With Me !">Work With <span class="rotated-w" aria-hidden="true">W</span>e !</div>
                         <div id="line"></div>
                         <div id="right_txt">
-                            <div>010-0000-0000</div>
-                            <div id="mail">aaaaa0123@gmail.com</div>
+                            <div>010 - 3941 - 1331</div>
+                            <div id="mail">ghdrl408@gmail.com</div>
                         </div>
                     </div>
                 </section>
@@ -3098,11 +3171,21 @@
             const notePageThreeSubtitle = document.querySelector('#note-page-three-subtitle');
             const noteProcessModal = document.querySelector('#note-process-modal');
             const noteProcessModalImage = noteProcessModal.querySelector('.note-process-modal-image');
+            const noteProcessModalSecondaryImage = noteProcessModal.querySelector('.note-process-modal-image-secondary');
             const noteProcessModalScroll = noteProcessModal.querySelector('.note-process-modal-scroll');
             const noteProcessModalScrollbar = noteProcessModal.querySelector('.note-process-modal-scrollbar');
             const noteProcessModalScrollbarThumb = noteProcessModalScrollbar.querySelector('.note-process-modal-scrollbar-thumb');
             const noteProcessModalClose = noteProcessModal.querySelector('.note-process-modal-close');
             const noteProcessItems = [...projectNote.querySelectorAll('.note-process-item')];
+            const noteProcessItemOriginals = noteProcessItems.map((item) => ({
+                title: item.dataset.title,
+                original: item.dataset.original,
+                horizontal: item.dataset.horizontal,
+                ariaLabel: item.getAttribute('aria-label'),
+                imageSrc: item.querySelector('img').getAttribute('src'),
+                imageAlt: item.querySelector('img').getAttribute('alt'),
+                label: item.querySelector('span').textContent
+            }));
             const noteCardCopies = [...projectNote.querySelectorAll('.note-card-copy')];
             const noteCardOriginalHtml = noteCardCopies.map((element) => element.innerHTML);
             const notePageTwoParagraphs = [...projectNote.querySelectorAll('.note-page-two-section p')];
@@ -3146,23 +3229,73 @@
             };
             const projectNoteTurnMotionBlobs = new Map();
             const makeProjectNoteGifPlayOnce = async (blob) => {
-                const bytes = new Uint8Array(await blob.arrayBuffer());
+                let bytes = new Uint8Array(await blob.arrayBuffer());
                 const marker = new TextEncoder().encode('NETSCAPE2.0');
                 // Remove the GIF's infinite-loop extension so its folded first frame cannot replay.
                 for (let i = 3; i < Math.min(bytes.length - 16, 1024); i += 1) {
                     if (bytes[i - 3] !== 0x21 || bytes[i - 2] !== 0xff || bytes[i - 1] !== 0x0b ||
                         bytes[i + 11] !== 0x03 || bytes[i + 12] !== 0x01 || bytes[i + 15] !== 0x00 ||
                         !marker.every((value, offset) => bytes[i + offset] === value)) continue;
-                    return new Blob([bytes.subarray(0, i - 3), bytes.subarray(i + 16)], { type: 'image/gif' });
+                    const playOnceBytes = new Uint8Array(bytes.length - 19);
+                    playOnceBytes.set(bytes.subarray(0, i - 3));
+                    playOnceBytes.set(bytes.subarray(i + 16), i - 3);
+                    bytes = playOnceBytes;
+                    break;
                 }
-                return blob;
+
+                let position = 13;
+                const screenFlags = bytes[10];
+                if (screenFlags & 0x80) position += 3 * (2 ** ((screenFlags & 0x07) + 1));
+                let totalDelayCentiseconds = 0;
+                const skipDataSubBlocks = () => {
+                    while (position < bytes.length) {
+                        const blockSize = bytes[position++];
+                        if (blockSize === 0) break;
+                        position += blockSize;
+                    }
+                };
+
+                while (position < bytes.length) {
+                    const blockType = bytes[position++];
+                    if (blockType === 0x3b) break;
+                    if (blockType === 0x21) {
+                        const extensionType = bytes[position++];
+                        if (extensionType === 0xf9) {
+                            const blockSize = bytes[position++];
+                            if (blockSize !== 4) {
+                                position += blockSize + 1;
+                                continue;
+                            }
+                            const delayOffset = position + 1;
+                            totalDelayCentiseconds += bytes[delayOffset] + (bytes[delayOffset + 1] << 8);
+                            position += blockSize + 1;
+                        } else {
+                            skipDataSubBlocks();
+                        }
+                        continue;
+                    }
+                    if (blockType === 0x2c) {
+                        const imageFlags = bytes[position + 8];
+                        position += 9;
+                        if (imageFlags & 0x80) position += 3 * (2 ** ((imageFlags & 0x07) + 1));
+                        position += 1;
+                        skipDataSubBlocks();
+                        continue;
+                    }
+                    break;
+                }
+
+                return {
+                    blob: new Blob([bytes], { type: 'image/gif' }),
+                    durationMs: totalDelayCentiseconds * 10
+                };
             };
             const getProjectNoteTurnMotionBlob = (pathKey) => {
                 if (!projectNoteTurnMotionBlobs.has(pathKey)) {
                     const path = projectNoteTurnMotionPaths[pathKey];
                     projectNoteTurnMotionBlobs.set(
                         pathKey,
-                        fetch(path).then((response) => response.ok ? response.blob() : null)
+                        fetch(`${path}?v=page-turn-speed-20261123`).then((response) => response.ok ? response.blob() : null)
                             .then((blob) => blob ? makeProjectNoteGifPlayOnce(blob) : null)
                             .catch(() => null)
                     );
@@ -3220,8 +3353,7 @@
                 scheduleDesktopProjectCompositionScale();
             });
             scheduleDesktopProjectCompositionScale();
-            const projectNoteTurnMotionDurations = { next: 990, prev: 990 };
-            const projectNoteContentRevealLeadMs = 250;
+            const projectNoteContentRevealLeadMs = 200;
             const projectNoteFoldDelayAfterContentMs = 300;
             let projectNoteTurnMotionObjectUrl = null;
             const projectNoteCanvas = document.querySelector('#project-note-motion');
@@ -3268,9 +3400,27 @@
             };
             const finishTvScreenTransitionAfterReveal = () => {
                 window.clearTimeout(tvScreenTransitionTimer);
+                tvStage.classList.remove('is-small-text-exiting');
                 tvScreenTransitionTimer = window.setTimeout(() => {
                     tvStage.classList.remove('is-screen-transitioning');
                 }, 180);
+            };
+            const beginTvSmallTextExit = () => {
+                const wasVisible = tvStage.classList.contains('is-small-text-ready') ||
+                    tvStage.classList.contains('is-details-visible');
+                tvStage.classList.remove('is-small-text-ready', 'is-details-visible');
+                tvStage.classList.toggle('is-small-text-exiting', wasVisible);
+            };
+            const settleProjectNoteLayout = () => {
+                if (!projectNote.classList.contains('is-details-visible') ||
+                    projectNote.classList.contains('is-turn-loading') ||
+                    projectNote.classList.contains('is-turning')) return;
+                projectNote.classList.add('is-layout-settled');
+                tvStage.classList.add('is-layout-settled');
+            };
+            const clearProjectNoteLayoutSettled = () => {
+                projectNote.classList.remove('is-layout-settled');
+                tvStage.classList.remove('is-layout-settled');
             };
             let projectNoteDetailsTimer = null;
             let projectNoteTapeTimer = null;
@@ -3290,7 +3440,7 @@
                     ? projectNoteAssetPaths.wide
                     : projectNoteAssetPaths.compact;
                 projectNoteStatic.src = assets.paper;
-                projectNoteFolded.src = tvMode === 'gacha' && projectNotePage === 2
+                projectNoteFolded.src = (tvMode === 'gacha' || tvMode === 'emoji') && projectNotePage === 2
                     ? assets.gachaSecondFold
                     : assets.nextFold;
                 projectNoteFoldedLeft.src = assets.prevFold;
@@ -3299,9 +3449,11 @@
             const getProjectNoteTurnMotionPathKey = (direction, fromPage = projectNotePage) => {
                 const layout = projectNoteWideLayout.matches ? 'wide' : 'compact';
                 const turn = direction === 'next' ? 'Next' : 'Prev';
-                const gachaSpreadTurn = tvMode === 'gacha' && fromPage === 2;
+                const gachaSpreadTurn = (tvMode === 'gacha' || tvMode === 'emoji') && fromPage === 2;
                 return `${layout}${gachaSpreadTurn ? 'Gacha' : ''}${turn}`;
             };
+            const getProjectNoteTurnMotionFallbackDuration = (pathKey) =>
+                pathKey.startsWith('wideGacha') ? 800 : 820;
 
             const showProjectNoteStatic = () => {
                 window.cancelAnimationFrame(projectNoteAnimationFrame);
@@ -3396,7 +3548,7 @@
                             !projectNote.classList.contains('is-turn-complete') ||
                             projectNote.classList.contains('is-turning')) return;
                         projectNotePaper.classList.add('is-folded-corner-visible');
-                        if (tvMode === 'gacha' && page === 2) {
+                        if ((tvMode === 'gacha' || tvMode === 'emoji') && page === 2) {
                             projectNotePaper.classList.add('is-folded');
                             void getProjectNoteTurnMotionBlob(getProjectNoteTurnMotionPathKey('next', page));
                         }
@@ -3547,8 +3699,10 @@
             });
             const gachaNoteDescription = '선택이 어려운 현대인들을 위한 랜덤 뽑기형 추천 서비스';
             const lotusNoteDescription = '개인 웹 퍼블리싱 실습을 위해 제작한 가상의 축제 홍보 웹페이지';
+            const emojiNoteDescription = '직접 만든 고양이 캐릭터 ‘웅냐’의 일상을 담은 움직이는 이모티콘과 캐릭터 굿즈 디자인';
             const gachaPageTwoSectionTitles = ['기획 배경', '제작 과정', '캡슐 뽑기와 추천'];
             const lotusPageTwoSectionTitles = ['제작 배경', '세로 메뉴 구현', '화면 구성'];
+            const emojiPageTwoSectionTitles = ['캐릭터 기획', '움직이는 이모티콘', '캐릭터 굿즈 디자인'];
             const lotusMobileNoteMedia = matchMedia('(max-width: 1024px)');
             const getLotusFirstCardCopyHtml = () => lotusMobileNoteMedia.matches
                 ? 'AI 사용 없이 HTML · CSS 직접 작성<br>제작 기간 4시간<br>VSCord'
@@ -3567,10 +3721,25 @@
                 '<span class="note-sentence">페이지 좌측에 헤더를 세로로 배치 후 상위 메뉴 등록.</span><span class="note-sentence">각 항목에 마우스를 올리면 하위 메뉴가 펼쳐지도록 구현.</span>',
                 '<span class="note-sentence">배너 아래에 세 개의 섹션을 나란히 배치해<br>주요 정보를 한 곳에서 볼 수 있도록 구성.</span><span class="note-sentence">푸터에는 축제의 패밀리사이트와 SNS 아이콘을 배치.</span>'
             ];
+            const emojiPageTwoParagraphHtml = [
+                '<span class="note-sentence">빵실한 몸매와 분홍색 홍조가 특징인 고양이 캐릭터 \'웅냐\' 디자인.</span><span class="note-sentence">일상 속 여러 순간을 웅냐의 표정과 몸짓으로 나타냄.</span>',
+                '<span class="note-sentence">고개를 갸웃하거나 벽 뒤에서 빼꼼 나오는 등<br>짧은 움직임만으로도 상황과 감정이 전달되도록 제작.</span>',
+                '<span class="note-sentence">직접 그린 웅냐를 활용해 스티커 시트 2종과 아크릴 키링 6종을 구성 후 제품 목업으로 구현.</span><span class="note-sentence">오리지널 웅냐와 다른 버전의 파생 웅냐 키링 3종 추가.</span>'
+            ];
+            const emojiPageThreeItems = [
+                { title: '카카오톡 이모티콘', thumbnail: 'pro_3/3번메모지 카톡.png', original: 'pro_3/임티카톡.gif' },
+                { title: '움직이는 이모티콘', thumbnail: 'pro_3/3번메모지 움직이는.gif', original: 'pro_3/움직이는 이모티콘.gif' },
+                { title: '스티커 굿즈', thumbnail: 'pro_3/3번메모지 스티커1.png', original: 'pro_3/스티커.png' },
+                { title: '아크릴 키링 굿즈', thumbnail: 'pro_3/3번메모지 키링.png', original: 'pro_3/웅냐키링.png' }
+            ];
             const getNoteDescriptionText = () => tvMode === 'gacha'
                 ? gachaNoteDescription
                 : tvMode === 'lotus'
                     ? lotusNoteDescription
+                    : tvMode === 'emoji'
+                        ? matchMedia('(min-width: 1025px)').matches
+                            ? emojiNoteDescription.replace('담은 ', '담은\n')
+                            : emojiNoteDescription
                     : matchMedia('(min-width: 1025px)').matches
                         ? '부산 근교의 아름다운 자연경관을 즐길 수 있는\n오토바이 라이딩 코스 추천 웹사이트'
                         : '부산 근교의 아름다운 자연경관을 즐길 수 있는 오토바이 라이딩 코스 추천 웹사이트';
@@ -3578,15 +3747,50 @@
             const setProjectNoteProject = (project) => {
                 const isGacha = project === 'gacha';
                 const isLotus = project === 'lotus';
+                const isEmoji = project === 'emoji';
                 projectNote.classList.toggle('is-gacha-project', isGacha);
                 projectNote.classList.toggle('is-lotus-project', isLotus);
+                projectNote.classList.toggle('is-emoji-project', isEmoji);
+                noteProcessItems.forEach((item, index) => {
+                    const image = item.querySelector('img');
+                    const label = item.querySelector('span');
+                    if (isEmoji) {
+                        const media = emojiPageThreeItems[index];
+                        item.dataset.title = media.title;
+                        item.dataset.original = media.original;
+                        item.dataset.horizontal = media.secondary ? 'true' : 'false';
+                        if (media.secondary) item.dataset.originalSecondary = media.secondary;
+                        else delete item.dataset.originalSecondary;
+                        item.setAttribute('aria-label', `${media.title} 원본 보기`);
+                        image.src = media.thumbnail;
+                        image.alt = media.title;
+                        label.textContent = media.title;
+                        return;
+                    }
+                    const original = noteProcessItemOriginals[index];
+                    item.dataset.title = original.title;
+                    item.dataset.original = original.original;
+                    if (original.horizontal) item.dataset.horizontal = original.horizontal;
+                    else delete item.dataset.horizontal;
+                    delete item.dataset.originalSecondary;
+                    item.setAttribute('aria-label', original.ariaLabel);
+                    image.src = original.imageSrc;
+                    image.alt = original.imageAlt;
+                    label.textContent = original.label;
+                });
                 if (!isLotus) {
                     tvTitle.style.removeProperty('font-size');
                     tvTitle.style.removeProperty('transform');
                 }
                 noteCardCopies.forEach((element, index) => {
-                    if (!isGacha && !isLotus) {
+                    if (!isGacha && !isLotus && !isEmoji) {
                         element.innerHTML = noteCardOriginalHtml[index];
+                        return;
+                    }
+                    if (isEmoji) {
+                        element.innerHTML = index === 0
+                            ? '캐릭터 기획 및 일러스트 제작<br>제작 기간 2일<br>Photoshop'
+                            : '<span>스티커 시트 2종 구성</span><span>아크릴 키링 6종 디자인</span><span>움직이는 이모티콘 4종 작업</span>';
                         return;
                     }
                     if (isLotus) {
@@ -3604,20 +3808,24 @@
                         ? gachaPageTwoParagraphHtml[index]
                         : isLotus
                             ? lotusPageTwoParagraphHtml[index]
-                            : notePageTwoParagraphOriginalHtml[index];
+                            : isEmoji
+                                ? emojiPageTwoParagraphHtml[index]
+                                : notePageTwoParagraphOriginalHtml[index];
                 });
                 notePageTwoSectionTitles.forEach((element, index) => {
                     element.textContent = isGacha
                         ? gachaPageTwoSectionTitles[index]
                         : isLotus
                             ? lotusPageTwoSectionTitles[index]
-                            : notePageTwoSectionTitleOriginalTexts[index];
+                            : isEmoji
+                                ? emojiPageTwoSectionTitles[index]
+                                : notePageTwoSectionTitleOriginalTexts[index];
                 });
-                const noteProjectTitle = isGacha ? 'GACHA-PICK' : isLotus ? 'BUYEO FALL LOTUS FESTIVAL' : 'RIDING BUSAN';
+                const noteProjectTitle = isGacha ? 'GACHA-PICK' : isLotus ? 'BUYEO FALL LOTUS FESTIVAL' : isEmoji ? 'WOONGNYA' : 'RIDING BUSAN';
                 setTvStaggeredText(notePageTwoRidingTitle, noteProjectTitle, 0, 19);
                 setTvStaggeredText(notePageTwoMainTitle, 'PROJECT NOTES', 0, 19);
-                setTvStaggeredText(notePageThreeTitle, isGacha ? 'GACHA-PICK' : '', 0, 19);
-                setTvStaggeredText(notePageThreeSubtitle, isGacha ? 'DESIGN PROCESS' : '', 0, 19);
+                setTvStaggeredText(notePageThreeTitle, isGacha ? 'GACHA-PICK' : isEmoji ? 'WOONGNYA' : '', 0, 19);
+                setTvStaggeredText(notePageThreeSubtitle, isGacha ? 'DESIGN PROCESS' : isEmoji ? 'CHARACTER SHOWCASE' : '', 0, 19);
             };
             let pendingProjectNoteProject = null;
             const setProjectNoteProjectForTransition = (project) => {
@@ -3635,6 +3843,8 @@
                 noteProcessModal.classList.remove('is-open');
                 noteProcessModal.setAttribute('aria-hidden', 'true');
                 noteProcessModalScroll.classList.remove('is-dragging');
+                noteProcessModalScroll.classList.remove('is-gallery');
+                noteProcessModalSecondaryImage.removeAttribute('src');
                 document.body.style.overflow = noteProcessPreviousOverflow;
                 noteProcessLastTrigger?.focus({ preventScroll: true });
             };
@@ -3643,7 +3853,16 @@
                     noteProcessLastTrigger = item;
                     noteProcessModalImage.src = item.dataset.original;
                     noteProcessModalImage.alt = `${item.dataset.title} 원본 이미지`;
-                    const needsHorizontalScroll = item.dataset.horizontal === 'true';
+                    const hasSecondaryImage = Boolean(item.dataset.originalSecondary);
+                    if (hasSecondaryImage) {
+                        noteProcessModalSecondaryImage.src = item.dataset.originalSecondary;
+                        noteProcessModalSecondaryImage.alt = `${item.dataset.title} 두 번째 원본 이미지`;
+                    } else {
+                        noteProcessModalSecondaryImage.removeAttribute('src');
+                        noteProcessModalSecondaryImage.alt = '';
+                    }
+                    noteProcessModalScroll.classList.toggle('is-gallery', hasSecondaryImage);
+                    const needsHorizontalScroll = item.dataset.horizontal === 'true' || hasSecondaryImage;
                     noteProcessModal.dataset.horizontal = String(needsHorizontalScroll);
                     noteProcessModalScroll.classList.toggle('is-horizontal-scroll', needsHorizontalScroll);
                     noteProcessModalScrollbar.classList.toggle('is-visible', needsHorizontalScroll);
@@ -3671,6 +3890,7 @@
                 noteProcessModalScrollbarThumb.style.transform = `translateX(${thumbTravel * noteProcessModalScroll.scrollLeft / maxScroll}px)`;
             };
             noteProcessModalImage.addEventListener('load', updateNoteProcessScrollbar);
+            noteProcessModalSecondaryImage.addEventListener('load', updateNoteProcessScrollbar);
             noteProcessModalScroll.addEventListener('scroll', updateNoteProcessScrollbar, { passive: true });
             window.addEventListener('resize', updateNoteProcessScrollbar);
             noteProcessModalClose.addEventListener('click', closeNoteProcessModal);
@@ -3768,13 +3988,23 @@
                 const text = getNoteDescriptionText();
                 if (text === noteDescriptionLayoutText) return;
                 noteDescriptionLayoutText = text;
-                setTvStaggeredText(noteDescription, text, 0, 12);
+                if (projectNote.classList.contains('is-layout-settled')) {
+                    setTvPlainTextWithBreaks(noteDescription, text);
+                } else {
+                    setTvStaggeredText(noteDescription, text, 0, 12);
+                }
             };
+            matchMedia('(min-width: 1025px)').addEventListener('change', () => {
+                if (tvMode === 'emoji') updateNoteDescription();
+            });
 
             const loadProjectNoteTurnMotion = async (direction, fromPage = projectNotePage) => {
                 const pathKey = getProjectNoteTurnMotionPathKey(direction, fromPage);
                 const path = projectNoteTurnMotionPaths[pathKey];
-                const blob = await getProjectNoteTurnMotionBlob(pathKey);
+                const motion = await getProjectNoteTurnMotionBlob(pathKey);
+                const blob = motion?.blob ?? null;
+                const durationMs = motion?.durationMs || getProjectNoteTurnMotionFallbackDuration(pathKey);
+                projectNoteTurnMotion.style.setProperty('--project-note-turn-duration', `${durationMs}ms`);
                 const preloadSource = blob
                     ? URL.createObjectURL(blob)
                     : `${path}?preload=${Date.now()}`;
@@ -3793,6 +4023,7 @@
                 }
                 projectNoteTurnMotionObjectUrl = blob ? source : null;
                 projectNoteTurnMotion.src = source;
+                return durationMs;
             };
 
             const showProjectNoteDetails = () => {
@@ -3805,6 +4036,7 @@
                     projectNote.classList.contains('is-turn-complete')) return;
 
                 resetProjectNoteTapeMotion();
+                clearProjectNoteLayoutSettled();
                 projectNote.classList.add('is-details-visible');
                 tvStage.classList.add('is-details-visible');
                 void getProjectNoteTurnMotionBlob(
@@ -3816,7 +4048,7 @@
 
             const turnProjectNotePage = async () => {
                 const fromPage = projectNotePage;
-                const isTurningToThird = tvMode === 'gacha' && fromPage === 2;
+                const isTurningToThird = (tvMode === 'gacha' || tvMode === 'emoji') && fromPage === 2;
                 if (!projectNotePaper.classList.contains('is-folded') ||
                     (fromPage !== 1 && !isTurningToThird) ||
                     projectNote.classList.contains('is-turning') ||
@@ -3825,8 +4057,9 @@
                 const turnRequestGeneration = ++projectNoteTurnRequestGeneration;
                 if (projectNoteTapeMotionPlayed && !projectNoteTapeMotionComplete) finishProjectNoteTapeMotion();
                 projectNote.classList.add('is-turn-loading');
+                clearProjectNoteLayoutSettled();
                 customCursor.classList.remove('is-note-next');
-                await loadProjectNoteTurnMotion('next', fromPage);
+                const turnDurationMs = await loadProjectNoteTurnMotion('next', fromPage);
                 if (turnRequestGeneration !== projectNoteTurnRequestGeneration ||
                     !projectNote.classList.contains('is-turn-loading')) return;
                 projectNote.classList.remove('is-turn-loading');
@@ -3860,7 +4093,7 @@
                         projectNote.classList.add('is-second-page');
                     }
                     syncProjectNotePageAssets();
-                }, Math.max(0, projectNoteTurnMotionDurations.next - projectNoteContentRevealLeadMs));
+                }, Math.max(0, turnDurationMs - projectNoteContentRevealLeadMs));
 
                 projectNoteTurnTimer = window.setTimeout(() => {
                     projectNote.classList.remove('is-turning', 'is-turning-to-third');
@@ -3880,7 +4113,7 @@
                     } else {
                         scheduleProjectNoteFoldedCornerAfterContent(2);
                     }
-                }, projectNoteTurnMotionDurations.next);
+                }, turnDurationMs);
             };
 
             const turnProjectNoteBack = async () => {
@@ -3894,7 +4127,8 @@
                 const turnRequestGeneration = ++projectNoteTurnRequestGeneration;
                 customCursor.classList.remove('is-note-prev');
                 projectNote.classList.add('is-turn-loading');
-                await loadProjectNoteTurnMotion('prev', fromPage);
+                clearProjectNoteLayoutSettled();
+                const turnDurationMs = await loadProjectNoteTurnMotion('prev', fromPage);
                 if (turnRequestGeneration !== projectNoteTurnRequestGeneration ||
                     !projectNote.classList.contains('is-turn-loading')) return;
                 projectNote.classList.remove('is-turn-loading');
@@ -3920,7 +4154,7 @@
                         projectNote.classList.add('is-later-page', 'is-second-page');
                     }
                     syncProjectNotePageAssets();
-                }, Math.max(0, projectNoteTurnMotionDurations.prev - projectNoteContentRevealLeadMs));
+                }, Math.max(0, turnDurationMs - projectNoteContentRevealLeadMs));
 
                 projectNoteTurnTimer = window.setTimeout(() => {
                     projectNote.classList.remove('is-turning', 'is-turning-back', 'is-turn-complete');
@@ -3938,12 +4172,13 @@
                         syncProjectNotePageAssets();
                         scheduleProjectNoteFoldedCornerAfterContent(2);
                     }
-                }, projectNoteTurnMotionDurations.prev);
+                }, turnDurationMs);
             };
 
             const resetTvSection = (playIntro = false, keepNoise = false, preserveProjectNoteTransition = false) => {
                 const keepProjectNoteTurning = preserveProjectNoteTransition && projectNote.classList.contains('is-turning');
                 if (!keepProjectNoteTurning) {
+                    clearProjectNoteLayoutSettled();
                     projectNoteTurnRequestGeneration += 1;
                     projectNotePage = 1;
                     window.clearTimeout(projectNoteDetailsTimer);
@@ -3961,7 +4196,7 @@
                 window.clearTimeout(tvScreenTransitionTimer);
                 tvMode = playIntro ? 'intro' : 'idle';
                 setMobileProjectChannelLayout('intro');
-                tvStage.classList.remove('is-intro', 'is-transitioning', 'is-screen-transitioning', 'is-riding-ready');
+                tvStage.classList.remove('is-intro', 'is-transitioning', 'is-screen-transitioning', 'is-small-text-exiting', 'is-small-text-ready', 'is-riding-ready');
                 if (!keepProjectNoteTurning) {
                     projectNote.classList.remove('is-intro', 'is-transitioning', 'is-riding-ready', 'is-details-visible', 'is-turn-loading', 'is-turning', 'is-turning-back', 'is-turning-to-third', 'is-turn-complete', 'is-later-page', 'is-second-page', 'is-third-page', 'has-tape');
                     projectNotePaper.classList.remove('is-folded', 'is-turning', 'is-turning-back', 'is-turn-complete', 'is-folded-corner-visible');
@@ -4027,6 +4262,7 @@
             };
 
             const animateProjectNoteOutForChannelChange = () => {
+                clearProjectNoteLayoutSettled();
                 window.clearTimeout(projectNoteDetailsTimer);
                 window.clearTimeout(projectNoteTapeTimer);
                 window.clearTimeout(projectNoteTurnTimer);
@@ -4052,7 +4288,7 @@
                 projectNote.classList.remove('is-turning-to-third');
                 projectNotePaper.classList.remove('is-turning', 'is-turning-back');
 
-                loadProjectNoteTurnMotion(turnDirection, fromPage).then(() => {
+                loadProjectNoteTurnMotion(turnDirection, fromPage).then((turnDurationMs) => {
                     if (turnRequestGeneration !== projectNoteTurnRequestGeneration ||
                         !projectNote.classList.contains('is-turning')) return;
                     projectNote.classList.remove('is-turn-loading');
@@ -4081,13 +4317,14 @@
                             setTvPlainText(noteDescription, '');
                             noteDescriptionLayoutText = '';
                         }
-                    }, projectNoteTurnMotionDurations.prev);
+                    }, turnDurationMs);
                 });
             };
 
             const startTvRide = () => {
                 if (tvMode !== 'intro' && tvMode !== 'gacha') return;
                 animateProjectNoteOutForChannelChange();
+                beginTvSmallTextExit();
                 setMobileProjectChannelLayout('intro');
                 tvGachaLink.classList.remove('is-interactive');
                 tvLotusLink.classList.remove('is-interactive');
@@ -4127,8 +4364,9 @@
                     setProjectNoteProjectForTransition('riding');
                     setTvStaggeredText(tvTitle, '라이딩부산', 0, 19);
                     updateNoteDescription();
-                    setTvStaggeredText(tvSmallTxt, '어디로든 떠나고 싶은 순간, 당신의 다음 길을 찾아보세요.', 0, 12);
+                    setTvStaggeredText(tvSmallTxt, '어디로든 떠나고 싶은 순간, 당신의 다음 길을 찾아보세요!', 0, 12);
                     tvStage.classList.add('is-riding-ready');
+                    tvStage.classList.add('is-small-text-ready');
                     projectNote.classList.remove('is-transitioning');
                     projectNote.classList.add('is-riding-ready');
                     tvRidingLink.classList.add('is-interactive');
@@ -4146,6 +4384,7 @@
             const startTvGacha = () => {
                 if (tvMode !== 'riding' && tvMode !== 'lotus') return;
                 animateProjectNoteOutForChannelChange();
+                beginTvSmallTextExit();
                 setMobileProjectChannelLayout('gacha');
                 window.clearTimeout(tvNoiseFadeTimer);
                 window.clearTimeout(tvRevealTimer);
@@ -4192,6 +4431,7 @@
                     gachaTvSmallTextLayoutText = '';
                     updateGachaTvSmallText();
                     tvGachaLink.classList.add('is-interactive');
+                    tvStage.classList.add('is-small-text-ready');
                     if (projectNote.classList.contains('is-details-visible') && !projectNote.classList.contains('is-turning')) {
                         scheduleProjectNoteFoldedCornerAfterContent(1);
                     }
@@ -4206,6 +4446,7 @@
             const startTvLotus = () => {
                 if (tvMode !== 'gacha' && tvMode !== 'emoji') return;
                 animateProjectNoteOutForChannelChange();
+                beginTvSmallTextExit();
                 setMobileProjectChannelLayout('lotus');
                 window.clearTimeout(tvNoiseFadeTimer);
                 window.clearTimeout(tvRevealTimer);
@@ -4255,6 +4496,7 @@
                     updateNoteDescription();
                     setTvStaggeredText(tvSmallTxt, '연꽃 향기 가득한 부여에서 가을을 즐겨보세요!', 0, 12);
                     tvLotusLink.classList.add('is-interactive');
+                    tvStage.classList.add('is-small-text-ready');
                     if (projectNote.classList.contains('is-details-visible') && !projectNote.classList.contains('is-turning')) {
                         scheduleProjectNoteFoldedCornerAfterContent(1);
                     }
@@ -4269,6 +4511,7 @@
             const startTvEmoji = () => {
                 if (tvMode !== 'lotus') return;
                 animateProjectNoteOutForChannelChange();
+                beginTvSmallTextExit();
                 setMobileProjectChannelLayout('emoji');
                 window.clearTimeout(tvNoiseFadeTimer);
                 window.clearTimeout(tvRevealTimer);
@@ -4313,7 +4556,11 @@
                     projectNote.classList.add('is-riding-ready');
                     tvMode = 'emoji';
                     setProjectNoteProjectForTransition('emoji');
+                    setTvStaggeredText(tvTitle, '고양이 웅냐', 0, 19);
+                    updateNoteDescription();
+                    setTvStaggeredText(tvSmallTxt, '아기 고양이 웅냐의 얼렁뚱땅 일상을 함께해보세요!', 0, 12);
                     tvEmojiLink.classList.add('is-interactive');
+                    tvStage.classList.add('is-small-text-ready');
                     if (projectNote.classList.contains('is-details-visible') && !projectNote.classList.contains('is-turning')) {
                         scheduleProjectNoteFoldedCornerAfterContent(1);
                     }
@@ -4356,6 +4603,7 @@
                     return;
                 }
                 animateProjectNoteOutForChannelChange();
+                beginTvSmallTextExit();
                 tvMode = 'transitioning';
                 tvNo.textContent = 'CH 00';
                 setMobileProjectChannelLayout('intro');
@@ -4563,22 +4811,20 @@
                 const hoveredElement = document.elementFromPoint(event.clientX, event.clientY);
                 const isInsideMobileProjectControl = Boolean(hoveredElement?.closest('.mobile-project-controls button'));
                 const hoveredAnchor = hoveredElement?.closest('a');
-                const isInsideAnchor = Boolean(hoveredAnchor);
+                const isInsideEmojiVideo = Boolean(hoveredElement?.closest('#tv_emoji_link')) && tvMode === 'emoji';
+                const isInsideAnchor = Boolean(hoveredAnchor) && !isInsideEmojiVideo;
                 const isInsideTvVideo = (Boolean(hoveredElement?.closest('#tv_riding_link')) && tvMode === 'riding') ||
                     (Boolean(hoveredElement?.closest('#tv_gacha_link')) && tvMode === 'gacha') ||
-                    (Boolean(hoveredElement?.closest('#tv_lotus_link')) && tvMode === 'lotus') ||
-                    (Boolean(hoveredElement?.closest('#tv_emoji_link')) && tvMode === 'emoji');
-                const isInsideEmojiVideo = Boolean(hoveredElement?.closest('#tv_emoji_link')) && tvMode === 'emoji';
+                    (Boolean(hoveredElement?.closest('#tv_lotus_link')) && tvMode === 'lotus');
                 const isInsideNoteTurn = !projectNote.classList.contains('is-turn-loading') &&
                     Boolean(hoveredElement?.closest('#project-note-turn-hotspot'));
                 const isInsideNotePrev = !projectNote.classList.contains('is-turn-loading') &&
                     Boolean(hoveredElement?.closest('#project-note-prev-hotspot'));
-                const isInsideNoteMore = tvMode === 'gacha' && projectNotePage === 3 &&
+                const isInsideNoteMore = (tvMode === 'gacha' || tvMode === 'emoji') && projectNotePage === 3 &&
                     projectNote.classList.contains('is-third-page') &&
                     Boolean(hoveredElement?.closest('.note-process-item'));
 
                 customCursor.classList.toggle('is-tv-hover', isInsideTvVideo);
-                customCursor.classList.toggle('is-tv-hover-more', isInsideEmojiVideo);
                 customCursor.classList.toggle('is-note-next', isInsideNoteTurn);
                 customCursor.classList.toggle('is-note-prev', isInsideNotePrev);
                 customCursor.classList.toggle('is-note-more', isInsideNoteMore);
@@ -4591,7 +4837,6 @@
             document.addEventListener('mouseleave', () => {
                 customCursor.classList.remove('is-clicking');
                 customCursor.classList.remove('is-tv-hover');
-                customCursor.classList.remove('is-tv-hover-more');
                 customCursor.classList.remove('is-note-next', 'is-note-prev', 'is-note-more');
             });
             
@@ -4656,28 +4901,56 @@
             const astronautProjectLabel = astronautProjectPill.querySelector('.label');
             const astronautHead = document.querySelector('#astronaut-head');
             const astronautStaticLayout = window.matchMedia('(max-width: 1024px)');
+            let astronautLayoutIsResizing = false;
+            let astronautResizeSettleTimer = null;
+            let astronautAlignmentFrame = null;
 
-            if (window.gsap) {
-                const resetAstronautProjectPill = () => {
+            const resetAstronautProjectPill = () => {
+                if (window.gsap) {
                     window.gsap.killTweensOf([astronautProjectPill, astronautProjectLabel]);
                     window.gsap.set(astronautProjectPill, { x: 0, y: 0 });
                     window.gsap.set(astronautProjectLabel, { x: 0, y: 0 });
-                };
-                const alignAstronautProjectPill = () => {
-                    const zoneRect = astronautProjectZone.getBoundingClientRect();
-                    const headRect = astronautHead.getBoundingClientRect();
-                    if (!zoneRect.width || !zoneRect.height || !headRect.width || !headRect.height) return;
-                    resetAstronautProjectPill();
-                    astronautProjectPill.style.left = `${((headRect.left + headRect.width / 2 - zoneRect.left) / zoneRect.width) * 100}%`;
-                    astronautProjectPill.style.top = `${((headRect.top + headRect.height / 2 - zoneRect.top) / zoneRect.height) * 100}%`;
-                };
-                window.requestAnimationFrame(alignAstronautProjectPill);
-                astronautHead.addEventListener('load', alignAstronautProjectPill);
-                window.addEventListener('resize', () => window.requestAnimationFrame(alignAstronautProjectPill));
-                astronautStaticLayout.addEventListener('change', alignAstronautProjectPill);
+                } else {
+                    astronautProjectPill.style.removeProperty('transform');
+                    astronautProjectLabel.style.removeProperty('transform');
+                }
+            };
+            const alignAstronautProjectPill = () => {
+                const zoneRect = astronautProjectZone.getBoundingClientRect();
+                const headRect = astronautHead.getBoundingClientRect();
+                if (!zoneRect.width || !zoneRect.height || !headRect.width || !headRect.height) return;
+                resetAstronautProjectPill();
+                astronautProjectPill.style.left = `${((headRect.left + headRect.width / 2 - zoneRect.left) / zoneRect.width) * 100}%`;
+                astronautProjectPill.style.top = `${((headRect.top + headRect.height / 2 - zoneRect.top) / zoneRect.height) * 100}%`;
+            };
+            const scheduleAstronautPillAlignment = () => {
+                astronautLayoutIsResizing = true;
+                window.clearTimeout(astronautResizeSettleTimer);
+                astronautResizeSettleTimer = window.setTimeout(() => {
+                    astronautLayoutIsResizing = false;
+                }, 180);
+                if (astronautAlignmentFrame !== null) {
+                    window.cancelAnimationFrame(astronautAlignmentFrame);
+                }
+                astronautAlignmentFrame = window.requestAnimationFrame(() => {
+                    astronautAlignmentFrame = null;
+                    alignAstronautProjectPill();
+                });
+            };
+            scheduleAstronautPillAlignment();
+            astronautHead.addEventListener('load', scheduleAstronautPillAlignment);
+            window.addEventListener('resize', scheduleAstronautPillAlignment);
+            astronautStaticLayout.addEventListener('change', scheduleAstronautPillAlignment);
+            if (window.ResizeObserver) {
+                const astronautPillAlignmentObserver = new ResizeObserver(scheduleAstronautPillAlignment);
+                [astronautProjectZone, astronautHead].forEach((element) => {
+                    astronautPillAlignmentObserver.observe(element);
+                });
+            }
 
+            if (window.gsap) {
                 window.addEventListener('mousemove', (event) => {
-                    if (astronautStaticLayout.matches) return;
+                    if (astronautStaticLayout.matches || astronautLayoutIsResizing) return;
                     const rect = astronautProjectZone.getBoundingClientRect();
                     const scale = rect.width / astronautProjectZone.offsetWidth || 1;
                     const headRect = astronautHead.getBoundingClientRect();
@@ -4741,7 +5014,7 @@
                 });
 
                 window.addEventListener('mouseout', (event) => {
-                    if (astronautStaticLayout.matches || event.relatedTarget ||
+                    if (astronautStaticLayout.matches || astronautLayoutIsResizing || event.relatedTarget ||
                         (event.clientX >= 0 && event.clientY >= 0 &&
                             event.clientX <= window.innerWidth && event.clientY <= window.innerHeight)) return;
                     gsap.to(astronautProjectPill, {
@@ -5676,6 +5949,7 @@
             window.addEventListener('touchcancel', () => { aboutTouch = null; }, { passive: true });
 
             window.addEventListener('resize', () => {
+                settleProjectNoteLayout();
                 if (tvMode === 'riding' && projectNote.classList.contains('is-details-visible')) {
                     updateNoteDescription();
                 }
