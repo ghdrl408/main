@@ -5042,7 +5042,6 @@
                 if (isActive === tvSectionIsActive) return;
                 tvSectionIsActive = isActive;
                 if (isActive) playProjectNoteIntro();
-                else if (projectNoteIntroPlayed && !projectNoteIntroComplete) showProjectNoteStatic();
                 resetTvSection(isActive);
             }, { threshold: [0, 0.25, 0.5] });
             tvSectionObserver.observe(projectsSection);
@@ -5572,6 +5571,11 @@
                 if (currentSection === 2) {
                     document.body.classList.add('projects-active');
                     document.body.classList.remove('projects-nav-transition');
+                    if (!tvSectionIsActive) {
+                        tvSectionIsActive = true;
+                        resetTvSection(true);
+                    }
+                    playProjectNoteIntro();
                 }
                 if (currentSection === 3) {
                     document.body.classList.remove('projects-active', 'projects-nav-transition');
