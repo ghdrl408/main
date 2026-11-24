@@ -547,6 +547,7 @@ if (headerBallToggle && headerBallIcon) {
     if (profilePanel) profilePanel.inert = !profileIsOpen;
     headerBallToggle.setAttribute("aria-pressed", String(profileIsOpen));
     headerBallToggle.setAttribute("aria-expanded", String(profileIsOpen));
+    syncMainControls();
     headerBallToggle.setAttribute("aria-label", profileIsOpen ? "프로필 닫기" : "프로필 열기");
     renderHeaderBall();
   }
@@ -564,6 +565,7 @@ if (headerBallToggle && headerBallIcon) {
   });
 
   headerBallToggle.addEventListener("click", () => {
+    if (choiceStage === "draw") return;
     setProfileOpen(!profileIsOpen);
     headerBallShowSelectionUntilLeave = true;
     renderHeaderBall();
@@ -592,6 +594,21 @@ const profileBackButton = document.querySelector("#profile-back");
 const keywordEditView = document.querySelector("#keyword-edit-view");
 const keywordEditButton = document.querySelector(".keyword-edit");
 const keywordBackButton = document.querySelector("#keyword-back");
+
+function syncMainControls() {
+  const isDrawing = choiceStage === "draw";
+  const isProfileOpen = profilePanelElement?.classList.contains("is-open") || false;
+
+  if (headerBallToggle) {
+    headerBallToggle.disabled = isDrawing;
+    headerBallToggle.setAttribute("aria-disabled", String(isDrawing));
+  }
+
+  choiceButtons.forEach(button => {
+    button.disabled = isProfileOpen;
+    button.setAttribute("aria-disabled", String(isProfileOpen));
+  });
+}
 
 function updateEditorVisibility() {
   const editorVisible = profilePanelElement?.classList.contains("is-editing")
@@ -960,6 +977,8 @@ for (const button of choiceButtons) {
   });
 
   button.addEventListener("click", () => {
+    if (profilePanelElement?.classList.contains("is-open")) return;
+
     if (choiceStage === "category") {
       selectedActivityChoice = button.dataset.choice === "food" ? "food" : "place";
       choiceStage = "companion";
@@ -980,6 +999,7 @@ for (const button of choiceButtons) {
     }
 
     choiceStage = "draw";
+    syncMainControls();
     expandScrollingMachine();
     canvas.classList.add("is-draw-ready");
     if (leverControl) leverControl.disabled = true;
