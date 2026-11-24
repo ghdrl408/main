@@ -7,14 +7,65 @@
         <script>
             history.scrollRestoration = 'manual';
             window.__aboutPageReload = performance.getEntriesByType('navigation')[0]?.type === 'reload';
+            window.__aboutInitialHash = window.__aboutPageReload ? '' : window.location.hash;
+            window.__portfolioAboutEntryFade = false;
+            window.__portfolioProjectEntryDelay = false;
+            window.__portfolioContactEntryDelay = false;
+            try {
+                window.__portfolioAboutEntryFade = sessionStorage.getItem('portfolioAboutEntryFade') === '1';
+                sessionStorage.removeItem('portfolioAboutEntryFade');
+                window.__portfolioProjectEntryDelay = sessionStorage.getItem('portfolioProjectEntryDelay') === '1';
+                sessionStorage.removeItem('portfolioProjectEntryDelay');
+                window.__portfolioContactEntryDelay = sessionStorage.getItem('portfolioContactEntryDelay') === '1';
+                sessionStorage.removeItem('portfolioContactEntryDelay');
+            } catch (_) {}
+
+            if (window.__portfolioProjectEntryDelay && window.__aboutInitialHash === '#projects_sec') {
+                document.documentElement.classList.add('portfolio-project-entry-pending');
+            }
+
             if (window.__aboutPageReload && window.location.hash) {
                 history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
+            } else if (window.__portfolioAboutEntryFade &&
+                window.__aboutInitialHash === '#projects_sec' &&
+                window.matchMedia('(min-width: 768px)').matches) {
+                history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
             }
-            if (!window.__aboutPageReload) window.scrollTo(0, 0);
+            if (!window.__aboutPageReload && !window.__aboutInitialHash) window.scrollTo(0, 0);
+        </script>
+        <script>
+            if (window.__portfolioAboutEntryFade) {
+                document.documentElement.classList.add('portfolio-about-entry-pending');
+                const revealAboutEntry = () => {
+                    const reveal = () => requestAnimationFrame(() => requestAnimationFrame(() => {
+                        document.documentElement.classList.add('portfolio-about-entry-ready');
+                        const aboutWrap = document.querySelector('body.page-about #wrap');
+                        if (!aboutWrap) return;
+                        const entryContent = [...aboutWrap.children].filter((child) => child.matches('section'));
+                        const clearEntryState = (event) => {
+                            if (!entryContent.includes(event.target) || event.propertyName !== 'opacity') return;
+                            document.documentElement.classList.remove(
+                                'portfolio-about-entry-pending',
+                                'portfolio-about-entry-ready',
+                                'portfolio-project-entry-pending'
+                            );
+                            aboutWrap.removeEventListener('transitionend', clearEntryState);
+                        };
+                        aboutWrap.addEventListener('transitionend', clearEntryState);
+                    }));
+                    window.setTimeout(reveal, window.__portfolioProjectEntryDelay ? 200 : 0);
+                };
+                if (window.__portfolioProjectEntryDelay && window.__aboutInitialHash === '#projects_sec') {
+                    window.addEventListener('portfolio-project-entry-arrived', revealAboutEntry, { once: true });
+                } else {
+                    window.addEventListener('DOMContentLoaded', revealAboutEntry, { once: true });
+                }
+            }
         </script>
         
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="preload" as="image" href="pf_img/proImg/메모지 시작모션_프레임.png" fetchpriority="high">
         <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400..700&display=swap" rel="stylesheet">
         <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js"></script>
@@ -375,12 +426,65 @@
             min-height: 100vh;
             overflow: visible;
             background-color: black;
-            transition: background-color 0.7s ease;
+            transition: background-color 0.7s ease, opacity 520ms ease, transform 520ms ease;
+        }
+
+        body.page-about.page-leaving-home #wrap {
+            opacity: 0;
+            transform: translateY(-10px) scale(0.995);
+            pointer-events: none;
+        }
+
+        body.page-about.page-leaving-home {
+            background-color: #fff;
+        }
+
+        html.portfolio-about-entry-pending body.page-about #wrap > section,
+        html.portfolio-about-entry-ready body.page-about #wrap > section {
+            transition: opacity 520ms ease;
+        }
+
+        html.portfolio-about-entry-pending body.page-about #wrap > section {
+            opacity: 0;
+        }
+
+        html.portfolio-about-entry-ready body.page-about #wrap > section {
+            opacity: 1;
+        }
+
+        html.portfolio-project-entry-pending body.page-about,
+        html.portfolio-project-entry-pending body.page-about #wrap {
+            background-color: #fff;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html.portfolio-about-entry-pending body.page-about #wrap > section,
+            html.portfolio-about-entry-ready body.page-about #wrap > section,
+            body.page-about #wrap {
+                transition-duration: 1ms;
+            }
         }
 
         body.projects-active #wrap,
         body.contact-active #wrap {
             background-color: white;
+        }
+
+        html.portfolio-project-entry-pending body.page-about .header-brand,
+        html.portfolio-project-entry-pending body.page-about #control_wrap li {
+            color: black;
+            transition: none;
+        }
+
+        html.portfolio-project-entry-pending body.page-about #control_wrap a:not(:first-child) .menu-pill {
+            background-color: transparent;
+            color: black;
+            transition: none;
+        }
+
+        html.portfolio-project-entry-pending body.page-about #control_wrap a[href$="#projects_sec"] .menu-pill {
+            background-color: black;
+            color: white;
         }
 
         header {
@@ -803,13 +907,45 @@
             font: 30px / 50px 'Noto Sans SC', sans-serif;
             letter-spacing: 4px;
             text-align: right;
+            pointer-events: auto !important;
+            user-select: text !important;
+            -webkit-user-select: text !important;
+            -moz-user-select: text !important;
+            -webkit-touch-callout: default;
+        }
+
+        #contact-section #right_txt * {
+            pointer-events: auto !important;
+            user-select: text !important;
+            -webkit-user-select: text !important;
+            -moz-user-select: text !important;
+            -webkit-touch-callout: default;
+        }
+
+        #contact-section .contact-selectable-text,
+        #contact-section .contact-selectable-text * {
+            pointer-events: auto !important;
+            user-select: text !important;
+            -webkit-user-select: text !important;
+            -moz-user-select: text !important;
+            -webkit-touch-callout: default;
+            touch-action: auto;
+        }
+
+        #contact-section #right_txt::selection,
+        #contact-section #right_txt *::selection,
+        #contact-section .contact-selectable-text::selection,
+        #contact-section .contact-selectable-text *::selection,
+        #contact-section #right_txt::-moz-selection,
+        #contact-section #right_txt *::-moz-selection,
+        #contact-section .contact-selectable-text::-moz-selection,
+        #contact-section .contact-selectable-text *::-moz-selection {
+            background-color: rgba(0, 0, 0, 0.8) !important;
+            color: #fff !important;
         }
 
         #contact-section #mail {
-            text-decoration: underline;
-            text-decoration-thickness: 0.5px;
-            text-decoration-skip-ink: none;
-            text-underline-offset: 5px;
+            text-decoration: none;
         }
 
         #contact-backdrop {
@@ -1615,8 +1751,8 @@
         #astronaut-project-zone {
             position: absolute;
             z-index: 4;
-            left: -9.9%;
-            top: 71.9%;
+            left: -9.05%;
+            top: 67.85%;
             width: 20.1%;
             aspect-ratio: 1;
             border-radius: 50%;
@@ -2958,20 +3094,20 @@
                     <div class="desktop-project-composition">
                     <div id="pro_2">
                         <div id="tv_stage">
-                            <video id="tv_video" src="pf_img/proImg/시작영상.mp4" muted loop playsinline preload="auto" aria-label="Riding Busan 시작 영상"></video>
-                            <a id="tv_riding_link" href="https://riding-busan.ghdrl408.chatgpt.site/" target="_blank" rel="noopener noreferrer" aria-label="Riding Busan 프로젝트 열기">
-                                <video id="tv_riding_video" src="pf_img/proImg/라이딩부산.mp4" muted loop playsinline preload="auto" aria-hidden="true"></video>
+                            <video id="tv_video" src="pf_img/proImg/시작영상.mp4" muted loop playsinline preload="metadata" aria-label="Riding Busan 시작 영상"></video>
+                            <a id="tv_riding_link" aria-label="Riding Busan 프로젝트 영상">
+                                <video id="tv_riding_video" src="pf_img/proImg/라이딩부산.mp4" muted loop playsinline preload="none" aria-hidden="true"></video>
                             </a>
                             <a id="tv_gacha_link" href="https://ghdrl408.github.io/main/gatcha-pick/" target="_blank" rel="noopener noreferrer" aria-label="GACHA-PICK 프로젝트 열기">
-                                <video id="tv_gacha_video" src="pro_scd/가차픽 끝.mp4" muted loop playsinline preload="auto" aria-hidden="true"></video>
+                                <video id="tv_gacha_video" src="pro_scd/가차픽 끝.mp4" muted loop playsinline preload="none" aria-hidden="true"></video>
                             </a>
                             <a id="tv_lotus_link" href="https://ghdrl408.github.io/main/lotusFes/" target="_blank" rel="noopener noreferrer" aria-label="부여 연꽃축제 프로젝트 열기">
-                                <video id="tv_lotus_video" src="pro_3/연꽃축제 끝.mp4" muted loop playsinline preload="auto" aria-hidden="true"></video>
+                                <video id="tv_lotus_video" src="pro_3/연꽃축제 끝.mp4" muted loop playsinline preload="none" aria-hidden="true"></video>
                             </a>
                             <a id="tv_emoji_link" aria-label="네 번째 프로젝트 영상">
-                                <video id="tv_emoji_video" src="pro_3/웅냐머리 끝.mp4" muted loop playsinline preload="auto" aria-hidden="true"></video>
+                                <video id="tv_emoji_video" src="pro_3/웅냐머리 끝.mp4" muted loop playsinline preload="none" aria-hidden="true"></video>
                             </a>
-                            <video id="tv_noise_video" src="pf_img/proImg/변환용 노이즈.mp4" muted playsinline preload="auto" aria-hidden="true"></video>
+                            <video id="tv_noise_video" src="pf_img/proImg/변환용 노이즈.mp4" muted playsinline preload="none" aria-hidden="true"></video>
                             <img id="tv_wrap" src="./pf_img/proImg/tv.png" alt="tv">
                             <div id="tv_no">CH 00</div>
                             <img id="astronaut-head-backdrop" src="pf_img/proImg/우주인머리 뒷배경.png" alt="">
@@ -3122,8 +3258,8 @@
                         <div id="left_txt" aria-label="Work With Me !">Work With <span class="rotated-w" aria-hidden="true">W</span>e !</div>
                         <div id="line"></div>
                         <div id="right_txt">
-                            <div>010 - 3941 - 1331</div>
-                            <div id="mail">ghdrl408@gmail.com</div>
+                            <div class="contact-selectable-text">010 - 3941 - 1331</div>
+                            <div id="mail" class="contact-selectable-text">ghdrl408@gmail.com</div>
                         </div>
                     </div>
                 </section>
@@ -3140,34 +3276,89 @@
             const aboutScrollHint = document.querySelector('#about-scroll-hint');
             const backToTop = document.querySelector('#back-to-top');
             const headerBrand = document.querySelector('.header-brand');
+            const headerBrandLink = headerBrand?.closest('a');
+            let homeNavigationStarted = false;
+            headerBrandLink?.addEventListener('click', (event) => {
+                if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+                if (headerBrandLink.target && headerBrandLink.target !== '_self') return;
+
+                const destination = new URL(headerBrandLink.href, window.location.href);
+                if (destination.origin !== window.location.origin || !destination.pathname.endsWith('/mainPage.html')) return;
+                event.preventDefault();
+                if (homeNavigationStarted) return;
+                homeNavigationStarted = true;
+                try { sessionStorage.setItem('portfolioHomeEntryFade', '1'); } catch (_) {}
+
+                document.body.classList.add('page-leaving-home');
+                const aboutWrap = document.querySelector('#wrap');
+                const navigate = () => window.location.assign(destination.href);
+                const fallback = window.setTimeout(navigate, 650);
+                const finishTransition = (transitionEvent) => {
+                    if (transitionEvent.target !== aboutWrap || transitionEvent.propertyName !== 'opacity') return;
+                    window.clearTimeout(fallback);
+                    aboutWrap.removeEventListener('transitionend', finishTransition);
+                    navigate();
+                };
+                aboutWrap.addEventListener('transitionend', finishTransition);
+            });
             const contactSection = document.querySelector('#contact-section');
             const contactPanel = document.querySelector('#contact-section #con');
+            const contactRightText = document.querySelector('#contact-section #right_txt');
             const contactRotatedW = document.querySelector('#contact-section .rotated-w');
             const contactBackdrop = document.querySelector('#contact-backdrop');
             const contactScrollHint = document.querySelector('#contact-scroll-hint');
+            let contactTextDrag = null;
+            const getContactTextCaret = (x, y) => {
+                const caret = document.caretPositionFromPoint?.(x, y);
+                if (caret) return { node: caret.offsetNode, offset: caret.offset };
+                const range = document.caretRangeFromPoint?.(x, y);
+                return range ? { node: range.startContainer, offset: range.startOffset } : null;
+            };
+            contactRightText.addEventListener('selectstart', (event) => event.stopPropagation());
+            contactRightText.addEventListener('mousedown', (event) => {
+                if (event.button !== 0) return;
+                const caret = getContactTextCaret(event.clientX, event.clientY);
+                if (!caret || !contactRightText.contains(caret.node)) return;
+                contactTextDrag = caret;
+                const selection = window.getSelection();
+                if (selection) {
+                    selection.collapse(caret.node, caret.offset);
+                }
+            });
+            document.addEventListener('mousemove', (event) => {
+                if (!contactTextDrag || !(event.buttons & 1)) return;
+                const hit = document.elementFromPoint(event.clientX, event.clientY);
+                if (!hit || !contactRightText.contains(hit)) return;
+                const caret = getContactTextCaret(event.clientX, event.clientY);
+                if (!caret || !contactRightText.contains(caret.node)) return;
+                const selection = window.getSelection();
+                if (!selection) return;
+                if (typeof selection.setBaseAndExtent === 'function') {
+                    selection.setBaseAndExtent(contactTextDrag.node, contactTextDrag.offset, caret.node, caret.offset);
+                    return;
+                }
+                const range = document.createRange();
+                try {
+                    range.setStart(contactTextDrag.node, contactTextDrag.offset);
+                    range.setEnd(caret.node, caret.offset);
+                } catch {
+                    range.setStart(caret.node, caret.offset);
+                    range.setEnd(contactTextDrag.node, contactTextDrag.offset);
+                }
+                selection.removeAllRanges();
+                selection.addRange(range);
+            });
+            const endContactTextDrag = () => {
+                contactTextDrag = null;
+            };
+            document.addEventListener('mouseup', endContactTextDrag);
             const turn = document.querySelector('#turn');
             const tvStage = document.querySelector('#tv_stage');
             const tvVideo = document.querySelector('#tv_video');
             const isDirectProjectHashEntry =
-                !window.__aboutPageReload && window.location.hash === '#projects_sec';
+                !window.__aboutPageReload && window.__aboutInitialHash === '#projects_sec';
             let preserveDirectProjectIntroPlayback = isDirectProjectHashEntry;
-            const directProjectIntroVideoReady = isDirectProjectHashEntry
-                ? new Promise((resolve) => {
-                    let hasResolved = false;
-                    const finish = () => {
-                        if (hasResolved) return;
-                        hasResolved = true;
-                        resolve();
-                    };
-                    tvVideo.addEventListener('playing', finish, { once: true });
-                    tvVideo.addEventListener('error', finish, { once: true });
-                    try {
-                        Promise.resolve(tvVideo.play()).then(finish, finish);
-                    } catch {
-                        finish();
-                    }
-                })
-                : Promise.resolve();
+            if (isDirectProjectHashEntry) tvVideo.play().catch(() => {});
             const tvRidingVideo = document.querySelector('#tv_riding_video');
             const tvGachaVideo = document.querySelector('#tv_gacha_video');
             const tvLotusVideo = document.querySelector('#tv_lotus_video');
@@ -3367,20 +3558,30 @@
                 });
             };
             window.addEventListener('resize', scheduleDesktopProjectCompositionScale);
-            document.querySelector('#tv_wrap').addEventListener('load', scheduleDesktopProjectCompositionScale);
             projectNoteWideLayout.addEventListener('change', () => {
                 setProjectNoteAssetSet();
                 syncProjectNotePageAssets();
                 scheduleDesktopProjectCompositionScale();
             });
-            scheduleDesktopProjectCompositionScale();
+            updateDesktopProjectCompositionScale();
             const projectNoteContentRevealLeadMs = 200;
             const projectNoteFoldDelayAfterContentMs = 300;
             let projectNoteTurnMotionObjectUrl = null;
             const projectNoteCanvas = document.querySelector('#project-note-motion');
             const projectNoteContext = projectNoteCanvas.getContext('2d');
             const projectNoteFrames = new Image();
+            projectNoteFrames.fetchPriority = 'high';
+            projectNoteFrames.decoding = 'async';
             projectNoteFrames.src = 'pf_img/proImg/메모지 시작모션_프레임.png';
+            const projectNoteFramesReady = new Promise((resolve) => {
+                const finish = () => resolve(projectNoteFrames.naturalWidth > 0);
+                if (projectNoteFrames.complete) {
+                    finish();
+                    return;
+                }
+                projectNoteFrames.addEventListener('load', finish, { once: true });
+                projectNoteFrames.addEventListener('error', finish, { once: true });
+            });
             const projectNoteTapeWrappers = [...document.querySelectorAll('#project-note .note-tape')];
             const tvSmallTxt = document.querySelector('#tv_small_txt_inner');
             const tvLeftKey = document.querySelector('.keycap-left');
@@ -3389,6 +3590,7 @@
             const mobileProjectNext = document.querySelector('.mobile-project-next');
             const mobileProjectChannels = [...document.querySelectorAll('.mobile-project-channel')];
             let tvMode = 'idle';
+            let mobileProjectLoopStarted = false;
             let noteDescriptionLayoutText = '';
             const setMobileProjectChannel = (channel) => {
                 mobileProjectChannels.forEach((button) => {
@@ -3402,6 +3604,8 @@
                         ? ['02', '03']
                         : mode === 'emoji'
                             ? ['03', '04']
+                            : mode === 'riding-wrap'
+                                ? ['04', '01']
                             : ['00', '01'];
                 mobileProjectChannels.forEach((button, index) => {
                     const channel = channels[index];
@@ -3487,15 +3691,16 @@
             };
 
             const playProjectNoteIntro = () => {
+                if (window.__portfolioProjectEntryDelay) return;
                 if (projectNoteIntroPlayed) return;
                 projectNoteIntroPlayed = true;
-                projectNote.classList.add('is-visible');
                 if (projectNoteWideLayout.matches) {
                     showProjectNoteStatic();
                     return;
                 }
                 const startAnimation = () => {
                     if (projectNoteIntroComplete) return;
+                    projectNote.classList.add('is-visible');
                     projectNote.classList.add('is-playing');
                     projectNote.classList.add('has-static-paper');
                     const startedAt = performance.now();
@@ -3515,12 +3720,11 @@
                     };
                     drawFrame(startedAt);
                 };
-                if (projectNoteFrames.complete && projectNoteFrames.naturalWidth > 0) {
-                    startAnimation();
-                } else {
-                    projectNoteFrames.addEventListener('load', startAnimation, { once: true });
-                    projectNoteFrames.addEventListener('error', showProjectNoteStatic, { once: true });
-                }
+                projectNoteFramesReady.then((framesLoaded) => {
+                    if (projectNoteIntroComplete) return;
+                    if (framesLoaded) startAnimation();
+                    else showProjectNoteStatic();
+                });
             };
 
             const showProjectNoteFoldedCorner = () => {
@@ -3721,7 +3925,7 @@
             });
             const gachaNoteDescription = '선택이 어려운 현대인들을 위한 랜덤 뽑기형 추천 서비스';
             const lotusNoteDescription = '개인 웹 퍼블리싱 실습을 위해 제작한 가상의 축제 홍보 웹페이지';
-            const emojiNoteDescription = '직접 만든 고양이 캐릭터 ‘웅냐’의 일상을 담은 움직이는 이모티콘과 캐릭터 굿즈 디자인';
+            const emojiNoteDescription = '고양이 캐릭터 ‘웅냐’의 일상을 담은 움직이는 이모티콘과 캐릭터 굿즈 디자인';
             const gachaPageTwoSectionTitles = ['기획 배경', '제작 과정', '캡슐 뽑기와 추천'];
             const lotusPageTwoSectionTitles = ['제작 배경', '세로 메뉴 구현', '화면 구성'];
             const emojiPageTwoSectionTitles = ['캐릭터 기획', '움직이는 이모티콘', '캐릭터 굿즈 디자인'];
@@ -3759,12 +3963,8 @@
                 : tvMode === 'lotus'
                     ? lotusNoteDescription
                     : tvMode === 'emoji'
-                        ? matchMedia('(min-width: 1025px)').matches
-                            ? emojiNoteDescription.replace('담은 ', '담은\n')
-                            : emojiNoteDescription
-                    : matchMedia('(min-width: 1025px)').matches
-                        ? '부산 근교의 아름다운 자연경관을 즐길 수 있는\n오토바이 라이딩 코스 추천 웹사이트'
-                        : '부산 근교의 아름다운 자연경관을 즐길 수 있는 오토바이 라이딩 코스 추천 웹사이트';
+                        ? emojiNoteDescription
+                        : '부산 근교의 자연경관을 즐길 수 있는 오토바이 코스 추천 웹사이트';
 
             const setProjectNoteProject = (project) => {
                 const isGacha = project === 'gacha';
@@ -3780,6 +3980,8 @@
                         const media = emojiPageThreeItems[index];
                         item.dataset.title = media.title;
                         item.dataset.original = media.original;
+                        if (index === 1) item.dataset.mobileOriginal = 'pro_3/움직이는 이모티콘 모바일.gif';
+                        else delete item.dataset.mobileOriginal;
                         item.dataset.horizontal = media.secondary ? 'true' : 'false';
                         if (media.secondary) item.dataset.originalSecondary = media.secondary;
                         else delete item.dataset.originalSecondary;
@@ -3792,6 +3994,7 @@
                     const original = noteProcessItemOriginals[index];
                     item.dataset.title = original.title;
                     item.dataset.original = original.original;
+                    delete item.dataset.mobileOriginal;
                     if (original.horizontal) item.dataset.horizontal = original.horizontal;
                     else delete item.dataset.horizontal;
                     delete item.dataset.originalSecondary;
@@ -3873,7 +4076,9 @@
             noteProcessItems.forEach((item) => {
                 item.addEventListener('click', () => {
                     noteProcessLastTrigger = item;
-                    noteProcessModalImage.src = item.dataset.original;
+                    noteProcessModalImage.src = item.dataset.mobileOriginal
+                        ? item.dataset.mobileOriginal
+                        : item.dataset.original;
                     noteProcessModalImage.alt = `${item.dataset.title} 원본 이미지`;
                     const hasSecondaryImage = Boolean(item.dataset.originalSecondary);
                     if (hasSecondaryImage) {
@@ -4130,7 +4335,7 @@
                     projectNotePaper.classList.add('is-turn-complete');
                     syncProjectNotePageAssets();
                     if (isTurningToThird) {
-                        projectNotePaper.classList.add('is-folded-corner-visible');
+                        scheduleProjectNoteFoldedCornerAfterContent(3);
                         void getProjectNoteTurnMotionBlob(getProjectNoteTurnMotionPathKey('prev', 3));
                     } else {
                         scheduleProjectNoteFoldedCornerAfterContent(2);
@@ -4198,6 +4403,9 @@
             };
 
             const resetTvSection = (playIntro = false, keepNoise = false, preserveProjectNoteTransition = false) => {
+                if (!playIntro && window.matchMedia('(max-width: 767px)').matches) {
+                    mobileProjectLoopStarted = false;
+                }
                 const keepProjectNoteTurning = preserveProjectNoteTransition && projectNote.classList.contains('is-turning');
                 const keepDirectIntroVideo = playIntro && preserveDirectProjectIntroPlayback;
                 if (!keepProjectNoteTurning) {
@@ -4346,12 +4554,21 @@
             };
 
             const startTvRide = () => {
-                if (tvMode !== 'intro' && tvMode !== 'gacha') return;
+                const wrappingFromEmoji = tvMode === 'emoji';
+                const isMobileLayout = window.matchMedia('(max-width: 767px)').matches;
+                const enteringRideFromMobileIntro = tvMode === 'intro' && isMobileLayout;
+                if (tvMode !== 'intro' && tvMode !== 'gacha' && !wrappingFromEmoji) return;
+                if (enteringRideFromMobileIntro) mobileProjectLoopStarted = true;
                 animateProjectNoteOutForChannelChange();
                 beginTvSmallTextExit();
-                setMobileProjectChannelLayout('intro');
+                setMobileProjectChannelLayout(
+                    wrappingFromEmoji || (isMobileLayout && mobileProjectLoopStarted)
+                        ? 'riding-wrap'
+                        : 'intro'
+                );
                 tvGachaLink.classList.remove('is-interactive');
                 tvLotusLink.classList.remove('is-interactive');
+                tvEmojiLink.classList.remove('is-interactive');
                 window.clearTimeout(tvNoiseFadeTimer);
                 window.clearTimeout(tvRevealTimer);
                 window.clearTimeout(projectNoteDetailsTimer);
@@ -4372,6 +4589,9 @@
                 tvRidingVideo.classList.remove('is-revealing');
                 tvRidingVideo.pause();
                 if (tvRidingVideo.readyState > 0) tvRidingVideo.currentTime = 0;
+                tvEmojiVideo.pause();
+                tvEmojiVideo.classList.remove('is-revealing');
+                if (tvEmojiVideo.readyState > 0) tvEmojiVideo.currentTime = 0;
                 tvRidingVideo.play().catch(() => {});
 
                 tvNoiseVideo.pause();
@@ -4533,7 +4753,10 @@
             };
 
             const startTvEmoji = () => {
-                if (tvMode !== 'lotus') return;
+                const isMobileLayout = window.matchMedia('(max-width: 767px)').matches;
+                const returningFromWrappedRide = tvMode === 'riding' &&
+                    (!isMobileLayout || mobileProjectChannels[0].dataset.channel === '04');
+                if (tvMode !== 'lotus' && !returningFromWrappedRide) return;
                 animateProjectNoteOutForChannelChange();
                 beginTvSmallTextExit();
                 setMobileProjectChannelLayout('emoji');
@@ -4582,7 +4805,7 @@
                     setProjectNoteProjectForTransition('emoji');
                     setTvStaggeredText(tvTitle, '고양이 웅냐', 0, 19);
                     updateNoteDescription();
-                    setTvStaggeredText(tvSmallTxt, '아기 고양이 웅냐의 얼렁뚱땅 일상을 함께해보세요!', 0, 12);
+                    setTvStaggeredText(tvSmallTxt, '아기 고양이 웅냐의 얼렁뚱땅 일상을 함께 해보세요!', 0, 12);
                     tvEmojiLink.classList.add('is-interactive');
                     tvStage.classList.add('is-small-text-ready');
                     if (projectNote.classList.contains('is-details-visible') && !projectNote.classList.contains('is-turning')) {
@@ -4601,7 +4824,7 @@
                 else if (tvMode === 'riding') startTvGacha();
                 else if (tvMode === 'gacha') startTvLotus();
                 else if (tvMode === 'lotus') startTvEmoji();
-                else if (tvMode === 'emoji') returnToIntroChannel();
+                else if (tvMode === 'emoji') startTvRide();
             };
 
             projectNoteTurnHotspot.addEventListener('click', turnProjectNotePage);
@@ -4623,6 +4846,10 @@
             };
             const returnToIntroChannel = () => {
                 if (tvMode === 'transitioning') return;
+                if (window.matchMedia('(max-width: 767px)').matches && mobileProjectLoopStarted) {
+                    if (tvMode === 'riding') startTvEmoji();
+                    return;
+                }
                 if (tvMode !== 'riding' && tvMode !== 'gacha' && tvMode !== 'lotus' && tvMode !== 'emoji') {
                     setMobileProjectChannel('00');
                     return;
@@ -4664,6 +4891,8 @@
                 if (tvMode === 'emoji') startTvLotus();
                 else if (tvMode === 'lotus') startTvGacha();
                 else if (tvMode === 'gacha') startTvRide();
+                else if (tvMode === 'riding' &&
+                    (mobileProjectLoopStarted || !window.matchMedia('(max-width: 767px)').matches)) startTvEmoji();
                 else returnToIntroChannel();
             };
             tvLeftKey.addEventListener('click', startTvPreviousChannel);
@@ -4728,7 +4957,7 @@
                 contactBackdrop.style.setProperty('--contact-brightness', 1 - progress * 0.06);
                 document.body.classList.toggle('contact-active', isContactActive);
 
-                if (localScroll >= -contactCopyLead) {
+                if (localScroll >= -contactCopyLead && !window.__portfolioContactEntryDelay) {
                     document.body.classList.add('contact-copy-revealed');
                 }
 
@@ -4743,6 +4972,7 @@
                 contactReadyTimer = null;
                 contactReady = false;
                 contactScrollHint.classList.add('is-hidden');
+                document.body.classList.remove('contact-copy-revealed');
             };
 
             const resetContactPanel = () => {
@@ -4881,14 +5111,14 @@
                                 : destination.hash === '#about-section' ? 1 : null;
                         if (targetIndex !== null) {
                             event.preventDefault();
-                            if (targetIndex === 3 || currentSection === 3) resetContactPanel();
+                            if (currentSection === 1 && targetIndex !== 1) freezeAboutSectionIntro();
+                            if (targetIndex === 3 && currentSection !== 3) resetContactPanel();
                             document.body.classList.remove(
                                 'header-target-about', 'header-target-projects', 'header-target-contact'
                             );
                             document.body.classList.add(`header-target-${
                                 targetIndex === 1 ? 'about' : targetIndex === 2 ? 'projects' : 'contact'
                             }`);
-                            if (currentSection === 3 && targetIndex !== 3) resetContactReady();
                             document.body.classList.remove('intro-scroll-lock');
                             history.pushState(null, '', destination.hash);
                             currentSection = targetIndex;
@@ -4928,17 +5158,13 @@
             const astronautStaticLayout = window.matchMedia('(max-width: 1024px)');
             let astronautLayoutIsResizing = false;
             let astronautResizeSettleTimer = null;
-            let astronautAlignmentFrame = null;
 
             const resetAstronautProjectPill = () => {
                 if (window.gsap) {
                     window.gsap.killTweensOf([astronautProjectPill, astronautProjectLabel]);
-                    window.gsap.set(astronautProjectPill, { x: 0, y: 0 });
-                    window.gsap.set(astronautProjectLabel, { x: 0, y: 0 });
-                } else {
-                    astronautProjectPill.style.removeProperty('transform');
-                    astronautProjectLabel.style.removeProperty('transform');
                 }
+                astronautProjectPill.style.removeProperty('transform');
+                astronautProjectLabel.style.removeProperty('transform');
             };
             const alignAstronautProjectPill = () => {
                 const zoneRect = astronautProjectZone.getBoundingClientRect();
@@ -4953,14 +5179,8 @@
                 window.clearTimeout(astronautResizeSettleTimer);
                 astronautResizeSettleTimer = window.setTimeout(() => {
                     astronautLayoutIsResizing = false;
-                }, 180);
-                if (astronautAlignmentFrame !== null) {
-                    window.cancelAnimationFrame(astronautAlignmentFrame);
-                }
-                astronautAlignmentFrame = window.requestAnimationFrame(() => {
-                    astronautAlignmentFrame = null;
                     alignAstronautProjectPill();
-                });
+                }, 180);
             };
             scheduleAstronautPillAlignment();
             astronautHead.addEventListener('load', scheduleAstronautPillAlignment);
@@ -5072,9 +5292,11 @@
                 tvSectionIsActive = isActive;
                 if (isActive) {
                     scheduleAstronautPillAlignment();
-                    playProjectNoteIntro();
                 }
                 resetTvSection(isActive);
+                if (isActive && !window.matchMedia('(max-width: 767px)').matches) {
+                    playProjectNoteIntro();
+                }
             }, { threshold: [0, 0.25, 0.5] });
             tvSectionObserver.observe(projectsSection);
             let aboutSectionTop = aboutSection.offsetTop;
@@ -5092,21 +5314,25 @@
             let aboutWheelResetTimer;
             let aboutEntryWheelGuard = false;
             let aboutEntryWheelTimer;
-            const initialSection = !window.__aboutPageReload && window.location.hash === '#contact-section'
+            const initialSection = !window.__aboutPageReload && window.__aboutInitialHash === '#contact-section'
                 ? 3
-                : !window.__aboutPageReload && window.location.hash === '#projects_sec'
+                : !window.__aboutPageReload && window.__aboutInitialHash === '#projects_sec'
                     ? 2
-                    : !window.__aboutPageReload && window.location.hash === '#about-section' ? 1 : 0;
+                    : !window.__aboutPageReload && window.__aboutInitialHash === '#about-section' ? 1 : 0;
+            let keepIntroTitleHiddenUntilWheel = window.__portfolioAboutEntryFade && initialSection === 0;
             let firstSectionVisited = initialSection === 0;
             let dimVideoTitleOnReturn = false;
             let currentSection = initialSection;
             let aboutSequenceStarted = false;
             let isAboutSequenceAnimating = false;
+            let aboutSequenceGeneration = 0;
+            let aboutSectionExitInProgress = false;
             let aboutRevealTimer;
             let aboutModeTimer;
             let lastScrollSection = 0;
             let skillSequenceStarted = false;
             let skillSequenceStarting = false;
+            let skillSequenceGeneration = 0;
 
             // Fit the icons into free space beside or above the unchanged astronaut.
             const skillCard = document.querySelector('.skill-card');
@@ -5317,16 +5543,18 @@
                 window.setTimeout(resolve, milliseconds);
             });
 
-            const typeText = async (element, text) => {
+            const typeText = async (element, text, isCurrentRun = () => true) => {
                 element.replaceChildren();
                 const typingCharacterDelay = 52.5;
 
                 for (const character of text) {
+                    if (!isCurrentRun()) return;
                     const typedCharacter = document.createElement('span');
                     typedCharacter.className = 'typing-char is-current';
                     typedCharacter.textContent = character === ' ' ? '\u00a0' : character;
                     element.appendChild(typedCharacter);
                     await delay(typingCharacterDelay);
+                    if (!isCurrentRun()) return;
                     typedCharacter.classList.remove('is-current');
                 }
             };
@@ -5337,10 +5565,12 @@
                 }
 
                 skillSequenceStarting = true;
+                const run = ++skillSequenceGeneration;
+                const isCurrentRun = () => run === skillSequenceGeneration && activeAboutCard === 1;
                 try {
                     await delay(350);
 
-                    if (activeAboutCard !== 1) return;
+                    if (!isCurrentRun()) return;
 
                     skillSequenceStarted = true;
                     const skillTitle = document.querySelector('.skill-content .typing-text');
@@ -5349,19 +5579,19 @@
                     const skillItems = [...skillContent.querySelectorAll('.skill-item')];
                     skillItems.forEach((item) => item.classList.add('is-visible'));
                     await Promise.all([
-                        typeText(skillTitle, skillTitle.dataset.text),
-                        typeText(licenseTitle, licenseTitle.dataset.text),
-                        revealAboutRow(licenseRow)
+                        typeText(skillTitle, skillTitle.dataset.text, isCurrentRun),
+                        typeText(licenseTitle, licenseTitle.dataset.text, isCurrentRun),
+                        revealAboutRow(licenseRow, 0, isCurrentRun)
                     ]);
-                    document.querySelector('.skill-scroll-hint').classList.add('is-visible');
+                    if (isCurrentRun()) document.querySelector('.skill-scroll-hint').classList.add('is-visible');
                 } finally {
-                    skillSequenceStarting = false;
+                    if (run === skillSequenceGeneration) skillSequenceStarting = false;
                 }
             };
 
-            const revealAboutRow = async (row, wait = 0) => {
+            const revealAboutRow = async (row, wait = 0, isCurrentRun = () => true) => {
                 if (wait > 0) await delay(wait);
-                row.classList.add('is-visible');
+                if (isCurrentRun()) row.classList.add('is-visible');
             };
 
             const startAboutSequence = async () => {
@@ -5371,10 +5601,13 @@
 
                 aboutSequenceStarted = true;
                 isAboutSequenceAnimating = true;
+                const run = ++aboutSequenceGeneration;
+                const isCurrentRun = () => run === aboutSequenceGeneration;
                 document.body.classList.add('intro-scroll-lock');
 
                 try {
                     await delay(650);
+                    if (!isCurrentRun()) return;
 
                     const aboutTitle = about.querySelector('.about-content > .about-title .typing-text');
                     const experienceTitle = about.querySelector('.experience-content .typing-text');
@@ -5384,16 +5617,56 @@
                     const educationRows = about.querySelectorAll('.education-row');
 
                     await Promise.all([
-                        typeText(aboutTitle, aboutTitle.dataset.text),
-                        typeText(experienceTitle, experienceTitle.dataset.text),
-                        typeText(educationTitle, educationTitle.dataset.text),
-                        ...[...infoRows, ...experienceRows, ...educationRows].map(row => revealAboutRow(row))
+                        typeText(aboutTitle, aboutTitle.dataset.text, isCurrentRun),
+                        typeText(experienceTitle, experienceTitle.dataset.text, isCurrentRun),
+                        typeText(educationTitle, educationTitle.dataset.text, isCurrentRun),
+                        ...[...infoRows, ...experienceRows, ...educationRows].map(row => revealAboutRow(row, 0, isCurrentRun))
                     ]);
                     await delay(550);
                 } finally {
-                    isAboutSequenceAnimating = false;
-                    document.body.classList.remove('intro-scroll-lock');
+                    if (isCurrentRun()) {
+                        isAboutSequenceAnimating = false;
+                        document.body.classList.remove('intro-scroll-lock');
+                    }
                 }
+            };
+
+            const resetAboutSectionIntro = () => {
+                aboutSectionExitInProgress = false;
+                window.clearTimeout(aboutRevealTimer);
+                aboutRevealTimer = null;
+                window.clearTimeout(aboutEntryWheelTimer);
+                aboutEntryWheelGuard = false;
+                aboutSequenceGeneration += 1;
+                skillSequenceGeneration += 1;
+                aboutSequenceStarted = false;
+                isAboutSequenceAnimating = false;
+                skillSequenceStarted = false;
+                skillSequenceStarting = false;
+                document.body.classList.remove('intro-scroll-lock');
+                aboutSlider.classList.remove('about-is-visible');
+                aboutPagination.classList.remove('is-visible');
+                aboutSlider.style.setProperty('--about-offset', '0px');
+                aboutPaginationButtons.forEach((button, index) => {
+                    button.classList.toggle('is-active', index === 0);
+                });
+                activeAboutCard = 0;
+                about.querySelectorAll('.typing-text').forEach((element) => element.replaceChildren());
+                about.querySelectorAll('.about-row.is-visible').forEach((row) => row.classList.remove('is-visible'));
+                skillContent.querySelectorAll('.skill-item.is-visible').forEach((item) => item.classList.remove('is-visible'));
+                skillLicense.querySelector('.license-row')?.classList.remove('is-visible');
+                skillContent.querySelector('.skill-scroll-hint')?.classList.remove('is-visible');
+            };
+
+            const freezeAboutSectionIntro = () => {
+                aboutSectionExitInProgress = true;
+                window.clearTimeout(aboutRevealTimer);
+                aboutRevealTimer = null;
+                aboutSequenceGeneration += 1;
+                skillSequenceGeneration += 1;
+                isAboutSequenceAnimating = false;
+                skillSequenceStarting = false;
+                document.body.classList.remove('intro-scroll-lock');
             };
 
             const showAboutAtPageEnd = () => {
@@ -5401,7 +5674,7 @@
                     window.scrollY < projectsSectionTop - 10;
                 const reachedInteractionEnd = isInsideAboutSection;
 
-                if (reachedInteractionEnd &&
+                if (!aboutSectionExitInProgress && reachedInteractionEnd &&
                     !aboutSlider.classList.contains('about-is-visible') &&
                     !aboutRevealTimer) {
                     const revealAboutCard = () => {
@@ -5461,7 +5734,15 @@
                 }
             }
             updateContactScroll();
-            if (initialSection === 3) startContactReadyDelay();
+            if (initialSection === 3) {
+                startContactReadyDelay();
+                if (window.__portfolioContactEntryDelay) {
+                    window.setTimeout(() => {
+                        window.__portfolioContactEntryDelay = false;
+                        if (currentSection === 3) document.body.classList.add('contact-copy-revealed');
+                    }, 200);
+                }
+            }
 
             const setSecTxtOpacity = (progress) => {
                 secTxt.style.opacity = Math.max(0, Math.min(1, progress));
@@ -5517,6 +5798,7 @@
             };
 
             const restoreSecTxtAtTop = () => {
+                if (keepIntroTitleHiddenUntilWheel && window.scrollY <= 1) return;
                 firstSectionVisited = true;
                 dimVideoTitleOnReturn = true;
                 secTxt.classList.remove('about-mode');
@@ -5532,6 +5814,15 @@
             };
 
             const updateSecTxtPosition = () => {
+                if (keepIntroTitleHiddenUntilWheel && currentSection === 0 && window.scrollY <= 1) {
+                    window.clearTimeout(aboutModeTimer);
+                    aboutModeTimer = null;
+                    secTxt.style.visibility = 'hidden';
+                    setSecTxtOpacity(0);
+                    secTxtTicking = false;
+                    return;
+                }
+
                 const reachedAboutSection = currentSection === 1 && aboutSectionSettled;
                 const atAboutSection = window.scrollY >= aboutSectionTop - 10 &&
                     window.scrollY < projectsSectionTop;
@@ -5600,20 +5891,27 @@
                     : sectionScrollTarget === projectsSectionTop
                         ? 2
                         : sectionScrollTarget === aboutSectionTop ? 1 : 0;
+                if (currentSection === 3 && tvSectionIsActive) {
+                    tvSectionIsActive = false;
+                    resetTvSection(false);
+                }
+                if (currentSection !== 1) resetAboutSectionIntro();
                 if (currentSection === 2) {
                     document.body.classList.add('projects-active');
                     document.body.classList.remove('projects-nav-transition');
-                    scheduleAstronautPillAlignment();
                     if (!tvSectionIsActive) {
                         tvSectionIsActive = true;
                         resetTvSection(true);
+                        scheduleAstronautPillAlignment();
                     }
                     playProjectNoteIntro();
                 }
                 if (currentSection === 3) {
                     document.body.classList.remove('projects-active', 'projects-nav-transition');
                     document.body.classList.add('contact-active');
-                    document.body.classList.add('contact-copy-revealed');
+                    if (!window.__portfolioContactEntryDelay) {
+                        document.body.classList.add('contact-copy-revealed');
+                    }
                     startContactReadyDelay();
                 } else {
                     resetContactReady();
@@ -5646,14 +5944,28 @@
                             ? contactSectionTop
                             : initialSection === 2 ? projectsSectionTop : aboutSectionTop;
                         isScrollingToBottom = true;
-                        window.scrollTo({ top: sectionScrollTarget, behavior: 'smooth' });
+                        const settleBeforeEntryFade = initialSection === 2 &&
+                            window.__portfolioAboutEntryFade &&
+                            window.matchMedia('(min-width: 768px)').matches;
+                        window.scrollTo({ top: sectionScrollTarget, behavior: 'instant' });
+                        if (settleBeforeEntryFade) {
+                            if (window.__aboutInitialHash) {
+                                history.replaceState(null, '', `${window.location.pathname}${window.location.search}${window.__aboutInitialHash}`);
+                            }
+                        }
                         window.clearTimeout(smoothScrollTimer);
-                        smoothScrollTimer = window.setTimeout(ensureSectionArrival, 1500);
+                        ensureSectionArrival();
+                        if (initialSection === 2 && window.__portfolioProjectEntryDelay) {
+                            window.dispatchEvent(new Event('portfolio-project-entry-arrived'));
+                            window.setTimeout(() => {
+                                window.__portfolioProjectEntryDelay = false;
+                                if (currentSection === 2) playProjectNoteIntro();
+                            }, 200);
+                        }
                     });
                 };
 
-                if (isDirectProjectHashEntry) directProjectIntroVideoReady.then(beginInitialSectionScroll);
-                else beginInitialSectionScroll();
+                beginInitialSectionScroll();
             }
 
             const handleAboutWheel = (event) => {
@@ -5708,8 +6020,6 @@
                     } else if (contactPanelMoving) {
                         return;
                     } else if (window.scrollY <= contactSectionTop + 2) {
-                        resetContactReady();
-                        resetContactPanel();
                         currentSection = 2;
                         sectionScrollTarget = projectsSectionTop;
                         aboutSectionSettled = false;
@@ -5800,6 +6110,7 @@
                     }, 350);
 
                     if (event.deltaY < 0 && activeAboutCard === 0) {
+                        freezeAboutSectionIntro();
                         dimVideoTitleOnReturn = true;
                         document.body.classList.add('sec-txt-instant-top');
                         isScrollingToBottom = true;
@@ -5823,6 +6134,7 @@
 
                     if (wheelDirection > 0 &&
                         activeAboutCard === aboutPaginationButtons.length - 1) {
+                        freezeAboutSectionIntro();
                         isScrollingToBottom = true;
                         sectionScrollTarget = projectsSectionTop;
                         currentSection = 2;
@@ -5856,6 +6168,7 @@
                 // opacity transition이 끝날 때까지 body 스크롤을 확실하게 잠급니다.
                 if (isAtPageTop && canMoveDown && !introScrollUnlocked) {
                     event.preventDefault();
+                    keepIntroTitleHiddenUntilWheel = false;
                     secTxt.style.visibility = 'visible';
 
                     // 첫 번째 휠: 페이지는 고정하고 텍스트를 절반만 선명하게 만듭니다.
@@ -5916,10 +6229,9 @@
             };
 
             backToTop.addEventListener('click', () => {
+                if (currentSection === 1) freezeAboutSectionIntro();
                 dimVideoTitleOnReturn = true;
                 document.body.classList.add('sec-txt-instant-top');
-                resetContactReady();
-                resetContactPanel();
                 document.body.classList.remove(
                     'projects-active', 'contact-active', 'projects-nav-transition',
                     'header-target-about', 'header-target-projects', 'header-target-contact'
@@ -5941,8 +6253,9 @@
                 const touch = event.touches[0];
                 const card = event.target.closest('.about-card');
                 const cardCanScroll = card && ['auto', 'scroll'].includes(getComputedStyle(card).overflowY);
+                const selectableContactText = Boolean(event.target.closest('#contact-section #right_txt'));
                 aboutTouch = {
-                    x: touch.clientX, y: touch.clientY, card,
+                    x: touch.clientX, y: touch.clientY, card, target: event.target, selectableContactText,
                     scrollY: window.scrollY,
                     scrollTop: cardCanScroll ? card.scrollTop : 0,
                     maxScroll: cardCanScroll ? card.scrollHeight - card.clientHeight : 0,
@@ -5952,6 +6265,7 @@
 
             window.addEventListener('touchmove', (event) => {
                 if (!aboutTouch || event.touches.length !== 1) return;
+                if (aboutTouch.selectableContactText) return;
                 const dx = aboutTouch.x - event.touches[0].clientX;
                 const dy = aboutTouch.y - event.touches[0].clientY;
                 if (Math.abs(dy) > Math.abs(dx) && window.scrollY >= contactSectionTop - 1) {
@@ -5972,7 +6286,7 @@
             window.addEventListener('touchend', (event) => {
                 const gesture = aboutTouch;
                 aboutTouch = null;
-                if (!gesture || gesture.scrolledCard || !event.changedTouches.length) return;
+                if (!gesture || gesture.selectableContactText || gesture.scrolledCard || !event.changedTouches.length) return;
                 const dx = gesture.x - event.changedTouches[0].clientX;
                 const dy = gesture.y - event.changedTouches[0].clientY;
                 if (Math.max(Math.abs(dx), Math.abs(dy)) < 40) return;
@@ -6044,6 +6358,11 @@
                     : targetSection === projectsSectionTop
                         ? 2
                         : targetSection === aboutSectionTop ? 1 : 0;
+                if (currentSection === 3 && tvSectionIsActive) {
+                    tvSectionIsActive = false;
+                    resetTvSection(false);
+                }
+                if (currentSection !== 1) resetAboutSectionIntro();
                 if (currentSection === 3) startContactReadyDelay();
                 else {
                     resetContactReady();
@@ -6052,11 +6371,19 @@
                 if (currentSection === 2) {
                     document.body.classList.add('projects-active');
                     document.body.classList.remove('projects-nav-transition');
+                    if (!tvSectionIsActive) {
+                        tvSectionIsActive = true;
+                        resetTvSection(true);
+                        scheduleAstronautPillAlignment();
+                    }
+                    playProjectNoteIntro();
                 }
                 if (currentSection === 3) {
                     document.body.classList.remove('projects-active', 'projects-nav-transition');
                     document.body.classList.add('contact-active');
-                    document.body.classList.add('contact-copy-revealed');
+                    if (!window.__portfolioContactEntryDelay) {
+                        document.body.classList.add('contact-copy-revealed');
+                    }
                 }
                 aboutSectionSettled = currentSection === 1;
 
@@ -6122,7 +6449,7 @@
                 }
             }, { passive: true });
 
-            setSecTxtOpacity(window.scrollY > 0 ? 1 : 0);
+            setSecTxtOpacity(keepIntroTitleHiddenUntilWheel ? 0 : window.scrollY > 0 ? 1 : 0);
             updateSecTxtPosition();
 
         </script>

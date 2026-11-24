@@ -4,6 +4,29 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>LKJoo Portfolio</title>
+        <script>
+            window.__portfolioHomeEntryFade = false;
+            try {
+                window.__portfolioHomeEntryFade = sessionStorage.getItem('portfolioHomeEntryFade') === '1';
+                sessionStorage.removeItem('portfolioHomeEntryFade');
+            } catch (_) {}
+            if (window.__portfolioHomeEntryFade) {
+                document.documentElement.classList.add('portfolio-home-entry-pending');
+                window.addEventListener('DOMContentLoaded', () => {
+                    requestAnimationFrame(() => requestAnimationFrame(() => {
+                        document.documentElement.classList.add('portfolio-home-entry-ready');
+                        const homeWrap = document.querySelector('body.page-home #wrap');
+                        if (!homeWrap) return;
+                        const clearEntryState = (event) => {
+                            if (event.target !== homeWrap || (event.propertyName !== 'opacity' && event.propertyName !== 'transform')) return;
+                            document.documentElement.classList.remove('portfolio-home-entry-pending', 'portfolio-home-entry-ready');
+                            homeWrap.removeEventListener('transitionend', clearEntryState);
+                        };
+                        homeWrap.addEventListener('transitionend', clearEntryState);
+                    }));
+                }, { once: true });
+            }
+        </script>
     </head>
     <style>
         @font-face {
@@ -103,6 +126,34 @@
             background-color: white;
         }
 
+        #wrap {
+            transition: opacity 520ms ease, transform 520ms ease;
+        }
+
+        html.portfolio-home-entry-pending body.page-home #wrap {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        html.portfolio-home-entry-ready body.page-home #wrap {
+            opacity: 1;
+            transform: none;
+        }
+
+        body.page-home.page-leaving #wrap {
+            opacity: 0;
+            transform: translateY(-10px) scale(0.995);
+            pointer-events: none;
+        }
+
+        body.page-home.page-leaving #custom-cursor {
+            opacity: 0;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            #wrap { transition-duration: 1ms; }
+        }
+
         #bg-video {
             position: absolute;
             inset: 0;
@@ -189,7 +240,7 @@
             border-color: transparent;
         }
 
-        
+
 
         section {
             position: relative;
@@ -294,7 +345,7 @@
         #con_wrap > a:nth-child(2) {
             opacity: 0;
             transform: translateX(270px);
-            transition: transform 0.9s ease;
+            transition: transform 0.45s ease, opacity 0.25s ease;
         }
 
         #con_wrap > a:nth-child(3) {
@@ -420,7 +471,7 @@
             -moz-user-select: text !important;
             -ms-user-select: text !important;
         }
-        
+
         .tel {
             font: 22.5px / 33.75px '';
             float: left;
@@ -477,6 +528,50 @@
 
 
         <script>
+            const homeTransitionLinks = [...document.querySelectorAll('#con_wrap a[href]')];
+            let homeTransitionStarted = false;
+
+            homeTransitionLinks.forEach((link) => {
+                link.addEventListener('click', (event) => {
+                    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+                    if (link.target && link.target !== '_self') return;
+                    if (homeTransitionStarted) {
+                        event.preventDefault();
+                        return;
+                    }
+
+                    const destination = new URL(link.href, window.location.href);
+                    if (destination.origin !== window.location.origin || !destination.pathname.endsWith('/aboutMe.html')) return;
+
+                    event.preventDefault();
+                    homeTransitionStarted = true;
+                    const isContactDestination = destination.hash === '#contact-section';
+                    try { sessionStorage.removeItem('portfolioContactEntryDelay'); } catch (_) {}
+                    try { sessionStorage.removeItem('portfolioProjectEntryDelay'); } catch (_) {}
+                    if (!isContactDestination) {
+                        try { sessionStorage.setItem('portfolioAboutEntryFade', '1'); } catch (_) {}
+                        if (destination.hash === '#projects_sec') {
+                            try { sessionStorage.setItem('portfolioProjectEntryDelay', '1'); } catch (_) {}
+                        }
+                    } else {
+                        try { sessionStorage.removeItem('portfolioAboutEntryFade'); } catch (_) {}
+                        try { sessionStorage.setItem('portfolioContactEntryDelay', '1'); } catch (_) {}
+                    }
+                    document.body.classList.add('page-leaving');
+
+                    const navigate = () => window.location.assign(destination.href);
+                    const fallback = window.setTimeout(navigate, 650);
+                    const homeWrap = document.querySelector('#wrap');
+                    const finishTransition = (transitionEvent) => {
+                        if (transitionEvent.target !== transitionEvent.currentTarget || transitionEvent.propertyName !== 'opacity') return;
+                        window.clearTimeout(fallback);
+                        homeWrap.removeEventListener('transitionend', finishTransition);
+                        navigate();
+                    };
+                    homeWrap.addEventListener('transitionend', finishTransition);
+                });
+            });
+
             const firstCon = document.querySelector('#con_wrap > a:first-child .con');
             const secondCon = document.querySelector('#con_wrap > a:nth-child(2) .con');
             const thirdCon = document.querySelector('#con_wrap > a:nth-child(3) .con');
@@ -490,17 +585,23 @@
             let secondResetTimer;
             let thirdResetTimer;
 
-            setTimeout(() => {
+            requestAnimationFrame(() => {
                 conWrap.classList.add('intro-moving');
-            }, 700);
+            });
 
             setTimeout(() => {
                 conWrap.classList.add('intro-center-moving');
-            }, 1600);
+            }, 900);
 
             setTimeout(() => {
                 conWrap.classList.add('intro-ready');
-            }, 2500);
+            }, 1350);
+
+            conWrap.addEventListener('click', (event) => {
+                if (conWrap.classList.contains('intro-ready')) return;
+                event.preventDefault();
+                event.stopImmediatePropagation();
+            }, true);
 
             document.addEventListener('mousemove', (event) => {
                 customCursor.style.left = `${event.clientX}px`;
@@ -522,6 +623,7 @@
             });
 
             firstCon.addEventListener('mouseenter', () => {
+                if (!conWrap.classList.contains('intro-ready')) return;
                 clearTimeout(resetTimer);
                 wrap.classList.add('is-playing');
                 firstVideo.play();
@@ -536,6 +638,7 @@
             });
 
             secondCon.addEventListener('mouseenter', () => {
+                if (!conWrap.classList.contains('intro-ready')) return;
                 clearTimeout(secondResetTimer);
                 secondVideo.currentTime = 0;
                 const revealSecondVideo = () => {
@@ -557,6 +660,7 @@
             });
 
             thirdCon.addEventListener('mouseenter', () => {
+                if (!conWrap.classList.contains('intro-ready')) return;
                 clearTimeout(thirdResetTimer);
                 thirdVideo.currentTime = 0;
                 const revealThirdVideo = () => {

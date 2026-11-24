@@ -15,6 +15,10 @@
     .about-pill, .menu-pill { height: 32px; padding: 0 9px; white-space: nowrap; }
     .page-about header { background: rgba(0, 0, 0, 0.85); }
     .page-about.projects-active header { background: rgba(255, 255, 255, 0.9); }
+    html.portfolio-project-entry-pending .page-about header {
+        background: rgba(255, 255, 255, 0.9);
+        transition: none;
+    }
     body.page-about.projects-active #control_wrap a:first-child:hover .about-pill,
     body.page-about.projects-active #control_wrap a:first-child:focus .about-pill {
         background-color: transparent;
@@ -43,35 +47,31 @@
 /* Main: keep the marquee and three rings, with legible touch labels. */
 @media (max-width: 1500px) {
     .page-home {
-        --circle-size: clamp(74px, 13vw, 187.5px);
-        --circle-border: clamp(4px, 0.78vw, 11.25px);
+        --circle-size: 74px;
+        --circle-border: 4px;
         --circle-gap: clamp(12px, 4vw, 60px);
+        --circle-intro-offset: calc(var(--circle-size) + var(--circle-border) + var(--circle-border) + var(--circle-gap) - 25%);
         --home-contact-font-size: clamp(14px, 1.6vw, 22.5px);
     }
-    .page-home #wrap { height: auto; min-height: 100svh; }
+    .page-home #wrap { height: 100vh; height: 100svh; min-height: 100svh; }
     .page-home section {
         box-sizing: border-box;
         height: auto;
         min-height: 100svh;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-evenly;
-        gap: 32px;
-        padding-block: 24px 32px;
+        display: block;
+        padding: 0;
     }
-    .page-home section::after {
-        content: "";
-        order: 2;
-        flex: 0 0 calc(var(--home-contact-font-size) * 3);
-        pointer-events: none;
+    .page-home h1 {
+        font-size: clamp(44px, 8.5vw, 132.5px);
+        line-height: 237.5px;
+        padding-right: 40px;
     }
-    .page-home h1 { font-size: clamp(44px, 8.5vw, 132.5px); padding-right: 40px; }
-    .page-home .marquee { margin: 0; }
-    .page-home #con_wrap { order: 1; margin-top: 0; gap: var(--circle-gap); }
+    .page-home .marquee { margin: 37.5px 0; }
+    .page-home #con_wrap { margin-top: 150px; gap: var(--circle-gap); }
     .page-home .con { width: var(--circle-size); height: var(--circle-size); border-width: var(--circle-border); }
-    .page-home #con_wrap > a:first-child { transform: translateX(calc(var(--circle-size) + var(--circle-border) * 2 + var(--circle-gap))); }
-    .page-home #con_wrap > a:nth-child(2) { transform: translateX(calc(var(--circle-size) + var(--circle-border) * 2 + var(--circle-gap))); }
-    .page-home #con_wrap > a:nth-child(3) { transform: translateX(calc(-1 * (var(--circle-size) + var(--circle-border) * 2 + var(--circle-gap)))); }
+    .page-home #con_wrap > a:first-child { transform: translateX(var(--circle-intro-offset)); }
+    .page-home #con_wrap > a:nth-child(2) { transform: translateX(var(--circle-intro-offset)); }
+    .page-home #con_wrap > a:nth-child(3) { transform: translateX(calc(0px - var(--circle-intro-offset))); }
     .page-home #con_wrap.intro-moving > a:first-child,
     .page-home #con_wrap.intro-moving > a:nth-child(3),
     .page-home #con_wrap.intro-center-moving > a:first-child,
@@ -86,15 +86,39 @@
 }
 
 @media (max-width: 767px) {
-    .page-home { --circle-size: clamp(72px, 22vw, 150px); --circle-gap: clamp(10px, 3vw, 24px); }
+    .page-home { --circle-size: 105px; --circle-border: 4.19px; --circle-gap: clamp(10px, 3vw, 24px); }
     .page-home section { min-height: 100svh; }
     .page-home #con_wrap.intro-ready .con > div { opacity: 1; color: black; }
+}
+
+@media (max-width: 1024px) {
+    .page-home #con_wrap {
+        position: absolute;
+        top: calc(50% + 40px);
+        right: 0;
+        left: 0;
+        margin-top: 0;
+        transform: translateY(-50%);
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .page-home { --circle-size: 146.43px; --circle-border: 8.79px; }
+}
+
+@media (min-width: 1025px) and (max-width: 1500px) {
+    .page-home { --circle-size: 187.5px; --circle-border: 11.25px; }
 }
 
 @media (hover: none), (pointer: coarse) {
     .page-home #con_wrap.intro-ready .con > div { opacity: 1; color: black; }
     .page-home #con_txt_left, .page-home #con_txt_right { left: 0; right: 0; }
     .page-home #con_txt_left::after, .page-home #con_txt_right::after { display: none; }
+}
+
+@media (min-width: 768px) and (max-width: 1500px) {
+    .page-home #con_txt_left { justify-content: flex-start; text-align: left; }
+    .page-home #con_txt_right { justify-content: flex-end; text-align: right; }
 }
 
 @media (max-width: 1500px), (hover: none), (pointer: coarse) {
@@ -1013,7 +1037,7 @@
         color: #d28a80;
         font: 600 12px/1 'Share Tech Mono', monospace;
         cursor: pointer;
-        transition: border-color 140ms ease, background-color 140ms ease, color 140ms ease, transform 140ms ease, filter 140ms ease;
+        transition: transform 140ms ease, filter 140ms ease;
     }
     .page-about #projects_sec .mobile-project-channel:hover,
     .page-about #projects_sec .mobile-project-channel:focus-visible {
@@ -1757,3 +1781,51 @@
         transform: translate(-50%, -50%);
     }
 }
+
+@media (min-width: 1025px) {
+    .page-about #projects_sec #project-note #tv_tittle {
+        top: 17.4%;
+        font-size: clamp(32px, 8.9cqw, 64px);
+    }
+
+    .page-about #projects_sec #project-note:not(.is-gacha-project):not(.is-lotus-project) #note-description {
+        width: calc(100% - var(--note-content-left) - 4%);
+        white-space: nowrap;
+    }
+
+    .page-about #projects_sec #project-note #note-description {
+        font-size: clamp(9px, 2.05cqw, 15px);
+    }
+}
+
+@media (max-width: 1024px) {
+    .page-about #projects_sec #project-note.is-emoji-project .note-process-item:nth-child(2) {
+        top: 21.5%;
+    }
+    .page-about #projects_sec #project-note.is-emoji-project .note-process-item:nth-child(2) img {
+        top: 0.3%;
+        left: 0;
+        width: 100%;
+        height: 90%;
+    }
+    .page-about #projects_sec #project-note.is-emoji-project .note-process-item:nth-child(2) span {
+        top: 96.8%;
+    }
+    .page-about #projects_sec #project-note.is-emoji-project .note-process-item:nth-child(3),
+    .page-about #projects_sec #project-note.is-emoji-project .note-process-item:nth-child(4) {
+        top: 61.4%;
+    }
+}
+
+@media (min-width: 1025px) {
+    .page-about #projects_sec #project-note.is-emoji-project .note-process-item:nth-child(3) span,
+    .page-about #projects_sec #project-note.is-emoji-project .note-process-item:nth-child(4) span {
+        top: calc(84% + 0.8cqw - 1em);
+    }
+}
+
+.page-home #con_wrap:not(.intro-ready),
+.page-home #con_wrap:not(.intro-ready) * {
+    pointer-events: none !important;
+}
+
