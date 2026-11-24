@@ -1434,6 +1434,7 @@
             display: block;
             object-fit: fill;
             clip-path: none;
+            background-color: #000;
         }
 
         #tv_noise_video {
@@ -3147,6 +3148,26 @@
             const turn = document.querySelector('#turn');
             const tvStage = document.querySelector('#tv_stage');
             const tvVideo = document.querySelector('#tv_video');
+            const isDirectProjectHashEntry =
+                !window.__aboutPageReload && window.location.hash === '#projects_sec';
+            let preserveDirectProjectIntroPlayback = isDirectProjectHashEntry;
+            const directProjectIntroVideoReady = isDirectProjectHashEntry
+                ? new Promise((resolve) => {
+                    let hasResolved = false;
+                    const finish = () => {
+                        if (hasResolved) return;
+                        hasResolved = true;
+                        resolve();
+                    };
+                    tvVideo.addEventListener('playing', finish, { once: true });
+                    tvVideo.addEventListener('error', finish, { once: true });
+                    try {
+                        Promise.resolve(tvVideo.play()).then(finish, finish);
+                    } catch {
+                        finish();
+                    }
+                })
+                : Promise.resolve();
             const tvRidingVideo = document.querySelector('#tv_riding_video');
             const tvGachaVideo = document.querySelector('#tv_gacha_video');
             const tvLotusVideo = document.querySelector('#tv_lotus_video');
@@ -3459,6 +3480,7 @@
                 window.cancelAnimationFrame(projectNoteAnimationFrame);
                 projectNoteAnimationFrame = null;
                 projectNoteIntroComplete = true;
+                projectNote.classList.add('is-visible');
                 projectNote.classList.remove('is-playing');
                 projectNote.classList.add('has-static-paper');
                 if (tvMode === 'intro') projectNote.classList.add('is-intro');
@@ -4177,6 +4199,7 @@
 
             const resetTvSection = (playIntro = false, keepNoise = false, preserveProjectNoteTransition = false) => {
                 const keepProjectNoteTurning = preserveProjectNoteTransition && projectNote.classList.contains('is-turning');
+                const keepDirectIntroVideo = playIntro && preserveDirectProjectIntroPlayback;
                 if (!keepProjectNoteTurning) {
                     clearProjectNoteLayoutSettled();
                     projectNoteTurnRequestGeneration += 1;
@@ -4227,7 +4250,7 @@
                     tvNoiseVideo.pause();
                     if (tvNoiseVideo.readyState > 0) tvNoiseVideo.currentTime = 0;
                 }
-                tvVideo.pause();
+                if (!keepDirectIntroVideo) tvVideo.pause();
                 tvRidingVideo.pause();
                 tvRidingVideo.classList.remove('is-revealing');
                 if (tvRidingVideo.readyState > 0) tvRidingVideo.currentTime = 0;
@@ -4242,8 +4265,9 @@
                 if (tvEmojiVideo.readyState > 0) tvEmojiVideo.currentTime = 0;
 
                 if (playIntro) {
-                    tvVideo.currentTime = 0;
+                    if (!keepDirectIntroVideo) tvVideo.currentTime = 0;
                     tvVideo.play().catch(() => {});
+                    if (keepDirectIntroVideo) preserveDirectProjectIntroPlayback = false;
                 }
             };
 
@@ -5037,8 +5061,7 @@
 
             let tvSectionIsActive = false;
             const tvSectionObserver = new IntersectionObserver(([entry]) => {
-                const activeThreshold = matchMedia('(max-width: 1199px)').matches ? 0.25 : 0.5;
-                const isActive = entry.isIntersecting && entry.intersectionRatio >= activeThreshold;
+                const isActive = entry.isIntersecting;
                 if (isActive === tvSectionIsActive) return;
                 tvSectionIsActive = isActive;
                 if (isActive) playProjectNoteIntro();
@@ -5606,16 +5629,21 @@
             };
 
             if (initialSection !== 0) {
-                window.requestAnimationFrame(() => {
-                    syncSectionTops();
-                    sectionScrollTarget = initialSection === 3
-                        ? contactSectionTop
-                        : initialSection === 2 ? projectsSectionTop : aboutSectionTop;
-                    isScrollingToBottom = true;
-                    window.scrollTo({ top: sectionScrollTarget, behavior: 'smooth' });
-                    window.clearTimeout(smoothScrollTimer);
-                    smoothScrollTimer = window.setTimeout(ensureSectionArrival, 1500);
-                });
+                const beginInitialSectionScroll = () => {
+                    window.requestAnimationFrame(() => {
+                        syncSectionTops();
+                        sectionScrollTarget = initialSection === 3
+                            ? contactSectionTop
+                            : initialSection === 2 ? projectsSectionTop : aboutSectionTop;
+                        isScrollingToBottom = true;
+                        window.scrollTo({ top: sectionScrollTarget, behavior: 'smooth' });
+                        window.clearTimeout(smoothScrollTimer);
+                        smoothScrollTimer = window.setTimeout(ensureSectionArrival, 1500);
+                    });
+                };
+
+                if (isDirectProjectHashEntry) directProjectIntroVideoReady.then(beginInitialSectionScroll);
+                else beginInitialSectionScroll();
             }
 
             const handleAboutWheel = (event) => {
