@@ -42,7 +42,12 @@
 
 /* Main: keep the marquee and three rings, with legible touch labels. */
 @media (max-width: 1500px) {
-    .page-home { --circle-size: clamp(74px, 13vw, 187.5px); --circle-border: clamp(4px, 0.78vw, 11.25px); --circle-gap: clamp(12px, 4vw, 60px); }
+    .page-home {
+        --circle-size: clamp(74px, 13vw, 187.5px);
+        --circle-border: clamp(4px, 0.78vw, 11.25px);
+        --circle-gap: clamp(12px, 4vw, 60px);
+        --home-contact-font-size: clamp(14px, 1.6vw, 22.5px);
+    }
     .page-home #wrap { height: auto; min-height: 100svh; }
     .page-home section {
         box-sizing: border-box;
@@ -53,6 +58,12 @@
         justify-content: space-evenly;
         gap: 32px;
         padding-block: 24px 32px;
+    }
+    .page-home section::after {
+        content: "";
+        order: 2;
+        flex: 0 0 calc(var(--home-contact-font-size) * 3);
+        pointer-events: none;
     }
     .page-home h1 { font-size: clamp(44px, 8.5vw, 132.5px); padding-right: 40px; }
     .page-home .marquee { margin: 0; }
@@ -71,7 +82,7 @@
     .page-home #con_txt_left, .page-home #con_txt_right { left: 0; right: 0; }
     .page-home #con_txt_left::after, .page-home #con_txt_right::after { display: none; }
     .page-home #tel_wrap { position: absolute; z-index: 2; bottom: 65px; left: 33.75px; display: flex; flex-wrap: nowrap; gap: 18.75px; }
-    .page-home .tel { float: none; margin: 0; font: 400 clamp(14px, 1.6vw, 22.5px) / 1.5 'Noto Sans', sans-serif; }
+    .page-home .tel { float: none; margin: 0; font: 400 var(--home-contact-font-size) / 1.5 'Noto Sans', sans-serif; }
 }
 
 @media (max-width: 767px) {
