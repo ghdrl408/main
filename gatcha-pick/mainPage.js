@@ -607,6 +607,8 @@ function syncMainControls() {
   choiceButtons.forEach(button => {
     button.disabled = isProfileOpen;
     button.setAttribute("aria-disabled", String(isProfileOpen));
+    const isPressed = button.getAttribute("aria-pressed") === "true";
+    setButtonImage(button, isPressed ? "pressed" : (!isProfileOpen && button.matches(":hover") ? "hover" : "idle"));
   });
 }
 
@@ -964,20 +966,25 @@ function setButtonImage(button, state) {
 
 for (const button of choiceButtons) {
   button.addEventListener("pointerenter", () => {
+    if (button.disabled) return;
     if (button.getAttribute("aria-pressed") !== "true") setButtonImage(button, "hover");
   });
 
   button.addEventListener("pointerleave", () => {
+    if (button.disabled) return;
     if (button.getAttribute("aria-pressed") !== "true") setButtonImage(button, "idle");
   });
 
-  button.addEventListener("pointerdown", () => setButtonImage(button, "pressed"));
+  button.addEventListener("pointerdown", () => {
+    if (!button.disabled) setButtonImage(button, "pressed");
+  });
   button.addEventListener("pointerup", () => {
+    if (button.disabled) return;
     if (button.getAttribute("aria-pressed") !== "true") setButtonImage(button, "hover");
   });
 
   button.addEventListener("click", () => {
-    if (profilePanelElement?.classList.contains("is-open")) return;
+    if (button.disabled || profilePanelElement?.classList.contains("is-open")) return;
 
     if (choiceStage === "category") {
       selectedActivityChoice = button.dataset.choice === "food" ? "food" : "place";

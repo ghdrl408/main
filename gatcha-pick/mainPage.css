@@ -141,6 +141,10 @@ body {
   line-height: 0;
 }
 
+.reference-button:disabled {
+  pointer-events: none;
+}
+
 .button-place {
   left: 23.9%;
 }
