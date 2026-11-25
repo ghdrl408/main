@@ -1595,19 +1595,33 @@
             background-color: #000;
         }
 
-        #tv_noise_video {
+        #tv_noise_overlay {
             position: absolute;
             z-index: 1;
             left: 9.45%;
             top: 7.801%;
             width: 83.327%;
             height: 73.439%;
-            display: block;
-            object-fit: fill;
-            clip-path: none;
+            overflow: hidden;
             opacity: 0;
+            visibility: hidden;
             pointer-events: none;
-            transition: none;
+            background-color: #777;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='100'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.92' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            background-size: 110% 110%;
+            transition: opacity 35ms linear;
+        }
+
+        #tv_noise_overlay.is-active {
+            opacity: 1;
+            visibility: visible;
+            animation: tvNoiseJitter 90ms steps(2, end) infinite;
+        }
+
+        @keyframes tvNoiseJitter {
+            0% { background-position: 0 0; filter: contrast(1.15) brightness(.88); }
+            50% { background-position: 11px -7px; filter: contrast(1.8) brightness(1.15); }
+            100% { background-position: -8px 5px; filter: contrast(1.35) brightness(.96); }
         }
 
         #tv_stage.is-screen-transitioning #tv_video,
@@ -1747,7 +1761,7 @@
             to { clip-path: inset(0); }
         }
 
-        #tv_noise_video.is-active {
+        #tv_noise_overlay.is-active {
             opacity: 1;
         }
 
@@ -1844,6 +1858,11 @@
 
         #project-note.is-visible {
             opacity: 1;
+        }
+
+        #project-note.is-channel-changing {
+            opacity: 0;
+            transition-duration: 180ms;
         }
 
         #project-note-paper {
@@ -3129,7 +3148,7 @@
                     <div class="desktop-project-composition">
                     <div id="pro_2">
                         <div id="tv_stage">
-                            <video id="tv_video" src="pf_img/proImg/시작영상.mp4" muted loop playsinline preload="metadata" aria-label="Riding Busan 시작 영상"></video>
+                            <video id="tv_video" src="pf_img/proImg/시작영상.mp4" poster="pf_img/proImg/intro-poster.jpg" muted loop playsinline preload="metadata" aria-label="Riding Busan 시작 영상"></video>
                             <a id="tv_riding_link" href="https://riding-busan.ghdrl408.chatgpt.site/" target="_blank" rel="noopener noreferrer" aria-label="Riding Busan 프로젝트 영상">
                                 <video id="tv_riding_video" src="pf_img/proImg/라이딩부산.mp4" muted loop playsinline preload="none" aria-hidden="true"></video>
                             </a>
@@ -3142,7 +3161,7 @@
                             <a id="tv_emoji_link" aria-label="네 번째 프로젝트 영상">
                                 <video id="tv_emoji_video" src="pro_3/웅냐머리 끝.mp4" muted loop playsinline preload="none" aria-hidden="true"></video>
                             </a>
-                            <video id="tv_noise_video" src="pf_img/proImg/변환용 노이즈.mp4" muted playsinline preload="none" aria-hidden="true"></video>
+                            <div id="tv_noise_overlay" aria-hidden="true"></div>
                             <img id="tv_wrap" src="./pf_img/proImg/tv.png" alt="tv">
                             <div id="tv_no">CH 00</div>
                             <img id="astronaut-head-backdrop" src="pf_img/proImg/우주인머리 뒷배경.png" alt="">
@@ -3408,7 +3427,7 @@
             const tvGachaLink = document.querySelector('#tv_gacha_link');
             const tvLotusLink = document.querySelector('#tv_lotus_link');
             const tvEmojiLink = document.querySelector('#tv_emoji_link');
-            const tvNoiseVideo = document.querySelector('#tv_noise_video');
+            const tvNoiseVideo = document.querySelector('#tv_noise_overlay');
             const getTvVideoForMode = (mode) => ({
                 intro: tvVideo,
                 riding: tvRidingVideo,
@@ -3669,6 +3688,7 @@
             };
             window.addEventListener('resize', syncRidingMobileProjectControls);
             let tvNoiseFadeTimer = null;
+            let tvTransitionGeneration = 0;
             const tvNoiseRevealMs = 445;
             const tvScreenRiseDurationMs = 180;
             const tvNoiseDurationMs = tvNoiseRevealMs + tvScreenRiseDurationMs + 50;
@@ -3678,48 +3698,109 @@
                 window.clearTimeout(tvScreenTransitionTimer);
                 tvStage.classList.add('is-screen-transitioning');
             };
+            const waitForTvVideoFrame = (video) => new Promise((resolve) => {
+                let settled = false;
+                let retryTimer = null;
+                let retryCount = 0;
+                const cleanup = () => {
+                    video.removeEventListener('loadeddata', checkFrame);
+                    video.removeEventListener('canplay', checkFrame);
+                    video.removeEventListener('playing', checkFrame);
+                    video.removeEventListener('seeked', checkFrame);
+                    video.removeEventListener('error', onError);
+                };
+                const finish = (ready) => {
+                    if (settled) return;
+                    settled = true;
+                    window.clearTimeout(retryTimer);
+                    cleanup();
+                    resolve(ready);
+                };
+                const checkFrame = () => {
+                    if (video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA || !video.videoWidth) return;
+                    cleanup();
+                    window.requestAnimationFrame(() => window.requestAnimationFrame(() => {
+                        finish(video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA && video.videoWidth > 0);
+                    }));
+                };
+                const onError = () => {
+                    if (settled) return;
+                    retryCount += 1;
+                    retryTimer = window.setTimeout(() => {
+                        if (settled || video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) return;
+                        video.load();
+                        video.play().catch(() => {});
+                    }, Math.min(3000, 500 + retryCount * 500));
+                };
+                video.addEventListener('loadeddata', checkFrame);
+                video.addEventListener('canplay', checkFrame);
+                video.addEventListener('playing', checkFrame);
+                video.addEventListener('seeked', checkFrame);
+                video.addEventListener('error', onError);
+                checkFrame();
+            });
+            const warmTvVideo = (video) => {
+                if (!video || video.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA || video.dataset.warmupStarted === 'true') return;
+                video.dataset.warmupStarted = 'true';
+                video.preload = 'auto';
+                if (video.networkState === HTMLMediaElement.NETWORK_EMPTY) video.load();
+            };
+            const warmNextTvVideo = (mode) => {
+                const nextVideo = {
+                    intro: tvRidingVideo,
+                    riding: tvGachaVideo,
+                    gacha: tvLotusVideo,
+                    lotus: tvEmojiVideo,
+                    emoji: tvRidingVideo
+                }[mode];
+                warmTvVideo(nextVideo);
+            };
             const prepareTvChannelVideo = (nextVideo, outgoingVideo) => {
                 [tvVideo, tvRidingVideo, tvGachaVideo, tvLotusVideo, tvEmojiVideo].forEach((video) => {
                     if (video === outgoingVideo) return;
                     video.pause();
                     video.classList.remove('is-revealing');
                 });
-                if (nextVideo) {
-                    if (nextVideo.readyState > 0) nextVideo.currentTime = 0;
-                    nextVideo.play().catch(() => {});
-                }
+                if (!nextVideo) return Promise.resolve(true);
+                if (nextVideo.readyState > 0) nextVideo.currentTime = 0;
+                const firstFrameReady = waitForTvVideoFrame(nextVideo);
+                nextVideo.play().catch(() => {});
+                return firstFrameReady;
             };
-            const startTvNoiseOverlay = (onNoiseReady, outgoingVideo, keepIntroHidden = true) => {
-                tvNoiseVideo.pause();
-                if (tvNoiseVideo.readyState > 0) tvNoiseVideo.currentTime = 0;
+            const startTvNoiseOverlay = (onNoiseReady, outgoingVideo, nextFrameReady) => {
+                const transitionGeneration = ++tvTransitionGeneration;
                 let activated = false;
+                let minimumNoiseElapsed = false;
+                let nextFrameAvailable = false;
+                let transitionRevealed = false;
+                const revealWhenReady = () => {
+                    if (!activated || !minimumNoiseElapsed || !nextFrameAvailable || transitionRevealed ||
+                        tvMode !== 'transitioning' || transitionGeneration !== tvTransitionGeneration) return;
+                    transitionRevealed = true;
+                    onNoiseReady();
+                    tvRevealTimer = window.setTimeout(() => {
+                        if (transitionGeneration !== tvTransitionGeneration) return;
+                        tvNoiseVideo.classList.remove('is-active');
+                    }, tvScreenRiseDurationMs + 50);
+                };
+                Promise.resolve(nextFrameReady).then((ready) => {
+                    nextFrameAvailable = ready;
+                    revealWhenReady();
+                });
                 const activateNoise = () => {
-                    if (activated || tvMode !== 'transitioning') return;
+                    if (activated || tvMode !== 'transitioning' || transitionGeneration !== tvTransitionGeneration) return;
                     activated = true;
                     outgoingVideo?.pause();
                     outgoingVideo?.classList.remove('is-revealing');
-                    if (keepIntroHidden) tvStage.classList.add('has-project-video');
+                    tvStage.classList.add('has-project-video');
                     tvNoiseVideo.classList.add('is-active');
                     beginTvScreenTransition();
-                    tvNoiseFadeTimer = window.setTimeout(onNoiseReady, tvNoiseRevealMs);
-                    tvRevealTimer = window.setTimeout(() => {
-                        tvNoiseVideo.classList.remove('is-active');
-                        tvNoiseVideo.pause();
-                    }, tvNoiseDurationMs);
+                    tvNoiseFadeTimer = window.setTimeout(() => {
+                        minimumNoiseElapsed = true;
+                        revealWhenReady();
+                    }, tvNoiseRevealMs);
                 };
-
-                if (typeof tvNoiseVideo.requestVideoFrameCallback === 'function') {
-                    tvNoiseVideo.requestVideoFrameCallback(() => activateNoise());
-                } else {
-                    tvNoiseVideo.addEventListener('playing', () => {
-                        window.requestAnimationFrame(() => {
-                            window.requestAnimationFrame(activateNoise);
-                        });
-                    }, { once: true });
-                }
-                tvNoiseVideo.play().catch(() => {
-                    if (tvNoiseVideo.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) activateNoise();
-                });
+                window.requestAnimationFrame(() => window.requestAnimationFrame(activateNoise));
             };
             const finishTvScreenTransitionAfterReveal = () => {
                 window.clearTimeout(tvScreenTransitionTimer);
@@ -4188,11 +4269,14 @@
             };
             let pendingProjectNoteProject = null;
             const setProjectNoteProjectForTransition = (project) => {
-                if (projectNote.classList.contains('is-turning')) {
-                    pendingProjectNoteProject = project;
-                    return;
+                if (projectNote.classList.contains('is-turning') || projectNote.classList.contains('is-turn-loading')) {
+                    projectNoteTurnRequestGeneration += 1;
+                    window.clearTimeout(projectNoteTurnTimer);
+                    resetProjectNoteToFirstPage();
                 }
                 pendingProjectNoteProject = null;
+                pendingProjectNoteTextUpdates.clear();
+                projectNote.classList.remove('is-channel-changing');
                 setProjectNoteProject(project);
             };
 
@@ -4577,12 +4661,12 @@
                 }, turnDurationMs);
             };
 
-            const resetTvSection = (playIntro = false, keepNoise = false, preserveProjectNoteTransition = false) => {
+            const resetTvSection = (playIntro = false, keepNoise = false, preserveProjectNoteTransition = false, keepIntroPlayback = false) => {
                 if (!playIntro && window.matchMedia('(max-width: 767px)').matches) {
                     mobileProjectLoopStarted = false;
                 }
                 const keepProjectNoteTurning = preserveProjectNoteTransition && projectNote.classList.contains('is-turning');
-                const keepDirectIntroVideo = playIntro && preserveDirectProjectIntroPlayback;
+                const keepDirectIntroVideo = playIntro && (preserveDirectProjectIntroPlayback || keepIntroPlayback);
                 if (!keepProjectNoteTurning) {
                     clearProjectNoteLayoutSettled();
                     projectNoteTurnRequestGeneration += 1;
@@ -4599,6 +4683,7 @@
                 }
                 window.clearTimeout(tvNoiseFadeTimer);
                 window.clearTimeout(tvRevealTimer);
+                tvTransitionGeneration += 1;
                 window.clearTimeout(tvScreenTransitionTimer);
                 window.clearTimeout(projectNoteIntroPromptTimer);
                 projectNoteIntroPromptTimer = null;
@@ -4607,7 +4692,7 @@
                 setMobileProjectChannelLayout('intro');
                 tvStage.classList.remove('is-intro', 'is-transitioning', 'is-screen-transitioning', 'is-small-text-exiting', 'is-small-text-ready', 'is-riding-ready', 'has-project-video');
                 if (!keepProjectNoteTurning) {
-                    projectNote.classList.remove('is-intro', 'is-intro-prompt-visible', 'is-transitioning', 'is-riding-ready', 'is-details-visible', 'is-turn-loading', 'is-turning', 'is-turning-back', 'is-turning-to-third', 'is-turn-complete', 'is-later-page', 'is-second-page', 'is-third-page', 'has-tape');
+                    projectNote.classList.remove('is-intro', 'is-intro-prompt-visible', 'is-transitioning', 'is-channel-changing', 'is-riding-ready', 'is-details-visible', 'is-turn-loading', 'is-turning', 'is-turning-back', 'is-turning-to-third', 'is-turn-complete', 'is-later-page', 'is-second-page', 'is-third-page', 'has-tape');
                     projectNotePaper.classList.remove('is-folded', 'is-turning', 'is-turning-back', 'is-turn-complete', 'is-folded-corner-visible');
                     syncProjectNotePageAssets();
                     projectNoteTapeWrappers.forEach((tape) => tape.classList.remove('is-playing', 'is-complete'));
@@ -4636,8 +4721,6 @@
                     setTvPlainText(tvSmallTxt, 'Press the arrow keys');
                 if (!keepNoise) {
                     tvNoiseVideo.classList.remove('is-active');
-                    tvNoiseVideo.pause();
-                    if (tvNoiseVideo.readyState > 0) tvNoiseVideo.currentTime = 0;
                 }
                 if (!keepDirectIntroVideo) tvVideo.pause();
                 tvRidingVideo.pause();
@@ -4656,6 +4739,7 @@
                 if (playIntro) {
                     if (!keepDirectIntroVideo) tvVideo.currentTime = 0;
                     tvVideo.play().catch(() => {});
+                    warmNextTvVideo(playIntro ? 'intro' : 'riding');
                     if (keepDirectIntroVideo) preserveDirectProjectIntroPlayback = false;
                 }
             };
@@ -4681,60 +4765,16 @@
                 window.clearTimeout(projectNoteTurnTimer);
                 window.clearTimeout(projectNoteContentRevealTimer);
                 window.clearTimeout(projectNoteFoldedCornerTimer);
-                const turnRequestGeneration = ++projectNoteTurnRequestGeneration;
+                projectNoteTurnRequestGeneration += 1;
                 resetProjectNoteTapeMotion();
-
-                if (!projectNote.classList.contains('is-details-visible')) {
-                    projectNote.classList.remove('is-turn-loading');
-                    resetProjectNoteToFirstPage();
-                    return;
-                }
-
-                const fromPage = projectNotePage;
-                const isLaterPage = projectNotePage > 1;
-                const turnDirection = isLaterPage ? 'prev' : 'next';
-                projectNote.classList.remove('is-turn-complete');
-                projectNotePaper.classList.remove('is-turn-complete', 'is-folded', 'is-folded-corner-visible');
-                projectNote.classList.add('is-turn-loading');
-                projectNote.classList.add('is-turning');
-                projectNote.classList.toggle('is-turning-back', isLaterPage);
-                projectNote.classList.remove('is-turning-to-third');
-                projectNotePaper.classList.remove('is-turning', 'is-turning-back');
-
-                loadProjectNoteTurnMotion(turnDirection, fromPage).then((turnDurationMs) => {
-                    if (turnRequestGeneration !== projectNoteTurnRequestGeneration ||
-                        !projectNote.classList.contains('is-turning')) return;
-                    projectNote.classList.remove('is-turn-loading');
-                    projectNotePaper.classList.add('is-turning');
-                    if (isLaterPage) projectNotePaper.classList.add('is-turning-back');
-                    projectNoteTurnTimer = window.setTimeout(() => {
-                        if (turnRequestGeneration !== projectNoteTurnRequestGeneration) return;
-                        projectNoteTurnRequestGeneration += 1;
-                        resetProjectNoteToFirstPage();
-                        projectNote.classList.remove('is-turn-loading', 'is-details-visible', 'has-tape');
-                        tvStage.classList.remove('is-details-visible');
-                        projectNoteTapeWrappers.forEach((tape) => tape.classList.remove('is-playing', 'is-complete'));
-                        if (pendingProjectNoteProject !== null) {
-                            const nextProject = pendingProjectNoteProject;
-                            pendingProjectNoteProject = null;
-                            setProjectNoteProject(nextProject);
-                            if (nextProject === 'lotus') window.requestAnimationFrame(fitLotusProjectNoteTitle);
-                        }
-                        for (const updateText of pendingProjectNoteTextUpdates.values()) updateText();
-                        pendingProjectNoteTextUpdates.clear();
-                        if (tvMode === 'intro') {
-                            setProjectNoteProject('riding');
-                            projectNote.classList.remove('is-riding-ready');
-                            if (projectNoteIntroComplete) {
-                                projectNote.classList.add('is-intro');
-                                revealProjectNoteIntroPrompt();
-                            }
-                            setTvPlainText(tvTitle, 'RIDING BUSAN');
-                            setTvPlainText(noteDescription, '');
-                            noteDescriptionLayoutText = '';
-                        }
-                    }, turnDurationMs);
-                });
+                pendingProjectNoteProject = null;
+                pendingProjectNoteTextUpdates.clear();
+                projectNote.classList.add('is-channel-changing');
+                projectNote.classList.remove('is-details-visible', 'has-tape');
+                projectNotePaper.classList.remove('is-turning', 'is-turning-back', 'is-turn-complete', 'is-folded');
+                projectNoteTapeWrappers.forEach((tape) => tape.classList.remove('is-playing', 'is-complete'));
+                tvStage.classList.remove('is-details-visible');
+                resetProjectNoteToFirstPage();
             };
 
             const startTvRide = () => {
@@ -4765,13 +4805,14 @@
                 tvStage.classList.remove('is-intro');
                 tvStage.classList.add('is-transitioning');
 
-                prepareTvChannelVideo(tvRidingVideo, outgoingVideo);
+                const nextVideoReady = prepareTvChannelVideo(tvRidingVideo, outgoingVideo);
 
                 startTvNoiseOverlay(() => {
                     tvRidingVideo.classList.add('is-revealing');
                     finishTvScreenTransitionAfterReveal();
                     tvStage.classList.remove('is-transitioning');
                     tvMode = 'riding';
+                    warmNextTvVideo('riding');
                     syncRidingMobileProjectControls();
                     setProjectNoteProjectForTransition('riding');
                     setTvStaggeredText(tvTitle, '라이딩부산', 0, 19);
@@ -4786,7 +4827,7 @@
                         scheduleProjectNoteFoldedCornerAfterContent(1);
                     }
                     projectNoteDetailsTimer = window.setTimeout(showProjectNoteDetails, 850);
-                }, outgoingVideo);
+                }, outgoingVideo, nextVideoReady);
             };
 
             const startTvGacha = () => {
@@ -4809,7 +4850,7 @@
                 tvGachaLink.classList.remove('is-interactive');
                 tvLotusLink.classList.remove('is-interactive');
 
-                prepareTvChannelVideo(tvGachaVideo, outgoingVideo);
+                const nextVideoReady = prepareTvChannelVideo(tvGachaVideo, outgoingVideo);
 
                 startTvNoiseOverlay(() => {
                     tvGachaVideo.classList.add('is-revealing');
@@ -4819,6 +4860,7 @@
                     projectNote.classList.remove('is-transitioning');
                     projectNote.classList.add('is-riding-ready');
                     tvMode = 'gacha';
+                    warmNextTvVideo('gacha');
                     setProjectNoteProjectForTransition('gacha');
                     setTvStaggeredText(tvTitle, '가챠픽', 0, 19);
                     updateNoteDescription();
@@ -4830,7 +4872,7 @@
                         scheduleProjectNoteFoldedCornerAfterContent(1);
                     }
                     projectNoteDetailsTimer = window.setTimeout(showProjectNoteDetails, 850);
-                }, outgoingVideo);
+                }, outgoingVideo, nextVideoReady);
             };
 
             const startTvLotus = () => {
@@ -4854,7 +4896,7 @@
                 tvLotusLink.classList.remove('is-interactive');
                 tvEmojiLink.classList.remove('is-interactive');
 
-                prepareTvChannelVideo(tvLotusVideo, outgoingVideo);
+                const nextVideoReady = prepareTvChannelVideo(tvLotusVideo, outgoingVideo);
 
                 startTvNoiseOverlay(() => {
                     tvLotusVideo.classList.add('is-revealing');
@@ -4864,6 +4906,7 @@
                     projectNote.classList.remove('is-transitioning');
                     projectNote.classList.add('is-riding-ready');
                     tvMode = 'lotus';
+                    warmNextTvVideo('lotus');
                     setProjectNoteProjectForTransition('lotus');
                     setTvStaggeredText(tvTitle, '부여가을연꽃축제', 0, 19);
                     window.requestAnimationFrame(fitLotusProjectNoteTitle);
@@ -4875,7 +4918,7 @@
                         scheduleProjectNoteFoldedCornerAfterContent(1);
                     }
                     projectNoteDetailsTimer = window.setTimeout(showProjectNoteDetails, 850);
-                }, outgoingVideo);
+                }, outgoingVideo, nextVideoReady);
             };
 
             const startTvEmoji = () => {
@@ -4902,7 +4945,7 @@
                 tvLotusLink.classList.remove('is-interactive');
                 tvEmojiLink.classList.remove('is-interactive');
 
-                prepareTvChannelVideo(tvEmojiVideo, outgoingVideo);
+                const nextVideoReady = prepareTvChannelVideo(tvEmojiVideo, outgoingVideo);
 
                 startTvNoiseOverlay(() => {
                     tvEmojiVideo.classList.add('is-revealing');
@@ -4912,6 +4955,7 @@
                     projectNote.classList.remove('is-transitioning');
                     projectNote.classList.add('is-riding-ready');
                     tvMode = 'emoji';
+                    warmNextTvVideo('emoji');
                     setProjectNoteProjectForTransition('emoji');
                     setTvStaggeredText(tvTitle, '고양이 웅냐', 0, 19);
                     updateNoteDescription();
@@ -4922,7 +4966,7 @@
                         scheduleProjectNoteFoldedCornerAfterContent(1);
                     }
                     projectNoteDetailsTimer = window.setTimeout(showProjectNoteDetails, 850);
-                }, outgoingVideo);
+                }, outgoingVideo, nextVideoReady);
             };
 
             const startTvNextChannel = () => {
@@ -4975,16 +5019,15 @@
                 tvGachaLink.classList.remove('is-interactive');
                 tvLotusLink.classList.remove('is-interactive');
                 tvEmojiLink.classList.remove('is-interactive');
-                prepareTvChannelVideo(null, outgoingVideo);
+                const introFrameReady = prepareTvChannelVideo(tvVideo, outgoingVideo);
                 startTvNoiseOverlay(() => {
-                    resetTvSection(true, true, true);
+                    resetTvSection(true, true, true, true);
                     tvMode = 'transitioning';
                     tvRevealTimer = window.setTimeout(() => {
                         tvNoiseVideo.classList.remove('is-active');
-                        tvNoiseVideo.pause();
                         tvMode = 'intro';
                     }, tvNoiseDurationMs - tvNoiseRevealMs);
-                }, outgoingVideo, false);
+                }, outgoingVideo, introFrameReady);
             };
             const startTvPreviousChannel = () => {
                 if (tvMode === 'emoji') startTvLotus();
