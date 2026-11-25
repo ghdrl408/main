@@ -47,7 +47,6 @@ jobs:
             <title>LKJoo Portfolio</title>
           </head>
           <body>
-            <a href="portfolio/mainPage.html">포트폴리오로 이동</a>
             <script>location.replace("portfolio/mainPage.html");</script>
           </body>
           </html>
