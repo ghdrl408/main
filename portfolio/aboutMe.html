@@ -439,6 +439,11 @@
             background-color: #fff;
         }
 
+        html.portfolio-about-entry-pending body.page-about,
+        html.portfolio-about-entry-pending body.page-about #wrap {
+            background-color: #fff;
+        }
+
         html.portfolio-about-entry-pending body.page-about #wrap > section,
         html.portfolio-about-entry-ready body.page-about #wrap > section {
             transition: opacity 520ms ease;
@@ -935,7 +940,11 @@
         #contact-section #right_txt::selection,
         #contact-section #right_txt *::selection,
         #contact-section .contact-selectable-text::selection,
-        #contact-section .contact-selectable-text *::selection,
+        #contact-section .contact-selectable-text *::selection {
+            background-color: rgba(0, 0, 0, 0.8) !important;
+            color: #fff !important;
+        }
+
         #contact-section #right_txt::-moz-selection,
         #contact-section #right_txt *::-moz-selection,
         #contact-section .contact-selectable-text::-moz-selection,
@@ -1127,6 +1136,15 @@
             transition: transform 0.3s ease-out 0.2s, visibility 0s linear 0.2s;
         }
 
+        @media (max-width: 1500px) {
+            #about-slider.about-is-resetting {
+                transform: translateY(100%) translateX(var(--about-offset));
+                visibility: hidden;
+                pointer-events: none;
+                transition: none !important;
+            }
+        }
+
         .about-card {
             width: var(--about-card-width);
             height: 640px;
@@ -1262,6 +1280,10 @@
             transform: translateY(12px);
             transition: transform 0.42s ease, opacity 0.42s ease;
         }
+
+        .skill-premiere { order: 1; }
+        .skill-figma,
+        .skill-clipstudio { order: 2; }
 
         .skill-item.is-visible {
             opacity: 1;
@@ -1593,6 +1615,10 @@
         #tv_stage.is-screen-transitioning #tv_gacha_video:not(.is-revealing),
         #tv_stage.is-screen-transitioning #tv_lotus_video:not(.is-revealing),
         #tv_stage.is-screen-transitioning #tv_emoji_video:not(.is-revealing) {
+            visibility: hidden;
+        }
+
+        #tv_stage.has-project-video #tv_video {
             visibility: hidden;
         }
 
@@ -2817,7 +2843,7 @@
             visibility: hidden;
         }
 
-        #project-note.is-intro #note-intro-prompt {
+        #project-note.is-intro.is-intro-prompt-visible #note-intro-prompt {
             opacity: 1;
             visibility: visible;
             animation: tvPressBlink 900ms steps(1, end) infinite;
@@ -2989,7 +3015,7 @@
 
 
     </style>
-    <link rel="stylesheet" href="responsive.css?v=20261116-tablet-centered-api-card">
+    <link rel="stylesheet" href="responsive.css?v=20261125-skill-layout">
 
 
 
@@ -2999,7 +3025,7 @@
                 <header>
                     <a href="mainPage.html" rel="noopener noreferrer"><h1 class="header-brand"><span class="name"><span class="L">L</span>eeKIjoo</span></h1></a>
                         <ul id="control_wrap">
-                        <a href="aboutMe.html#about-section"><li><div class="about-pill">About me</div></li></a>
+                    <a href="aboutMe.html#about-section"><li><div class="about-pill">About me</div></li></a>
                         <a href="aboutMe.html#projects_sec"><li><div class="menu-pill">Projects</div></li></a>
                         <a href="aboutMe.html#contact-section"><li><div class="menu-pill">Contact</div></li></a>
                     </ul>
@@ -3012,7 +3038,7 @@
 
                 <section id="about-section" class="page-section about-section">
                     <div id="sec_txt">
-                        <div id="fst_txt" ><span id="keep_txt">K<span class="overlap-o">EE</span>P QUESTINING,</span><br> <div id="line_txt"><span>WHO</span><span>am</span><span>I</span> ?</div></div>
+                        <div id="fst_txt" ><span id="keep_txt">K<span class="overlap-o">EE</span>P QUESTIONING,</span><br> <div id="line_txt"><span>WHO</span><span>am</span><span>I</span> ?</div></div>
                     </div>
 
                     <div id="about-viewport">
@@ -3023,7 +3049,7 @@
                                     <h2 class="about-title"><span class="typing-text" data-text="WHO am I?"></span></h2>
                                     <div class="about-row" data-delay="0">
                                         <span class="about-icon" aria-hidden="true"><svg class="is-solid-icon" viewBox="0 0 48 48"><circle cx="24" cy="14" r="6"></circle><path d="M12 37c1-7 5-11 12-11s11 4 12 11"></path></svg></span>
-                                        <div class="about-row-content">이기주 (<b>1997.04.08</b>)</div>
+                                        <div class="about-row-content">이기주(<b>1997.04.08</b>)</div>
                                     </div>
                                     <div class="about-row" data-delay="120">
                                         <span class="about-icon" aria-hidden="true"><svg class="is-solid-icon" viewBox="0 0 48 48"><path d="M15 9h6l3 9-4 3c2 4 5 7 9 9l3-4 8 3v6c0 2-2 4-4 4C23 38 10 25 10 12c0-2 2-3 5-3Z"></path></svg></span>
@@ -3037,19 +3063,19 @@
 
                                 <div class="experience-content">
                                     <h2 class="about-title"><span class="typing-text" data-text="Experience"></span></h2>
-                                    <div class="about-row experience-row" data-delay="0"><div class="about-row-content"><b>2025. 01 ~ 2025. 07</b><span class="experience-detail"><strong>하나미</strong><span class="experience-description">호주 캐주얼 일식당 주방보조</span></span></div></div>
+                                    <div class="about-row experience-row" data-delay="0"><div class="about-row-content"><b>2025. 01 ~ 2025. 07</b><span class="experience-detail"><strong>하나미</strong><span class="experience-description">호주 캐주얼 일식당 주방 보조</span></span></div></div>
                                     <div class="about-row experience-row" data-delay="100"><div class="about-row-content"><b>2021. 07 ~ 2024. 10</b><span class="experience-detail"><strong>문테크놀러지</strong><span class="experience-description">회사 소속 프리랜서 웹툰 작가</span></span></div></div>
-                                    <div class="about-row experience-row" data-delay="200"><div class="about-row-content"><b>2019. 12 ~ 2020. 09</b><span class="experience-detail"><strong>소봉식당</strong><span class="experience-description">일본가정식당 주방업무</span></span></div></div>
+                                    <div class="about-row experience-row" data-delay="200"><div class="about-row-content"><b>2019. 12 ~ 2020. 09</b><span class="experience-detail"><strong>소봉식당</strong><span class="experience-description">일본 가정식당 주방 업무</span></span></div></div>
                                     <div class="about-row experience-row" data-delay="300"><div class="about-row-content"><b>2016. 10 ~ 2019. 01</b><span class="experience-detail"><strong>하이볼 가든</strong><span class="experience-description">칵테일 조주 및 손님 응대</span></span></div></div>
                                 </div>
 
                                 <div class="education-content">
                                     <h2 class="about-title education-title"><span class="typing-text" data-text="Education"></span></h2>
                                     <div class="about-row education-row" data-delay="0">
-                                        <div class="about-row-content"><b>2026. 06 ~ 11</b><span class="education-description">AI융합 스마트기기 UIUX디자인 전문인력양성과정 수료</span></div>
+                                        <div class="about-row-content"><b>2026. 06 ~ 11</b><span class="education-description">AI 융합 스마트 기기 UI/UX 디자인 전문 인력 양성 과정 수료</span></div>
                                     </div>
                                     <div class="about-row education-row" data-delay="120">
-                                        <div class="about-row-content"><b>2013 ~ 2014</b><span class="education-description">춘천 한샘고등학교 패션디자인과 (중퇴 / 검정고시)</span></div>
+                                        <div class="about-row-content"><b>2013 ~ 2014</b><span class="education-description">춘천 한샘고등학교 패션디자인과(중퇴/검정고시)</span></div>
                                     </div>
                                 </div>
                             </div>
@@ -3067,6 +3093,7 @@
                                         <div class="skill-item skill-illustrator"><img src="pf_img/06일러스트 1.png" alt="Illustrator"></div>
                                         <div class="skill-item skill-figma"><img src="pf_img/07피그마 1.png" alt="Figma"></div>
                                         <div class="skill-item skill-clipstudio"><img src="pf_img/08클립스튜디오.png" alt="Clip Studio"></div>
+                                        <div class="skill-item skill-premiere"><img src="pf_img/프리미어.png" alt="Premiere Pro"></div>
                                     </div>
                                     <div class="license-content skill-license">
                                         <h2 class="about-title"><span class="typing-text" data-text="License"></span></h2>
@@ -3095,7 +3122,7 @@
                     <div id="pro_2">
                         <div id="tv_stage">
                             <video id="tv_video" src="pf_img/proImg/시작영상.mp4" muted loop playsinline preload="metadata" aria-label="Riding Busan 시작 영상"></video>
-                            <a id="tv_riding_link" aria-label="Riding Busan 프로젝트 영상">
+                            <a id="tv_riding_link" href="https://riding-busan.ghdrl408.chatgpt.site/" target="_blank" rel="noopener noreferrer" aria-label="Riding Busan 프로젝트 영상">
                                 <video id="tv_riding_video" src="pf_img/proImg/라이딩부산.mp4" muted loop playsinline preload="none" aria-hidden="true"></video>
                             </a>
                             <a id="tv_gacha_link" href="https://ghdrl408.github.io/main/gatcha-pick/" target="_blank" rel="noopener noreferrer" aria-label="GACHA-PICK 프로젝트 열기">
@@ -3126,7 +3153,7 @@
                                     <img src="./pf_img/proImg/키캡오른쪽.png" alt="키캡">
                                 </button>
                             </div>
-                            <div id="tv_small_txt"><span id="tv_small_txt_inner">Press arrow keys</span></div>
+                        <div id="tv_small_txt"><span id="tv_small_txt_inner">Press the arrow keys</span></div>
                             <div class="mobile-project-controls" role="group" aria-label="프로젝트 채널 선택">
                                 <button class="mobile-project-arrow mobile-project-prev" type="button" aria-label="이전 채널">←</button>
                                 <button class="mobile-project-channel is-active" type="button" data-channel="00" aria-label="채널 00">00</button>
@@ -3157,17 +3184,17 @@
                                 <section class="note-page-two-section">
                                     <span class="note-page-two-number"><span class="note-number-text">01</span></span>
                                     <h3>기획 배경</h3>
-                                    <p><span class="note-sentence">부산 시내의 정체와 잦은 신호를 벗어나 가볍게 달리고 싶은 라이더를 위해, 바다와 산을 따라 달리는 편도 1~2시간대 근교 코스 선정.</span></p>
+                                    <p><span class="note-sentence">부산 시내의 교통 체증과 잦은 신호에서 벗어나 가볍게 달리고 싶은 라이더를 위해, 바다와 산을 따라 달리는 편도 1~2시간 내외의 근교 코스를 선정.</span></p>
                                 </section>
                                 <section class="note-page-two-section">
                                     <span class="note-page-two-number"><span class="note-number-text">02</span></span>
                                     <h3>제작 과정</h3>
-                                    <p><span class="note-sentence">모바일 앱 구상 후 기획서를 직접 작성.</span><span class="note-sentence">이를 바탕으로 Codex를 활용해 웹사이트 초안을 제작한 뒤,<br>화면·기능·디자인 등 하나하나 검토하고 수정 방향 제시.</span></p>
+                                    <p><span class="note-sentence">모바일 앱을 구상한 뒤 기획서를 직접 작성.</span><span class="note-sentence">이를 바탕으로 Codex를 활용해 웹사이트 초안을 제작한 뒤,<br>화면·기능·디자인을 하나하나 검토하고 수정 방향을 제시.</span></p>
                                 </section>
                                 <section class="note-page-two-section">
                                     <span class="note-page-two-number"><span class="note-number-text">03</span></span>
                                     <h3>코스 탐색과 기록</h3>
-                                    <p><span class="note-sentence">코스 카드에서 풍경·예상 소요 시간·거리 비교.</span><span class="note-sentence">마음에 드는 코스는 찜하고,<br>라이딩 중 사진과 메모로 주행 기록 기능 추가.</span></p>
+                                    <p><span class="note-sentence">코스 카드에서 풍경·예상 소요 시간·거리를 비교.</span><span class="note-sentence">마음에 드는 코스는 찜하고,<br>라이딩 중 사진과 메모로 주행 기록을 남기는 기능을 추가.</span></p>
                                 </section>
                             </div>
                         </div>
@@ -3178,28 +3205,28 @@
                             </div>
                             <div class="note-process-grid">
                                 <button class="note-process-item" type="button" data-title="기획·디자인 보드" data-original="pro_scd/프로세스/가차픽_디자인보드 원본.png" data-horizontal="true" aria-label="기획·디자인 보드 원본 보기">
-                                    <img src="pro_scd/프로세스/가차픽_디자인보드.png" alt="가차픽 기획·디자인 보드 미리보기">
+                                    <img src="pro_scd/프로세스/가차픽_디자인보드.png" alt="가챠픽 기획·디자인 보드 미리보기">
                                     <span>기획·디자인 보드</span>
                                 </button>
                                 <button class="note-process-item" type="button" data-title="IA" data-original="pro_scd/프로세스/가차픽_IA.jpg" aria-label="IA 원본 보기">
-                                    <img src="pro_scd/프로세스/가차픽_IA.jpg" alt="가차픽 IA 미리보기">
+                                    <img src="pro_scd/프로세스/가차픽_IA.jpg" alt="가챠픽 IA 미리보기">
                                     <span>IA</span>
                                 </button>
                                 <button class="note-process-item" type="button" data-title="스토리보드" data-original="pro_scd/프로세스/가차픽_스토리보드 원본.jpg" aria-label="스토리보드 원본 보기">
-                                    <img src="pro_scd/프로세스/가차픽_스토리보드 크롭.jpg" alt="가차픽 스토리보드 미리보기">
+                                    <img src="pro_scd/프로세스/가차픽_스토리보드 크롭.jpg" alt="가챠픽 스토리보드 미리보기">
                                     <span>스토리보드</span>
                                 </button>
-                                <button class="note-process-item" type="button" data-title="와이어 프레임" data-original="pro_scd/프로세스/가차픽_와이어프레임.jpg" aria-label="와이어 프레임 원본 보기">
-                                    <img src="pro_scd/프로세스/가차픽_와이어프레임.jpg" alt="가차픽 와이어 프레임 미리보기">
-                                    <span>와이어 프레임</span>
+                                <button class="note-process-item" type="button" data-title="와이어프레임" data-original="pro_scd/프로세스/가차픽_와이어프레임.jpg" aria-label="와이어프레임 원본 보기">
+                                    <img src="pro_scd/프로세스/가차픽_와이어프레임.jpg" alt="가챠픽 와이어프레임 미리보기">
+                                    <span>와이어프레임</span>
                                 </button>
                             </div>
                         </div>
                         <div class="note-card note-card-one" aria-label="프로젝트 기획 정보">
-                            <div class="note-card-copy">AI 를 활용한 프로젝트 기획<br>제작 기간 7일<br>VSCode / Codex / Gemini</div>
+                            <div class="note-card-copy">AI를 활용한 프로젝트 기획<br>제작 기간 7일<br>VS Code / Codex / Gemini</div>
                         </div>
                         <div class="note-card note-card-two" aria-label="프로젝트 기능">
-                            <div class="note-card-copy"><span>카카오맵API<br>-라이딩 경로, 주행 동선 확인</span><span>기상청 API 연동<br>-경유지, 목적지의 현재 날씨 체크</span></div>
+                            <div class="note-card-copy"><span>카카오맵 API<br>- 라이딩 경로와 주행 동선 확인</span><span>기상청 API 연동<br>- 경유지와 목적지의 현재 날씨 확인</span></div>
                         </div>
                         <div class="note-tape note-tape-one-left" aria-hidden="true">
                             <img class="note-tape-motion" src="pf_img/proImg/마스킹모션1.gif" alt="">
@@ -3239,14 +3266,14 @@
                     <div id="contact-copy">
                         <div id="back_txt">
                             <h1 id="top_txt"><b>일단 시작<img src="pf_img/손가락.png" alt="손가락 이미지"><span>해보고</span></b></h1>
-                            <h1 id="mid_txt"><b>나만의 <span id="turn_txt">(<span id="turn" tabindex="0">기준</span>)</span> 을</b></h1>
+                            <h1 id="mid_txt"><b>나만의 <span id="turn_txt">(<span id="turn" tabindex="0">기준</span>)</span>을</b></h1>
                             <h1 id="last_txt">
                                 <span id="last_img">
                                     <img src="pf_img/구름.png" alt="구름">
                                     <img src="pf_img/별.png" alt="별">
                                     <img id="cake" src="pf_img/케이크 조각.png" alt="케이크">
                                 </span>
-                                <b>만들자 !</b>
+                                <b>만들자!</b>
                             </h1>
                         </div>
                         <h3>CREATIVE WORKS</h3>
@@ -3267,7 +3294,7 @@
 
             <div id="contact-backdrop" aria-hidden="true"></div>
             <button id="back-to-top" type="button" aria-label="첫 번째 섹션으로 돌아가기">
-                <img src="pf_img/Back to Top.gif" alt="탑버튼">
+                        <img src="pf_img/Back to Top.gif" alt="맨 위로 이동">
             </button>
 
         <script>
@@ -3314,23 +3341,27 @@
                 const range = document.caretRangeFromPoint?.(x, y);
                 return range ? { node: range.startContainer, offset: range.startOffset } : null;
             };
-            contactRightText.addEventListener('selectstart', (event) => event.stopPropagation());
-            contactRightText.addEventListener('mousedown', (event) => {
-                if (event.button !== 0) return;
+            const isContactTextCaret = (caret) => caret &&
+                (caret.node === contactRightText || contactRightText.contains(caret.node));
+            document.addEventListener('pointerdown', (event) => {
+                if (event.pointerType === 'touch' || event.button !== 0) return;
+                const text = event.target.closest?.('#contact-section .contact-selectable-text');
+                if (!text) return;
                 const caret = getContactTextCaret(event.clientX, event.clientY);
-                if (!caret || !contactRightText.contains(caret.node)) return;
-                contactTextDrag = caret;
+                if (!isContactTextCaret(caret)) return;
+
+                event.preventDefault();
+                contactTextDrag = { ...caret, pointerId: event.pointerId };
                 const selection = window.getSelection();
-                if (selection) {
-                    selection.collapse(caret.node, caret.offset);
-                }
-            });
-            document.addEventListener('mousemove', (event) => {
-                if (!contactTextDrag || !(event.buttons & 1)) return;
-                const hit = document.elementFromPoint(event.clientX, event.clientY);
-                if (!hit || !contactRightText.contains(hit)) return;
+                selection?.removeAllRanges();
+                selection?.collapse(caret.node, caret.offset);
+                text.setPointerCapture?.(event.pointerId);
+            }, true);
+            document.addEventListener('pointermove', (event) => {
+                if (!contactTextDrag || event.pointerId !== contactTextDrag.pointerId ||
+                    !(event.buttons & 1)) return;
                 const caret = getContactTextCaret(event.clientX, event.clientY);
-                if (!caret || !contactRightText.contains(caret.node)) return;
+                if (!isContactTextCaret(caret)) return;
                 const selection = window.getSelection();
                 if (!selection) return;
                 if (typeof selection.setBaseAndExtent === 'function') {
@@ -3347,11 +3378,13 @@
                 }
                 selection.removeAllRanges();
                 selection.addRange(range);
-            });
-            const endContactTextDrag = () => {
+            }, true);
+            const endContactTextDrag = (event) => {
+                if (!contactTextDrag || event.pointerId !== contactTextDrag.pointerId) return;
                 contactTextDrag = null;
             };
-            document.addEventListener('mouseup', endContactTextDrag);
+            document.addEventListener('pointerup', endContactTextDrag, true);
+            document.addEventListener('pointercancel', endContactTextDrag, true);
             const turn = document.querySelector('#turn');
             const tvStage = document.querySelector('#tv_stage');
             const tvVideo = document.querySelector('#tv_video');
@@ -3368,6 +3401,13 @@
             const tvLotusLink = document.querySelector('#tv_lotus_link');
             const tvEmojiLink = document.querySelector('#tv_emoji_link');
             const tvNoiseVideo = document.querySelector('#tv_noise_video');
+            const getTvVideoForMode = (mode) => ({
+                intro: tvVideo,
+                riding: tvRidingVideo,
+                gacha: tvGachaVideo,
+                lotus: tvLotusVideo,
+                emoji: tvEmojiVideo
+            })[mode] || null;
             const tvNo = document.querySelector('#tv_no');
             const tvTitle = document.querySelector('#tv_tittle');
             const projectNote = document.querySelector('#project-note');
@@ -3614,21 +3654,71 @@
                     button.setAttribute('aria-label', `채널 ${channel}`);
                 });
             };
+            const syncRidingMobileProjectControls = () => {
+                if (tvMode !== 'riding' || !window.matchMedia('(max-width: 767px)').matches) return;
+                setMobileProjectChannelLayout('riding-wrap');
+                setMobileProjectChannel('01');
+            };
+            window.addEventListener('resize', syncRidingMobileProjectControls);
             let tvNoiseFadeTimer = null;
             const tvNoiseRevealMs = 445;
-            const tvNoiseDurationMs = 500;
+            const tvScreenRiseDurationMs = 180;
+            const tvNoiseDurationMs = tvNoiseRevealMs + tvScreenRiseDurationMs + 50;
             let tvRevealTimer = null;
             let tvScreenTransitionTimer = null;
             const beginTvScreenTransition = () => {
                 window.clearTimeout(tvScreenTransitionTimer);
                 tvStage.classList.add('is-screen-transitioning');
             };
+            const prepareTvChannelVideo = (nextVideo, outgoingVideo) => {
+                [tvVideo, tvRidingVideo, tvGachaVideo, tvLotusVideo, tvEmojiVideo].forEach((video) => {
+                    if (video === outgoingVideo) return;
+                    video.pause();
+                    video.classList.remove('is-revealing');
+                });
+                if (nextVideo) {
+                    if (nextVideo.readyState > 0) nextVideo.currentTime = 0;
+                    nextVideo.play().catch(() => {});
+                }
+            };
+            const startTvNoiseOverlay = (onNoiseReady, outgoingVideo, keepIntroHidden = true) => {
+                tvNoiseVideo.pause();
+                if (tvNoiseVideo.readyState > 0) tvNoiseVideo.currentTime = 0;
+                let activated = false;
+                const activateNoise = () => {
+                    if (activated || tvMode !== 'transitioning') return;
+                    activated = true;
+                    outgoingVideo?.pause();
+                    outgoingVideo?.classList.remove('is-revealing');
+                    if (keepIntroHidden) tvStage.classList.add('has-project-video');
+                    tvNoiseVideo.classList.add('is-active');
+                    beginTvScreenTransition();
+                    tvNoiseFadeTimer = window.setTimeout(onNoiseReady, tvNoiseRevealMs);
+                    tvRevealTimer = window.setTimeout(() => {
+                        tvNoiseVideo.classList.remove('is-active');
+                        tvNoiseVideo.pause();
+                    }, tvNoiseDurationMs);
+                };
+
+                if (typeof tvNoiseVideo.requestVideoFrameCallback === 'function') {
+                    tvNoiseVideo.requestVideoFrameCallback(() => activateNoise());
+                } else {
+                    tvNoiseVideo.addEventListener('playing', () => {
+                        window.requestAnimationFrame(() => {
+                            window.requestAnimationFrame(activateNoise);
+                        });
+                    }, { once: true });
+                }
+                tvNoiseVideo.play().catch(() => {
+                    if (tvNoiseVideo.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) activateNoise();
+                });
+            };
             const finishTvScreenTransitionAfterReveal = () => {
                 window.clearTimeout(tvScreenTransitionTimer);
                 tvStage.classList.remove('is-small-text-exiting');
                 tvScreenTransitionTimer = window.setTimeout(() => {
                     tvStage.classList.remove('is-screen-transitioning');
-                }, 180);
+                }, tvScreenRiseDurationMs);
             };
             const beginTvSmallTextExit = () => {
                 const wasVisible = tvStage.classList.contains('is-small-text-ready') ||
@@ -3655,6 +3745,7 @@
             let projectNoteFoldedCornerTimer = null;
             let projectNoteIntroPlayed = false;
             let projectNoteIntroComplete = false;
+            let projectNoteIntroPromptTimer = null;
             let projectNoteAnimationFrame = null;
             let projectNoteTapeMotionPlayed = false;
             let projectNoteTapeMotionComplete = false;
@@ -3679,6 +3770,27 @@
             };
             const getProjectNoteTurnMotionFallbackDuration = (pathKey) =>
                 pathKey.startsWith('wideGacha') ? 800 : 820;
+            const updateProjectNoteIntroPrompt = () => {
+                if (!projectNote.classList.contains('is-intro') || tvMode !== 'intro') {
+                    projectNote.classList.remove('is-intro-prompt-visible');
+                    return;
+                }
+                if (!window.matchMedia('(min-width: 1025px)').matches) {
+                    projectNote.classList.add('is-intro-prompt-visible');
+                }
+            };
+            const revealProjectNoteIntroPrompt = updateProjectNoteIntroPrompt;
+            const scheduleProjectNoteIntroPrompt = (delayMs) => {
+                window.clearTimeout(projectNoteIntroPromptTimer);
+                projectNoteIntroPromptTimer = window.setTimeout(() => {
+                    projectNoteIntroPromptTimer = null;
+                    if (tvMode === 'intro' && projectNote.classList.contains('is-intro')) {
+                        projectNote.classList.add('is-intro-prompt-visible');
+                    }
+                }, delayMs);
+            };
+            window.addEventListener('scroll', updateProjectNoteIntroPrompt, { passive: true });
+            window.addEventListener('resize', updateProjectNoteIntroPrompt);
 
             const showProjectNoteStatic = () => {
                 window.cancelAnimationFrame(projectNoteAnimationFrame);
@@ -3687,19 +3799,27 @@
                 projectNote.classList.add('is-visible');
                 projectNote.classList.remove('is-playing');
                 projectNote.classList.add('has-static-paper');
-                if (tvMode === 'intro') projectNote.classList.add('is-intro');
+                if (tvMode === 'intro') {
+                    projectNote.classList.add('is-intro');
+                    revealProjectNoteIntroPrompt();
+                }
             };
 
             const playProjectNoteIntro = () => {
                 if (window.__portfolioProjectEntryDelay) return;
                 if (projectNoteIntroPlayed) return;
+                window.clearTimeout(projectNoteIntroPromptTimer);
+                projectNoteIntroPromptTimer = null;
                 projectNoteIntroPlayed = true;
+                projectNote.classList.add('is-visible', 'has-static-paper', 'is-intro');
+                updateProjectNoteIntroPrompt();
                 if (projectNoteWideLayout.matches) {
                     showProjectNoteStatic();
                     return;
                 }
                 const startAnimation = () => {
                     if (projectNoteIntroComplete) return;
+                    projectNote.classList.remove('is-intro-prompt-visible');
                     projectNote.classList.add('is-visible');
                     projectNote.classList.add('is-playing');
                     projectNote.classList.add('has-static-paper');
@@ -3712,6 +3832,9 @@
                         const frameY = Math.floor(frameIndex / 7) * 696;
                         projectNoteContext.clearRect(0, 0, 563, 696);
                         projectNoteContext.drawImage(projectNoteFrames, frameX, frameY, 563, 696, 0, 0, 563, 696);
+                        if (elapsed >= 1000) {
+                            projectNote.classList.add('is-intro-prompt-visible');
+                        }
                         if (elapsed >= 2840 / 2.2) {
                             showProjectNoteStatic();
                             return;
@@ -3723,7 +3846,10 @@
                 projectNoteFramesReady.then((framesLoaded) => {
                     if (projectNoteIntroComplete) return;
                     if (framesLoaded) startAnimation();
-                    else showProjectNoteStatic();
+                    else {
+                        projectNote.classList.add('is-intro-prompt-visible');
+                        showProjectNoteStatic();
+                    }
                 });
             };
 
@@ -3907,8 +4033,8 @@
             window.addEventListener('resize', () => window.requestAnimationFrame(fitLotusProjectNoteTitle));
 
             const getGachaTvSmallText = () => matchMedia('(min-width: 768px) and (max-width: 1024px)').matches
-                ? '과거의 무드를 가득 담은 레트로 뽑기 머신으로\n당신의 오늘을 선택해보세요!'
-                : '과거의 무드를 가득 담은 레트로 뽑기 머신으로 당신의 오늘을 선택해보세요!';
+                ? '과거의 무드를 가득 담은 레트로 뽑기 머신으로\n당신의 오늘을 선택해 보세요!'
+                : '과거의 무드를 가득 담은 레트로 뽑기 머신으로 당신의 오늘을 선택해 보세요!';
             let gachaTvSmallTextLayoutText = '';
             const updateGachaTvSmallText = () => {
                 const text = getGachaTvSmallText();
@@ -3931,8 +4057,8 @@
             const emojiPageTwoSectionTitles = ['캐릭터 기획', '움직이는 이모티콘', '캐릭터 굿즈 디자인'];
             const lotusMobileNoteMedia = matchMedia('(max-width: 1024px)');
             const getLotusFirstCardCopyHtml = () => lotusMobileNoteMedia.matches
-                ? 'AI 사용 없이 HTML · CSS 직접 작성<br>제작 기간 4시간<br>VSCord'
-                : 'AI사용 없이 HTML · CSS 직접 작성<br>제작 기간 4시간<br>VSCord';
+                ? 'AI 사용 없이 HTML·CSS를 직접 작성<br>제작 기간 4시간<br>VS Code'
+                : 'AI 사용 없이 HTML·CSS를 직접 작성<br>제작 기간 4시간<br>VS Code';
             lotusMobileNoteMedia.addEventListener('change', () => {
                 if (!projectNote.classList.contains('is-lotus-project')) return;
                 noteCardCopies[0].innerHTML = getLotusFirstCardCopyHtml();
@@ -3945,7 +4071,7 @@
             const lotusPageTwoParagraphHtml = [
                 '<span class="note-sentence">HTML·CSS 사용에 능숙해지기 위해<br>공부의 목적으로 가상의 홍보 페이지를 직접 제작.</span>',
                 '<span class="note-sentence">페이지 좌측에 헤더를 세로로 배치 후 상위 메뉴 등록.</span><span class="note-sentence">각 항목에 마우스를 올리면 하위 메뉴가 펼쳐지도록 구현.</span>',
-                '<span class="note-sentence">배너 아래에 세 개의 섹션을 나란히 배치해<br>주요 정보를 한 곳에서 볼 수 있도록 구성.</span><span class="note-sentence">푸터에는 축제의 패밀리사이트와 SNS 아이콘을 배치.</span>'
+                '<span class="note-sentence">배너 아래에 세 개의 섹션을 나란히 배치해<br>주요 정보를 한 곳에서 볼 수 있도록 구성.</span><span class="note-sentence">푸터에는 축제의 패밀리 사이트와 SNS 아이콘을 배치.</span>'
             ];
             const emojiPageTwoParagraphHtml = [
                 '<span class="note-sentence">빵실한 몸매와 분홍색 홍조가 특징인 고양이 캐릭터 \'웅냐\' 디자인.</span><span class="note-sentence">일상 속 여러 순간을 웅냐의 표정과 몸짓으로 나타냄.</span>',
@@ -4024,8 +4150,8 @@
                             : '<span>메인 배너 자동 슬라이드</span><span class="lotus-notice-copy">공지사항 제목 클릭 시 안내문 팝업창 생성</span>';
                         return;
                     }
-                    element.innerHTML = index === 0
-                        ? '레트로 콘셉트로 화면 디자인 및 웹 구현<br>제작 기간 10일<br>VSCord / Codex / PhotoShop / Figma'
+                element.innerHTML = index === 0
+                    ? '레트로 콘셉트로 화면 디자인 및 웹 구현<br>제작 기간 10일<br>VS Code / Codex / Photoshop / Figma'
                         : '<span>지역과 취향 키워드를 반영한 랜덤 추천</span><span class="gacha-note-copy">고민에 맞는 선택지 클릭 후<br>레버를 돌리면 캡슐 속 쪽지에 결과 공개</span>';
                 });
                 notePageTwoParagraphs.forEach((element, index) => {
@@ -4425,11 +4551,14 @@
                 window.clearTimeout(tvNoiseFadeTimer);
                 window.clearTimeout(tvRevealTimer);
                 window.clearTimeout(tvScreenTransitionTimer);
+                window.clearTimeout(projectNoteIntroPromptTimer);
+                projectNoteIntroPromptTimer = null;
+                projectNote.classList.remove('is-intro-prompt-visible');
                 tvMode = playIntro ? 'intro' : 'idle';
                 setMobileProjectChannelLayout('intro');
-                tvStage.classList.remove('is-intro', 'is-transitioning', 'is-screen-transitioning', 'is-small-text-exiting', 'is-small-text-ready', 'is-riding-ready');
+                tvStage.classList.remove('is-intro', 'is-transitioning', 'is-screen-transitioning', 'is-small-text-exiting', 'is-small-text-ready', 'is-riding-ready', 'has-project-video');
                 if (!keepProjectNoteTurning) {
-                    projectNote.classList.remove('is-intro', 'is-transitioning', 'is-riding-ready', 'is-details-visible', 'is-turn-loading', 'is-turning', 'is-turning-back', 'is-turning-to-third', 'is-turn-complete', 'is-later-page', 'is-second-page', 'is-third-page', 'has-tape');
+                    projectNote.classList.remove('is-intro', 'is-intro-prompt-visible', 'is-transitioning', 'is-riding-ready', 'is-details-visible', 'is-turn-loading', 'is-turning', 'is-turning-back', 'is-turning-to-third', 'is-turn-complete', 'is-later-page', 'is-second-page', 'is-third-page', 'has-tape');
                     projectNotePaper.classList.remove('is-folded', 'is-turning', 'is-turning-back', 'is-turn-complete', 'is-folded-corner-visible');
                     syncProjectNotePageAssets();
                     projectNoteTapeWrappers.forEach((tape) => tape.classList.remove('is-playing', 'is-complete'));
@@ -4445,14 +4574,17 @@
                         projectNoteTapeMotionComplete = false;
                     }
                     tvStage.classList.add('is-intro');
-                    if (!keepProjectNoteTurning && projectNoteIntroComplete) projectNote.classList.add('is-intro');
+                    if (!keepProjectNoteTurning && projectNoteIntroComplete) {
+                        projectNote.classList.add('is-intro');
+                        scheduleProjectNoteIntroPrompt(1000);
+                    }
                 }
                 setTvPlainText(tvTitle, '라이딩부산');
                 setTvPlainText(noteDescription, '');
                 noteDescriptionLayoutText = '';
                 tvNo.textContent = 'CH 00';
                 setMobileProjectChannel('00');
-                setTvPlainText(tvSmallTxt, 'Press arrow keys');
+                    setTvPlainText(tvSmallTxt, 'Press the arrow keys');
                 if (!keepNoise) {
                     tvNoiseVideo.classList.remove('is-active');
                     tvNoiseVideo.pause();
@@ -4544,7 +4676,10 @@
                         if (tvMode === 'intro') {
                             setProjectNoteProject('riding');
                             projectNote.classList.remove('is-riding-ready');
-                            if (projectNoteIntroComplete) projectNote.classList.add('is-intro');
+                            if (projectNoteIntroComplete) {
+                                projectNote.classList.add('is-intro');
+                                revealProjectNoteIntroPrompt();
+                            }
                             setTvPlainText(tvTitle, 'RIDING BUSAN');
                             setTvPlainText(noteDescription, '');
                             noteDescriptionLayoutText = '';
@@ -4554,6 +4689,7 @@
             };
 
             const startTvRide = () => {
+                const outgoingVideo = getTvVideoForMode(tvMode);
                 const wrappingFromEmoji = tvMode === 'emoji';
                 const isMobileLayout = window.matchMedia('(max-width: 767px)').matches;
                 const enteringRideFromMobileIntro = tvMode === 'intro' && isMobileLayout;
@@ -4579,32 +4715,15 @@
                 setMobileProjectChannel('01');
                 tvStage.classList.remove('is-intro');
                 tvStage.classList.add('is-transitioning');
-                beginTvScreenTransition();
 
-                tvVideo.pause();
-                tvGachaVideo.pause();
-                tvLotusVideo.pause();
-                tvLotusVideo.classList.remove('is-revealing');
-                tvGachaVideo.classList.remove('is-revealing');
-                tvRidingVideo.classList.remove('is-revealing');
-                tvRidingVideo.pause();
-                if (tvRidingVideo.readyState > 0) tvRidingVideo.currentTime = 0;
-                tvEmojiVideo.pause();
-                tvEmojiVideo.classList.remove('is-revealing');
-                if (tvEmojiVideo.readyState > 0) tvEmojiVideo.currentTime = 0;
-                tvRidingVideo.play().catch(() => {});
+                prepareTvChannelVideo(tvRidingVideo, outgoingVideo);
 
-                tvNoiseVideo.pause();
-                if (tvNoiseVideo.readyState > 0) tvNoiseVideo.currentTime = 0;
-                tvNoiseVideo.classList.add('is-active');
-                tvNoiseVideo.play().catch(() => {});
-
-                tvNoiseFadeTimer = window.setTimeout(() => {
-                    tvNoiseVideo.classList.remove('is-active');
+                startTvNoiseOverlay(() => {
                     tvRidingVideo.classList.add('is-revealing');
                     finishTvScreenTransitionAfterReveal();
                     tvStage.classList.remove('is-transitioning');
                     tvMode = 'riding';
+                    syncRidingMobileProjectControls();
                     setProjectNoteProjectForTransition('riding');
                     setTvStaggeredText(tvTitle, '라이딩부산', 0, 19);
                     updateNoteDescription();
@@ -4618,15 +4737,12 @@
                         scheduleProjectNoteFoldedCornerAfterContent(1);
                     }
                     projectNoteDetailsTimer = window.setTimeout(showProjectNoteDetails, 850);
-                }, tvNoiseRevealMs);
-                tvRevealTimer = window.setTimeout(() => {
-                    tvNoiseVideo.classList.remove('is-active');
-                    tvNoiseVideo.pause();
-                }, tvNoiseDurationMs);
+                }, outgoingVideo);
             };
 
             const startTvGacha = () => {
                 if (tvMode !== 'riding' && tvMode !== 'lotus') return;
+                const outgoingVideo = getTvVideoForMode(tvMode);
                 animateProjectNoteOutForChannelChange();
                 beginTvSmallTextExit();
                 setMobileProjectChannelLayout('gacha');
@@ -4640,28 +4756,13 @@
                 projectNote.classList.add('is-transitioning');
                 tvStage.classList.remove('is-intro');
                 tvStage.classList.add('is-transitioning');
-                beginTvScreenTransition();
                 tvRidingLink.classList.remove('is-interactive');
                 tvGachaLink.classList.remove('is-interactive');
                 tvLotusLink.classList.remove('is-interactive');
 
-                tvVideo.pause();
-                tvRidingVideo.pause();
-                tvRidingVideo.classList.remove('is-revealing');
-                tvGachaVideo.pause();
-                tvGachaVideo.classList.remove('is-revealing');
-                tvLotusVideo.pause();
-                tvLotusVideo.classList.remove('is-revealing');
-                if (tvGachaVideo.readyState > 0) tvGachaVideo.currentTime = 0;
-                tvGachaVideo.play().catch(() => {});
+                prepareTvChannelVideo(tvGachaVideo, outgoingVideo);
 
-                tvNoiseVideo.pause();
-                if (tvNoiseVideo.readyState > 0) tvNoiseVideo.currentTime = 0;
-                tvNoiseVideo.classList.add('is-active');
-                tvNoiseVideo.play().catch(() => {});
-
-                tvNoiseFadeTimer = window.setTimeout(() => {
-                    tvNoiseVideo.classList.remove('is-active');
+                startTvNoiseOverlay(() => {
                     tvGachaVideo.classList.add('is-revealing');
                     finishTvScreenTransitionAfterReveal();
                     tvStage.classList.remove('is-transitioning');
@@ -4670,7 +4771,7 @@
                     projectNote.classList.add('is-riding-ready');
                     tvMode = 'gacha';
                     setProjectNoteProjectForTransition('gacha');
-                    setTvStaggeredText(tvTitle, '가챠-픽', 0, 19);
+                    setTvStaggeredText(tvTitle, '가챠픽', 0, 19);
                     updateNoteDescription();
                     gachaTvSmallTextLayoutText = '';
                     updateGachaTvSmallText();
@@ -4680,15 +4781,12 @@
                         scheduleProjectNoteFoldedCornerAfterContent(1);
                     }
                     projectNoteDetailsTimer = window.setTimeout(showProjectNoteDetails, 850);
-                }, tvNoiseRevealMs);
-                tvRevealTimer = window.setTimeout(() => {
-                    tvNoiseVideo.classList.remove('is-active');
-                    tvNoiseVideo.pause();
-                }, tvNoiseDurationMs);
+                }, outgoingVideo);
             };
 
             const startTvLotus = () => {
                 if (tvMode !== 'gacha' && tvMode !== 'emoji') return;
+                const outgoingVideo = getTvVideoForMode(tvMode);
                 animateProjectNoteOutForChannelChange();
                 beginTvSmallTextExit();
                 setMobileProjectChannelLayout('lotus');
@@ -4702,31 +4800,14 @@
                 projectNote.classList.add('is-transitioning');
                 tvStage.classList.remove('is-intro');
                 tvStage.classList.add('is-transitioning');
-                beginTvScreenTransition();
                 tvRidingLink.classList.remove('is-interactive');
                 tvGachaLink.classList.remove('is-interactive');
                 tvLotusLink.classList.remove('is-interactive');
                 tvEmojiLink.classList.remove('is-interactive');
 
-                tvVideo.pause();
-                tvRidingVideo.pause();
-                tvRidingVideo.classList.remove('is-revealing');
-                tvGachaVideo.pause();
-                tvGachaVideo.classList.remove('is-revealing');
-                tvLotusVideo.pause();
-                tvLotusVideo.classList.remove('is-revealing');
-                tvEmojiVideo.pause();
-                tvEmojiVideo.classList.remove('is-revealing');
-                if (tvLotusVideo.readyState > 0) tvLotusVideo.currentTime = 0;
-                tvLotusVideo.play().catch(() => {});
+                prepareTvChannelVideo(tvLotusVideo, outgoingVideo);
 
-                tvNoiseVideo.pause();
-                if (tvNoiseVideo.readyState > 0) tvNoiseVideo.currentTime = 0;
-                tvNoiseVideo.classList.add('is-active');
-                tvNoiseVideo.play().catch(() => {});
-
-                tvNoiseFadeTimer = window.setTimeout(() => {
-                    tvNoiseVideo.classList.remove('is-active');
+                startTvNoiseOverlay(() => {
                     tvLotusVideo.classList.add('is-revealing');
                     finishTvScreenTransitionAfterReveal();
                     tvStage.classList.remove('is-transitioning');
@@ -4745,14 +4826,11 @@
                         scheduleProjectNoteFoldedCornerAfterContent(1);
                     }
                     projectNoteDetailsTimer = window.setTimeout(showProjectNoteDetails, 850);
-                }, tvNoiseRevealMs);
-                tvRevealTimer = window.setTimeout(() => {
-                    tvNoiseVideo.classList.remove('is-active');
-                    tvNoiseVideo.pause();
-                }, tvNoiseDurationMs);
+                }, outgoingVideo);
             };
 
             const startTvEmoji = () => {
+                const outgoingVideo = getTvVideoForMode(tvMode);
                 const isMobileLayout = window.matchMedia('(max-width: 767px)').matches;
                 const returningFromWrappedRide = tvMode === 'riding' &&
                     (!isMobileLayout || mobileProjectChannels[0].dataset.channel === '04');
@@ -4770,31 +4848,14 @@
                 projectNote.classList.add('is-transitioning');
                 tvStage.classList.remove('is-intro');
                 tvStage.classList.add('is-transitioning');
-                beginTvScreenTransition();
                 tvRidingLink.classList.remove('is-interactive');
                 tvGachaLink.classList.remove('is-interactive');
                 tvLotusLink.classList.remove('is-interactive');
                 tvEmojiLink.classList.remove('is-interactive');
 
-                tvVideo.pause();
-                tvRidingVideo.pause();
-                tvGachaVideo.pause();
-                tvLotusVideo.pause();
-                tvRidingVideo.classList.remove('is-revealing');
-                tvGachaVideo.classList.remove('is-revealing');
-                tvLotusVideo.classList.remove('is-revealing');
-                tvEmojiVideo.pause();
-                tvEmojiVideo.classList.remove('is-revealing');
-                if (tvEmojiVideo.readyState > 0) tvEmojiVideo.currentTime = 0;
-                tvEmojiVideo.play().catch(() => {});
+                prepareTvChannelVideo(tvEmojiVideo, outgoingVideo);
 
-                tvNoiseVideo.pause();
-                if (tvNoiseVideo.readyState > 0) tvNoiseVideo.currentTime = 0;
-                tvNoiseVideo.classList.add('is-active');
-                tvNoiseVideo.play().catch(() => {});
-
-                tvNoiseFadeTimer = window.setTimeout(() => {
-                    tvNoiseVideo.classList.remove('is-active');
+                startTvNoiseOverlay(() => {
                     tvEmojiVideo.classList.add('is-revealing');
                     finishTvScreenTransitionAfterReveal();
                     tvStage.classList.remove('is-transitioning');
@@ -4805,18 +4866,14 @@
                     setProjectNoteProjectForTransition('emoji');
                     setTvStaggeredText(tvTitle, '고양이 웅냐', 0, 19);
                     updateNoteDescription();
-                    setTvStaggeredText(tvSmallTxt, '아기 고양이 웅냐의 얼렁뚱땅 일상을 함께 해보세요!', 0, 12);
+                    setTvStaggeredText(tvSmallTxt, '아기 고양이 웅냐의 얼렁뚱땅 일상을 함께 해 보세요!', 0, 12);
                     tvEmojiLink.classList.add('is-interactive');
                     tvStage.classList.add('is-small-text-ready');
                     if (projectNote.classList.contains('is-details-visible') && !projectNote.classList.contains('is-turning')) {
                         scheduleProjectNoteFoldedCornerAfterContent(1);
                     }
                     projectNoteDetailsTimer = window.setTimeout(showProjectNoteDetails, 850);
-                }, tvNoiseRevealMs);
-                tvRevealTimer = window.setTimeout(() => {
-                    tvNoiseVideo.classList.remove('is-active');
-                    tvNoiseVideo.pause();
-                }, tvNoiseDurationMs);
+                }, outgoingVideo);
             };
 
             const startTvNextChannel = () => {
@@ -4854,6 +4911,7 @@
                     setMobileProjectChannel('00');
                     return;
                 }
+                const outgoingVideo = getTvVideoForMode(tvMode);
                 animateProjectNoteOutForChannelChange();
                 beginTvSmallTextExit();
                 tvMode = 'transitioning';
@@ -4864,20 +4922,12 @@
                 window.clearTimeout(tvRevealTimer);
                 tvStage.classList.remove('is-intro');
                 tvStage.classList.add('is-transitioning');
-                beginTvScreenTransition();
                 tvRidingLink.classList.remove('is-interactive');
                 tvGachaLink.classList.remove('is-interactive');
                 tvLotusLink.classList.remove('is-interactive');
                 tvEmojiLink.classList.remove('is-interactive');
-                tvLotusVideo.pause();
-                tvLotusVideo.classList.remove('is-revealing');
-                tvEmojiVideo.pause();
-                tvEmojiVideo.classList.remove('is-revealing');
-                tvNoiseVideo.pause();
-                if (tvNoiseVideo.readyState > 0) tvNoiseVideo.currentTime = 0;
-                tvNoiseVideo.classList.add('is-active');
-                tvNoiseVideo.play().catch(() => {});
-                tvNoiseFadeTimer = window.setTimeout(() => {
+                prepareTvChannelVideo(null, outgoingVideo);
+                startTvNoiseOverlay(() => {
                     resetTvSection(true, true, true);
                     tvMode = 'transitioning';
                     tvRevealTimer = window.setTimeout(() => {
@@ -4885,7 +4935,7 @@
                         tvNoiseVideo.pause();
                         tvMode = 'intro';
                     }, tvNoiseDurationMs - tvNoiseRevealMs);
-                }, tvNoiseRevealMs);
+                }, outgoingVideo, false);
             };
             const startTvPreviousChannel = () => {
                 if (tvMode === 'emoji') startTvLotus();
@@ -5044,6 +5094,11 @@
             window.addEventListener('scroll', updateContactScroll, { passive: true });
             window.addEventListener('resize', updateContactScroll);
             new ResizeObserver(updateContactScroll).observe(contactPanel);
+            document.addEventListener('click', (event) => {
+                if (!contactReady || contactScrollTarget <= 0.5 || contactPanel.contains(event.target) ||
+                    contactWFlipAnimating || !contactRotatedW.classList.contains('is-flipped')) return;
+                moveContactPanel(-1);
+            });
 
             const updateAboutScrollHint = () => {
                 aboutScrollHint.classList.toggle('is-hidden', window.scrollY > 0);
@@ -5286,14 +5341,32 @@
             }
 
             let tvSectionIsActive = false;
+            let projectIntroNeedsRestart = true;
+            const enterProjectsSection = () => {
+                document.body.classList.add('projects-active');
+                document.body.classList.remove('projects-nav-transition');
+                if (projectIntroNeedsRestart) {
+                    projectIntroNeedsRestart = false;
+                    tvSectionIsActive = true;
+                    resetTvSection(true);
+                    scheduleAstronautPillAlignment();
+                }
+                playProjectNoteIntro();
+            };
             const tvSectionObserver = new IntersectionObserver(([entry]) => {
-                const isActive = entry.isIntersecting;
+                const bounds = projectsSection.getBoundingClientRect();
+                const isActive = entry.isIntersecting && bounds.bottom > 0 && bounds.top < window.innerHeight;
                 if (isActive === tvSectionIsActive) return;
                 tvSectionIsActive = isActive;
                 if (isActive) {
                     scheduleAstronautPillAlignment();
+                    if (projectIntroNeedsRestart) {
+                        resetTvSection(true);
+                    }
+                } else {
+                    projectIntroNeedsRestart = true;
+                    resetTvSection(false);
                 }
-                resetTvSection(isActive);
                 if (isActive && !window.matchMedia('(max-width: 767px)').matches) {
                     playProjectNoteIntro();
                 }
@@ -5400,13 +5473,15 @@
                 const isMobile = matchMedia('(max-width: 767px)').matches;
                 const isTablet = matchMedia('(min-width: 768px) and (max-width: 1024px)').matches;
                 const isNotebook = matchMedia('(min-width: 1025px) and (max-width: 1500px)').matches;
-                const isNarrowLaptop = matchMedia('(min-width: 1025px) and (max-width: 1200px)').matches;
-                const fitMaxSkillSize = isTablet ? 92 : isNotebook ? 99 : maxSkillSize;
                 const isDesktop = matchMedia('(min-width: 1501px)').matches;
-                const columns = isMobile ? 4 : (isTablet || isNotebook || isNarrowLaptop) ? 4 : 8;
+                // PC icon size stays at the midpoint of the former fitted range (72.64–104.87px).
+                const desktopSkillSize = 88.75;
+                const fitMaxSkillSize = isMobile ? 78 : isTablet || isNotebook ? 84 : maxSkillSize;
+                const columns = isMobile ? 4 : isTablet || isNotebook ? 5 : 9;
+                const skillCount = skillGrid.querySelectorAll('.skill-item').length;
                 const labelSpace = 0.30;
                 const shieldBottomSpace = 0.03;
-                const gap = isMobile
+                let gap = isMobile
                     ? Math.min(24, Math.max(3, width * 0.015))
                     : Math.min(24, Math.max(6, width * 0.025));
                 const margin = 16;
@@ -5436,30 +5511,33 @@
                         { width: Math.min(width, imageLeft - margin), height: height - top - licenseSpace },
                         { width, height: Math.min(height, imageTop - margin, footerTop - margin) - top - licenseSpace }
                     ];
+                if (isDesktop) {
+                    const gapThatFitsFixedIcons = (regions[0].width - desktopSkillSize * columns) / (columns - 1);
+                    gap = Math.max(0, Math.min(gap, gapThatFitsFixedIcons));
+                }
                 const chooseRegions = (columnCount) => {
-                    const rowCount = Math.ceil(8 / columnCount);
+                    const rowCount = isTablet || isNotebook ? 2 : Math.ceil(skillCount / columnCount);
                     return regions.map(region => ({
                         ...region,
-                        size: Math.max(0, Math.min(fitMaxSkillSize,
+                        size: isDesktop ? desktopSkillSize : Math.max(0, Math.min(fitMaxSkillSize,
                             (region.width - gap * (columnCount - 1)) / columnCount,
                             (region.height - gap * (rowCount - 1)) / (rowCount + labelSpace + shieldBottomSpace)))
                     })).sort((a, b) => b.size - a.size);
                 };
                 const choices = chooseRegions(columns);
-                const rows = Math.ceil(8 / columns);
+                const rows = isTablet || isNotebook ? 2 : Math.ceil(skillCount / columns);
                 const best = choices[0];
                 const gridWidth = best.size * columns + gap * (columns - 1);
                 const gridHeight = best.size * (rows + labelSpace + shieldBottomSpace) + gap * (rows - 1);
-                const mobileGridLift = isMobile ? Math.max(37, Math.min(46, 82 - width * 0.113)) : 0;
                 const skillTop = top + best.size * labelSpace + Math.max(0, (best.height - gridHeight) / 2)
-                    - (isMobile ? 10 + mobileGridLift : isNotebook ? 0 : 40);
+                    - (isMobile || isNotebook ? 0 : 40);
                 skillGrid.style.setProperty('--skill-columns', columns);
                 skillGrid.style.setProperty('--skill-size', `${best.size}px`);
                 skillGrid.style.setProperty('--skill-gap', `${gap}px`);
                 skillGrid.style.setProperty('--skill-left', `${(best.left || 0) + Math.max(0, (best.width - gridWidth) / 2)}px`);
                 skillGrid.style.setProperty('--skill-top', `${skillTop}px`);
                 if (isMobile) {
-                    skillLicense.style.top = `${skillTop + gridHeight + 32}px`;
+                    skillLicense.style.top = `${skillTop + gridHeight + 40}px`;
                     skillLicense.style.bottom = 'auto';
                     const titleTop = title.offsetTop + title.offsetHeight * 0.5;
                     const contentBottom = skillLicense.offsetTop + skillLicense.offsetHeight;
@@ -5469,6 +5547,36 @@
                     skillLicense.style.removeProperty('top');
                     skillLicense.style.removeProperty('bottom');
                     skillContent.style.removeProperty('--mobile-skill-lift');
+                }
+                if (isNotebook) {
+                    const skillRows = [...skillGrid.querySelectorAll('.skill-item')].map((item) => {
+                        const image = item.querySelector('img');
+                        const imageTop = item.offsetTop + image.offsetTop;
+                        return {
+                            itemTop: item.offsetTop,
+                            imageTop,
+                            imageBottom: imageTop + image.offsetHeight
+                        };
+                    });
+                    const firstRowTop = Math.min(...skillRows.map((row) => row.itemTop));
+                    const lastRowTop = Math.max(...skillRows.map((row) => row.itemTop));
+                    const firstIconTop = Math.min(...skillRows
+                        .filter((row) => row.itemTop === firstRowTop)
+                        .map((row) => row.imageTop));
+                    const lastIconBottom = Math.max(...skillRows
+                        .filter((row) => row.itemTop === lastRowTop)
+                        .map((row) => row.imageBottom));
+                    const gridTop = skillGrid.getBoundingClientRect().top;
+                    const titleBottom = title.getBoundingClientRect().bottom;
+                    const licenseTitle = skillLicense.querySelector('.about-title');
+                    const licenseTitleTop = licenseTitle.getBoundingClientRect().top;
+                    const topGap = gridTop + firstIconTop - titleBottom;
+                    const bottomGap = licenseTitleTop - (gridTop + lastIconBottom);
+                    const liftIconsBy = (topGap - bottomGap) / 2;
+                    const currentSkillTop = parseFloat(skillGrid.style.getPropertyValue('--skill-top'));
+                    if (Number.isFinite(liftIconsBy)) {
+                        skillGrid.style.setProperty('--skill-top', `${currentSkillTop - liftIconsBy}px`);
+                    }
                 }
             };
             const skillLayoutObserver = new ResizeObserver(fitSkillGrid);
@@ -5644,6 +5752,7 @@
                 skillSequenceStarted = false;
                 skillSequenceStarting = false;
                 document.body.classList.remove('intro-scroll-lock');
+                aboutSlider.classList.add('about-is-resetting');
                 aboutSlider.classList.remove('about-is-visible');
                 aboutPagination.classList.remove('is-visible');
                 aboutSlider.style.setProperty('--about-offset', '0px');
@@ -5685,7 +5794,7 @@
                             return;
                         }
 
-                        // 카드 노출은 KEEP QUESTINING 텍스트의 클래스 상태에 의존하지 않는다.
+                        // 카드 노출은 KEEP QUESTIONING 텍스트의 클래스 상태에 의존하지 않는다.
                         // 재방문이나 빠른 휠 입력으로 텍스트 상태가 늦어져도 카드가 멈추지 않게 한다.
                         const revealDelay = aboutSequenceStarted ? 100 : 850;
                         aboutRevealTimer = window.setTimeout(() => {
@@ -5693,6 +5802,7 @@
 
                             if (window.scrollY >= aboutSectionTop - 10 &&
                                 window.scrollY < projectsSectionTop - 10) {
+                                aboutSlider.classList.remove('about-is-resetting');
                                 aboutSlider.classList.add('about-is-visible');
                                 aboutPagination.classList.add('is-visible');
                                 startAboutSequence();
@@ -5891,20 +6001,14 @@
                     : sectionScrollTarget === projectsSectionTop
                         ? 2
                         : sectionScrollTarget === aboutSectionTop ? 1 : 0;
-                if (currentSection === 3 && tvSectionIsActive) {
+                if (currentSection !== 2) {
+                    projectIntroNeedsRestart = true;
                     tvSectionIsActive = false;
                     resetTvSection(false);
                 }
                 if (currentSection !== 1) resetAboutSectionIntro();
                 if (currentSection === 2) {
-                    document.body.classList.add('projects-active');
-                    document.body.classList.remove('projects-nav-transition');
-                    if (!tvSectionIsActive) {
-                        tvSectionIsActive = true;
-                        resetTvSection(true);
-                        scheduleAstronautPillAlignment();
-                    }
-                    playProjectNoteIntro();
+                    enterProjectsSection();
                 }
                 if (currentSection === 3) {
                     document.body.classList.remove('projects-active', 'projects-nav-transition');
@@ -6358,7 +6462,8 @@
                     : targetSection === projectsSectionTop
                         ? 2
                         : targetSection === aboutSectionTop ? 1 : 0;
-                if (currentSection === 3 && tvSectionIsActive) {
+                if (currentSection !== 2) {
+                    projectIntroNeedsRestart = true;
                     tvSectionIsActive = false;
                     resetTvSection(false);
                 }
@@ -6369,14 +6474,7 @@
                     resetContactPanel();
                 }
                 if (currentSection === 2) {
-                    document.body.classList.add('projects-active');
-                    document.body.classList.remove('projects-nav-transition');
-                    if (!tvSectionIsActive) {
-                        tvSectionIsActive = true;
-                        resetTvSection(true);
-                        scheduleAstronautPillAlignment();
-                    }
-                    playProjectNoteIntro();
+                    enterProjectsSection();
                 }
                 if (currentSection === 3) {
                     document.body.classList.remove('projects-active', 'projects-nav-transition');

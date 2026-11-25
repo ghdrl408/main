@@ -121,6 +121,20 @@
     .page-home #con_txt_right { justify-content: flex-end; text-align: right; }
 }
 
+@media (min-width: 768px) {
+    .page-home #con_txt_left,
+    .page-home #con_txt_right {
+        left: 0;
+        right: 0;
+        justify-content: center;
+        text-align: center;
+    }
+    .page-home #con_txt_left::after,
+    .page-home #con_txt_right::after { display: none; }
+    .page-home .con:hover #con_txt_left,
+    .page-home .con:hover #con_txt_right { color: white; }
+}
+
 @media (max-width: 1500px), (hover: none), (pointer: coarse) {
     .page-home #con_wrap.intro-ready .con:hover > div { color: white; }
 }
@@ -472,19 +486,35 @@
     transform: none;
 }
 
+@media (min-width: 768px) and (max-width: 1500px) {
+    .page-about .skill-grid > .skill-item:nth-child(-n+4) {
+        grid-row: 1;
+    }
+    .page-about .skill-grid > .skill-item:nth-child(n+5) { grid-row: 2; }
+}
+
 @media (min-width: 768px) and (max-width: 1024px) {
+    .page-about .skill-content .about-title,
+    .page-about .skill-content .skill-license > .about-title { font-size: 30px; }
+    .page-about .skill-content .skill-license .license-row,
+    .page-about .skill-content .skill-license .license-row .about-row-content { font-size: 18.432px; }
     .page-about .skill-content .skill-license {
         bottom: clamp(58px, 6.3vw, 65px);
         right: 32px;
         left: clamp(190px, 26.2vw, 240px);
     }
     .page-about .skill-content .skill-license .license-row {
-        font-size: calc(clamp(13px, 1.5vw, 15.4px) * 1.2);
         margin-left: 32px;
     }
 }
 
 @media (max-width: 767px) {
+    .page-about .skill-grid > .skill-item:nth-child(-n+4) { grid-row: 1; }
+    .page-about .skill-grid > .skill-photoshop,
+    .page-about .skill-grid > .skill-illustrator,
+    .page-about .skill-grid > .skill-premiere { grid-row: 2; }
+    .page-about .skill-grid > .skill-figma,
+    .page-about .skill-grid > .skill-clipstudio { grid-row: 3; }
     .page-about .skill-content .skill-license {
         inset-inline: 0;
         bottom: 56px;
@@ -513,6 +543,12 @@
     .page-about .skill-grid .skill-item img {
         transform: scale(0.85);
         transform-origin: center;
+    }
+    .page-about .skill-grid .skill-clipstudio img {
+        border: 0;
+        outline: 0;
+        box-shadow: none;
+        clip-path: inset(1px);
     }
     .page-about .skill-content > .about-title,
     .page-about .skill-content .skill-grid,

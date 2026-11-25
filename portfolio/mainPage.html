@@ -14,15 +14,17 @@
                 document.documentElement.classList.add('portfolio-home-entry-pending');
                 window.addEventListener('DOMContentLoaded', () => {
                     requestAnimationFrame(() => requestAnimationFrame(() => {
-                        document.documentElement.classList.add('portfolio-home-entry-ready');
-                        const homeWrap = document.querySelector('body.page-home #wrap');
-                        if (!homeWrap) return;
-                        const clearEntryState = (event) => {
-                            if (event.target !== homeWrap || (event.propertyName !== 'opacity' && event.propertyName !== 'transform')) return;
-                            document.documentElement.classList.remove('portfolio-home-entry-pending', 'portfolio-home-entry-ready');
-                            homeWrap.removeEventListener('transitionend', clearEntryState);
-                        };
-                        homeWrap.addEventListener('transitionend', clearEntryState);
+                        window.setTimeout(() => {
+                            document.documentElement.classList.add('portfolio-home-entry-ready');
+                            const homeWrap = document.querySelector('body.page-home #wrap');
+                            if (!homeWrap) return;
+                            const clearEntryState = (event) => {
+                                if (event.target !== homeWrap || (event.propertyName !== 'opacity' && event.propertyName !== 'transform')) return;
+                                document.documentElement.classList.remove('portfolio-home-entry-pending', 'portfolio-home-entry-ready');
+                                homeWrap.removeEventListener('transitionend', clearEntryState);
+                            };
+                            homeWrap.addEventListener('transitionend', clearEntryState);
+                        }, 200);
                     }));
                 }, { once: true });
             }
@@ -116,6 +118,38 @@
             width: 40.5px;
             height: 40.5px;
             background-color: royalblue;
+        }
+
+        #custom-cursor.is-tv-hover {
+            width: 54px;
+            height: 54px;
+            background-color: royalblue;
+            mix-blend-mode: difference;
+        }
+
+        #circle-visit-label {
+            position: fixed;
+            z-index: 10000;
+            display: grid;
+            width: 54px;
+            height: 54px;
+            place-items: center;
+            color: #fff;
+            font: 800 10.35px/1 'Noto Sans', sans-serif;
+            letter-spacing: 2.07px;
+            white-space: nowrap;
+            pointer-events: none;
+            opacity: 0;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.1s ease;
+        }
+
+        #circle-visit-label.is-visible {
+            opacity: 1;
+        }
+
+        #circle-visit-label::after {
+            content: 'VISIT';
         }
 
         #wrap {
@@ -488,6 +522,7 @@
     <link rel="stylesheet" href="responsive.css">
     <body class="page-home">
         <div id="custom-cursor"></div>
+        <div id="circle-visit-label" aria-hidden="true"></div>
         <div id="wrap">
             <video id="bg-video" src="pf_img/1.mp4" muted loop playsinline></video>
             <video id="bg-video-2" src="pf_img/2.mp4" muted loop playsinline></video>
@@ -514,7 +549,7 @@
                 </div>
 
                 <div id="con_wrap">
-                    <a href="aboutMe.html"><div class="con"><div id="con_txt_left">About me</div></div></a>
+                        <a href="aboutMe.html"><div class="con"><div id="con_txt_left">About me</div></div></a>
                     <a href="aboutMe.html#projects_sec"><div class="con"><div>Projects</div></div></a>
                     <a href="aboutMe.html#contact-section"><div class="con"><div id="con_txt_right" data-text="Contact">Contact</div></div></a>
                 </div>
@@ -580,22 +615,25 @@
             const secondVideo = document.querySelector('#bg-video-2');
             const thirdVideo = document.querySelector('#bg-video-3');
             const customCursor = document.querySelector('#custom-cursor');
+            const circleVisitLabel = document.querySelector('#circle-visit-label');
             const conWrap = document.querySelector('#con_wrap');
             let resetTimer;
             let secondResetTimer;
             let thirdResetTimer;
 
-            requestAnimationFrame(() => {
-                conWrap.classList.add('intro-moving');
-            });
-
             setTimeout(() => {
-                conWrap.classList.add('intro-center-moving');
-            }, 900);
+                requestAnimationFrame(() => {
+                    conWrap.classList.add('intro-moving');
+                });
 
-            setTimeout(() => {
-                conWrap.classList.add('intro-ready');
-            }, 1350);
+                setTimeout(() => {
+                    conWrap.classList.add('intro-center-moving');
+                }, 900);
+
+                setTimeout(() => {
+                    conWrap.classList.add('intro-ready');
+                }, 1350);
+            }, 200);
 
             conWrap.addEventListener('click', (event) => {
                 if (conWrap.classList.contains('intro-ready')) return;
@@ -606,20 +644,32 @@
             document.addEventListener('mousemove', (event) => {
                 customCursor.style.left = `${event.clientX}px`;
                 customCursor.style.top = `${event.clientY}px`;
+                circleVisitLabel.style.left = `${event.clientX}px`;
+                circleVisitLabel.style.top = `${event.clientY}px`;
                 customCursor.classList.add('is-visible');
 
-                const hoveredAnchor = document.elementFromPoint(event.clientX, event.clientY)?.closest('a');
+                const hoveredElement = document.elementFromPoint(event.clientX, event.clientY);
+                const hoveredAnchor = hoveredElement?.closest('a');
+                const isInsideCircle = Boolean(hoveredElement?.closest('#con_wrap > a'));
                 const isInsideAnchor = Boolean(hoveredAnchor);
 
                 const isIntroActive = !conWrap.classList.contains('intro-ready');
+                const isCircleVisit = !isIntroActive && isInsideCircle;
+                customCursor.classList.toggle(
+                    'is-tv-hover',
+                    isCircleVisit
+                );
                 customCursor.classList.toggle(
                     'is-clicking',
-                    !isIntroActive && isInsideAnchor
+                    !isIntroActive && isInsideAnchor && !isInsideCircle
                 );
+                circleVisitLabel.classList.toggle('is-visible', isCircleVisit);
             });
 
             document.addEventListener('mouseleave', () => {
                 customCursor.classList.remove('is-clicking');
+                customCursor.classList.remove('is-tv-hover');
+                circleVisitLabel.classList.remove('is-visible');
             });
 
             firstCon.addEventListener('mouseenter', () => {
