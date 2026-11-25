@@ -9,12 +9,12 @@ const startButtonImage = startButton.querySelector("img");
 const frameDurationMs = 600;
 
 const frames = [
-  { name: "메인_1.png", label: "roading.", art: ["초록공선.png"] },
-  { name: "메인_2.png", label: "roading..", art: ["초록공 깐.png", "다접은 종이.png"] },
-  { name: "메인_3.png", label: "roading...", art: ["초록공 깐.png", "편 종이 짜잔.png"] },
-  { name: "메인_1.png", label: "roading.", art: ["초록공선.png"] },
-  { name: "메인_2.png", label: "roading..", art: ["초록공 깐.png", "다접은 종이.png"] },
-  { name: "메인_3.png", label: "roading...", art: ["초록공 깐.png", "편 종이 짜잔.png"] }
+  { name: "메인_1.png", label: "loading.", art: ["초록공선.png"] },
+  { name: "메인_2.png", label: "loading..", art: ["초록공 깐.png", "다접은 종이.png"] },
+  { name: "메인_3.png", label: "loading...", art: ["초록공 깐.png", "편 종이 짜잔.png"] },
+  { name: "메인_1.png", label: "loading.", art: ["초록공선.png"] },
+  { name: "메인_2.png", label: "loading..", art: ["초록공 깐.png", "다접은 종이.png"] },
+  { name: "메인_3.png", label: "loading...", art: ["초록공 깐.png", "편 종이 짜잔.png"] }
 ];
 
 const buttonImages = {
