@@ -2592,9 +2592,17 @@
             max-height: 100%;
             margin: 0 auto;
             object-fit: contain;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 120ms ease;
             user-select: none;
             -webkit-user-drag: none;
             pointer-events: none;
+        }
+
+        #note-process-modal .note-process-modal-image.is-loaded {
+            opacity: 1;
+            visibility: visible;
         }
 
         #note-process-modal .note-process-modal-image-secondary {
@@ -4190,29 +4198,70 @@
 
             let noteProcessLastTrigger = null;
             let noteProcessPreviousOverflow = '';
+            const noteProcessImageRequestIds = new WeakMap();
+            const clearNoteProcessModalImage = (image) => {
+                noteProcessImageRequestIds.set(image, (noteProcessImageRequestIds.get(image) || 0) + 1);
+                image.onload = null;
+                image.onerror = null;
+                image.classList.remove('is-loaded');
+                image.removeAttribute('src');
+                image.alt = '';
+            };
+            const setNoteProcessModalImage = (image, source, alt) => {
+                const requestId = (noteProcessImageRequestIds.get(image) || 0) + 1;
+                noteProcessImageRequestIds.set(image, requestId);
+                image.onload = null;
+                image.onerror = null;
+                image.classList.remove('is-loaded');
+                image.removeAttribute('src');
+                image.alt = alt;
+                if (!source) return;
+
+                const expectedSource = new URL(source, document.baseURI).href;
+                const revealLoadedImage = async () => {
+                    try {
+                        if (typeof image.decode === 'function') await image.decode();
+                    } catch {
+                        if (!image.complete || image.naturalWidth === 0) return;
+                    }
+                    if (noteProcessImageRequestIds.get(image) !== requestId || image.currentSrc !== expectedSource) return;
+                    image.classList.add('is-loaded');
+                    updateNoteProcessScrollbar();
+                };
+                image.onload = revealLoadedImage;
+                image.onerror = () => {
+                    if (noteProcessImageRequestIds.get(image) === requestId) image.classList.remove('is-loaded');
+                };
+                image.src = source;
+                if (image.complete && image.naturalWidth > 0) revealLoadedImage();
+            };
             const closeNoteProcessModal = () => {
                 noteProcessModal.classList.remove('is-open');
                 noteProcessModal.setAttribute('aria-hidden', 'true');
                 noteProcessModalScroll.classList.remove('is-dragging');
                 noteProcessModalScroll.classList.remove('is-gallery');
-                noteProcessModalSecondaryImage.removeAttribute('src');
+                clearNoteProcessModalImage(noteProcessModalImage);
+                clearNoteProcessModalImage(noteProcessModalSecondaryImage);
                 document.body.style.overflow = noteProcessPreviousOverflow;
                 noteProcessLastTrigger?.focus({ preventScroll: true });
             };
             noteProcessItems.forEach((item) => {
                 item.addEventListener('click', () => {
                     noteProcessLastTrigger = item;
-                    noteProcessModalImage.src = item.dataset.mobileOriginal
-                        ? item.dataset.mobileOriginal
-                        : item.dataset.original;
-                    noteProcessModalImage.alt = `${item.dataset.title} 원본 이미지`;
+                    setNoteProcessModalImage(
+                        noteProcessModalImage,
+                        item.dataset.mobileOriginal || item.dataset.original,
+                        item.dataset.title + ' 원본 이미지'
+                    );
                     const hasSecondaryImage = Boolean(item.dataset.originalSecondary);
                     if (hasSecondaryImage) {
-                        noteProcessModalSecondaryImage.src = item.dataset.originalSecondary;
-                        noteProcessModalSecondaryImage.alt = `${item.dataset.title} 두 번째 원본 이미지`;
+                        setNoteProcessModalImage(
+                            noteProcessModalSecondaryImage,
+                            item.dataset.originalSecondary,
+                            item.dataset.title + ' 두 번째 원본 이미지'
+                        );
                     } else {
-                        noteProcessModalSecondaryImage.removeAttribute('src');
-                        noteProcessModalSecondaryImage.alt = '';
+                        clearNoteProcessModalImage(noteProcessModalSecondaryImage);
                     }
                     noteProcessModalScroll.classList.toggle('is-gallery', hasSecondaryImage);
                     const needsHorizontalScroll = item.dataset.horizontal === 'true' || hasSecondaryImage;
