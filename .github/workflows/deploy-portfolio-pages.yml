@@ -113,7 +113,14 @@ jobs:
           html = html.replaceAll(deferredDetailReveal, 'projectNoteDetailsTimer = window.setTimeout(showProjectNoteDetails, 0);');
           const animatedIntroPromptDelay = 'if (elapsed >= 1000) {';
           if (html.split(animatedIntroPromptDelay).length - 1 !== 1) throw new Error('Could not isolate the first-visit note prompt timing');
-          html = html.replace(animatedIntroPromptDelay, "if (elapsed >= (window.matchMedia('(min-width: 768px)').matches ? 700 : 1000)) {");
+          html = html.replace(animatedIntroPromptDelay, "if (elapsed >= (window.matchMedia('(min-width: 768px)').matches ? 400 : 700)) {");
+          const grayNoteTextMotion = `<style id="deploy-gray-note-text-motion">
+          #project-note.is-details-visible .note-card-two .note-card-copy {
+            animation: noteContentRise 560ms ease-out both !important;
+          }
+          </style>`;
+          if (html.split('</head>').length - 1 !== 1) throw new Error('Could not isolate the deployed project note styles');
+          html = html.replace('</head>', grayNoteTextMotion + '\n</head>');
           const modalClickAnchor = `item.addEventListener('click', () => {\n                    noteProcessLastTrigger = item;`;
           if (html.split(modalClickAnchor).length - 1 !== 1) throw new Error('Could not isolate the process image modal click');
           html = html.replace(
