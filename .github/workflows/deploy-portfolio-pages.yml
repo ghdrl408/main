@@ -116,7 +116,11 @@ jobs:
           html = html.replace(animatedIntroPromptDelay, "if (elapsed >= (window.matchMedia('(min-width: 1025px)').matches ? 400 : 1000)) {");
           const grayNoteTextMotion = `<style id="deploy-gray-note-text-motion">
           #project-note.is-details-visible .note-card-two .note-card-copy {
-            animation: noteContentRise 560ms ease-out both !important;
+            animation: deployGrayNoteTextReveal 560ms ease-out both !important;
+          }
+          @keyframes deployGrayNoteTextReveal {
+            from { opacity: 0; clip-path: inset(100% 0 0); }
+            to { opacity: 1; clip-path: inset(0); }
           }
           </style>`;
           if (html.split('</head>').length - 1 !== 1) throw new Error('Could not isolate the deployed project note styles');
