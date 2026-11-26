@@ -44,7 +44,7 @@ jobs:
           ];
           for (const [video, project, title, description] of immediateNoteTransitions) {
             const oldStart = `const nextVideoReady = prepareTvChannelVideo(${video}, outgoingVideo);\n\n                startTvNoiseOverlay(() => {\n                    animateProjectNoteOutForChannelChange();`;
-            const newStart = `animateProjectNoteOutForChannelChange();\n                setProjectNoteProjectForTransition('${project}');\n                setTvStaggeredText(tvTitle, ${JSON.stringify(title)}, 0, 19);\n                noteDescriptionLayoutText = ${JSON.stringify(description)};\n                setTvStaggeredText(noteDescription, ${JSON.stringify(description)}, 0, 12);\n                const nextVideoReady = prepareTvChannelVideo(${video}, outgoingVideo);\n\n                startTvNoiseOverlay(() => {`;
+            const newStart = `animateProjectNoteOutForChannelChange();\n                setProjectNoteProjectForTransition('${project}');\n                setTvPlainTextWithBreaks(tvTitle, ${JSON.stringify(title)});\n                noteDescriptionLayoutText = ${JSON.stringify(description)};\n                setTvPlainTextWithBreaks(noteDescription, ${JSON.stringify(description)});\n                const nextVideoReady = prepareTvChannelVideo(${video}, outgoingVideo);\n\n                startTvNoiseOverlay(() => {`;
             if (!html.includes(oldStart)) throw new Error(`Could not find ${project} channel transition`);
             html = html.replace(oldStart, newStart);
             const deferredProjectUpdate = `                    setProjectNoteProjectForTransition('${project}');\n`;
@@ -105,6 +105,12 @@ jobs:
           if (!noteTurnBlock.includes('}, turnDurationMs);')) throw new Error('Could not find the note turn completion timer');
           noteTurnBlock = noteTurnBlock.replace('}, turnDurationMs);', '}, synchronizedTurnDurationMs);');
           html = html.slice(0, noteTurnStartIndex) + noteTurnBlock + html.slice(noteTurnEndIndex);
+          const uncachedNoteMotionFetch = 'fetch(`${path}?v=page-turn-speed-20261123`).then((response) => response.ok ? response.blob() : null)';
+          if (html.split(uncachedNoteMotionFetch).length - 1 !== 1) throw new Error('Could not isolate the note motion fetch');
+          html = html.replace(
+            uncachedNoteMotionFetch,
+            '(Promise.resolve(window.__deployNoteTurnPrefetches?.get(path)).then((prefetchedBlob) => prefetchedBlob ?? ' + uncachedNoteMotionFetch + '))'
+          );
           const detailsModeGuard = "if (!['riding', 'gacha', 'lotus', 'emoji'].includes(tvMode)) return;";
           if (html.split(detailsModeGuard).length - 1 !== 1) throw new Error('Could not isolate the project note details mode guard');
           html = html.replace(detailsModeGuard, "if (!['riding', 'gacha', 'lotus', 'emoji', 'transitioning'].includes(tvMode)) return;");
@@ -116,12 +122,25 @@ jobs:
           (() => {
             const note = document.querySelector('#project-note');
             if (!note) return;
+            const warmedMotionBlobs = window.__deployNoteTurnPrefetches ||= new Map();
             const warmedPaths = new Set();
             const warmPath = (path) => {
               const url = path + '?v=page-turn-speed-20261123';
-              if (warmedPaths.has(url)) return;
-              warmedPaths.add(url);
-              fetch(url).catch(() => warmedPaths.delete(url));
+              if (warmedPaths.has(path)) return;
+              warmedPaths.add(path);
+              warmedMotionBlobs.set(path, fetch(url)
+                .then((response) => response.ok ? response.blob() : null)
+                .catch(() => {
+                  warmedPaths.delete(path);
+                  warmedMotionBlobs.delete(path);
+                  return null;
+                }));
+            };
+            const warmChannelTurn = () => {
+              const wide = window.matchMedia('(max-width: 1024px)').matches;
+              warmPath(wide
+                ? 'pf_img/proImg/넓은 메모지 오른쪽넘김_공통속도.gif'
+                : 'pf_img/proImg/메모지 오른쪽넘김.gif');
             };
             const warmPreviousTurn = () => {
               if (!note.classList.contains('is-details-visible')) return;
@@ -141,7 +160,11 @@ jobs:
             }, true);
             const observer = new MutationObserver(warmPreviousTurn);
             observer.observe(note, { attributes: true, attributeFilter: ['class'] });
-            window.addEventListener('resize', warmPreviousTurn);
+            window.addEventListener('resize', () => {
+              warmChannelTurn();
+              warmPreviousTurn();
+            });
+            warmChannelTurn();
             warmPreviousTurn();
           })();
           </script>
