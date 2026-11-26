@@ -115,6 +115,36 @@ jobs:
           const deferredDetailReveal = 'projectNoteDetailsTimer = window.setTimeout(showProjectNoteDetails, 850);';
           if (html.split(deferredDetailReveal).length - 1 !== 4) throw new Error('Expected four delayed channel note reveals');
           html = html.replaceAll(deferredDetailReveal, 'projectNoteDetailsTimer = window.setTimeout(showProjectNoteDetails, 0);');
+          const modalImageCallAnchor = `setNoteProcessModalImage(
+                        noteProcessModalImage,
+                        item.dataset.mobileOriginal || item.dataset.original,`;
+          if (html.split(modalImageCallAnchor).length - 1 !== 1) throw new Error('Could not isolate the process image modal');
+          const modalImageCallStart = html.indexOf(modalImageCallAnchor);
+          const modalImageCallEnd = html.indexOf(');', modalImageCallStart) + 2;
+          if (modalImageCallEnd < 2) throw new Error('Could not isolate the process image modal source');
+          const originalModalImageCall = html.slice(modalImageCallStart, modalImageCallEnd);
+          const instantPreviewModalImage = `const modalOriginalSource = item.dataset.mobileOriginal || item.dataset.original;
+                    const modalPreviewImage = item.querySelector('img');
+                    const modalPreviewSource = modalPreviewImage?.currentSrc || modalPreviewImage?.src;
+                    const modalImageAlt = item.dataset.title + ' original';
+                    if (modalPreviewSource && modalOriginalSource) {
+                        setNoteProcessModalImage(noteProcessModalImage, modalPreviewSource, modalImageAlt);
+                        const originalImageWarmup = new Image();
+                        const revealOriginalImage = async () => {
+                            try { await originalImageWarmup.decode(); } catch {
+                                if (!originalImageWarmup.complete || !originalImageWarmup.naturalWidth) return;
+                            }
+                            if (noteProcessLastTrigger === item) {
+                                setNoteProcessModalImage(noteProcessModalImage, modalOriginalSource, modalImageAlt);
+                            }
+                        };
+                        originalImageWarmup.addEventListener('load', revealOriginalImage, { once: true });
+                        originalImageWarmup.src = modalOriginalSource;
+                        if (originalImageWarmup.complete && originalImageWarmup.naturalWidth) void revealOriginalImage();
+                    } else {
+                        ${originalModalImageCall}
+                    }`;
+          html = html.slice(0, modalImageCallStart) + instantPreviewModalImage + html.slice(modalImageCallEnd);
           const preloader = `
           <script id="deploy-note-turn-prefetch">
           (() => {
