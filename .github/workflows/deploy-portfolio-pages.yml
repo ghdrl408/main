@@ -37,19 +37,40 @@ jobs:
           const pagePath = '_site/portfolio/aboutMe.html';
           let html = fs.readFileSync(pagePath, 'utf8');
           const immediateNoteTransitions = [
-            ['tvRidingVideo', 'riding'],
-            ['tvGachaVideo', 'gacha'],
-            ['tvLotusVideo', 'lotus'],
-            ['tvEmojiVideo', 'emoji'],
+            ['tvRidingVideo', 'riding', '라이딩부산', '부산 근교의 자연경관을 즐길 수 있는 오토바이 코스 추천 웹사이트'],
+            ['tvGachaVideo', 'gacha', '가챠픽', '선택이 어려운 현대인들을 위한 랜덤 뽑기형 추천 서비스'],
+            ['tvLotusVideo', 'lotus', '부여가을연꽃축제', '개인 웹 퍼블리싱 실습을 위해 제작한 가상의 축제 홍보 웹페이지'],
+            ['tvEmojiVideo', 'emoji', '고양이 웅냐', '고양이 캐릭터 ‘웅냐’의 일상을 담은 움직이는 이모티콘과 캐릭터 굿즈 디자인'],
           ];
-          for (const [video, project] of immediateNoteTransitions) {
+          for (const [video, project, title, description] of immediateNoteTransitions) {
             const oldStart = `const nextVideoReady = prepareTvChannelVideo(${video}, outgoingVideo);\n\n                startTvNoiseOverlay(() => {\n                    animateProjectNoteOutForChannelChange();`;
-            const newStart = `animateProjectNoteOutForChannelChange();\n                setProjectNoteProjectForTransition('${project}');\n                const nextVideoReady = prepareTvChannelVideo(${video}, outgoingVideo);\n\n                startTvNoiseOverlay(() => {`;
+            const newStart = `animateProjectNoteOutForChannelChange();\n                setProjectNoteProjectForTransition('${project}');\n                setTvStaggeredText(tvTitle, ${JSON.stringify(title)}, 0, 19);\n                noteDescriptionLayoutText = ${JSON.stringify(description)};\n                setTvStaggeredText(noteDescription, ${JSON.stringify(description)}, 0, 12);\n                const nextVideoReady = prepareTvChannelVideo(${video}, outgoingVideo);\n\n                startTvNoiseOverlay(() => {`;
             if (!html.includes(oldStart)) throw new Error(`Could not find ${project} channel transition`);
             html = html.replace(oldStart, newStart);
             const deferredProjectUpdate = `                    setProjectNoteProjectForTransition('${project}');\n`;
             if (!html.includes(deferredProjectUpdate)) throw new Error(`Could not find deferred ${project} note update`);
             html = html.replace(deferredProjectUpdate, '');
+          }
+          const channelFunctionEdits = [
+            ['startTvRide', 'startTvGacha', '라이딩부산'],
+            ['startTvGacha', 'startTvLotus', '가챠픽'],
+            ['startTvLotus', 'startTvEmoji', '부여가을연꽃축제'],
+            ['startTvEmoji', 'startTvNextChannel', '고양이 웅냐'],
+          ];
+          for (const [functionName, nextFunctionName, title] of channelFunctionEdits) {
+            const functionStart = `const ${functionName} = () => {`;
+            const functionEnd = `\n            const ${nextFunctionName} = () => {`;
+            const functionStartIndex = html.indexOf(functionStart);
+            const functionEndIndex = html.indexOf(functionEnd, functionStartIndex);
+            if (functionStartIndex < 0 || functionEndIndex < 0) throw new Error(`Could not isolate ${functionName}`);
+            let functionBlock = html.slice(functionStartIndex, functionEndIndex);
+            const deferredTitle = `                    setTvStaggeredText(tvTitle, '${title}', 0, 19);\n`;
+            const deferredDescription = '                    updateNoteDescription();\n';
+            if (!functionBlock.includes(deferredTitle) || !functionBlock.includes(deferredDescription)) {
+              throw new Error(`Could not find deferred ${functionName} note text`);
+            }
+            functionBlock = functionBlock.replace(deferredTitle, '').replace(deferredDescription, '');
+            html = html.slice(0, functionStartIndex) + functionBlock + html.slice(functionEndIndex);
           }
           const noteTurnStart = 'const animateProjectNoteOutForChannelChange = () => {';
           const noteTurnEnd = '\n            const startTvRide = () => {';
