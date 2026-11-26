@@ -118,9 +118,6 @@ jobs:
           const animatedIntroPromptDelay = 'if (elapsed >= 1000) {';
           if (html.split(animatedIntroPromptDelay).length - 1 !== 1) throw new Error('Could not isolate the first-visit note prompt timing');
           html = html.replace(animatedIntroPromptDelay, "if (elapsed >= (window.matchMedia('(min-width: 768px)').matches ? 700 : 1000)) {");
-          const scheduledIntroPromptDelay = 'scheduleProjectNoteIntroPrompt(1000);';
-          if (html.split(scheduledIntroPromptDelay).length - 1 !== 1) throw new Error('Could not isolate the returned-visit note prompt timing');
-          html = html.replace(scheduledIntroPromptDelay, "scheduleProjectNoteIntroPrompt(window.matchMedia('(min-width: 768px)').matches ? 700 : 1000);");
           const modalClickHandlerAnchor = 'noteProcessItems.forEach((item) => {';
           const modalClickHandlerStart = html.indexOf(modalClickHandlerAnchor);
           const modalImageCallStart = html.indexOf('setNoteProcessModalImage(', modalClickHandlerStart);
