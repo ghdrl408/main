@@ -107,9 +107,10 @@ jobs:
           html = html.slice(0, noteTurnStartIndex) + noteTurnBlock + html.slice(noteTurnEndIndex);
           const uncachedNoteMotionFetch = 'fetch(`${path}?v=page-turn-speed-20261123`).then((response) => response.ok ? response.blob() : null)';
           if (html.split(uncachedNoteMotionFetch).length - 1 !== 1) throw new Error('Could not isolate the note motion fetch');
+          const versionedNoteMotionFetch = 'fetch(`${path}?v=note-motion-optimized-20261126`).then((response) => response.ok ? response.blob() : null)';
           html = html.replace(
             uncachedNoteMotionFetch,
-            '(Promise.resolve(window.__deployNoteTurnPrefetches?.get(path)).then((prefetchedBlob) => prefetchedBlob ?? ' + uncachedNoteMotionFetch + '))'
+            '(Promise.resolve(window.__deployNoteTurnPrefetches?.get(path)).then((prefetchedBlob) => prefetchedBlob ?? ' + versionedNoteMotionFetch + '))'
           );
           const detailsModeGuard = "if (!['riding', 'gacha', 'lotus', 'emoji'].includes(tvMode)) return;";
           if (html.split(detailsModeGuard).length - 1 !== 1) throw new Error('Could not isolate the project note details mode guard');
@@ -125,7 +126,7 @@ jobs:
             const warmedMotionBlobs = window.__deployNoteTurnPrefetches ||= new Map();
             const warmedPaths = new Set();
             const warmPath = (path) => {
-              const url = path + '?v=page-turn-speed-20261123';
+              const url = path + '?v=note-motion-optimized-20261126';
               if (warmedPaths.has(path)) return;
               warmedPaths.add(path);
               warmedMotionBlobs.set(path, fetch(url)
@@ -172,6 +173,16 @@ jobs:
           if (!html.includes('</body>')) throw new Error('aboutMe.html has no closing body tag');
           fs.writeFileSync(pagePath, html.replace('</body>', preloader + '\n</body>'), 'utf8');
           NODE
+          if ! command -v gifsicle >/dev/null 2>&1; then
+            sudo apt-get update
+            sudo apt-get install -y gifsicle
+          fi
+          gifsicle --batch --optimize=3 --lossy=60 \
+            '_site/portfolio/pf_img/proImg/넓은 메모지 오른쪽넘김_공통속도.gif' \
+            '_site/portfolio/pf_img/proImg/메모지 오른쪽넘김.gif'
+          stat -c '%n %s bytes' \
+            '_site/portfolio/pf_img/proImg/넓은 메모지 오른쪽넘김_공통속도.gif' \
+            '_site/portfolio/pf_img/proImg/메모지 오른쪽넘김.gif'
           mkdir -p _site/gatcha-pick _site/lotusFes _site/Font _site/last/Font
           rsync -a --exclude='*.md' --exclude='*.mp4' --exclude='*참고*' gatcha-pick/ _site/gatcha-pick/
           rsync -a lotus-festival/ _site/lotusFes/
