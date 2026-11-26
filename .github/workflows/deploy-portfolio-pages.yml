@@ -32,6 +32,32 @@ jobs:
         run: |
           mkdir -p _site/portfolio
           rsync -a --exclude='test.html' --exclude='내일_작업메모.md' portfolio/ _site/portfolio/
+          node <<'NODE'
+          const fs = require('node:fs');
+          const pagePath = '_site/portfolio/aboutMe.html';
+          const html = fs.readFileSync(pagePath, 'utf8');
+          const preloader = `
+          <script id="deploy-note-turn-prefetch">
+          (() => {
+            const note = document.querySelector('#project-note');
+            if (!note) return;
+            const warmPreviousTurn = () => {
+              if (!note.classList.contains('is-details-visible')) return;
+              observer.disconnect();
+              const path = window.matchMedia('(max-width: 1024px)').matches
+                ? 'pf_img/proImg/넓은 메모지 왼쪽넘김_공통속도.gif'
+                : 'pf_img/proImg/메모지 왼쪽넘김.gif';
+              fetch(path + '?v=page-turn-speed-20261123').catch(() => {});
+            };
+            const observer = new MutationObserver(warmPreviousTurn);
+            observer.observe(note, { attributes: true, attributeFilter: ['class'] });
+            warmPreviousTurn();
+          })();
+          </script>
+          `;
+          if (!html.includes('</body>')) throw new Error('aboutMe.html has no closing body tag');
+          fs.writeFileSync(pagePath, html.replace('</body>', preloader + '\n</body>'), 'utf8');
+          NODE
           mkdir -p _site/gatcha-pick _site/lotusFes _site/Font _site/last/Font
           rsync -a --exclude='*.md' --exclude='*.mp4' --exclude='*참고*' gatcha-pick/ _site/gatcha-pick/
           rsync -a lotus-festival/ _site/lotusFes/
