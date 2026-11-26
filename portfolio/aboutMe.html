@@ -1595,33 +1595,19 @@
             background-color: #000;
         }
 
-        #tv_noise_overlay {
+        #tv_noise_video {
             position: absolute;
             z-index: 1;
             left: 9.45%;
             top: 7.801%;
             width: 83.327%;
             height: 73.439%;
-            overflow: hidden;
+            display: block;
+            object-fit: fill;
+            clip-path: none;
             opacity: 0;
-            visibility: hidden;
             pointer-events: none;
-            background-color: #777;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='100'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.92' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-            background-size: 110% 110%;
-            transition: opacity 35ms linear;
-        }
-
-        #tv_noise_overlay.is-active {
-            opacity: 1;
-            visibility: visible;
-            animation: tvNoiseJitter 90ms steps(2, end) infinite;
-        }
-
-        @keyframes tvNoiseJitter {
-            0% { background-position: 0 0; filter: contrast(1.15) brightness(.88); }
-            50% { background-position: 11px -7px; filter: contrast(1.8) brightness(1.15); }
-            100% { background-position: -8px 5px; filter: contrast(1.35) brightness(.96); }
+            transition: none;
         }
 
         #tv_stage.is-screen-transitioning #tv_video,
@@ -1761,7 +1747,7 @@
             to { clip-path: inset(0); }
         }
 
-        #tv_noise_overlay.is-active {
+        #tv_noise_video.is-active {
             opacity: 1;
         }
 
@@ -1858,11 +1844,6 @@
 
         #project-note.is-visible {
             opacity: 1;
-        }
-
-        #project-note.is-channel-changing {
-            opacity: 0;
-            transition-duration: 180ms;
         }
 
         #project-note-paper {
@@ -3161,7 +3142,7 @@
                             <a id="tv_emoji_link" aria-label="네 번째 프로젝트 영상">
                                 <video id="tv_emoji_video" src="pro_3/웅냐머리 끝.mp4" muted loop playsinline preload="none" aria-hidden="true"></video>
                             </a>
-                            <div id="tv_noise_overlay" aria-hidden="true"></div>
+                            <video id="tv_noise_video" src="pf_img/proImg/변환용 노이즈.mp4" muted playsinline preload="none" aria-hidden="true"></video>
                             <img id="tv_wrap" src="./pf_img/proImg/tv.png" alt="tv">
                             <div id="tv_no">CH 00</div>
                             <img id="astronaut-head-backdrop" src="pf_img/proImg/우주인머리 뒷배경.png" alt="">
@@ -3427,7 +3408,7 @@
             const tvGachaLink = document.querySelector('#tv_gacha_link');
             const tvLotusLink = document.querySelector('#tv_lotus_link');
             const tvEmojiLink = document.querySelector('#tv_emoji_link');
-            const tvNoiseVideo = document.querySelector('#tv_noise_overlay');
+            const tvNoiseVideo = document.querySelector('#tv_noise_video');
             const getTvVideoForMode = (mode) => ({
                 intro: tvVideo,
                 riding: tvRidingVideo,
@@ -3773,20 +3754,26 @@
                 let minimumNoiseElapsed = false;
                 let nextFrameAvailable = false;
                 let transitionRevealed = false;
+                tvNoiseVideo.pause();
+                if (tvNoiseVideo.readyState > 0) tvNoiseVideo.currentTime = 0;
                 const revealWhenReady = () => {
                     if (!activated || !minimumNoiseElapsed || !nextFrameAvailable || transitionRevealed ||
                         tvMode !== 'transitioning' || transitionGeneration !== tvTransitionGeneration) return;
                     transitionRevealed = true;
                     onNoiseReady();
+                    if (transitionGeneration !== tvTransitionGeneration) return;
                     tvRevealTimer = window.setTimeout(() => {
                         if (transitionGeneration !== tvTransitionGeneration) return;
                         tvNoiseVideo.classList.remove('is-active');
+                        tvNoiseVideo.pause();
+                        if (tvNoiseVideo.readyState > 0) tvNoiseVideo.currentTime = 0;
                     }, tvScreenRiseDurationMs + 50);
                 };
                 Promise.resolve(nextFrameReady).then((ready) => {
                     nextFrameAvailable = ready;
                     revealWhenReady();
                 });
+                const noiseFrameReady = waitForTvVideoFrame(tvNoiseVideo);
                 const activateNoise = () => {
                     if (activated || tvMode !== 'transitioning' || transitionGeneration !== tvTransitionGeneration) return;
                     activated = true;
@@ -3800,7 +3787,10 @@
                         revealWhenReady();
                     }, tvNoiseRevealMs);
                 };
-                window.requestAnimationFrame(() => window.requestAnimationFrame(activateNoise));
+                noiseFrameReady.then((ready) => {
+                    if (ready) activateNoise();
+                });
+                tvNoiseVideo.play().catch(() => {});
             };
             const finishTvScreenTransitionAfterReveal = () => {
                 window.clearTimeout(tvScreenTransitionTimer);
@@ -4269,14 +4259,11 @@
             };
             let pendingProjectNoteProject = null;
             const setProjectNoteProjectForTransition = (project) => {
-                if (projectNote.classList.contains('is-turning') || projectNote.classList.contains('is-turn-loading')) {
-                    projectNoteTurnRequestGeneration += 1;
-                    window.clearTimeout(projectNoteTurnTimer);
-                    resetProjectNoteToFirstPage();
+                if (projectNote.classList.contains('is-turning')) {
+                    pendingProjectNoteProject = project;
+                    return;
                 }
                 pendingProjectNoteProject = null;
-                pendingProjectNoteTextUpdates.clear();
-                projectNote.classList.remove('is-channel-changing');
                 setProjectNoteProject(project);
             };
 
@@ -4692,7 +4679,7 @@
                 setMobileProjectChannelLayout('intro');
                 tvStage.classList.remove('is-intro', 'is-transitioning', 'is-screen-transitioning', 'is-small-text-exiting', 'is-small-text-ready', 'is-riding-ready', 'has-project-video');
                 if (!keepProjectNoteTurning) {
-                    projectNote.classList.remove('is-intro', 'is-intro-prompt-visible', 'is-transitioning', 'is-channel-changing', 'is-riding-ready', 'is-details-visible', 'is-turn-loading', 'is-turning', 'is-turning-back', 'is-turning-to-third', 'is-turn-complete', 'is-later-page', 'is-second-page', 'is-third-page', 'has-tape');
+                    projectNote.classList.remove('is-intro', 'is-intro-prompt-visible', 'is-transitioning', 'is-riding-ready', 'is-details-visible', 'is-turn-loading', 'is-turning', 'is-turning-back', 'is-turning-to-third', 'is-turn-complete', 'is-later-page', 'is-second-page', 'is-third-page', 'has-tape');
                     projectNotePaper.classList.remove('is-folded', 'is-turning', 'is-turning-back', 'is-turn-complete', 'is-folded-corner-visible');
                     syncProjectNotePageAssets();
                     projectNoteTapeWrappers.forEach((tape) => tape.classList.remove('is-playing', 'is-complete'));
@@ -4721,6 +4708,8 @@
                     setTvPlainText(tvSmallTxt, 'Press the arrow keys');
                 if (!keepNoise) {
                     tvNoiseVideo.classList.remove('is-active');
+                    tvNoiseVideo.pause();
+                    if (tvNoiseVideo.readyState > 0) tvNoiseVideo.currentTime = 0;
                 }
                 if (!keepDirectIntroVideo) tvVideo.pause();
                 tvRidingVideo.pause();
@@ -4765,16 +4754,60 @@
                 window.clearTimeout(projectNoteTurnTimer);
                 window.clearTimeout(projectNoteContentRevealTimer);
                 window.clearTimeout(projectNoteFoldedCornerTimer);
-                projectNoteTurnRequestGeneration += 1;
+                const turnRequestGeneration = ++projectNoteTurnRequestGeneration;
                 resetProjectNoteTapeMotion();
-                pendingProjectNoteProject = null;
-                pendingProjectNoteTextUpdates.clear();
-                projectNote.classList.add('is-channel-changing');
-                projectNote.classList.remove('is-details-visible', 'has-tape');
-                projectNotePaper.classList.remove('is-turning', 'is-turning-back', 'is-turn-complete', 'is-folded');
-                projectNoteTapeWrappers.forEach((tape) => tape.classList.remove('is-playing', 'is-complete'));
-                tvStage.classList.remove('is-details-visible');
-                resetProjectNoteToFirstPage();
+
+                if (!projectNote.classList.contains('is-details-visible')) {
+                    projectNote.classList.remove('is-turn-loading');
+                    resetProjectNoteToFirstPage();
+                    return;
+                }
+
+                const fromPage = projectNotePage;
+                const isLaterPage = projectNotePage > 1;
+                const turnDirection = isLaterPage ? 'prev' : 'next';
+                projectNote.classList.remove('is-turn-complete');
+                projectNotePaper.classList.remove('is-turn-complete', 'is-folded', 'is-folded-corner-visible');
+                projectNote.classList.add('is-turn-loading');
+                projectNote.classList.add('is-turning');
+                projectNote.classList.toggle('is-turning-back', isLaterPage);
+                projectNote.classList.remove('is-turning-to-third');
+                projectNotePaper.classList.remove('is-turning', 'is-turning-back');
+
+                loadProjectNoteTurnMotion(turnDirection, fromPage).then((turnDurationMs) => {
+                    if (turnRequestGeneration !== projectNoteTurnRequestGeneration ||
+                        !projectNote.classList.contains('is-turning')) return;
+                    projectNote.classList.remove('is-turn-loading');
+                    projectNotePaper.classList.add('is-turning');
+                    if (isLaterPage) projectNotePaper.classList.add('is-turning-back');
+                    projectNoteTurnTimer = window.setTimeout(() => {
+                        if (turnRequestGeneration !== projectNoteTurnRequestGeneration) return;
+                        projectNoteTurnRequestGeneration += 1;
+                        resetProjectNoteToFirstPage();
+                        projectNote.classList.remove('is-turn-loading', 'is-details-visible', 'has-tape');
+                        tvStage.classList.remove('is-details-visible');
+                        projectNoteTapeWrappers.forEach((tape) => tape.classList.remove('is-playing', 'is-complete'));
+                        if (pendingProjectNoteProject !== null) {
+                            const nextProject = pendingProjectNoteProject;
+                            pendingProjectNoteProject = null;
+                            setProjectNoteProject(nextProject);
+                            if (nextProject === 'lotus') window.requestAnimationFrame(fitLotusProjectNoteTitle);
+                        }
+                        for (const updateText of pendingProjectNoteTextUpdates.values()) updateText();
+                        pendingProjectNoteTextUpdates.clear();
+                        if (tvMode === 'intro') {
+                            setProjectNoteProject('riding');
+                            projectNote.classList.remove('is-riding-ready');
+                            if (projectNoteIntroComplete) {
+                                projectNote.classList.add('is-intro');
+                                revealProjectNoteIntroPrompt();
+                            }
+                            setTvPlainText(tvTitle, 'RIDING BUSAN');
+                            setTvPlainText(noteDescription, '');
+                            noteDescriptionLayoutText = '';
+                        }
+                    }, turnDurationMs);
+                });
             };
 
             const startTvRide = () => {
@@ -4784,7 +4817,6 @@
                 const enteringRideFromMobileIntro = tvMode === 'intro' && isMobileLayout;
                 if (tvMode !== 'intro' && tvMode !== 'gacha' && !wrappingFromEmoji) return;
                 if (enteringRideFromMobileIntro) mobileProjectLoopStarted = true;
-                animateProjectNoteOutForChannelChange();
                 beginTvSmallTextExit();
                 setMobileProjectChannelLayout(
                     wrappingFromEmoji || (isMobileLayout && mobileProjectLoopStarted)
@@ -4808,6 +4840,7 @@
                 const nextVideoReady = prepareTvChannelVideo(tvRidingVideo, outgoingVideo);
 
                 startTvNoiseOverlay(() => {
+                    animateProjectNoteOutForChannelChange();
                     tvRidingVideo.classList.add('is-revealing');
                     finishTvScreenTransitionAfterReveal();
                     tvStage.classList.remove('is-transitioning');
@@ -4833,7 +4866,6 @@
             const startTvGacha = () => {
                 if (tvMode !== 'riding' && tvMode !== 'lotus') return;
                 const outgoingVideo = getTvVideoForMode(tvMode);
-                animateProjectNoteOutForChannelChange();
                 beginTvSmallTextExit();
                 setMobileProjectChannelLayout('gacha');
                 window.clearTimeout(tvNoiseFadeTimer);
@@ -4853,6 +4885,7 @@
                 const nextVideoReady = prepareTvChannelVideo(tvGachaVideo, outgoingVideo);
 
                 startTvNoiseOverlay(() => {
+                    animateProjectNoteOutForChannelChange();
                     tvGachaVideo.classList.add('is-revealing');
                     finishTvScreenTransitionAfterReveal();
                     tvStage.classList.remove('is-transitioning');
@@ -4878,7 +4911,6 @@
             const startTvLotus = () => {
                 if (tvMode !== 'gacha' && tvMode !== 'emoji') return;
                 const outgoingVideo = getTvVideoForMode(tvMode);
-                animateProjectNoteOutForChannelChange();
                 beginTvSmallTextExit();
                 setMobileProjectChannelLayout('lotus');
                 window.clearTimeout(tvNoiseFadeTimer);
@@ -4899,6 +4931,7 @@
                 const nextVideoReady = prepareTvChannelVideo(tvLotusVideo, outgoingVideo);
 
                 startTvNoiseOverlay(() => {
+                    animateProjectNoteOutForChannelChange();
                     tvLotusVideo.classList.add('is-revealing');
                     finishTvScreenTransitionAfterReveal();
                     tvStage.classList.remove('is-transitioning');
@@ -4927,7 +4960,6 @@
                 const returningFromWrappedRide = tvMode === 'riding' &&
                     (!isMobileLayout || mobileProjectChannels[0].dataset.channel === '04');
                 if (tvMode !== 'lotus' && !returningFromWrappedRide) return;
-                animateProjectNoteOutForChannelChange();
                 beginTvSmallTextExit();
                 setMobileProjectChannelLayout('emoji');
                 window.clearTimeout(tvNoiseFadeTimer);
@@ -4948,6 +4980,7 @@
                 const nextVideoReady = prepareTvChannelVideo(tvEmojiVideo, outgoingVideo);
 
                 startTvNoiseOverlay(() => {
+                    animateProjectNoteOutForChannelChange();
                     tvEmojiVideo.classList.add('is-revealing');
                     finishTvScreenTransitionAfterReveal();
                     tvStage.classList.remove('is-transitioning');
@@ -4959,7 +4992,7 @@
                     setProjectNoteProjectForTransition('emoji');
                     setTvStaggeredText(tvTitle, '고양이 웅냐', 0, 19);
                     updateNoteDescription();
-                    setTvStaggeredText(tvSmallTxt, '아기 고양이 웅냐의 얼렁뚱땅 일상을 함께 해 보세요!', 0, 12);
+                    setTvStaggeredText(tvSmallTxt, '아기 고양이 웅냐와 함께 얼렁뚱땅 일상을 즐겨요!', 0, 12);
                     tvEmojiLink.classList.add('is-interactive');
                     tvStage.classList.add('is-small-text-ready');
                     if (projectNote.classList.contains('is-details-visible') && !projectNote.classList.contains('is-turning')) {
@@ -5005,7 +5038,6 @@
                     return;
                 }
                 const outgoingVideo = getTvVideoForMode(tvMode);
-                animateProjectNoteOutForChannelChange();
                 beginTvSmallTextExit();
                 tvMode = 'transitioning';
                 tvNo.textContent = 'CH 00';
@@ -5021,10 +5053,13 @@
                 tvEmojiLink.classList.remove('is-interactive');
                 const introFrameReady = prepareTvChannelVideo(tvVideo, outgoingVideo);
                 startTvNoiseOverlay(() => {
+                    animateProjectNoteOutForChannelChange();
                     resetTvSection(true, true, true, true);
                     tvMode = 'transitioning';
                     tvRevealTimer = window.setTimeout(() => {
                         tvNoiseVideo.classList.remove('is-active');
+                        tvNoiseVideo.pause();
+                        if (tvNoiseVideo.readyState > 0) tvNoiseVideo.currentTime = 0;
                         tvMode = 'intro';
                     }, tvNoiseDurationMs - tvNoiseRevealMs);
                 }, outgoingVideo, introFrameReady);
