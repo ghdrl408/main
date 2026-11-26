@@ -97,8 +97,13 @@ jobs:
             'if (turnRequestGeneration !== projectNoteTurnRequestGeneration) { resolveProjectNoteChannelTurn(); return; }' +
             noteTurnBlock.slice(staleTurnTimerIndex + staleTurnTimer.length);
           noteTurnBlock = noteTurnBlock.replace(timerEnd, '                        resolveProjectNoteChannelTurn();\n                    }, synchronizedTurnDurationMs);');
-          if (!noteTurnBlock.endsWith('            };')) throw new Error('Could not find the end of the channel note transition');
-          noteTurnBlock = noteTurnBlock.slice(0, -'            };'.length) + '                return projectNoteChannelTurnPromise;\n            };';
+          const noteTurnBlockTrimmedEnd = noteTurnBlock.trimEnd();
+          const noteTurnClosingIndex = noteTurnBlockTrimmedEnd.lastIndexOf('            };');
+          if (noteTurnClosingIndex < 0 || noteTurnClosingIndex < noteTurnBlockTrimmedEnd.length - 20) {
+            throw new Error('Could not find the end of the channel note transition');
+          }
+          noteTurnBlock = noteTurnBlockTrimmedEnd.slice(0, noteTurnClosingIndex) +
+            '                return projectNoteChannelTurnPromise;\n            };';
           html = html.slice(0, noteTurnStartIndex) + noteTurnBlock + html.slice(noteTurnEndIndex);
           const uncachedNoteMotionFetch = 'fetch(`${path}?v=page-turn-speed-20261123`).then((response) => response.ok ? response.blob() : null)';
           if (html.split(uncachedNoteMotionFetch).length - 1 !== 1) throw new Error('Could not isolate the note motion fetch');
