@@ -113,7 +113,7 @@ jobs:
           html = html.replaceAll(deferredDetailReveal, 'projectNoteDetailsTimer = window.setTimeout(showProjectNoteDetails, 0);');
           const animatedIntroPromptDelay = 'if (elapsed >= 1000) {';
           if (html.split(animatedIntroPromptDelay).length - 1 !== 1) throw new Error('Could not isolate the first-visit note prompt timing');
-          html = html.replace(animatedIntroPromptDelay, "if (elapsed >= (window.matchMedia('(min-width: 768px)').matches ? 400 : 1000)) {");
+          html = html.replace(animatedIntroPromptDelay, "if (elapsed >= (window.matchMedia('(min-width: 1025px)').matches ? 400 : 1000)) {");
           const grayNoteTextMotion = `<style id="deploy-gray-note-text-motion">
           #project-note.is-details-visible .note-card-two .note-card-copy {
             animation: noteContentRise 560ms ease-out both !important;
