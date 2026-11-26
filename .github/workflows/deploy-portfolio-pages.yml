@@ -116,11 +116,15 @@ jobs:
           html = html.replace(animatedIntroPromptDelay, "if (elapsed >= (window.matchMedia('(min-width: 1025px)').matches ? 400 : 1000)) {");
           const grayNoteTextMotion = `<style id="deploy-gray-note-text-motion">
           #project-note.is-details-visible .note-card-two .note-card-copy {
-            animation: deployGrayNoteTextReveal 560ms ease-out both !important;
+            animation: noteContentRiseCenteredInCard 560ms ease-out both !important;
           }
-          @keyframes deployGrayNoteTextReveal {
-            from { opacity: 0; clip-path: inset(100% 0 0); }
-            to { opacity: 1; clip-path: inset(0); }
+          @media (max-width: 1024px) {
+            #project-note.is-details-visible .note-card-two .note-card-copy {
+              animation: noteContentRiseTablet 560ms ease-out both !important;
+            }
+            #project-note.is-gacha-project.is-details-visible .note-card-two .note-card-copy {
+              animation: noteContentRiseGachaCentered 560ms ease-out both !important;
+            }
           }
           </style>`;
           if (html.split('</head>').length - 1 !== 1) throw new Error('Could not isolate the deployed project note styles');
