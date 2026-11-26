@@ -233,7 +233,7 @@ jobs:
           stat -c '%n %s bytes' \
             '_site/portfolio/pf_img/proImg/넓은 메모지 오른쪽넘김_공통속도.gif' \
             '_site/portfolio/pf_img/proImg/메모지 오른쪽넘김.gif'
-          find _site/portfolio -type f -iname '*.mp4' -print0 | while IFS= read -r -d '' video; do
+          find _site/portfolio -type f -iname '*.mp4' ! -name '*.optimized.mp4' -print0 | while IFS= read -r -d '' video; do
             echo "Optimizing $video"
             optimized="${video%.*}.optimized.mp4"
             width=$(ffprobe -v error -select_streams v:0 -show_entries stream=width -of csv=s=x:p=0 "$video")
