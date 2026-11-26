@@ -48,7 +48,7 @@ jobs:
           html = html.replace(noiseOverlayAnchor, `let projectNoteChannelTurnPromise = Promise.resolve();\n          ${noiseOverlayAnchor.replace('nextFrameReady) => {', 'nextFrameReady, onNoiseActivated) => {')}`);
           const activateNoiseAnchor = 'tvNoiseVideo.classList.add(\'is-active\');';
           if (html.split(activateNoiseAnchor).length - 1 !== 1) throw new Error('Could not find the channel noise activation point');
-          html = html.replace(activateNoiseAnchor, `${activateNoiseAnchor}\n                    Promise.resolve(onNoiseActivated?.()).then(() => {\n                        projectNoteTurnAvailable = true;\n                        revealWhenReady();\n                    });`);
+          html = html.replace(activateNoiseAnchor, `${activateNoiseAnchor}\n                    onNoiseActivated?.();`);
           const channelOverlayCalls = ['tvRidingVideo', 'tvGachaVideo', 'tvLotusVideo', 'tvEmojiVideo'];
           for (const video of channelOverlayCalls) {
             const callAnchor = `}, outgoingVideo, nextVideoReady);`;
@@ -59,10 +59,6 @@ jobs:
           }
           const noiseRevealGuard = 'if (!activated || !minimumNoiseElapsed || !nextFrameAvailable || transitionRevealed ||';
           if (html.split(noiseRevealGuard).length - 1 !== 1) throw new Error('Could not find the noise reveal guard');
-          html = html.replace(noiseRevealGuard, 'if (!activated || !minimumNoiseElapsed || !nextFrameAvailable || !projectNoteTurnAvailable || transitionRevealed ||');
-          const noiseTransitionState = 'let transitionRevealed = false;';
-          if (html.split(noiseTransitionState).length - 1 !== 1) throw new Error('Could not find the noise transition state');
-          html = html.replace(noiseTransitionState, `${noiseTransitionState}\n                let projectNoteTurnAvailable = false;`);
           const noteTurnStart = 'const animateProjectNoteOutForChannelChange = () => {';
           const noteTurnEnd = '\n            const startTvRide = () => {';
           const noteTurnStartIndex = html.indexOf(noteTurnStart);
@@ -118,42 +114,43 @@ jobs:
           const animatedIntroPromptDelay = 'if (elapsed >= 1000) {';
           if (html.split(animatedIntroPromptDelay).length - 1 !== 1) throw new Error('Could not isolate the first-visit note prompt timing');
           html = html.replace(animatedIntroPromptDelay, "if (elapsed >= (window.matchMedia('(min-width: 768px)').matches ? 700 : 1000)) {");
-          const modalClickHandlerAnchor = 'noteProcessItems.forEach((item) => {';
-          const modalClickHandlerStart = html.indexOf(modalClickHandlerAnchor);
-          const modalImageCallStart = html.indexOf('setNoteProcessModalImage(', modalClickHandlerStart);
-          if (modalClickHandlerStart < 0 || modalImageCallStart < modalClickHandlerStart) throw new Error('Could not isolate the process image modal');
-          const modalImageCallEnd = html.indexOf(');', modalImageCallStart) + 2;
-          if (modalImageCallEnd < 2) throw new Error('Could not isolate the process image modal source');
-          const originalModalImageCall = html.slice(modalImageCallStart, modalImageCallEnd);
-          const instantPreviewModalImage = `const modalOriginalSource = item.dataset.mobileOriginal || item.dataset.original;
-                    const modalPreviewImage = item.querySelector('img');
-                    const modalPreviewSource = modalPreviewImage?.currentSrc || modalPreviewImage?.src;
-                    const modalImageAlt = item.dataset.title + ' original';
-                    if (modalPreviewSource && modalOriginalSource) {
-                        setNoteProcessModalImage(noteProcessModalImage, modalPreviewSource, modalImageAlt);
-                        const originalImageWarmup = new Image();
-                        const revealOriginalImage = async () => {
-                            try { await originalImageWarmup.decode(); } catch {
-                                if (!originalImageWarmup.complete || !originalImageWarmup.naturalWidth) return;
-                            }
-                            if (noteProcessLastTrigger === item) {
-                                setNoteProcessModalImage(noteProcessModalImage, modalOriginalSource, modalImageAlt);
-                            }
-                        };
-                        originalImageWarmup.addEventListener('load', revealOriginalImage, { once: true });
-                        originalImageWarmup.src = modalOriginalSource;
-                        if (originalImageWarmup.complete && originalImageWarmup.naturalWidth) void revealOriginalImage();
-                    } else {
-                        ${originalModalImageCall}
-                    }`;
-          html = html.slice(0, modalImageCallStart) + instantPreviewModalImage + html.slice(modalImageCallEnd);
+          const modalClickAnchor = `item.addEventListener('click', () => {\n                    noteProcessLastTrigger = item;`;
+          if (html.split(modalClickAnchor).length - 1 !== 1) throw new Error('Could not isolate the process image modal click');
+          html = html.replace(
+            modalClickAnchor,
+            `item.addEventListener('click', async () => {\n                    noteProcessLastTrigger = item;\n                    const modalOriginalSources = [item.dataset.mobileOriginal || item.dataset.original, item.dataset.originalSecondary].filter(Boolean);\n                    await Promise.all(modalOriginalSources.map((source) => window.__deployWarmNoteProcessOriginal?.(source) ?? Promise.resolve(false)));\n                    if (noteProcessLastTrigger !== item) return;`
+          );
           const preloader = `
           <script id="deploy-note-turn-prefetch">
           (() => {
             const note = document.querySelector('#project-note');
             if (!note) return;
             const warmedMotionBlobs = window.__deployNoteTurnPrefetches ||= new Map();
+            const warmedProcessOriginals = window.__deployNoteProcessOriginals ||= new Map();
             const warmedPaths = new Set();
+            const warmProcessOriginal = (source) => {
+              if (!source) return Promise.resolve(false);
+              const url = new URL(source, document.baseURI).href;
+              if (warmedProcessOriginals.has(url)) return warmedProcessOriginals.get(url);
+              const image = new Image();
+              image.decoding = 'async';
+              const ready = new Promise((resolve) => {
+                let settled = false;
+                const finish = async (loaded) => {
+                  if (settled) return;
+                  settled = true;
+                  try { if (loaded && typeof image.decode === 'function') await image.decode(); } catch {}
+                  resolve(loaded && image.naturalWidth > 0);
+                };
+                image.addEventListener('load', () => void finish(true), { once: true });
+                image.addEventListener('error', () => void finish(false), { once: true });
+                image.src = url;
+                if (image.complete) void finish(image.naturalWidth > 0);
+              });
+              warmedProcessOriginals.set(url, ready);
+              return ready;
+            };
+            window.__deployWarmNoteProcessOriginal = warmProcessOriginal;
             const warmPath = (path) => {
               const url = path + '?v=note-motion-800-20261126';
               if (warmedPaths.has(path)) return;
@@ -179,6 +176,13 @@ jobs:
                 ? 'pf_img/proImg/넓은 메모지 왼쪽넘김_공통속도.gif'
                 : 'pf_img/proImg/메모지 왼쪽넘김.gif');
             };
+            const warmProjectProcessOriginals = () => {
+              if (!note.classList.contains('is-gacha-project') && !note.classList.contains('is-emoji-project')) return;
+              note.querySelectorAll('.note-process-item').forEach((item) => {
+                void warmProcessOriginal(item.dataset.mobileOriginal || item.dataset.original);
+                void warmProcessOriginal(item.dataset.originalSecondary);
+              });
+            };
             note.addEventListener('click', (event) => {
               if (!event.target.closest('#project-note-turn-hotspot') ||
                   (!note.classList.contains('is-gacha-project') && !note.classList.contains('is-emoji-project'))) return;
@@ -188,14 +192,19 @@ jobs:
               warmPath(spread + '왼쪽넘김.gif');
               warmPath(spread + '오른쪽넘김.gif');
             }, true);
-            const observer = new MutationObserver(warmPreviousTurn);
-            observer.observe(note, { attributes: true, attributeFilter: ['class'] });
+            const observer = new MutationObserver(() => {
+              warmPreviousTurn();
+              warmProjectProcessOriginals();
+            });
+            observer.observe(note, { attributes: true, subtree: true, attributeFilter: ['class', 'data-original', 'data-mobile-original', 'data-original-secondary'] });
             window.addEventListener('resize', () => {
               warmChannelTurn();
               warmPreviousTurn();
+              warmProjectProcessOriginals();
             });
             warmChannelTurn();
             warmPreviousTurn();
+            warmProjectProcessOriginals();
           })();
           </script>
           `;
