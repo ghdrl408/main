@@ -61,11 +61,32 @@ jobs:
           if (!noteTurnBlock.includes(loadedTurnDuration)) throw new Error('Could not find the loaded note turn duration');
           noteTurnBlock = noteTurnBlock.replace(
             loadedTurnDuration,
-            `${loadedTurnDuration}\n                    const synchronizedTurnDurationMs = Math.min(turnDurationMs, 500);\n                    projectNoteTurnMotion.style.setProperty('--project-note-turn-duration', \`${'${synchronizedTurnDurationMs}'}ms\`);`
+            `${loadedTurnDuration}\n                    const synchronizedTurnDurationMs = Math.min(turnDurationMs, 350);\n                    projectNoteTurnMotion.style.setProperty('--project-note-turn-duration', \`${'${synchronizedTurnDurationMs}'}ms\`);`
+          );
+          const noteTurnGenerationLine = 'const turnRequestGeneration = ++projectNoteTurnRequestGeneration;';
+          if (!noteTurnBlock.includes(noteTurnGenerationLine)) throw new Error('Could not find the note turn request generation');
+          noteTurnBlock = noteTurnBlock.replace(
+            noteTurnGenerationLine,
+            `${noteTurnGenerationLine}\n                let transitionedProject = false;`
+          );
+          const pendingProjectStart = 'if (pendingProjectNoteProject !== null) {\n                            const nextProject = pendingProjectNoteProject;';
+          if (!noteTurnBlock.includes(pendingProjectStart)) throw new Error('Could not find the pending note project update');
+          noteTurnBlock = noteTurnBlock.replace(
+            pendingProjectStart,
+            `${pendingProjectStart}\n                            transitionedProject = true;`
+          );
+          const pendingTextUpdatesEnd = 'pendingProjectNoteTextUpdates.clear();';
+          if (!noteTurnBlock.includes(pendingTextUpdatesEnd)) throw new Error('Could not find the end of pending note text updates');
+          noteTurnBlock = noteTurnBlock.replace(
+            pendingTextUpdatesEnd,
+            `${pendingTextUpdatesEnd}\n                        if (transitionedProject) projectNoteDetailsTimer = window.setTimeout(showProjectNoteDetails, 0);`
           );
           if (!noteTurnBlock.includes('}, turnDurationMs);')) throw new Error('Could not find the note turn completion timer');
           noteTurnBlock = noteTurnBlock.replace('}, turnDurationMs);', '}, synchronizedTurnDurationMs);');
           html = html.slice(0, noteTurnStartIndex) + noteTurnBlock + html.slice(noteTurnEndIndex);
+          const detailsModeGuard = "if (!['riding', 'gacha', 'lotus', 'emoji'].includes(tvMode)) return;";
+          if (html.split(detailsModeGuard).length - 1 !== 1) throw new Error('Could not isolate the project note details mode guard');
+          html = html.replace(detailsModeGuard, "if (!['riding', 'gacha', 'lotus', 'emoji', 'transitioning'].includes(tvMode)) return;");
           const deferredDetailReveal = 'projectNoteDetailsTimer = window.setTimeout(showProjectNoteDetails, 850);';
           if (html.split(deferredDetailReveal).length - 1 !== 4) throw new Error('Expected four delayed channel note reveals');
           html = html.replaceAll(deferredDetailReveal, 'projectNoteDetailsTimer = window.setTimeout(showProjectNoteDetails, 0);');
