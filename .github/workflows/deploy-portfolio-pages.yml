@@ -36,74 +36,73 @@ jobs:
           const fs = require('node:fs');
           const pagePath = '_site/portfolio/aboutMe.html';
           let html = fs.readFileSync(pagePath, 'utf8');
-          const immediateNoteTransitions = [
-            ['tvRidingVideo', 'riding', '라이딩부산', '부산 근교의 자연경관을 즐길 수 있는 오토바이 코스 추천 웹사이트'],
-            ['tvGachaVideo', 'gacha', '가챠픽', '선택이 어려운 현대인들을 위한 랜덤 뽑기형 추천 서비스'],
-            ['tvLotusVideo', 'lotus', '부여가을연꽃축제', '개인 웹 퍼블리싱 실습을 위해 제작한 가상의 축제 홍보 웹페이지'],
-            ['tvEmojiVideo', 'emoji', '고양이 웅냐', '고양이 캐릭터 ‘웅냐’의 일상을 담은 움직이는 이모티콘과 캐릭터 굿즈 디자인'],
-          ];
-          for (const [video, project, title, description] of immediateNoteTransitions) {
+          const immediateNoteTransitions = ['tvRidingVideo', 'tvGachaVideo', 'tvLotusVideo', 'tvEmojiVideo'];
+          for (const video of immediateNoteTransitions) {
             const oldStart = `const nextVideoReady = prepareTvChannelVideo(${video}, outgoingVideo);\n\n                startTvNoiseOverlay(() => {\n                    animateProjectNoteOutForChannelChange();`;
-            const newStart = `animateProjectNoteOutForChannelChange();\n                setProjectNoteProjectForTransition('${project}');\n                setTvPlainTextWithBreaks(tvTitle, ${JSON.stringify(title)});\n                noteDescriptionLayoutText = ${JSON.stringify(description)};\n                setTvPlainTextWithBreaks(noteDescription, ${JSON.stringify(description)});\n                const nextVideoReady = prepareTvChannelVideo(${video}, outgoingVideo);\n\n                startTvNoiseOverlay(() => {`;
-            if (!html.includes(oldStart)) throw new Error(`Could not find ${project} channel transition`);
+            const newStart = `const nextVideoReady = prepareTvChannelVideo(${video}, outgoingVideo);\n\n                startTvNoiseOverlay(() => {`;
+            if (!html.includes(oldStart)) throw new Error(`Could not find ${video} channel transition`);
             html = html.replace(oldStart, newStart);
-            const deferredProjectUpdate = `                    setProjectNoteProjectForTransition('${project}');\n`;
-            if (!html.includes(deferredProjectUpdate)) throw new Error(`Could not find deferred ${project} note update`);
-            html = html.replace(deferredProjectUpdate, '');
           }
-          const channelFunctionEdits = [
-            ['startTvRide', 'startTvGacha', '라이딩부산'],
-            ['startTvGacha', 'startTvLotus', '가챠픽'],
-            ['startTvLotus', 'startTvEmoji', '부여가을연꽃축제'],
-            ['startTvEmoji', 'startTvNextChannel', '고양이 웅냐'],
-          ];
-          for (const [functionName, nextFunctionName, title] of channelFunctionEdits) {
-            const functionStart = `const ${functionName} = () => {`;
-            const functionEnd = `\n            const ${nextFunctionName} = () => {`;
-            const functionStartIndex = html.indexOf(functionStart);
-            const functionEndIndex = html.indexOf(functionEnd, functionStartIndex);
-            if (functionStartIndex < 0 || functionEndIndex < 0) throw new Error(`Could not isolate ${functionName}`);
-            let functionBlock = html.slice(functionStartIndex, functionEndIndex);
-            const deferredTitle = `                    setTvStaggeredText(tvTitle, '${title}', 0, 19);\n`;
-            const deferredDescription = '                    updateNoteDescription();\n';
-            if (!functionBlock.includes(deferredTitle) || !functionBlock.includes(deferredDescription)) {
-              throw new Error(`Could not find deferred ${functionName} note text`);
-            }
-            functionBlock = functionBlock.replace(deferredTitle, '').replace(deferredDescription, '');
-            html = html.slice(0, functionStartIndex) + functionBlock + html.slice(functionEndIndex);
+          const noiseOverlayAnchor = 'const startTvNoiseOverlay = (onNoiseReady, outgoingVideo, nextFrameReady) => {';
+          if (html.split(noiseOverlayAnchor).length - 1 !== 1) throw new Error('Could not isolate the channel noise overlay');
+          html = html.replace(noiseOverlayAnchor, `let projectNoteChannelTurnPromise = Promise.resolve();\n          ${noiseOverlayAnchor.replace('nextFrameReady) => {', 'nextFrameReady, onNoiseActivated) => {')}`);
+          const activateNoiseAnchor = 'tvNoiseVideo.classList.add(\'is-active\');';
+          if (html.split(activateNoiseAnchor).length - 1 !== 1) throw new Error('Could not find the channel noise activation point');
+          html = html.replace(activateNoiseAnchor, `${activateNoiseAnchor}\n                    onNoiseActivated?.();`);
+          const channelOverlayCalls = ['tvRidingVideo', 'tvGachaVideo', 'tvLotusVideo', 'tvEmojiVideo'];
+          for (const video of channelOverlayCalls) {
+            const callAnchor = `}, outgoingVideo, nextVideoReady);`;
+            const videoIndex = html.indexOf(`const nextVideoReady = prepareTvChannelVideo(${video}, outgoingVideo);`);
+            const callIndex = html.indexOf(callAnchor, videoIndex);
+            if (videoIndex < 0 || callIndex < 0) throw new Error(`Could not wire ${video} note turn to noise activation`);
+            html = html.slice(0, callIndex) + '}, outgoingVideo, nextVideoReady, animateProjectNoteOutForChannelChange);' + html.slice(callIndex + callAnchor.length);
           }
+          const noiseRevealGuard = 'if (!activated || !minimumNoiseElapsed || !nextFrameAvailable || transitionRevealed ||';
+          if (html.split(noiseRevealGuard).length - 1 !== 1) throw new Error('Could not find the noise reveal guard');
+          html = html.replace(noiseRevealGuard, 'if (!activated || !minimumNoiseElapsed || !nextFrameAvailable || !projectNoteTurnAvailable || transitionRevealed ||');
+          const noiseTransitionState = 'let transitionRevealed = false;';
+          if (html.split(noiseTransitionState).length - 1 !== 1) throw new Error('Could not find the noise transition state');
+          html = html.replace(noiseTransitionState, `${noiseTransitionState}\n                let projectNoteTurnAvailable = false;`);
+          const noiseRevealReadyPoint = '\n                Promise.resolve(nextFrameReady).then((ready) => {';
+          if (html.split(noiseRevealReadyPoint).length - 1 !== 1) throw new Error('Could not find the noise readiness callbacks');
+          html = html.replace(
+            noiseRevealReadyPoint,
+            `\n                Promise.resolve(projectNoteChannelTurnPromise).then(() => {\n                    projectNoteTurnAvailable = true;\n                    revealWhenReady();\n                });${noiseRevealReadyPoint}`
+          );
           const noteTurnStart = 'const animateProjectNoteOutForChannelChange = () => {';
           const noteTurnEnd = '\n            const startTvRide = () => {';
           const noteTurnStartIndex = html.indexOf(noteTurnStart);
           const noteTurnEndIndex = html.indexOf(noteTurnEnd, noteTurnStartIndex);
           if (noteTurnStartIndex < 0 || noteTurnEndIndex < 0) throw new Error('Could not isolate the channel note transition');
           let noteTurnBlock = html.slice(noteTurnStartIndex, noteTurnEndIndex);
+          noteTurnBlock = noteTurnBlock.replace(
+            noteTurnStart,
+            `${noteTurnStart}\n                let resolveProjectNoteChannelTurn;\n                projectNoteChannelTurnPromise = new Promise((resolve) => { resolveProjectNoteChannelTurn = resolve; });`
+          );
+          const emptyNoteTurnBranch = `                    resetProjectNoteToFirstPage();\n                    return;`;
+          if (!noteTurnBlock.includes(emptyNoteTurnBranch)) throw new Error('Could not find the empty note transition branch');
+          noteTurnBlock = noteTurnBlock.replace(
+            emptyNoteTurnBranch,
+            `                    resetProjectNoteToFirstPage();\n                    resolveProjectNoteChannelTurn();\n                    return;`
+          );
+          const staleTurnLoad = '                        !projectNote.classList.contains(\'is-turning\')) return;';
+          if (!noteTurnBlock.includes(staleTurnLoad)) throw new Error('Could not find the stale note load guard');
+          noteTurnBlock = noteTurnBlock.replace(staleTurnLoad, '                        !projectNote.classList.contains(\'is-turning\')) { resolveProjectNoteChannelTurn(); return; }');
           const loadedTurnDuration = 'loadProjectNoteTurnMotion(turnDirection, fromPage).then((turnDurationMs) => {';
           if (!noteTurnBlock.includes(loadedTurnDuration)) throw new Error('Could not find the loaded note turn duration');
           noteTurnBlock = noteTurnBlock.replace(
             loadedTurnDuration,
-            `${loadedTurnDuration}\n                    const synchronizedTurnDurationMs = Math.min(turnDurationMs, 350);\n                    projectNoteTurnMotion.style.setProperty('--project-note-turn-duration', \`${'${synchronizedTurnDurationMs}'}ms\`);`
+            `${loadedTurnDuration}\n                    const synchronizedTurnDurationMs = turnDurationMs;\n                    projectNoteTurnMotion.style.setProperty('--project-note-turn-duration', \`${'${synchronizedTurnDurationMs}'}ms\`);`
           );
-          const noteTurnGenerationLine = 'const turnRequestGeneration = ++projectNoteTurnRequestGeneration;';
-          if (!noteTurnBlock.includes(noteTurnGenerationLine)) throw new Error('Could not find the note turn request generation');
-          noteTurnBlock = noteTurnBlock.replace(
-            noteTurnGenerationLine,
-            `${noteTurnGenerationLine}\n                let transitionedProject = false;`
-          );
-          const pendingProjectStart = 'if (pendingProjectNoteProject !== null) {\n                            const nextProject = pendingProjectNoteProject;';
-          if (!noteTurnBlock.includes(pendingProjectStart)) throw new Error('Could not find the pending note project update');
-          noteTurnBlock = noteTurnBlock.replace(
-            pendingProjectStart,
-            `${pendingProjectStart}\n                            transitionedProject = true;`
-          );
-          const pendingTextUpdatesEnd = 'pendingProjectNoteTextUpdates.clear();';
-          if (!noteTurnBlock.includes(pendingTextUpdatesEnd)) throw new Error('Could not find the end of pending note text updates');
-          noteTurnBlock = noteTurnBlock.replace(
-            pendingTextUpdatesEnd,
-            `${pendingTextUpdatesEnd}\n                        if (transitionedProject) projectNoteDetailsTimer = window.setTimeout(showProjectNoteDetails, 0);`
-          );
-          if (!noteTurnBlock.includes('}, turnDurationMs);')) throw new Error('Could not find the note turn completion timer');
-          noteTurnBlock = noteTurnBlock.replace('}, turnDurationMs);', '}, synchronizedTurnDurationMs);');
+          const timerEnd = '}, turnDurationMs);';
+          if (!noteTurnBlock.includes(timerEnd)) throw new Error('Could not find the note turn completion timer');
+          const staleTurnTimer = 'if (turnRequestGeneration !== projectNoteTurnRequestGeneration) return;';
+          const staleTurnTimerIndex = noteTurnBlock.lastIndexOf(staleTurnTimer);
+          if (staleTurnTimerIndex < 0) throw new Error('Could not find the stale note timer guard');
+          noteTurnBlock = noteTurnBlock.slice(0, staleTurnTimerIndex) +
+            'if (turnRequestGeneration !== projectNoteTurnRequestGeneration) { resolveProjectNoteChannelTurn(); return; }' +
+            noteTurnBlock.slice(staleTurnTimerIndex + staleTurnTimer.length);
+          noteTurnBlock = noteTurnBlock.replace(timerEnd, '                        resolveProjectNoteChannelTurn();\n                    }, synchronizedTurnDurationMs);');
           html = html.slice(0, noteTurnStartIndex) + noteTurnBlock + html.slice(noteTurnEndIndex);
           const uncachedNoteMotionFetch = 'fetch(`${path}?v=page-turn-speed-20261123`).then((response) => response.ok ? response.blob() : null)';
           if (html.split(uncachedNoteMotionFetch).length - 1 !== 1) throw new Error('Could not isolate the note motion fetch');
@@ -112,9 +111,6 @@ jobs:
             uncachedNoteMotionFetch,
             '(Promise.resolve(window.__deployNoteTurnPrefetches?.get(path)).then((prefetchedBlob) => prefetchedBlob ?? ' + versionedNoteMotionFetch + '))'
           );
-          const detailsModeGuard = "if (!['riding', 'gacha', 'lotus', 'emoji'].includes(tvMode)) return;";
-          if (html.split(detailsModeGuard).length - 1 !== 1) throw new Error('Could not isolate the project note details mode guard');
-          html = html.replace(detailsModeGuard, "if (!['riding', 'gacha', 'lotus', 'emoji', 'transitioning'].includes(tvMode)) return;");
           const deferredDetailReveal = 'projectNoteDetailsTimer = window.setTimeout(showProjectNoteDetails, 850);';
           if (html.split(deferredDetailReveal).length - 1 !== 4) throw new Error('Expected four delayed channel note reveals');
           html = html.replaceAll(deferredDetailReveal, 'projectNoteDetailsTimer = window.setTimeout(showProjectNoteDetails, 0);');
