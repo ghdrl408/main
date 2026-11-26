@@ -41,16 +41,32 @@ jobs:
           (() => {
             const note = document.querySelector('#project-note');
             if (!note) return;
+            const warmedPaths = new Set();
+            const warmPath = (path) => {
+              const url = path + '?v=page-turn-speed-20261123';
+              if (warmedPaths.has(url)) return;
+              warmedPaths.add(url);
+              fetch(url).catch(() => warmedPaths.delete(url));
+            };
             const warmPreviousTurn = () => {
               if (!note.classList.contains('is-details-visible')) return;
-              observer.disconnect();
-              const path = window.matchMedia('(max-width: 1024px)').matches
+              const wide = window.matchMedia('(max-width: 1024px)').matches;
+              warmPath(wide
                 ? 'pf_img/proImg/넓은 메모지 왼쪽넘김_공통속도.gif'
-                : 'pf_img/proImg/메모지 왼쪽넘김.gif';
-              fetch(path + '?v=page-turn-speed-20261123').catch(() => {});
+                : 'pf_img/proImg/메모지 왼쪽넘김.gif');
             };
+            note.addEventListener('click', (event) => {
+              if (!event.target.closest('#project-note-turn-hotspot') ||
+                  (!note.classList.contains('is-gacha-project') && !note.classList.contains('is-emoji-project'))) return;
+              const spread = window.matchMedia('(max-width: 1024px)').matches
+                ? 'pro_scd/넓은 양쪽 메모지 '
+                : 'pro_scd/양쪽 메모지 ';
+              warmPath(spread + '왼쪽넘김.gif');
+              warmPath(spread + '오른쪽넘김.gif');
+            }, true);
             const observer = new MutationObserver(warmPreviousTurn);
             observer.observe(note, { attributes: true, attributeFilter: ['class'] });
+            window.addEventListener('resize', warmPreviousTurn);
             warmPreviousTurn();
           })();
           </script>
