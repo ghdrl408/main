@@ -51,6 +51,24 @@ jobs:
             if (!html.includes(deferredProjectUpdate)) throw new Error(`Could not find deferred ${project} note update`);
             html = html.replace(deferredProjectUpdate, '');
           }
+          const noteTurnStart = 'const animateProjectNoteOutForChannelChange = () => {';
+          const noteTurnEnd = '\n            const startTvRide = () => {';
+          const noteTurnStartIndex = html.indexOf(noteTurnStart);
+          const noteTurnEndIndex = html.indexOf(noteTurnEnd, noteTurnStartIndex);
+          if (noteTurnStartIndex < 0 || noteTurnEndIndex < 0) throw new Error('Could not isolate the channel note transition');
+          let noteTurnBlock = html.slice(noteTurnStartIndex, noteTurnEndIndex);
+          const loadedTurnDuration = 'loadProjectNoteTurnMotion(turnDirection, fromPage).then((turnDurationMs) => {';
+          if (!noteTurnBlock.includes(loadedTurnDuration)) throw new Error('Could not find the loaded note turn duration');
+          noteTurnBlock = noteTurnBlock.replace(
+            loadedTurnDuration,
+            `${loadedTurnDuration}\n                    const synchronizedTurnDurationMs = Math.min(turnDurationMs, 500);\n                    projectNoteTurnMotion.style.setProperty('--project-note-turn-duration', \`${'${synchronizedTurnDurationMs}'}ms\`);`
+          );
+          if (!noteTurnBlock.includes('}, turnDurationMs);')) throw new Error('Could not find the note turn completion timer');
+          noteTurnBlock = noteTurnBlock.replace('}, turnDurationMs);', '}, synchronizedTurnDurationMs);');
+          html = html.slice(0, noteTurnStartIndex) + noteTurnBlock + html.slice(noteTurnEndIndex);
+          const deferredDetailReveal = 'projectNoteDetailsTimer = window.setTimeout(showProjectNoteDetails, 850);';
+          if (html.split(deferredDetailReveal).length - 1 !== 4) throw new Error('Expected four delayed channel note reveals');
+          html = html.replaceAll(deferredDetailReveal, 'projectNoteDetailsTimer = window.setTimeout(showProjectNoteDetails, 0);');
           const preloader = `
           <script id="deploy-note-turn-prefetch">
           (() => {
