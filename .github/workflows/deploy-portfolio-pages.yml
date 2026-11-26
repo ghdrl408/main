@@ -35,7 +35,22 @@ jobs:
           node <<'NODE'
           const fs = require('node:fs');
           const pagePath = '_site/portfolio/aboutMe.html';
-          const html = fs.readFileSync(pagePath, 'utf8');
+          let html = fs.readFileSync(pagePath, 'utf8');
+          const immediateNoteTransitions = [
+            ['tvRidingVideo', 'riding'],
+            ['tvGachaVideo', 'gacha'],
+            ['tvLotusVideo', 'lotus'],
+            ['tvEmojiVideo', 'emoji'],
+          ];
+          for (const [video, project] of immediateNoteTransitions) {
+            const oldStart = `const nextVideoReady = prepareTvChannelVideo(${video}, outgoingVideo);\n\n                startTvNoiseOverlay(() => {\n                    animateProjectNoteOutForChannelChange();`;
+            const newStart = `animateProjectNoteOutForChannelChange();\n                setProjectNoteProjectForTransition('${project}');\n                const nextVideoReady = prepareTvChannelVideo(${video}, outgoingVideo);\n\n                startTvNoiseOverlay(() => {`;
+            if (!html.includes(oldStart)) throw new Error(`Could not find ${project} channel transition`);
+            html = html.replace(oldStart, newStart);
+            const deferredProjectUpdate = `                    setProjectNoteProjectForTransition('${project}');\n`;
+            if (!html.includes(deferredProjectUpdate)) throw new Error(`Could not find deferred ${project} note update`);
+            html = html.replace(deferredProjectUpdate, '');
+          }
           const preloader = `
           <script id="deploy-note-turn-prefetch">
           (() => {
