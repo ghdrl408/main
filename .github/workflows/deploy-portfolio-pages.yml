@@ -107,7 +107,7 @@ jobs:
           html = html.slice(0, noteTurnStartIndex) + noteTurnBlock + html.slice(noteTurnEndIndex);
           const uncachedNoteMotionFetch = 'fetch(`${path}?v=page-turn-speed-20261123`).then((response) => response.ok ? response.blob() : null)';
           if (html.split(uncachedNoteMotionFetch).length - 1 !== 1) throw new Error('Could not isolate the note motion fetch');
-          const versionedNoteMotionFetch = 'fetch(`${path}?v=note-motion-optimized-20261126`).then((response) => response.ok ? response.blob() : null)';
+          const versionedNoteMotionFetch = 'fetch(`${path}?v=note-motion-800-20261126`).then((response) => response.ok ? response.blob() : null)';
           html = html.replace(
             uncachedNoteMotionFetch,
             '(Promise.resolve(window.__deployNoteTurnPrefetches?.get(path)).then((prefetchedBlob) => prefetchedBlob ?? ' + versionedNoteMotionFetch + '))'
@@ -126,7 +126,7 @@ jobs:
             const warmedMotionBlobs = window.__deployNoteTurnPrefetches ||= new Map();
             const warmedPaths = new Set();
             const warmPath = (path) => {
-              const url = path + '?v=note-motion-optimized-20261126';
+              const url = path + '?v=note-motion-800-20261126';
               if (warmedPaths.has(path)) return;
               warmedPaths.add(path);
               warmedMotionBlobs.set(path, fetch(url)
@@ -177,8 +177,9 @@ jobs:
             sudo apt-get update
             sudo apt-get install -y gifsicle
           fi
+          gifsicle --batch --optimize=3 --lossy=60 --resize-width 800 --resize-method mix \
+            '_site/portfolio/pf_img/proImg/넓은 메모지 오른쪽넘김_공통속도.gif'
           gifsicle --batch --optimize=3 --lossy=60 \
-            '_site/portfolio/pf_img/proImg/넓은 메모지 오른쪽넘김_공통속도.gif' \
             '_site/portfolio/pf_img/proImg/메모지 오른쪽넘김.gif'
           stat -c '%n %s bytes' \
             '_site/portfolio/pf_img/proImg/넓은 메모지 오른쪽넘김_공통속도.gif' \
