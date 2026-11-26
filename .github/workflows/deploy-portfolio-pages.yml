@@ -48,7 +48,7 @@ jobs:
           html = html.replace(noiseOverlayAnchor, `let projectNoteChannelTurnPromise = Promise.resolve();\n          ${noiseOverlayAnchor.replace('nextFrameReady) => {', 'nextFrameReady, onNoiseActivated) => {')}`);
           const activateNoiseAnchor = 'tvNoiseVideo.classList.add(\'is-active\');';
           if (html.split(activateNoiseAnchor).length - 1 !== 1) throw new Error('Could not find the channel noise activation point');
-          html = html.replace(activateNoiseAnchor, `${activateNoiseAnchor}\n                    onNoiseActivated?.();`);
+          html = html.replace(activateNoiseAnchor, `${activateNoiseAnchor}\n                    Promise.resolve(onNoiseActivated?.()).then(() => {\n                        projectNoteTurnAvailable = true;\n                        revealWhenReady();\n                    });`);
           const channelOverlayCalls = ['tvRidingVideo', 'tvGachaVideo', 'tvLotusVideo', 'tvEmojiVideo'];
           for (const video of channelOverlayCalls) {
             const callAnchor = `}, outgoingVideo, nextVideoReady);`;
@@ -63,12 +63,6 @@ jobs:
           const noiseTransitionState = 'let transitionRevealed = false;';
           if (html.split(noiseTransitionState).length - 1 !== 1) throw new Error('Could not find the noise transition state');
           html = html.replace(noiseTransitionState, `${noiseTransitionState}\n                let projectNoteTurnAvailable = false;`);
-          const noiseRevealReadyPoint = '\n                Promise.resolve(nextFrameReady).then((ready) => {';
-          if (html.split(noiseRevealReadyPoint).length - 1 !== 1) throw new Error('Could not find the noise readiness callbacks');
-          html = html.replace(
-            noiseRevealReadyPoint,
-            `\n                Promise.resolve(projectNoteChannelTurnPromise).then(() => {\n                    projectNoteTurnAvailable = true;\n                    revealWhenReady();\n                });${noiseRevealReadyPoint}`
-          );
           const noteTurnStart = 'const animateProjectNoteOutForChannelChange = () => {';
           const noteTurnEnd = '\n            const startTvRide = () => {';
           const noteTurnStartIndex = html.indexOf(noteTurnStart);
@@ -83,7 +77,7 @@ jobs:
           if (!noteTurnBlock.includes(emptyNoteTurnBranch)) throw new Error('Could not find the empty note transition branch');
           noteTurnBlock = noteTurnBlock.replace(
             emptyNoteTurnBranch,
-            `                    resetProjectNoteToFirstPage();\n                    resolveProjectNoteChannelTurn();\n                    return;`
+            `                    resetProjectNoteToFirstPage();\n                    resolveProjectNoteChannelTurn();\n                    return projectNoteChannelTurnPromise;`
           );
           const staleTurnLoad = '                        !projectNote.classList.contains(\'is-turning\')) return;';
           if (!noteTurnBlock.includes(staleTurnLoad)) throw new Error('Could not find the stale note load guard');
@@ -103,6 +97,8 @@ jobs:
             'if (turnRequestGeneration !== projectNoteTurnRequestGeneration) { resolveProjectNoteChannelTurn(); return; }' +
             noteTurnBlock.slice(staleTurnTimerIndex + staleTurnTimer.length);
           noteTurnBlock = noteTurnBlock.replace(timerEnd, '                        resolveProjectNoteChannelTurn();\n                    }, synchronizedTurnDurationMs);');
+          if (!noteTurnBlock.endsWith('            };')) throw new Error('Could not find the end of the channel note transition');
+          noteTurnBlock = noteTurnBlock.slice(0, -'            };'.length) + '                return projectNoteChannelTurnPromise;\n            };';
           html = html.slice(0, noteTurnStartIndex) + noteTurnBlock + html.slice(noteTurnEndIndex);
           const uncachedNoteMotionFetch = 'fetch(`${path}?v=page-turn-speed-20261123`).then((response) => response.ok ? response.blob() : null)';
           if (html.split(uncachedNoteMotionFetch).length - 1 !== 1) throw new Error('Could not isolate the note motion fetch');
