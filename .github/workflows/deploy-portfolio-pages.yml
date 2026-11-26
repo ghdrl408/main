@@ -115,11 +115,10 @@ jobs:
           const deferredDetailReveal = 'projectNoteDetailsTimer = window.setTimeout(showProjectNoteDetails, 850);';
           if (html.split(deferredDetailReveal).length - 1 !== 4) throw new Error('Expected four delayed channel note reveals');
           html = html.replaceAll(deferredDetailReveal, 'projectNoteDetailsTimer = window.setTimeout(showProjectNoteDetails, 0);');
-          const modalImageCallAnchor = `setNoteProcessModalImage(
-                        noteProcessModalImage,
-                        item.dataset.mobileOriginal || item.dataset.original,`;
-          if (html.split(modalImageCallAnchor).length - 1 !== 1) throw new Error('Could not isolate the process image modal');
-          const modalImageCallStart = html.indexOf(modalImageCallAnchor);
+          const modalClickHandlerAnchor = 'noteProcessItems.forEach((item) => {';
+          const modalClickHandlerStart = html.indexOf(modalClickHandlerAnchor);
+          const modalImageCallStart = html.indexOf('setNoteProcessModalImage(', modalClickHandlerStart);
+          if (modalClickHandlerStart < 0 || modalImageCallStart < modalClickHandlerStart) throw new Error('Could not isolate the process image modal');
           const modalImageCallEnd = html.indexOf(');', modalImageCallStart) + 2;
           if (modalImageCallEnd < 2) throw new Error('Could not isolate the process image modal source');
           const originalModalImageCall = html.slice(modalImageCallStart, modalImageCallEnd);
