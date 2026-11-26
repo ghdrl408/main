@@ -217,6 +217,7 @@ jobs:
           if (!html.includes('</body>')) throw new Error('aboutMe.html has no closing body tag');
           fs.writeFileSync(pagePath, html.replace('</body>', preloader + '\n</body>'), 'utf8');
           NODE
+          trap 'printf "::error::Portfolio build failed at command: %s\\n" "$BASH_COMMAND"' ERR
           if ! command -v gifsicle >/dev/null 2>&1; then
             sudo apt-get update
             sudo apt-get install -y gifsicle ffmpeg
@@ -233,6 +234,7 @@ jobs:
             '_site/portfolio/pf_img/proImg/넓은 메모지 오른쪽넘김_공통속도.gif' \
             '_site/portfolio/pf_img/proImg/메모지 오른쪽넘김.gif'
           find _site/portfolio -type f -iname '*.mp4' -print0 | while IFS= read -r -d '' video; do
+            echo "Optimizing $video"
             optimized="${video%.*}.optimized.mp4"
             width=$(ffprobe -v error -select_streams v:0 -show_entries stream=width -of csv=s=x:p=0 "$video")
             if (( width > 1920 )); then
