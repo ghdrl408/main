@@ -120,6 +120,12 @@ jobs:
             modalClickAnchor,
             `item.addEventListener('click', async () => {\n                    noteProcessLastTrigger = item;\n                    const modalOriginalSources = [item.dataset.mobileOriginal || item.dataset.original, item.dataset.originalSecondary].filter(Boolean);\n                    await Promise.all(modalOriginalSources.map((source) => window.__deployWarmNoteProcessOriginal?.(source) ?? Promise.resolve(false)));\n                    if (noteProcessLastTrigger !== item) return;`
           );
+          const modalOpenAnchor = "                    noteProcessModal.classList.add('is-open');";
+          if (html.split(modalOpenAnchor).length - 1 !== 1) throw new Error('Could not isolate the process modal opening point');
+          html = html.replace(
+            modalOpenAnchor,
+            `                    await Promise.all([noteProcessModalImage, noteProcessModalSecondaryImage].map((image) => typeof image.decode === 'function' ? image.decode().catch(() => {}) : Promise.resolve()));\n                    if (noteProcessLastTrigger !== item) return;\n${modalOpenAnchor}`
+          );
           const preloader = `
           <script id="deploy-note-turn-prefetch">
           (() => {
