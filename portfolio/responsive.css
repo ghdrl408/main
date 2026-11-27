@@ -2,6 +2,13 @@
 .page-about { --about-date-column: 9.2em; }
 @media (max-width: 767px) {
     header { height: 64px; box-sizing: border-box; }
+    .page-about header {
+        position: fixed;
+        top: 0;
+        z-index: 1000;
+        visibility: visible;
+        opacity: 1;
+    }
     header img { width: 76px; margin: 0 12px; }
     #control_wrap { display: flex; align-items: center; gap: 2px; margin-right: 8px; }
     #control_wrap > a { display: flex; align-items: center; min-height: 44px; }
@@ -30,6 +37,7 @@
         color: white;
     }
     .page-contact header { background: rgba(255, 255, 255, 0.9); }
+    .page-about #contact-section { height: 100dvh; min-height: 100dvh; }
 }
 
 @media (max-width: 359px) {

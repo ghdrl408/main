@@ -5304,9 +5304,11 @@
                             document.body.classList.remove('intro-scroll-lock');
                             history.pushState(null, '', destination.hash);
                             currentSection = targetIndex;
+                            if (window.matchMedia('(max-width: 767px)').matches) syncSectionTops();
                             sectionScrollTarget = targetIndex === 2
                                 ? projectsSectionTop
                                 : targetIndex === 3 ? contactSectionTop : aboutSectionTop;
+                            suspendMobileSectionSnap();
                             aboutSectionSettled = false;
                             isScrollingToBottom = true;
                             if (targetIndex === 1) {
@@ -5502,6 +5504,23 @@
             let aboutSectionTop = aboutSection.offsetTop;
             let projectsSectionTop = projectsSection.offsetTop;
             let contactSectionTop = contactSection.offsetTop;
+            let mobileSectionSnapRestoreValue = null;
+            const suspendMobileSectionSnap = () => {
+                if (!window.matchMedia('(max-width: 767px)').matches) return;
+                if (mobileSectionSnapRestoreValue === null) {
+                    mobileSectionSnapRestoreValue = document.documentElement.style.getPropertyValue('scroll-snap-type');
+                }
+                document.documentElement.style.scrollSnapType = 'none';
+            };
+            const restoreMobileSectionSnap = () => {
+                if (mobileSectionSnapRestoreValue === null) return;
+                if (mobileSectionSnapRestoreValue) {
+                    document.documentElement.style.scrollSnapType = mobileSectionSnapRestoreValue;
+                } else {
+                    document.documentElement.style.removeProperty('scroll-snap-type');
+                }
+                mobileSectionSnapRestoreValue = null;
+            };
             const syncSectionTops = () => {
                 aboutSectionTop = aboutSection.offsetTop;
                 projectsSectionTop = projectsSection.offsetTop;
@@ -6150,6 +6169,7 @@
                 }
                 aboutSectionSettled = currentSection === 1;
                 sectionScrollTarget = null;
+                restoreMobileSectionSnap();
                 isScrollingToBottom = false;
                 document.body.classList.remove(
                     'header-target-about', 'header-target-projects', 'header-target-contact'
@@ -6174,6 +6194,7 @@
                         sectionScrollTarget = initialSection === 3
                             ? contactSectionTop
                             : initialSection === 2 ? projectsSectionTop : aboutSectionTop;
+                        suspendMobileSectionSnap();
                         isScrollingToBottom = true;
                         const settleBeforeEntryFade = initialSection === 2 &&
                             window.__portfolioAboutEntryFade &&
@@ -6200,6 +6221,7 @@
             }
 
             const handleAboutWheel = (event) => {
+                if (window.matchMedia('(max-width: 767px)').matches) syncSectionTops();
                 if (noteProcessModal.classList.contains('is-open')) {
                     event.preventDefault();
                     return;
@@ -6291,6 +6313,7 @@
                         document.body.classList.add('header-target-contact');
                         currentSection = 3;
                         sectionScrollTarget = contactSectionTop;
+                        suspendMobileSectionSnap();
                         isScrollingToBottom = true;
                         aboutSectionSettled = false;
                         window.clearTimeout(smoothScrollTimer);
@@ -6529,7 +6552,7 @@
                 } else if (window.scrollY >= contactSectionTop - 1) {
                     handleAboutWheel({ deltaY: dy, preventDefault() {} });
                 } else if (dy > 0 && window.scrollY >= projectsSectionTop - 10) {
-                    window.scrollTo({ top: contactSectionTop, behavior: 'smooth' });
+                    handleAboutWheel({ deltaY: dy, preventDefault() {} });
                 } else {
                     handleAboutWheel({ deltaY: dy, preventDefault() {} });
                 }
@@ -6579,6 +6602,7 @@
                 const arrivedFromFirstSection = sectionScrollTarget === aboutSectionTop &&
                     currentSection === 0;
                 sectionScrollTarget = null;
+                restoreMobileSectionSnap();
                 isScrollingToBottom = false;
                 window.clearTimeout(smoothScrollTimer);
                 document.body.classList.remove(
