@@ -108,6 +108,7 @@ const buttonAssets = {
 };
 
 const choiceButtons = [...document.querySelectorAll(".reference-button")];
+const choiceButtonsSupportHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 const canvas = document.querySelector("#design-canvas");
 const drawStage = document.querySelector("#draw-stage");
 const drawMachineSlot = document.querySelector("#draw-machine-slot");
@@ -608,7 +609,7 @@ function syncMainControls() {
     button.disabled = isProfileOpen;
     button.setAttribute("aria-disabled", String(isProfileOpen));
     const isPressed = button.getAttribute("aria-pressed") === "true";
-    setButtonImage(button, isPressed ? "pressed" : (!isProfileOpen && button.matches(":hover") ? "hover" : "idle"));
+    setButtonImage(button, isPressed ? "pressed" : (!isProfileOpen && choiceButtonsSupportHover && button.matches(":hover") ? "hover" : "idle"));
   });
 }
 
@@ -965,22 +966,24 @@ function setButtonImage(button, state) {
 }
 
 for (const button of choiceButtons) {
-  button.addEventListener("pointerenter", () => {
-    if (button.disabled) return;
+  button.addEventListener("pointerenter", event => {
+    if (button.disabled || !choiceButtonsSupportHover || event.pointerType !== "mouse") return;
     if (button.getAttribute("aria-pressed") !== "true") setButtonImage(button, "hover");
   });
 
-  button.addEventListener("pointerleave", () => {
-    if (button.disabled) return;
+  button.addEventListener("pointerleave", event => {
+    if (button.disabled || !choiceButtonsSupportHover || event.pointerType !== "mouse") return;
     if (button.getAttribute("aria-pressed") !== "true") setButtonImage(button, "idle");
   });
 
-  button.addEventListener("pointerdown", () => {
-    if (!button.disabled) setButtonImage(button, "pressed");
+  button.addEventListener("pointerdown", event => {
+    if (!button.disabled && (event.pointerType === "mouse" || event.pointerType === "touch")) setButtonImage(button, "pressed");
   });
-  button.addEventListener("pointerup", () => {
+  button.addEventListener("pointerup", event => {
     if (button.disabled) return;
-    if (button.getAttribute("aria-pressed") !== "true") setButtonImage(button, "hover");
+    if (button.getAttribute("aria-pressed") !== "true") {
+      setButtonImage(button, choiceButtonsSupportHover && event.pointerType === "mouse" ? "hover" : "idle");
+    }
   });
 
   button.addEventListener("click", () => {
@@ -994,7 +997,7 @@ for (const button of choiceButtons) {
         nextButton.dataset.choice = choice;
         nextButton.setAttribute("aria-label", choiceLabels[choice]);
         nextButton.setAttribute("aria-pressed", "false");
-        setButtonImage(nextButton, nextButton.matches(":hover") ? "hover" : "idle");
+        setButtonImage(nextButton, choiceButtonsSupportHover && nextButton.matches(":hover") ? "hover" : "idle");
       });
       return;
     }
