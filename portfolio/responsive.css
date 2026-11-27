@@ -1506,21 +1506,9 @@
         opacity: 1 !important;
     }
 
-    body.page-about.about-active header,
-    body.page-about.header-target-about header {
-        background: #111 !important;
-    }
-
     body.page-about .header-brand,
     body.page-about #control_wrap li {
         color: #171717 !important;
-    }
-
-    body.page-about.about-active .header-brand,
-    body.page-about.about-active #control_wrap li,
-    body.page-about.header-target-about .header-brand,
-    body.page-about.header-target-about #control_wrap li {
-        color: #fff !important;
     }
 
     body.page-about header .header-brand,
@@ -1547,20 +1535,6 @@
         opacity: 1;
     }
 
-    body.page-about.about-active #control_wrap a[href$="#about-section"] .about-pill,
-    body.page-about.header-target-about #control_wrap a[href$="#about-section"] .about-pill {
-        background: #fff !important;
-        color: #171717 !important;
-    }
-
-    body.page-about.about-active #control_wrap a[href$="#projects_sec"] .menu-pill,
-    body.page-about.about-active #control_wrap a[href$="#contact-section"] .menu-pill,
-    body.page-about.header-target-about #control_wrap a[href$="#projects_sec"] .menu-pill,
-    body.page-about.header-target-about #control_wrap a[href$="#contact-section"] .menu-pill {
-        background: transparent !important;
-        color: #fff !important;
-    }
-
     body.page-about.projects-active #control_wrap a[href$="#projects_sec"] .menu-pill,
     body.page-about.contact-active #control_wrap a[href$="#contact-section"] .menu-pill,
     body.page-about.header-target-projects #control_wrap a[href$="#projects_sec"] .menu-pill,
@@ -1571,8 +1545,8 @@
 
     body.page-about.about-active #control_wrap a[href$="#about-section"] .about-pill,
     body.page-about.header-target-about #control_wrap a[href$="#about-section"] .about-pill {
-        background: #fff !important;
-        color: #171717 !important;
+        background: #171717 !important;
+        color: #fff !important;
     }
 
     /* Let longer Korean copy wrap inside small project notes and TV captions. */
