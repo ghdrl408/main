@@ -3903,7 +3903,7 @@
                     projectNote.classList.add('is-playing');
                     projectNote.classList.add('has-static-paper');
                     const startedAt = performance.now();
-                    const promptDelay = window.matchMedia('(min-width: 1025px)').matches ? 700 : 1000;
+                    const promptDelay = window.matchMedia('(min-width: 1025px)').matches ? 400 : 1000;
                     const drawFrame = (now) => {
                         const elapsed = now - startedAt;
                         const sourceElapsed = elapsed * 2.2;
