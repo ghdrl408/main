@@ -1482,50 +1482,6 @@
 
 /* Mobile: keep navigation readable above both dark and light sections. */
 @media (max-width: 767px) {
-    /* Prefer built-in phone fonts so the large bundled Korean font is not downloaded. */
-    @font-face {
-        font-family: 'Noto Sans KR';
-        src: local('Noto Sans KR'), local('Noto Sans CJK KR'), local('Apple SD Gothic Neo'), local('Malgun Gothic');
-        font-weight: 100 900;
-        font-style: normal;
-    }
-    @font-face {
-        font-family: 'Noto Sans';
-        src: local('Noto Sans'), local('Arial');
-        font-weight: 100 900;
-        font-style: normal;
-    }
-    @font-face {
-        font-family: 'Pretendard Medium';
-        src: local('Pretendard'), local('Apple SD Gothic Neo'), local('Noto Sans KR'), local('Malgun Gothic');
-        font-weight: 100 900;
-        font-style: normal;
-    }
-    @font-face {
-        font-family: 'Pretendard Black';
-        src: local('Pretendard'), local('Apple SD Gothic Neo'), local('Noto Sans KR'), local('Malgun Gothic');
-        font-weight: 100 900;
-        font-style: normal;
-    }
-    @font-face {
-        font-family: 'NotoSansKR-ExtraBold';
-        src: local('Noto Sans KR'), local('Noto Sans CJK KR'), local('Apple SD Gothic Neo'), local('Malgun Gothic');
-        font-weight: 100 900;
-        font-style: normal;
-    }
-    @font-face {
-        font-family: 'Noto Sans SC';
-        src: local('Noto Sans CJK SC'), local('Noto Sans SC'), local('Arial');
-        font-weight: 100 900;
-        font-style: normal;
-    }
-    @font-face {
-        font-family: 'NanumMyeongjo-Bold';
-        src: local('Nanum Myeongjo'), local('Noto Serif KR'), local('AppleMyungjo');
-        font-weight: 700;
-        font-style: normal;
-    }
-
     body.page-about header {
         position: fixed;
         top: 0;
