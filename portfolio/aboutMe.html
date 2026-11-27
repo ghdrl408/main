@@ -3852,13 +3852,17 @@
             };
             const getProjectNoteTurnMotionFallbackDuration = (pathKey) =>
                 pathKey.startsWith('wideGacha') ? 800 : 820;
+            const showProjectNoteIntroPrompt = () => {
+                if (tvMode !== 'intro' || !projectNote.classList.contains('is-intro')) return;
+                projectNote.classList.add('is-intro-prompt-visible', 'is-intro-prompt-blinking');
+            };
             const updateProjectNoteIntroPrompt = () => {
                 if (!projectNote.classList.contains('is-intro') || tvMode !== 'intro') {
                     projectNote.classList.remove('is-intro-prompt-visible', 'is-intro-prompt-blinking');
                     return;
                 }
                 if (projectNoteIntroComplete) {
-                    projectNote.classList.add('is-intro-prompt-visible', 'is-intro-prompt-blinking');
+                    showProjectNoteIntroPrompt();
                 }
             };
             const revealProjectNoteIntroPrompt = updateProjectNoteIntroPrompt;
@@ -3866,9 +3870,7 @@
                 window.clearTimeout(projectNoteIntroPromptTimer);
                 projectNoteIntroPromptTimer = window.setTimeout(() => {
                     projectNoteIntroPromptTimer = null;
-                    if (tvMode === 'intro' && projectNote.classList.contains('is-intro')) {
-                        projectNote.classList.add('is-intro-prompt-visible', 'is-intro-prompt-blinking');
-                    }
+                    showProjectNoteIntroPrompt();
                 }, delayMs);
             };
             window.addEventListener('scroll', updateProjectNoteIntroPrompt, { passive: true });
@@ -3916,7 +3918,7 @@
                         projectNoteContext.clearRect(0, 0, 563, 696);
                         projectNoteContext.drawImage(projectNoteFrames, frameX, frameY, 563, 696, 0, 0, 563, 696);
                         if (elapsed >= promptDelay) {
-                            projectNote.classList.add('is-intro-prompt-visible', 'is-intro-prompt-blinking');
+                            showProjectNoteIntroPrompt();
                         }
                         if (elapsed >= 2840 / 2.2) {
                             showProjectNoteStatic();
@@ -3930,7 +3932,7 @@
                     if (projectNoteIntroComplete) return;
                     if (framesLoaded) startAnimation();
                     else {
-                        projectNote.classList.add('is-intro-prompt-visible', 'is-intro-prompt-blinking');
+                        showProjectNoteIntroPrompt();
                         showProjectNoteStatic();
                     }
                 });
@@ -4702,7 +4704,7 @@
                     if (!keepProjectNoteTurning && projectNoteIntroComplete) {
                         projectNote.classList.add('is-intro');
                         if (window.matchMedia('(min-width: 1025px)').matches) {
-                            projectNote.classList.add('is-intro-prompt-visible', 'is-intro-prompt-blinking');
+                            showProjectNoteIntroPrompt();
                         } else {
                             scheduleProjectNoteIntroPrompt(1000);
                         }
