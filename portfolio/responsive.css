@@ -1485,10 +1485,7 @@
     body.page-about header {
         position: fixed;
         top: 0;
-        z-index: 2147483000;
-        isolation: isolate;
-        transform: translate3d(0, 0, 0);
-        -webkit-transform: translate3d(0, 0, 0);
+        z-index: 1000;
         height: calc(58px + env(safe-area-inset-top, 0px));
         min-height: 58px;
         padding-top: env(safe-area-inset-top, 0px);
@@ -1498,24 +1495,9 @@
         transition: none;
     }
 
-    body.page-about header,
-    body.page-about header > a,
-    body.page-about header #control_wrap,
-    body.page-about header #control_wrap > a {
-        visibility: visible !important;
-        opacity: 1 !important;
-    }
-
     body.page-about .header-brand,
     body.page-about #control_wrap li {
         color: #171717 !important;
-    }
-
-    body.page-about header .header-brand,
-    body.page-about header #control_wrap li,
-    body.page-about header .about-pill,
-    body.page-about header .menu-pill {
-        -webkit-text-fill-color: currentColor !important;
     }
 
     body.page-about .header-brand { margin: 0 8px; }
