@@ -1618,6 +1618,62 @@
     }
 }
 
+/* Keep the phone navigation pinned and show exactly one active section pill. */
+@media (max-width: 767px) {
+    .page-about header {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0;
+        right: 0;
+        z-index: 10000 !important;
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        transform: none !important;
+        pointer-events: auto !important;
+    }
+
+    .page-about #control_wrap a:hover .about-pill,
+    .page-about #control_wrap a:focus .about-pill,
+    .page-about #control_wrap a:hover .menu-pill,
+    .page-about #control_wrap a:focus .menu-pill {
+        background-color: transparent !important;
+        color: inherit !important;
+        opacity: 1 !important;
+    }
+
+    body.page-about:not(.projects-active):not(.contact-active):not(.header-target-projects):not(.header-target-contact) #control_wrap a[href$="#about-section"] .about-pill,
+    body.page-about.header-target-about #control_wrap a[href$="#about-section"] .about-pill {
+        background-color: white !important;
+        color: black !important;
+        opacity: 0.8 !important;
+    }
+
+    body.page-about.projects-active #control_wrap a[href$="#projects_sec"] .menu-pill,
+    body.page-about.header-target-projects #control_wrap a[href$="#projects_sec"] .menu-pill {
+        background-color: black !important;
+        color: white !important;
+        opacity: 1 !important;
+    }
+
+    body.page-about.contact-active #control_wrap a[href$="#contact-section"] .menu-pill,
+    body.page-about.header-target-contact #control_wrap a[href$="#contact-section"] .menu-pill {
+        background-color: black !important;
+        color: white !important;
+        opacity: 1 !important;
+    }
+
+    body.page-about.header-target-about #control_wrap a[href$="#projects_sec"] .menu-pill,
+    body.page-about.header-target-about #control_wrap a[href$="#contact-section"] .menu-pill,
+    body.page-about.header-target-projects #control_wrap a[href$="#about-section"] .about-pill,
+    body.page-about.header-target-projects #control_wrap a[href$="#contact-section"] .menu-pill,
+    body.page-about.header-target-contact #control_wrap a[href$="#about-section"] .about-pill,
+    body.page-about.header-target-contact #control_wrap a[href$="#projects_sec"] .menu-pill {
+        background-color: transparent !important;
+        opacity: 1 !important;
+    }
+}
+
 /* Keep the tablet composition at its minimum-width scale and center it as one group. */
 @media (min-width: 768px) and (max-width: 1024px) {
     .page-about #projects_sec #tv_stage #tv_small_txt {
