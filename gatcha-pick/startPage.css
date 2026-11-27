@@ -171,9 +171,21 @@ body {
   margin: 0;
   padding: 0;
   transform: translateX(-50%);
+  -webkit-appearance: none;
+  appearance: none;
   border: 0;
   background: transparent;
   line-height: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.start-button:focus {
+  outline: none;
+}
+
+.start-button:focus-visible {
+  outline: 2px solid #111;
+  outline-offset: 3px;
 }
 
 .start-button[hidden] {
