@@ -5340,7 +5340,7 @@
             const astronautProjectPill = document.querySelector('#astronaut-project-pill');
             const astronautProjectLabel = astronautProjectPill.querySelector('.label');
             const astronautHead = document.querySelector('#astronaut-head');
-            const astronautStaticLayout = window.matchMedia('(max-width: 1024px)');
+            const astronautStaticLayout = window.matchMedia('(hover: none), (pointer: coarse)');
             let astronautLayoutIsResizing = false;
             let astronautResizeSettleTimer = null;
 
@@ -5349,7 +5349,9 @@
                     window.gsap.killTweensOf([astronautProjectPill, astronautProjectLabel]);
                 }
                 astronautProjectPill.style.removeProperty('transform');
+                astronautProjectPill.style.removeProperty('transition');
                 astronautProjectLabel.style.removeProperty('transform');
+                astronautProjectLabel.style.removeProperty('transition');
             };
             const alignAstronautProjectPill = () => {
                 const zoneRect = astronautProjectZone.getBoundingClientRect();
@@ -5384,8 +5386,7 @@
                 });
             }
 
-            if (window.gsap) {
-                window.addEventListener('mousemove', (event) => {
+            window.addEventListener('mousemove', (event) => {
                     if (astronautStaticLayout.matches || astronautLayoutIsResizing) return;
                     const rect = astronautProjectZone.getBoundingClientRect();
                     const scale = rect.width / astronautProjectZone.offsetWidth || 1;
@@ -5433,42 +5434,57 @@
                     const labelTargetX = pointerOffsetX * 0.12 * clampRatio / scale;
                     const labelTargetY = pointerOffsetY * 0.12 * clampRatio / scale;
 
-                    gsap.to(astronautProjectPill, {
-                        x: mappedX / scale,
-                        y: mappedY / scale,
-                        duration: 0.4,
-                        ease: 'power2.out',
-                        overwrite: 'auto'
-                    });
-                    gsap.to(astronautProjectLabel, {
-                        x: Math.max(-labelMaxX, Math.min(labelMaxX, labelTargetX)),
-                        y: Math.max(-labelMaxY, Math.min(labelMaxY, labelTargetY)),
-                        duration: 0.4,
-                        ease: 'power2.out',
-                        overwrite: true
-                    });
+                    const pillX = mappedX / scale;
+                    const pillY = mappedY / scale;
+                    const labelX = Math.max(-labelMaxX, Math.min(labelMaxX, labelTargetX));
+                    const labelY = Math.max(-labelMaxY, Math.min(labelMaxY, labelTargetY));
+                    if (window.gsap) {
+                        window.gsap.to(astronautProjectPill, {
+                            x: pillX,
+                            y: pillY,
+                            duration: 0.4,
+                            ease: 'power2.out',
+                            overwrite: 'auto'
+                        });
+                        window.gsap.to(astronautProjectLabel, {
+                            x: labelX,
+                            y: labelY,
+                            duration: 0.4,
+                            ease: 'power2.out',
+                            overwrite: true
+                        });
+                    } else {
+                        astronautProjectPill.style.transition = 'transform 400ms cubic-bezier(0.16, 1, 0.3, 1)';
+                        astronautProjectLabel.style.transition = 'transform 400ms cubic-bezier(0.16, 1, 0.3, 1)';
+                        astronautProjectPill.style.transform = `translate(-50%, -50%) translate3d(${pillX}px, ${pillY}px, 0)`;
+                        astronautProjectLabel.style.transform = `translate3d(${labelX}px, ${labelY}px, 0)`;
+                    }
                 });
 
-                window.addEventListener('mouseout', (event) => {
+            window.addEventListener('mouseout', (event) => {
                     if (astronautStaticLayout.matches || astronautLayoutIsResizing || event.relatedTarget ||
                         (event.clientX >= 0 && event.clientY >= 0 &&
                             event.clientX <= window.innerWidth && event.clientY <= window.innerHeight)) return;
-                    gsap.to(astronautProjectPill, {
-                        x: 0,
-                        y: 0,
-                        duration: 0.7,
-                        ease: 'power2.out',
-                        overwrite: 'auto'
-                    });
-                    gsap.to(astronautProjectLabel, {
-                        x: 0,
-                        y: 0,
-                        duration: 0.7,
-                        ease: 'power2.out',
-                        overwrite: true
-                    });
+                    if (window.gsap) {
+                        window.gsap.to(astronautProjectPill, {
+                            x: 0,
+                            y: 0,
+                            duration: 0.7,
+                            ease: 'power2.out',
+                            overwrite: 'auto'
+                        });
+                        window.gsap.to(astronautProjectLabel, {
+                            x: 0,
+                            y: 0,
+                            duration: 0.7,
+                            ease: 'power2.out',
+                            overwrite: true
+                        });
+                    } else {
+                        astronautProjectPill.style.transform = 'translate(-50%, -50%)';
+                        astronautProjectLabel.style.transform = 'translate3d(0, 0, 0)';
+                    }
                 });
-            }
 
             let tvSectionIsActive = false;
             let projectIntroNeedsRestart = true;
