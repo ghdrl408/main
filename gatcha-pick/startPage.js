@@ -106,7 +106,7 @@ startButton.addEventListener("click", () => {
   isNavigating = true;
   startButtonImage.src = buttonImages.pressed;
   window.setTimeout(() => {
-    window.location.href = "mainPage.html";
+    window.location.href = "mainPage.html?v=mobile-device-profile-text-20261127";
   }, 180);
 });
 

@@ -1294,21 +1294,23 @@ body {
 
 @media (max-width: 700px) {
   .reference-button { width: 19.1%; }
+}
 
+@media (max-device-width: 700px) {
   .profile-info {
     gap: 2.4cqw;
-    font-size: clamp(4px, 5.2cqw, 21px);
+    font-size: clamp(4px, 3.4cqw, 14px);
   }
 
   .profile-edit-heading {
-    font-size: calc(clamp(4px, 5.2cqw, 21px) + 1px);
+    font-size: calc(clamp(4px, 3.4cqw, 14px) + 1px);
   }
 
   .profile-nickname-box input,
   .profile-radio-target,
   .profile-select-wrap select,
   .profile-car-options {
-    font-size: clamp(4px, calc(5.2cqw - 1px), 19px);
+    font-size: clamp(4px, calc(3.4cqw - 1px), 13px);
   }
 
   .profile-nickname-box button {
@@ -1316,11 +1318,11 @@ body {
   }
 
   .keyword-edit-grid {
-    grid-auto-rows: clamp(28px, 34cqw, 68px);
+    grid-auto-rows: clamp(28px, 28cqw, 68px);
   }
 
   .keyword-cloud-option {
-    font-size: clamp(4px, 3.2cqw, 13px);
+    font-size: clamp(4px, 2.1cqw, 9px);
   }
 
   .keyword-cloud-option span {
@@ -1333,6 +1335,6 @@ body {
   }
 
   .keyword-cloud-label {
-    font-size: clamp(4px, calc(2.7cqw + 1px), 14px);
+    font-size: clamp(4px, calc(1.8cqw + 0.5px), 9px);
   }
 }
