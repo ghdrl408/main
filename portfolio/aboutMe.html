@@ -5504,7 +5504,7 @@
                     projectIntroNeedsRestart = true;
                     resetTvSection(false);
                 }
-                if (isActive && !window.matchMedia('(max-width: 767px)').matches) {
+                if (isActive) {
                     playProjectNoteIntro();
                 }
             }, { threshold: [0, 0.25, 0.5] });
