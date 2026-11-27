@@ -1322,7 +1322,7 @@ body {
   }
 
   .keyword-cloud-option {
-    font-size: clamp(4px, 2.1cqw, 9px);
+    font-size: clamp(2.8px, 1.5cqw, 6.5px);
   }
 
   .keyword-cloud-option span {
@@ -1335,6 +1335,6 @@ body {
   }
 
   .keyword-cloud-label {
-    font-size: clamp(4px, calc(1.8cqw + 0.5px), 9px);
+    font-size: clamp(2.8px, calc(1.2cqw + 0.25px), 6.5px);
   }
 }
