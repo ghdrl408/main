@@ -65,9 +65,10 @@
         
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap" rel="stylesheet" media="(min-width: 768px)">
-        <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400..700&display=swap" rel="stylesheet" media="(min-width: 768px)">
-        <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js" defer></script>
+        <link rel="preload" as="image" href="pf_img/proImg/메모지 시작모션_프레임.png" fetchpriority="high">
+        <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400..700&display=swap" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js"></script>
 
     </head>
     <style>
@@ -3022,7 +3023,7 @@
 
 
     </style>
-    <link rel="stylesheet" href="responsive.css?v=20261127-mobile-optimization">
+    <link rel="stylesheet" href="responsive.css?v=20261125-skill-layout">
 
 
 
@@ -3853,7 +3854,7 @@
                     projectNote.classList.remove('is-intro-prompt-visible');
                     return;
                 }
-                if (!window.matchMedia('(min-width: 1025px)').matches || projectNoteIntroComplete) {
+                if (!window.matchMedia('(min-width: 1025px)').matches) {
                     projectNote.classList.add('is-intro-prompt-visible');
                 }
             };
@@ -4696,11 +4697,7 @@
                     tvStage.classList.add('is-intro');
                     if (!keepProjectNoteTurning && projectNoteIntroComplete) {
                         projectNote.classList.add('is-intro');
-                        if (window.matchMedia('(min-width: 768px)').matches) {
-                            projectNote.classList.add('is-intro-prompt-visible');
-                        } else {
-                            scheduleProjectNoteIntroPrompt(1000);
-                        }
+                        scheduleProjectNoteIntroPrompt(1000);
                     }
                 }
                 setTvPlainText(tvTitle, '라이딩부산');
