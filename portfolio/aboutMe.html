@@ -2851,7 +2851,7 @@
             visibility: hidden;
         }
 
-        #project-note.is-intro #note-intro-prompt {
+        #project-note.is-intro.is-intro-prompt-blinking #note-intro-prompt {
             animation: tvPressBlink 900ms steps(1, end) infinite;
         }
 
@@ -3853,11 +3853,11 @@
                 pathKey.startsWith('wideGacha') ? 800 : 820;
             const updateProjectNoteIntroPrompt = () => {
                 if (!projectNote.classList.contains('is-intro') || tvMode !== 'intro') {
-                    projectNote.classList.remove('is-intro-prompt-visible');
+                    projectNote.classList.remove('is-intro-prompt-visible', 'is-intro-prompt-blinking');
                     return;
                 }
                 if (projectNoteIntroComplete) {
-                    projectNote.classList.add('is-intro-prompt-visible');
+                    projectNote.classList.add('is-intro-prompt-visible', 'is-intro-prompt-blinking');
                 }
             };
             const revealProjectNoteIntroPrompt = updateProjectNoteIntroPrompt;
@@ -3866,7 +3866,7 @@
                 projectNoteIntroPromptTimer = window.setTimeout(() => {
                     projectNoteIntroPromptTimer = null;
                     if (tvMode === 'intro' && projectNote.classList.contains('is-intro')) {
-                        projectNote.classList.add('is-intro-prompt-visible');
+                        projectNote.classList.add('is-intro-prompt-visible', 'is-intro-prompt-blinking');
                     }
                 }, delayMs);
             };
@@ -3900,7 +3900,7 @@
                 }
                 const startAnimation = () => {
                     if (projectNoteIntroComplete) return;
-                    projectNote.classList.remove('is-intro-prompt-visible');
+                    projectNote.classList.remove('is-intro-prompt-visible', 'is-intro-prompt-blinking');
                     projectNote.classList.add('is-visible');
                     projectNote.classList.add('is-playing');
                     projectNote.classList.add('has-static-paper');
@@ -3915,7 +3915,7 @@
                         projectNoteContext.clearRect(0, 0, 563, 696);
                         projectNoteContext.drawImage(projectNoteFrames, frameX, frameY, 563, 696, 0, 0, 563, 696);
                         if (elapsed >= promptDelay) {
-                            projectNote.classList.add('is-intro-prompt-visible');
+                            projectNote.classList.add('is-intro-prompt-visible', 'is-intro-prompt-blinking');
                         }
                         if (elapsed >= 2840 / 2.2) {
                             showProjectNoteStatic();
@@ -3929,7 +3929,7 @@
                     if (projectNoteIntroComplete) return;
                     if (framesLoaded) startAnimation();
                     else {
-                        projectNote.classList.add('is-intro-prompt-visible');
+                        projectNote.classList.add('is-intro-prompt-visible', 'is-intro-prompt-blinking');
                         showProjectNoteStatic();
                     }
                 });
@@ -4677,12 +4677,12 @@
                 window.clearTimeout(tvScreenTransitionTimer);
                 window.clearTimeout(projectNoteIntroPromptTimer);
                 projectNoteIntroPromptTimer = null;
-                projectNote.classList.remove('is-intro-prompt-visible');
+                projectNote.classList.remove('is-intro-prompt-visible', 'is-intro-prompt-blinking');
                 tvMode = playIntro ? 'intro' : 'idle';
                 setMobileProjectChannelLayout('intro');
                 tvStage.classList.remove('is-intro', 'is-transitioning', 'is-screen-transitioning', 'is-small-text-exiting', 'is-small-text-ready', 'is-riding-ready', 'has-project-video');
                 if (!keepProjectNoteTurning) {
-                    projectNote.classList.remove('is-intro', 'is-intro-prompt-visible', 'is-transitioning', 'is-riding-ready', 'is-details-visible', 'is-turn-loading', 'is-turning', 'is-turning-back', 'is-turning-to-third', 'is-turn-complete', 'is-later-page', 'is-second-page', 'is-third-page', 'has-tape');
+                    projectNote.classList.remove('is-intro', 'is-intro-prompt-visible', 'is-intro-prompt-blinking', 'is-transitioning', 'is-riding-ready', 'is-details-visible', 'is-turn-loading', 'is-turning', 'is-turning-back', 'is-turning-to-third', 'is-turn-complete', 'is-later-page', 'is-second-page', 'is-third-page', 'has-tape');
                     projectNotePaper.classList.remove('is-folded', 'is-turning', 'is-turning-back', 'is-turn-complete', 'is-folded-corner-visible');
                     syncProjectNotePageAssets();
                     projectNoteTapeWrappers.forEach((tape) => tape.classList.remove('is-playing', 'is-complete'));
@@ -4701,7 +4701,7 @@
                     if (!keepProjectNoteTurning && projectNoteIntroComplete) {
                         projectNote.classList.add('is-intro');
                         if (window.matchMedia('(min-width: 1025px)').matches) {
-                            projectNote.classList.add('is-intro-prompt-visible');
+                            projectNote.classList.add('is-intro-prompt-visible', 'is-intro-prompt-blinking');
                         } else {
                             scheduleProjectNoteIntroPrompt(1000);
                         }
