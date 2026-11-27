@@ -171,26 +171,9 @@ body {
   margin: 0;
   padding: 0;
   transform: translateX(-50%);
-  -webkit-appearance: none !important;
-  appearance: none !important;
   border: 0;
   background: transparent;
   line-height: 0;
-  -webkit-tap-highlight-color: transparent;
-  box-shadow: none !important;
-  -webkit-box-shadow: none !important;
-}
-
-.start-button:focus,
-.start-button:focus-visible {
-  outline: none !important;
-  box-shadow: none !important;
-  -webkit-box-shadow: none !important;
-}
-
-.start-button::-webkit-focus-inner {
-  border: 0;
-  padding: 0;
 }
 
 .start-button[hidden] {

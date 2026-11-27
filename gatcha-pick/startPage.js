@@ -1,4 +1,5 @@
 const imageRoot = "1st_img/";
+const startFrameImage = `${imageRoot}메인_시작.png?v=start-button-removed-20261127`;
 const canvas = document.querySelector("#design-canvas");
 const frame = document.querySelector("#screen-frame");
 const artLayer = document.querySelector("#sequence-art");
@@ -58,7 +59,7 @@ async function startIntro() {
     ...new Set([
       ...frames.map(item => `${imageRoot}${item.name}`),
       ...frames.flatMap(item => item.art.map(file => `${imageRoot}${file}`)),
-      `${imageRoot}메인_시작.png`,
+      startFrameImage,
       `${imageRoot}헤더 분홍 공.svg`,
       ...Object.values(buttonImages),
       `${imageRoot}커서.svg`
@@ -82,7 +83,7 @@ async function startIntro() {
       return;
     }
 
-    frame.src = `${imageRoot}메인_시작.png`;
+    frame.src = startFrameImage;
     showArt([]);
     canvas.classList.add("is-start");
     loadingLabel.hidden = true;
