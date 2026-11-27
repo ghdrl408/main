@@ -188,6 +188,14 @@ body {
   outline-offset: 3px;
 }
 
+@media (hover: none), (pointer: coarse) {
+  .start-button:focus,
+  .start-button:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+}
+
 .start-button[hidden] {
   display: none;
 }
