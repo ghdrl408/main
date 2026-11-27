@@ -527,6 +527,15 @@
             <video id="bg-video" src="pf_img/1.mp4" muted loop playsinline></video>
             <video id="bg-video-2" src="pf_img/2.mp4" muted loop playsinline></video>
             <video id="bg-video-3" src="pf_img/3.mp4" muted loop playsinline></video>
+            <script>
+                if (matchMedia('(max-width: 767px) and (pointer: coarse)').matches) {
+                    document.querySelectorAll('#bg-video, #bg-video-2, #bg-video-3').forEach((video) => {
+                        video.pause();
+                        video.removeAttribute('src');
+                        video.preload = 'none';
+                    });
+                }
+            </script>
 
             <section>
                 <div class="marquee">

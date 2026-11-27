@@ -1480,6 +1480,127 @@
     }
 }
 
+/* Mobile: keep navigation readable above both dark and light sections. */
+@media (max-width: 767px) {
+    /* Prefer built-in phone fonts so the large bundled Korean font is not downloaded. */
+    @font-face {
+        font-family: 'Noto Sans KR';
+        src: local('Noto Sans KR'), local('Noto Sans CJK KR'), local('Apple SD Gothic Neo'), local('Malgun Gothic');
+        font-weight: 100 900;
+        font-style: normal;
+    }
+    @font-face {
+        font-family: 'Noto Sans';
+        src: local('Noto Sans'), local('Arial');
+        font-weight: 100 900;
+        font-style: normal;
+    }
+    @font-face {
+        font-family: 'Pretendard Medium';
+        src: local('Pretendard'), local('Apple SD Gothic Neo'), local('Noto Sans KR'), local('Malgun Gothic');
+        font-weight: 100 900;
+        font-style: normal;
+    }
+    @font-face {
+        font-family: 'Pretendard Black';
+        src: local('Pretendard'), local('Apple SD Gothic Neo'), local('Noto Sans KR'), local('Malgun Gothic');
+        font-weight: 100 900;
+        font-style: normal;
+    }
+    @font-face {
+        font-family: 'NotoSansKR-ExtraBold';
+        src: local('Noto Sans KR'), local('Noto Sans CJK KR'), local('Apple SD Gothic Neo'), local('Malgun Gothic');
+        font-weight: 100 900;
+        font-style: normal;
+    }
+    @font-face {
+        font-family: 'Noto Sans SC';
+        src: local('Noto Sans CJK SC'), local('Noto Sans SC'), local('Arial');
+        font-weight: 100 900;
+        font-style: normal;
+    }
+    @font-face {
+        font-family: 'NanumMyeongjo-Bold';
+        src: local('Nanum Myeongjo'), local('Noto Serif KR'), local('AppleMyungjo');
+        font-weight: 700;
+        font-style: normal;
+    }
+
+    body.page-about header {
+        position: fixed;
+        top: 0;
+        z-index: 1000;
+        height: calc(58px + env(safe-area-inset-top, 0px));
+        min-height: 58px;
+        padding-top: env(safe-area-inset-top, 0px);
+        padding-right: 4px;
+        background: rgba(255, 255, 255, 0.98) !important;
+        box-shadow: 0 1px 8px rgba(0, 0, 0, 0.12);
+        transition: none;
+    }
+
+    body.page-about .header-brand,
+    body.page-about #control_wrap li {
+        color: #171717 !important;
+    }
+
+    body.page-about .header-brand { margin: 0 8px; }
+    body.page-about .header-brand .name { font-size: clamp(22px, 6vw, 30px); }
+    body.page-about #control_wrap { gap: 0; margin-right: 0; }
+    body.page-about #control_wrap > a { min-height: 44px; }
+    body.page-about #control_wrap li,
+    body.page-about #control_wrap a:not(:first-child) li {
+        font-size: clamp(10px, 2.9vw, 12px);
+    }
+    body.page-about .about-pill,
+    body.page-about .menu-pill {
+        height: 30px;
+        padding-inline: clamp(4px, 1.4vw, 8px);
+        background: transparent !important;
+        color: #171717 !important;
+        opacity: 1;
+    }
+
+    body.page-about.projects-active #control_wrap a[href$="#projects_sec"] .menu-pill,
+    body.page-about.contact-active #control_wrap a[href$="#contact-section"] .menu-pill,
+    body.page-about.header-target-projects #control_wrap a[href$="#projects_sec"] .menu-pill,
+    body.page-about.header-target-contact #control_wrap a[href$="#contact-section"] .menu-pill {
+        background: #171717 !important;
+        color: #fff !important;
+    }
+
+    body.page-about.about-active #control_wrap a[href$="#about-section"] .about-pill,
+    body.page-about.header-target-about #control_wrap a[href$="#about-section"] .about-pill {
+        background: #171717 !important;
+        color: #fff !important;
+    }
+
+    /* Let longer Korean copy wrap inside small project notes and TV captions. */
+    .page-about #projects_sec #tv_stage #tv_small_txt,
+    .page-about #projects_sec #tv_stage.is-transitioning #tv_small_txt,
+    .page-about #projects_sec #tv_stage.is-small-text-ready #tv_small_txt,
+    .page-about #projects_sec #tv_stage.is-details-visible #tv_small_txt {
+        width: min(88vw, 350px);
+        max-width: 88vw;
+        white-space: normal;
+        overflow-wrap: anywhere;
+        line-height: 1.25;
+    }
+
+    .page-about #projects_sec #project-note #note-description,
+    .page-about #projects_sec #project-note .note-card-copy {
+        overflow-wrap: anywhere;
+        word-break: keep-all;
+    }
+}
+
+@media (max-width: 359px) {
+    body.page-about .header-brand { margin-inline: 5px; }
+    body.page-about .header-brand .name { font-size: 22px; }
+    body.page-about .about-pill,
+    body.page-about .menu-pill { padding-inline: 4px; }
+}
+
 @media (min-width: 768px) and (max-width: 1024px) {
     .page-about #projects_sec #astronaut-project-pill .label {
         font-size: clamp(7px, 0.9vw, 9px);
