@@ -1294,4 +1294,45 @@ body {
 
 @media (max-width: 700px) {
   .reference-button { width: 19.1%; }
+
+  .profile-info {
+    gap: 2.4cqw;
+    font-size: clamp(4px, 5.2cqw, 21px);
+  }
+
+  .profile-edit-heading {
+    font-size: calc(clamp(4px, 5.2cqw, 21px) + 1px);
+  }
+
+  .profile-nickname-box input,
+  .profile-radio-target,
+  .profile-select-wrap select,
+  .profile-car-options {
+    font-size: clamp(4px, calc(5.2cqw - 1px), 19px);
+  }
+
+  .profile-nickname-box button {
+    font-size: clamp(8px, 4.6cqw, 18px);
+  }
+
+  .keyword-edit-grid {
+    grid-auto-rows: clamp(28px, 34cqw, 68px);
+  }
+
+  .keyword-cloud-option {
+    font-size: clamp(4px, 3.2cqw, 13px);
+  }
+
+  .keyword-cloud-option span {
+    max-width: 94%;
+    white-space: nowrap;
+  }
+
+  .keyword-selection-count {
+    font-size: clamp(5px, 4cqw, 11px);
+  }
+
+  .keyword-cloud-label {
+    font-size: clamp(4px, calc(2.7cqw + 1px), 14px);
+  }
 }
