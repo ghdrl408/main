@@ -74,98 +74,98 @@
     <style>
         @font-face {
             font-family: 'Noto Sans';
-            src: url('pf_font/NotoSans-VariableFont_wdth,wght.ttf') format('truetype');
+            src: url('pf_font/NotoSans-VariableFont_wdth,wght.woff2') format('woff2');
             font-weight: 100 900;
             font-style: normal;
         }
 
         @font-face {
             font-family: 'Noto Sans KR';
-            src: url('pf_font/NotoSansKR-VariableFont_wght.ttf') format('truetype');
+            src: url('pf_font/NotoSansKR-VariableFont_wght.woff2') format('woff2');
             font-weight: 100 900;
             font-style: normal;
         }
 
         @font-face {
             font-family: 'Thirthy Demo';
-            src: url('pf_font/Thirthy Demo.ttf') format('truetype');
+            src: url('pf_font/Thirthy Demo.woff2') format('woff2');
             font-weight: normal;
             font-style: normal;
         }
 
         @font-face {
             font-family: 'GT America Extended Medium';
-            src: url('pf_font/GT-America-Extended-Medium-Trial.otf') format('opentype');
+            src: url('pf_font/GT-America-Extended-Medium-Trial.woff2') format('woff2');
             font-weight: 500;
             font-style: normal;
         }
 
         @font-face {
             font-family: 'NotoSansKR-ExtraBold';
-            src: url('pf_font/NotoSansKR-ExtraBold.ttf') format('truetype');
+            src: url('pf_font/NotoSansKR-ExtraBold.woff2') format('woff2');
             font-weight: 900;
             font-style: normal;
         }
 
         @font-face {
             font-family: 'NanumMyeongjo-Bold';
-            src: url('pf_font/NanumMyeongjo-Bold.ttf') format('truetype');
+            src: url('pf_font/NanumMyeongjo-Bold.woff2') format('woff2');
             font-weight: 700;
             font-style: normal;
         }
 
         @font-face {
             font-family: 'NotoMusic-Regular';
-            src: url('pf_font/NotoMusic-Regular.ttf') format('truetype');
+            src: url('pf_font/NotoMusic-Regular.woff2') format('woff2');
             font-weight: normal;
             font-style: normal;
         }
 
         @font-face {
             font-family: 'Oleo Script';
-            src: url('pf_font/OleoScript-Regular.ttf') format('truetype');
+            src: url('pf_font/OleoScript-Regular.woff2') format('woff2');
             font-weight: 400;
             font-style: normal;
         }
 
         @font-face {
             font-family: 'Noto Sans SC';
-            src: url('pf_font/NotoSansSC-VariableFont_wght.ttf') format('truetype');
+            src: url('pf_font/NotoSansSC-VariableFont_wght.woff2') format('woff2');
             font-weight: 100 900;
             font-style: normal;
         }
 
         @font-face {
             font-family: 'IBM Plex Sans KR';
-            src: url('pf_font/IBMPlexSansKR-Regular.ttf') format('truetype');
+            src: url('pf_font/IBMPlexSansKR-Regular.woff2') format('woff2');
             font-weight: 400;
             font-style: normal;
         }
 
         @font-face {
             font-family: 'Pretendard Medium';
-            src: url('pf_font/Pretendard-Medium.otf') format('opentype');
+            src: url('pf_font/Pretendard-Medium.woff2') format('woff2');
             font-weight: 500;
             font-style: normal;
         }
 
         @font-face {
             font-family: 'Pretendard Black';
-            src: url('pf_font/Pretendard-Black.otf') format('opentype');
+            src: url('pf_font/Pretendard-Black.woff2') format('woff2');
             font-weight: 900;
             font-style: normal;
         }
 
         @font-face {
             font-family: 'Anton';
-            src: url('pf_font/Anton-Regular.ttf') format('truetype');
+            src: url('pf_font/Anton-Regular.woff2') format('woff2');
             font-weight: 400;
             font-style: normal;
         }
 
         @font-face {
             font-family: 'Tangba';
-            src: url('pf_font/Tangba17.ttf') format('truetype');
+            src: url('pf_font/Tangba17.woff2') format('woff2');
             font-weight: 400;
             font-style: normal;
             font-display: swap;
@@ -173,7 +173,7 @@
 
         @font-face {
             font-family: 'Share Tech Mono';
-            src: url('pf_font/ShareTechMono-Regular.ttf') format('truetype');
+            src: url('pf_font/ShareTechMono-Regular.woff2') format('woff2');
             font-weight: 400;
             font-style: normal;
             font-display: swap;
@@ -3854,7 +3854,7 @@
                     projectNote.classList.remove('is-intro-prompt-visible');
                     return;
                 }
-                if (!window.matchMedia('(min-width: 1025px)').matches) {
+                if (projectNoteIntroComplete) {
                     projectNote.classList.add('is-intro-prompt-visible');
                 }
             };
@@ -3903,6 +3903,7 @@
                     projectNote.classList.add('is-playing');
                     projectNote.classList.add('has-static-paper');
                     const startedAt = performance.now();
+                    const promptDelay = window.matchMedia('(min-width: 1025px)').matches ? 700 : 1000;
                     const drawFrame = (now) => {
                         const elapsed = now - startedAt;
                         const sourceElapsed = elapsed * 2.2;
@@ -3911,7 +3912,7 @@
                         const frameY = Math.floor(frameIndex / 7) * 696;
                         projectNoteContext.clearRect(0, 0, 563, 696);
                         projectNoteContext.drawImage(projectNoteFrames, frameX, frameY, 563, 696, 0, 0, 563, 696);
-                        if (elapsed >= 1000) {
+                        if (elapsed >= promptDelay) {
                             projectNote.classList.add('is-intro-prompt-visible');
                         }
                         if (elapsed >= 2840 / 2.2) {
@@ -4697,7 +4698,11 @@
                     tvStage.classList.add('is-intro');
                     if (!keepProjectNoteTurning && projectNoteIntroComplete) {
                         projectNote.classList.add('is-intro');
-                        scheduleProjectNoteIntroPrompt(1000);
+                        if (window.matchMedia('(min-width: 1025px)').matches) {
+                            projectNote.classList.add('is-intro-prompt-visible');
+                        } else {
+                            scheduleProjectNoteIntroPrompt(1000);
+                        }
                     }
                 }
                 setTvPlainText(tvTitle, '라이딩부산');
